@@ -24,7 +24,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -102,8 +101,6 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(long id) {
            userRepository.deleteById(id);
     }
-
-
 
 
     @Override

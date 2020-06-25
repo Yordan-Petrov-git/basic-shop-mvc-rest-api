@@ -142,9 +142,9 @@ public class User extends BaseEntity  implements UserDetails  {
 
     @OneToMany(targetEntity = Card.class,
             fetch = FetchType.LAZY)
-    @JoinTable(name = "user_roles",
+    @JoinTable(name = "user_cards",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
     public Set<Card> getCards() {
         return this.cards;
     }
