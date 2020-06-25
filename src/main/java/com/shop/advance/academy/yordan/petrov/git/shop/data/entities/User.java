@@ -1,6 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 import lombok.NonNull;
 import org.hibernate.validator.constraints.Length;
@@ -16,7 +15,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity {
+public class User extends BaseEntity  implements UserDetails  {
 
     private String username;
     private String password;
@@ -41,6 +40,7 @@ public class User extends BaseEntity {
     }
 
 
+    @Override
     @NonNull
     @NotEmpty
     @Length(min = 2, max = 128)
@@ -53,7 +53,7 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
-
+    @Override
     @NonNull
     @NotEmpty
     @Column(name = "password", unique = true, nullable = false)
@@ -125,7 +125,7 @@ public class User extends BaseEntity {
 
     @ManyToMany(targetEntity = Address.class,
             cascade = CascadeType.PERSIST,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_address",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -141,7 +141,7 @@ public class User extends BaseEntity {
 
 
     @OneToMany(targetEntity = Card.class,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -155,7 +155,7 @@ public class User extends BaseEntity {
 
 
     @OneToMany(targetEntity = ContactInformation.class,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY)
     @JoinTable(name = "user_contact_information",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "contact_information_id", referencedColumnName = "id"))
@@ -167,7 +167,7 @@ public class User extends BaseEntity {
         this.contactInformation = contactInformation;
     }
 
-
+    @Override
     public boolean isEnabled() {
         return this.isEnabled;
     }
@@ -175,7 +175,7 @@ public class User extends BaseEntity {
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }
-
+    @Override
     public boolean isCredentialsNonExpired() {
         return this.isCredentialsNonExpired;
     }
@@ -183,7 +183,7 @@ public class User extends BaseEntity {
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         isCredentialsNonExpired = credentialsNonExpired;
     }
-
+    @Override
     public boolean isAccountNonLocked() {
         return this.isAccountNonLocked;
     }
@@ -191,7 +191,7 @@ public class User extends BaseEntity {
     public void setAccountNonLocked(boolean accountNonLocked) {
         isAccountNonLocked = accountNonLocked;
     }
-
+    @Override
     public boolean isAccountNonExpired() {
         return this.isAccountNonExpired;
     }
@@ -199,8 +199,7 @@ public class User extends BaseEntity {
     public void setAccountNonExpired(boolean accountNonExpired) {
         isAccountNonExpired = accountNonExpired;
     }
-
-
+    @Override
     @ManyToMany(targetEntity = Role.class,
             fetch = FetchType.EAGER)
     @JoinTable(name = "user_roles",
@@ -213,6 +212,8 @@ public class User extends BaseEntity {
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
+
+
 
     @Override
     public boolean equals(Object o) {

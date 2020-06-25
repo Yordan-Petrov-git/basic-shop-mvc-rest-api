@@ -20,7 +20,7 @@ public class Card extends BaseEntity{
     private String number;
     private BigDecimal balance;
     private Currency currency;
-    private boolean isActive = false;
+    private boolean isActive = true;
 
 
     public Card() {

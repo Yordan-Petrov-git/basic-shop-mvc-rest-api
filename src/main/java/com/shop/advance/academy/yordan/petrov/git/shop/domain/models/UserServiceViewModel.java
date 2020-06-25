@@ -21,22 +21,10 @@ public class UserServiceViewModel {
     private String lastName;
     private String phone;
     private String email;
-    private Set<Address> addresses = new HashSet<>();
-    private Set<ContactInformation> contactInformation = new HashSet<>();
+    private Set<AddressServiceModel> addresses = new HashSet<>();
+    private Set<ContactInformationServiceViewModel> contactInformation = new HashSet<>();
 
-    public UserServiceViewModel(String username, String password, UserType userType, Instant dateRegistered, Date dateOfBirth, String firstName, String lastName, String phone, String email, Set<Address> addresses, Set<ContactInformation> contactInformation) {
-        this.username = username;
-        this.password = password;
-        this.userType = userType;
-        this.dateRegistered = dateRegistered;
-        this.dateOfBirth = dateOfBirth;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
-        this.addresses = addresses;
-        this.contactInformation = contactInformation;
-    }
+
 
     public UserServiceViewModel() {
     }
@@ -113,19 +101,19 @@ public class UserServiceViewModel {
         this.email = email;
     }
 
-    public Set<Address> getAddresses() {
+    public Set<AddressServiceModel> getAddresses() {
         return this.addresses;
     }
 
-    public void setAddresses(Set<Address> addresses) {
+    public void setAddresses(Set<AddressServiceModel> addresses) {
         this.addresses = addresses;
     }
 
-    public Set<ContactInformation> getContactInformation() {
+    public Set<ContactInformationServiceViewModel> getContactInformation() {
         return this.contactInformation;
     }
 
-    public void setContactInformation(Set<ContactInformation> contactInformation) {
+    public void setContactInformation(Set<ContactInformationServiceViewModel> contactInformation) {
         this.contactInformation = contactInformation;
     }
 }

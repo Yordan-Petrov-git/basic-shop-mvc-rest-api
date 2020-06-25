@@ -1,8 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
 import java.time.Instant;
@@ -12,45 +9,37 @@ import java.util.Set;
 
 public class UserServiceModel {
 
+    private Long id;
     private String username;
     private String password;
-    private UserType userType;
+    private UserType userType = UserType.REGULAR;
     private Instant dateRegistered;
     private Date dateOfBirth;
     private String firstName;
     private String lastName;
     private String phone;
     private String email;
-    private Set<Address> addresses = new HashSet<>();
-    private Set<Card> cards = new HashSet<>();
-    private Set<ContactInformation> contactInformation = new HashSet<>();
+    private Set<AddressServiceModel> addresses = new HashSet<>();
+    private Set<CardServiceModel> cards = new HashSet<>();
+    private Set<ContactInformationServiceModel> contactInformation = new HashSet<>();
+    private Set<RoleServiceModel> roles = new HashSet<>();
     private boolean isEnabled = true;
     private boolean isCredentialsNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isAccountNonExpired = true;
 
 
-    public UserServiceModel(String username, String password, UserType userType, Instant dateRegistered, Date dateOfBirth, String firstName, String lastName, String phone, String email, Set<Address> addresses, Set<Card> cards, Set<ContactInformation> contactInformation, boolean isEnabled, boolean isCredentialsNonExpired, boolean isAccountNonLocked, boolean isAccountNonExpired) {
-        this.username = username;
-        this.password = password;
-        this.userType = userType;
-        this.dateRegistered = dateRegistered;
-        this.dateOfBirth = dateOfBirth;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
-        this.addresses = addresses;
-        this.cards = cards;
-        this.contactInformation = contactInformation;
-        this.isEnabled = isEnabled;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isAccountNonExpired = isAccountNonExpired;
+
+    public UserServiceModel() {
     }
 
 
-    public UserServiceModel() {
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getUsername() {
@@ -125,28 +114,36 @@ public class UserServiceModel {
         this.email = email;
     }
 
-    public Set<Address> getAddresses() {
+    public Set<AddressServiceModel> getAddresses() {
         return this.addresses;
     }
 
-    public void setAddresses(Set<Address> addresses) {
+    public void setAddresses(Set<AddressServiceModel> addresses) {
         this.addresses = addresses;
     }
 
-    public Set<Card> getCards() {
+    public Set<CardServiceModel> getCards() {
         return this.cards;
     }
 
-    public void setCards(Set<Card> cards) {
+    public void setCards(Set<CardServiceModel> cards) {
         this.cards = cards;
     }
 
-    public Set<ContactInformation> getContactInformation() {
+    public Set<ContactInformationServiceModel> getContactInformation() {
         return this.contactInformation;
     }
 
-    public void setContactInformation(Set<ContactInformation> contactInformation) {
+    public void setContactInformation(Set<ContactInformationServiceModel> contactInformation) {
         this.contactInformation = contactInformation;
+    }
+
+    public Set<RoleServiceModel> getRoles() {
+        return this.roles;
+    }
+
+    public void setRoles(Set<RoleServiceModel> roles) {
+        this.roles = roles;
     }
 
     public boolean isEnabled() {

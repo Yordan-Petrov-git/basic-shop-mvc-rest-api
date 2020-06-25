@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.RoleServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.RoleServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
@@ -9,12 +10,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
-public class RoleServiceImpl implements RoleService {
+public class    RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
     private final ModelMapper modelMapper;
+
 
     @Autowired
     public RoleServiceImpl(RoleRepository roleRepository, ModelMapper modelMapper) {
@@ -22,28 +26,29 @@ public class RoleServiceImpl implements RoleService {
         this.modelMapper = modelMapper;
     }
 
+
     @Override
-    public RoleServiceModel createRole(RoleServiceModel roleServiceModel) {
-        return null;
+    public void seedRolesInDatabase() {
+
+        Role admin = new Role("ADMIN");
+        Role user = new Role("USER");
+
+        this.roleRepository.saveAndFlush(admin);
+        this.roleRepository.saveAndFlush(user);
+
     }
 
     @Override
-    public void updateRole(RoleServiceModel roleServiceModel) {
-
+    public Set<RoleServiceModel> findAllRoles() {
+        return this.roleRepository.findAll()
+                .stream()
+                .map(r -> this.modelMapper.map(r, RoleServiceModel.class))
+                .collect(Collectors.toSet());
     }
 
     @Override
-    public RoleServiceViewModel getRoleById(long id) {
-        return null;
-    }
+    public RoleServiceModel findByAuthority(String role) {
 
-    @Override
-    public List<RoleServiceViewModel> getAleRoles() {
-        return null;
-    }
-
-    @Override
-    public void deleteRoleById(long id) {
-
+        return this.modelMapper.map(this.roleRepository.findByAuthority(role), RoleServiceModel.class);
     }
 }
