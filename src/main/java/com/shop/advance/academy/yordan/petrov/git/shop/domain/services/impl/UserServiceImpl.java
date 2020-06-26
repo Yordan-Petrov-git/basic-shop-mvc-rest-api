@@ -51,6 +51,10 @@ public class UserServiceImpl implements UserService {
             throw new InvalidEntityException(String.format("User with username '%s' already exists.", user.getUsername()));
         });
 
+        this.userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
+            throw new InvalidEntityException(String.format("'%s' is  already registered.", user.getEmail()));
+        });
+
         if (userRepository.count() == 0) {
             this.roleService.seedRolesInDatabase();
 
@@ -84,6 +88,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserServiceViewModel getUserById(long id) {
+
         return this.modelMapper
                 .map(this.userRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("User with ID %s not found.", id))), UserServiceViewModel.class);
@@ -91,10 +96,12 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserServiceViewModel> getAllUsers() {
+
         List<User> users = userRepository.findAll();
 
         return modelMapper.map(users, new TypeToken<List<UserServiceViewModel>>() {
         }.getType());
+
     }
 
     @Override

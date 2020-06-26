@@ -1,14 +1,15 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -26,7 +27,8 @@ public class CardServiceImpl   implements CardService {
 
     @Override
     public CardServiceModel createCard(CardServiceModel cardServiceModel) {
-        return null;
+        Card card = this.modelMapper.map(cardServiceModel, Card.class);
+        return this.modelMapper.map( this.cardRepository.saveAndFlush(card), CardServiceModel.class);
     }
 
     @Override
@@ -36,16 +38,22 @@ public class CardServiceImpl   implements CardService {
 
     @Override
     public CardServiceViewModel getCardById(long id) {
-        return null;
+        return this.modelMapper
+                .map(this.cardRepository.findById(id).orElseThrow(() ->
+                        new EntityNotFoundException(String.format("Card  with ID %s not found.", id))), CardServiceViewModel.class);
     }
 
     @Override
     public List<CardServiceViewModel> getAllCards() {
-        return null;
+
+        List<Card> cards = cardRepository.findAll();
+
+        return modelMapper.map(cards, new TypeToken<List<CardServiceViewModel>>() {
+        }.getType());
     }
 
     @Override
     public void deleteCardById(long id) {
-
+    cardRepository.deleteById(id);
     }
 }
