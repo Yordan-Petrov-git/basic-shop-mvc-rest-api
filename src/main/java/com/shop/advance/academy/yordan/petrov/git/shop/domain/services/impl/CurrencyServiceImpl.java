@@ -1,13 +1,17 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -23,8 +27,9 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public CurrencyServiceModel createCurrency(CurrencyServiceModel Currency) {
-        return null;
+    public CurrencyServiceModel createCurrency(CurrencyServiceModel currencyServiceModel) {
+        Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
+        return this.modelMapper.map( this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
     }
 
     @Override
@@ -34,16 +39,20 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public CurrencyServiceViewModel getCurrencyById(long id) {
-        return null;
+        return this.modelMapper
+                .map(this.currencyRepository.findById(id).orElseThrow(() ->
+                        new EntityNotFoundException(String.format("Currency  with ID %s not found.", id))), CurrencyServiceViewModel.class);
     }
 
     @Override
     public List<CurrencyServiceViewModel> getAllCurrencies() {
-        return null;
+        List<Currency> currencies = currencyRepository.findAll();
+
+        return modelMapper.map(currencies, new TypeToken<List<CurrencyServiceViewModel>>() {
+        }.getType());
     }
 
     @Override
     public void deleteCurrencyById(long id) {
-
-    }
+        currencyRepository.deleteById(id);    }
 }

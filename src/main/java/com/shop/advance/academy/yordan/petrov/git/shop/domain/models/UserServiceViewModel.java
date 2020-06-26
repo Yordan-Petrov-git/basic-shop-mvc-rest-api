@@ -1,13 +1,11 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class UserServiceViewModel {
@@ -21,10 +19,18 @@ public class UserServiceViewModel {
     private String lastName;
     private String phone;
     private String email;
-    private Set<Address> addresses = new HashSet<>();
-    private Set<ContactInformation> contactInformation = new HashSet<>();
+    private Set<AddressServiceModel> addresses = new HashSet<>();
+    private Set<ContactInformationServiceViewModel> contactInformation = new HashSet<>();
 
-    public UserServiceViewModel(String username, String password, UserType userType, Instant dateRegistered, Date dateOfBirth, String firstName, String lastName, String phone, String email, Set<Address> addresses, Set<ContactInformation> contactInformation) {
+
+
+    public UserServiceViewModel() {
+    }
+
+    public UserServiceViewModel(String username, String password, UserType userType,
+                                Instant dateRegistered, Date dateOfBirth, String firstName, String
+                                        lastName, String phone, String email, Set<AddressServiceModel> addresses,
+                                Set<ContactInformationServiceViewModel> contactInformation) {
         this.username = username;
         this.password = password;
         this.userType = userType;
@@ -36,9 +42,6 @@ public class UserServiceViewModel {
         this.email = email;
         this.addresses = addresses;
         this.contactInformation = contactInformation;
-    }
-
-    public UserServiceViewModel() {
     }
 
     public String getUsername() {
@@ -113,19 +116,58 @@ public class UserServiceViewModel {
         this.email = email;
     }
 
-    public Set<Address> getAddresses() {
+    public Set<AddressServiceModel> getAddresses() {
         return this.addresses;
     }
 
-    public void setAddresses(Set<Address> addresses) {
+    public void setAddresses(Set<AddressServiceModel> addresses) {
         this.addresses = addresses;
     }
 
-    public Set<ContactInformation> getContactInformation() {
+    public Set<ContactInformationServiceViewModel> getContactInformation() {
         return this.contactInformation;
     }
 
-    public void setContactInformation(Set<ContactInformation> contactInformation) {
+    public void setContactInformation(Set<ContactInformationServiceViewModel> contactInformation) {
         this.contactInformation = contactInformation;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserServiceViewModel)) return false;
+        UserServiceViewModel that = (UserServiceViewModel) o;
+        return Objects.equals(username, that.username) &&
+                Objects.equals(password, that.password) &&
+                userType == that.userType &&
+                Objects.equals(dateRegistered, that.dateRegistered) &&
+                Objects.equals(dateOfBirth, that.dateOfBirth) &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(phone, that.phone) &&
+                Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(username, password, userType, dateRegistered, dateOfBirth, firstName, lastName, phone, email);
+    }
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("UserServiceViewModel{");
+        sb.append("username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", userType=").append(userType);
+        sb.append(", dateRegistered=").append(dateRegistered);
+        sb.append(", dateOfBirth=").append(dateOfBirth);
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", phone='").append(phone).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

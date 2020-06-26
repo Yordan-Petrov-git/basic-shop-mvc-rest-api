@@ -1,13 +1,20 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.SellerRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -26,7 +33,8 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public SellerServiceModel createSeller(SellerServiceModel sellerServiceModel) {
-        return null;
+        Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
+        return this.modelMapper.map( this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
     }
 
     @Override
@@ -36,16 +44,22 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public SellerServiceViewModel getSellerById(long id) {
-        return null;
+        return this.modelMapper
+                .map(this.sellerRepository.findById(id).orElseThrow(() ->
+                        new EntityNotFoundException(String.format("Seller  with ID %s not found.", id))), SellerServiceViewModel.class);
+
     }
 
     @Override
     public List<SellerServiceViewModel> getAllSellers() {
-        return null;
+        List<Seller> sellers = sellerRepository.findAll();
+
+        return modelMapper.map(sellers, new TypeToken<List<SellerServiceViewModel>>() {
+        }.getType());
     }
 
     @Override
     public void deleteSellerById(long id) {
-
+        sellerRepository.deleteById(id);
     }
 }

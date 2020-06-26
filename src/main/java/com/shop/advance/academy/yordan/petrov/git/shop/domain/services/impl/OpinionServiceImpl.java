@@ -1,13 +1,17 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OpinionRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
@@ -24,7 +28,8 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public OpinionServiceModel createOpinion(OpinionServiceModel opinionServiceModel) {
-        return null;
+        Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
+        return this.modelMapper.map( this.opinionRepository.saveAndFlush(opinion), OpinionServiceModel.class);
     }
 
     @Override
@@ -34,16 +39,21 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public OpinionServiceViewModel getOpinionById(long id) {
-        return null;
+        return this.modelMapper
+                .map(this.opinionRepository.findById(id).orElseThrow(() ->
+                        new EntityNotFoundException(String.format("Opinion  with ID %s not found.", id))), OpinionServiceViewModel.class);
     }
 
     @Override
     public List<OpinionServiceViewModel> getAllOpinions() {
-        return null;
+        List<Opinion> opinions = opinionRepository.findAll();
+
+        return modelMapper.map(opinions, new TypeToken<List<OpinionServiceViewModel>>() {
+        }.getType());
     }
 
     @Override
     public void deleteOpinionById(long id) {
-
+        opinionRepository.deleteById(id);
     }
 }
