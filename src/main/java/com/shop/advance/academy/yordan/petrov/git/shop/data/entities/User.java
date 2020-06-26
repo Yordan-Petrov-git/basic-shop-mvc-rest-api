@@ -1,14 +1,11 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
-import lombok.NonNull;
-import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -21,7 +18,7 @@ public class User extends BaseEntity  implements UserDetails  {
     private String password;
     private UserType userType;
     private Instant dateRegistered;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String firstName;
     private String lastName;
     private String phone;
@@ -41,9 +38,9 @@ public class User extends BaseEntity  implements UserDetails  {
 
 
     @Override
-    @NonNull
-    @NotEmpty
-    @Length(min = 2, max = 128)
+    //@NonNull
+   // @NotEmpty
+   // @Length(min = 2, max = 128)
     @Column(name = "username", unique = true, nullable = false)
     public String getUsername() {
         return this.username;
@@ -54,8 +51,8 @@ public class User extends BaseEntity  implements UserDetails  {
     }
 
     @Override
-    @NonNull
-    @NotEmpty
+    //@NonNull
+    //@NotEmpty
     @Column(name = "password", unique = true, nullable = false)
     public String getPassword() {
         return this.password;
@@ -83,11 +80,11 @@ public class User extends BaseEntity  implements UserDetails  {
         this.dateRegistered = dateRegistered;
     }
     @Column(name = "date_of_birth")
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
     @Column(name = "first_name")
@@ -124,7 +121,7 @@ public class User extends BaseEntity  implements UserDetails  {
     }
 
     @ManyToMany(targetEntity = Address.class,
-            cascade = CascadeType.PERSIST,
+            cascade=CascadeType.ALL,
             fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_address",
@@ -141,7 +138,7 @@ public class User extends BaseEntity  implements UserDetails  {
 
 
     @OneToMany(targetEntity = Card.class,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinTable(name = "user_cards",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
@@ -155,7 +152,7 @@ public class User extends BaseEntity  implements UserDetails  {
 
 
     @OneToMany(targetEntity = ContactInformation.class,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY,cascade=CascadeType.ALL)
     @JoinTable(name = "user_contact_information",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "contact_information_id", referencedColumnName = "id"))

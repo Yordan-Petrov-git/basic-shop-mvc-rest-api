@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
 import java.time.Instant;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Objects;
@@ -14,7 +15,7 @@ public class UserServiceViewModel {
     private String password;
     private UserType userType;
     private Instant dateRegistered;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String firstName;
     private String lastName;
     private String phone;
@@ -28,7 +29,7 @@ public class UserServiceViewModel {
     }
 
     public UserServiceViewModel(String username, String password, UserType userType,
-                                Instant dateRegistered, Date dateOfBirth, String firstName, String
+                                Instant dateRegistered, LocalDate dateOfBirth, String firstName, String
                                         lastName, String phone, String email, Set<AddressServiceModel> addresses,
                                 Set<ContactInformationServiceViewModel> contactInformation) {
         this.username = username;
@@ -76,11 +77,11 @@ public class UserServiceViewModel {
         this.dateRegistered = dateRegistered;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 

@@ -5,7 +5,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "addresses")
-public class Address extends BaseEntity{
+public class Address extends BaseEntity {
 
     private String streetNumber;
     private String streetName;
@@ -32,8 +32,8 @@ public class Address extends BaseEntity{
         this.streetName = streetName;
     }
 
-    @ManyToOne(targetEntity = City.class
-          )
+    @ManyToOne(targetEntity = City.class,
+            cascade=CascadeType.ALL   )
     @JoinTable(name = "address_city",
             joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id"))
