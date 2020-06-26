@@ -1,5 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import java.util.Objects;
+
 public class CityServiceModel {
 
     private Long id;
@@ -59,4 +61,30 @@ public class CityServiceModel {
         this.province = province;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CityServiceModel)) return false;
+        CityServiceModel that = (CityServiceModel) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(name, that.name) &&
+                Objects.equals(region, that.region) &&
+                Objects.equals(province, that.province);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, region, province);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("CityServiceModel{");
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
+        sb.append(", region='").append(region).append('\'');
+        sb.append(", province='").append(province).append('\'');
+        sb.append('}');
+        return sb.toString();
+    }
 }

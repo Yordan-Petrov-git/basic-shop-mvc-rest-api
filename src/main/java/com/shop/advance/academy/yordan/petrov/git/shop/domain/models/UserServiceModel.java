@@ -5,6 +5,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserT
 import java.time.Instant;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Objects;
 import java.util.Set;
 
 public class UserServiceModel {
@@ -33,6 +34,31 @@ public class UserServiceModel {
     public UserServiceModel() {
     }
 
+    public UserServiceModel(Long id, String username, String password, UserType userType,
+                            Instant dateRegistered, Date dateOfBirth, String firstName,
+                            String lastName, String phone, String email, Set<AddressServiceModel> addresses,
+                            Set<CardServiceModel> cards, Set<ContactInformationServiceModel> contactInformation,
+                            Set<RoleServiceModel> roles, boolean isEnabled, boolean isCredentialsNonExpired,
+                            boolean isAccountNonLocked, boolean isAccountNonExpired) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.userType = userType;
+        this.dateRegistered = dateRegistered;
+        this.dateOfBirth = dateOfBirth;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phone = phone;
+        this.email = email;
+        this.addresses = addresses;
+        this.cards = cards;
+        this.contactInformation = contactInformation;
+        this.roles = roles;
+        this.isEnabled = isEnabled;
+        this.isCredentialsNonExpired = isCredentialsNonExpired;
+        this.isAccountNonLocked = isAccountNonLocked;
+        this.isAccountNonExpired = isAccountNonExpired;
+    }
 
     public Long getId() {
         return this.id;
@@ -177,4 +203,34 @@ public class UserServiceModel {
     public void setAccountNonExpired(boolean accountNonExpired) {
         isAccountNonExpired = accountNonExpired;
     }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof UserServiceModel)) return false;
+        UserServiceModel that = (UserServiceModel) o;
+        return isEnabled == that.isEnabled &&
+                isCredentialsNonExpired == that.isCredentialsNonExpired &&
+                isAccountNonLocked == that.isAccountNonLocked &&
+                isAccountNonExpired == that.isAccountNonExpired &&
+                Objects.equals(id, that.id) &&
+                Objects.equals(username, that.username) &&
+                Objects.equals(password, that.password) &&
+                userType == that.userType &&
+                Objects.equals(dateRegistered, that.dateRegistered) &&
+                Objects.equals(dateOfBirth, that.dateOfBirth) &&
+                Objects.equals(firstName, that.firstName) &&
+                Objects.equals(lastName, that.lastName) &&
+                Objects.equals(phone, that.phone) &&
+                Objects.equals(email, that.email);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, username, password, userType, dateRegistered, dateOfBirth,
+                firstName, lastName, phone, email, isEnabled, isCredentialsNonExpired,
+                isAccountNonLocked, isAccountNonExpired);
+    }
+
 }

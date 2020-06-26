@@ -1,5 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import java.util.Objects;
+
 public class ContactInformationServiceViewModel {
 
 
@@ -42,5 +44,32 @@ public class ContactInformationServiceViewModel {
 
     public void setCountryCode(String countryCode) {
         this.countryCode = countryCode;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ContactInformationServiceViewModel)) return false;
+        ContactInformationServiceViewModel that = (ContactInformationServiceViewModel) o;
+        return Objects.equals(id, that.id) &&
+                Objects.equals(email, that.email) &&
+                Objects.equals(phoneNumber, that.phoneNumber) &&
+                Objects.equals(countryCode, that.countryCode);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, email, phoneNumber, countryCode);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ContactInformationServiceViewModel{");
+        sb.append("id=").append(id);
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", phoneNumber='").append(phoneNumber).append('\'');
+        sb.append(", countryCode='").append(countryCode).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

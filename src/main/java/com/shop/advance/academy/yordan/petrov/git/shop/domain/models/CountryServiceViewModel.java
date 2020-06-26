@@ -1,5 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import java.util.Objects;
+
 public class CountryServiceViewModel {
 
     private String name;
@@ -29,5 +31,30 @@ public class CountryServiceViewModel {
 
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CountryServiceViewModel)) return false;
+        CountryServiceViewModel that = (CountryServiceViewModel) o;
+        return Objects.equals(name, that.name) &&
+                Objects.equals(coordinates, that.coordinates);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name, coordinates);
+    }
+
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("CountryServiceViewModel{");
+        sb.append("name='").append(name).append('\'');
+        sb.append(", coordinates='").append(coordinates).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }
