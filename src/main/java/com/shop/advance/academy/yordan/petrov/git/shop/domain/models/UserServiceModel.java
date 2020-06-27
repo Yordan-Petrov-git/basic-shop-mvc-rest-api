@@ -19,8 +19,6 @@ public class UserServiceModel {
     private LocalDate dateOfBirth;
     private String firstName;
     private String lastName;
-    private String phone;
-    private String email;
     private Set<AddressServiceModel> addresses = new HashSet<>();
     private Set<CardServiceModel> cards = new HashSet<>();
     private Set<ContactInformationServiceModel> contactInformation = new HashSet<>();
@@ -44,8 +42,6 @@ public class UserServiceModel {
         this.dateOfBirth = dateOfBirth;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.phone = phone;
-        this.email = email;
         this.addresses = addresses;
         this.cards = cards;
         this.contactInformation = contactInformation;
@@ -120,21 +116,6 @@ public class UserServiceModel {
         this.lastName = lastName;
     }
 
-    public String getPhone() {
-        return this.phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     public Set<AddressServiceModel> getAddresses() {
         return this.addresses;
@@ -216,15 +197,13 @@ public class UserServiceModel {
                 Objects.equals(dateRegistered, that.dateRegistered) &&
                 Objects.equals(dateOfBirth, that.dateOfBirth) &&
                 Objects.equals(firstName, that.firstName) &&
-                Objects.equals(lastName, that.lastName) &&
-                Objects.equals(phone, that.phone) &&
-                Objects.equals(email, that.email);
+                Objects.equals(lastName, that.lastName) ;
     }
 
     @Override
     public int hashCode() {
         return Objects.hash( username, password, userType, dateRegistered, dateOfBirth,
-                firstName, lastName, phone, email, isEnabled, isCredentialsNonExpired,
+                firstName, lastName, isEnabled, isCredentialsNonExpired,
                 isAccountNonLocked, isAccountNonExpired);
     }
 
@@ -238,8 +217,6 @@ public class UserServiceModel {
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", phone='").append(phone).append('\'');
-        sb.append(", email='").append(email).append('\'');
         sb.append(", isEnabled=").append(isEnabled);
         sb.append(", isCredentialsNonExpired=").append(isCredentialsNonExpired);
         sb.append(", isAccountNonLocked=").append(isAccountNonLocked);

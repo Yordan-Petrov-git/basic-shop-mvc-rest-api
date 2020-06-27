@@ -1,11 +1,10 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
@@ -29,14 +28,16 @@ import java.util.stream.Collectors;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final AddressRepository addressRepository;
     private final ModelMapper modelMapper;
     private final RoleRepository roleRepository;
     private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
+        this.addressRepository = addressRepository;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
         this.roleService = roleService;
@@ -53,9 +54,9 @@ public class UserServiceImpl implements UserService {
             throw new InvalidEntityException(String.format("User with username '%s' already exists.", user.getUsername()));
         });
 
-        this.userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
-            throw new InvalidEntityException(String.format("'%s' is  already registered.", user.getEmail()));
-        });
+//        this.userRepository.findByEmail(user.getEmail()).ifPresent(u -> {
+//            throw new InvalidEntityException(String.format("'%s' is  already registered.", user.getEmail()));
+//        });
 
         if (userRepository.count() == 0) {
             this.roleService.seedRolesInDatabase();
