@@ -9,6 +9,7 @@ import java.util.Objects;
 @Table(name = "shopping_carts")
 public class ShoppingCart extends BaseEntity{
 
+
     private List<Item> addedItems =  new ArrayList<Item>();
     private User user;
 
@@ -19,7 +20,7 @@ public class ShoppingCart extends BaseEntity{
 
     @OneToMany(targetEntity = Item.class,
             fetch = FetchType.EAGER)
-    @JoinTable(name = "shoping_cart_item",
+    @JoinTable(name = "shopping_cart_item",
             joinColumns = @JoinColumn(name = "shoping_cart_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"))
     public List<Item> getAddedItems() {
@@ -32,7 +33,7 @@ public class ShoppingCart extends BaseEntity{
 
     @ManyToOne(targetEntity = User.class,
             fetch = FetchType.EAGER)
-    @JoinTable(name = "shoping_cart_user",
+    @JoinTable(name = "shopping_cart_user",
             joinColumns = @JoinColumn(name = "shoping_cart_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     public User getUser() {

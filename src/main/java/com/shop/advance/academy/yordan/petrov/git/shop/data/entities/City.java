@@ -8,9 +8,10 @@ import java.util.Objects;
 public class City extends BaseEntity{
 
     private String name;
-    private Country country;
     private String region;
     private String province;
+    private Country country;
+
 
     public City() {
     }
@@ -25,7 +26,7 @@ public class City extends BaseEntity{
 
 
     @ManyToOne(targetEntity = Country.class,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name = "city_country",
             joinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "country_id", referencedColumnName = "id"))

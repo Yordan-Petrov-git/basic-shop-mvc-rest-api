@@ -87,7 +87,7 @@ public class Card extends BaseEntity{
 
 
     @ManyToOne(targetEntity = Currency.class,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER,cascade=CascadeType.ALL)
     @JoinTable(name = "card_currency",
             joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "currency_id", referencedColumnName = "id"))

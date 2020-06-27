@@ -1,21 +1,21 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
 import java.time.Instant;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 public class UserServiceModel {
 
-    private Long id;
     private String username;
     private String password;
     private UserType userType = UserType.REGULAR;
     private Instant dateRegistered;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private String firstName;
     private String lastName;
     private String phone;
@@ -34,13 +34,13 @@ public class UserServiceModel {
     public UserServiceModel() {
     }
 
-    public UserServiceModel(Long id, String username, String password, UserType userType,
-                            Instant dateRegistered, Date dateOfBirth, String firstName,
+    public UserServiceModel( String username, String password, UserType userType,
+                            Instant dateRegistered, LocalDate dateOfBirth, String firstName,
                             String lastName, String phone, String email, Set<AddressServiceModel> addresses,
                             Set<CardServiceModel> cards, Set<ContactInformationServiceModel> contactInformation,
                             Set<RoleServiceModel> roles, boolean isEnabled, boolean isCredentialsNonExpired,
                             boolean isAccountNonLocked, boolean isAccountNonExpired) {
-        this.id = id;
+
         this.username = username;
         this.password = password;
         this.userType = userType;
@@ -60,13 +60,7 @@ public class UserServiceModel {
         this.isAccountNonExpired = isAccountNonExpired;
     }
 
-    public Long getId() {
-        return this.id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getUsername() {
         return this.username;
@@ -99,12 +93,12 @@ public class UserServiceModel {
     public void setDateRegistered(Instant dateRegistered) {
         this.dateRegistered = dateRegistered;
     }
-
-    public Date getDateOfBirth() {
+    @JsonFormat(pattern="yyyy-MM-dd")
+    public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -214,7 +208,6 @@ public class UserServiceModel {
                 isCredentialsNonExpired == that.isCredentialsNonExpired &&
                 isAccountNonLocked == that.isAccountNonLocked &&
                 isAccountNonExpired == that.isAccountNonExpired &&
-                Objects.equals(id, that.id) &&
                 Objects.equals(username, that.username) &&
                 Objects.equals(password, that.password) &&
                 userType == that.userType &&
@@ -228,9 +221,28 @@ public class UserServiceModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, userType, dateRegistered, dateOfBirth,
+        return Objects.hash( username, password, userType, dateRegistered, dateOfBirth,
                 firstName, lastName, phone, email, isEnabled, isCredentialsNonExpired,
                 isAccountNonLocked, isAccountNonExpired);
     }
 
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("UserServiceModel{");
+        sb.append("username='").append(username).append('\'');
+        sb.append(", password='").append(password).append('\'');
+        sb.append(", userType=").append(userType);
+        sb.append(", dateRegistered=").append(dateRegistered);
+        sb.append(", dateOfBirth=").append(dateOfBirth);
+        sb.append(", firstName='").append(firstName).append('\'');
+        sb.append(", lastName='").append(lastName).append('\'');
+        sb.append(", phone='").append(phone).append('\'');
+        sb.append(", email='").append(email).append('\'');
+        sb.append(", isEnabled=").append(isEnabled);
+        sb.append(", isCredentialsNonExpired=").append(isCredentialsNonExpired);
+        sb.append(", isAccountNonLocked=").append(isAccountNonLocked);
+        sb.append(", isAccountNonExpired=").append(isAccountNonExpired);
+        sb.append('}');
+        return sb.toString();
+    }
 }
