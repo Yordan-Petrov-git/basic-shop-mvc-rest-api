@@ -2,8 +2,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
+
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -12,7 +11,6 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.Access;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
@@ -30,21 +28,36 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryServiceModel createCountry(CountryServiceModel countryServiceModel) {
+
         Country country = this.modelMapper.map(countryServiceModel, Country.class);
-        return this.modelMapper.map( this.countryRepository.saveAndFlush(country),CountryServiceModel.class);
+
+        this.countryRepository.findByName(countryServiceModel.getName()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Country '%s' already exists.", countryServiceModel.getName()));
+        });
+
+        return this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceModel.class);
+
     }
 
     @Override
     public void updateCountry(CountryServiceModel countryServiceModel) {
+
         Country country = this.modelMapper.map(countryServiceModel, Country.class);
-        this.modelMapper.map( this.countryRepository.saveAndFlush(country),CountryServiceModel.class);
+
+        this.countryRepository.findById(countryServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Country with id '%d' not found .", countryServiceModel.getId())));
+
+        this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceModel.class);
+
     }
 
     @Override
     public CountryServiceViewModel getCountryById(long id) {
+
         return this.modelMapper
                 .map(this.countryRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Country  with ID %s not found.", id))), CountryServiceViewModel.class);
+
     }
 
     @Override
@@ -68,5 +81,6 @@ public class CountryServiceImpl implements CountryService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("Country  with id '%d' not found .", id)));
 
         this.countryRepository.deleteById(id);
+
     }
 }

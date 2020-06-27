@@ -30,14 +30,35 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceModel createMedia(MediaServiceModel mediaServiceModel) {
+
         Media media = this.modelMapper.map(mediaServiceModel, Media.class);
+
+        this.mediaRepository.findByDocumentPath(mediaServiceModel.getDocumentPath()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Media with document path '%s' already exists.", mediaServiceModel.getDocumentPath()));
+        });
+
+        this.mediaRepository.findByPicturePath(mediaServiceModel.getPicturePath()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Media with picture path '%s' already exists.", mediaServiceModel.getPicturePath()));
+        });
+
+        this.mediaRepository.findByVideoPath(mediaServiceModel.getVideoPath()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Media with video path '%s' already exists.", mediaServiceModel.getVideoPath()));
+        });
+
         return this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceModel.class);
+
     }
 
     @Override
     public void updateMedia(MediaServiceModel mediaServiceModel) {
+
         Media media = this.modelMapper.map(mediaServiceModel, Media.class);
+
+        this.mediaRepository.findById(mediaServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Media with id '%d' not found .", mediaServiceModel.getId())));
+
          this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceModel.class);
+
     }
 
     @Override
@@ -59,6 +80,7 @@ public class MediaServiceImpl implements MediaService {
 
         return modelMapper.map(media, new TypeToken<List<MediaServiceViewModel>>() {
         }.getType());
+
     }
 
     @Override
@@ -68,5 +90,6 @@ public class MediaServiceImpl implements MediaService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("Media  with id '%d' not found .", id)));
 
         this.mediaRepository.deleteById(id);
+
     }
 }

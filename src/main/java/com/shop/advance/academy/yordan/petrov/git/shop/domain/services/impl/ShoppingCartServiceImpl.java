@@ -2,11 +2,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
@@ -16,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
+
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -31,14 +29,23 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartServiceModel createShoppingCart(ShoppingCartServiceModel ShoppingCart) {
+
         ShoppingCart shoppingCart = this.modelMapper.map(ShoppingCart, ShoppingCart.class);
+
         return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceModel.class);
+
     }
 
     @Override
-    public void updateShoppingCart(ShoppingCartServiceModel ShoppingCart) {
-        ShoppingCart shoppingCart = this.modelMapper.map(ShoppingCart, ShoppingCart.class);
+    public void updateShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
+
+        ShoppingCart shoppingCart = this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
+
+        this.shoppingCartRepository.findById(shoppingCartServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Shopping with id '%d' not found .", shoppingCartServiceModel.getId())));
+
         this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceModel.class);
+
     }
 
     @Override

@@ -1,9 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -20,6 +18,7 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
+
     @Autowired
     public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper) {
         this.orderRepository = orderRepository;
@@ -28,14 +27,28 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderServiceModel createOrder(OrderServiceModel orderServiceModel) {
+
         Order order = this.modelMapper.map(orderServiceModel, Order.class);
-        return this.modelMapper.map( this.orderRepository.saveAndFlush(order), OrderServiceModel.class);
+
+        this.orderRepository.findByNumber(orderServiceModel.getNumber()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Order with number '%s' already exists.", orderServiceModel.getNumber()));
+        });
+
+        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceModel.class);
+
     }
 
     @Override
     public void updateOrder(OrderServiceModel orderServiceModel) {
+
         Order order = this.modelMapper.map(orderServiceModel, Order.class);
-         this.modelMapper.map( this.orderRepository.saveAndFlush(order), OrderServiceModel.class);
+
+        this.orderRepository.findById(orderServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Order with id '%d' not found .", orderServiceModel.getId())));
+
+
+        this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceModel.class);
+
     }
 
     @Override

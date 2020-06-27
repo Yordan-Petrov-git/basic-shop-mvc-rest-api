@@ -4,6 +4,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.RoleServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -38,14 +39,17 @@ public class    RoleServiceImpl implements RoleService {
 
     @Override
     public Set<RoleServiceModel> findAllRoles() {
+
         return this.roleRepository.findAll()
                 .stream()
                 .map(r -> this.modelMapper.map(r, RoleServiceModel.class))
                 .collect(Collectors.toSet());
+
     }
 
     @Override
     public RoleServiceModel findByAuthority(String role) {
+
 
         return this.modelMapper.map(this.roleRepository.findByAuthority(role), RoleServiceModel.class);
     }

@@ -11,5 +11,12 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
 
     Optional<Media> findById(Long id);
 
+    Optional<Media> findByPicturePath(String path);
+
+    Optional<Media> findByVideoPath(String path);
+
+    Optional<Media> findByDocumentPath(String path);
+
+
 }
 

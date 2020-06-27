@@ -29,21 +29,36 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemServiceModel createItem(ItemServiceModel itemServiceModel) {
+
         Item item = this.modelMapper.map(itemServiceModel, Item.class);
+
+        this.itemRepository.findByTitleAndDescription(itemServiceModel.getTitle(), itemServiceModel.getDescription()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Item with title '%s' and description '%s' already exists.", itemServiceModel.getTitle(), itemServiceModel.getDescription()));
+        });
+
         return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
+
     }
 
     @Override
     public void updateItem(ItemServiceModel itemServiceModel) {
+
         Item item = this.modelMapper.map(itemServiceModel, Item.class);
-         this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
+
+        this.itemRepository.findById(itemServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Item with id '%d' not found .", itemServiceModel.getId())));
+
+        this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
+
     }
 
     @Override
     public ItemServiceViewModel getItemById(long id) {
+
         return this.modelMapper
                 .map(this.itemRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Item  with ID %s not found.", id))), ItemServiceViewModel.class);
+
     }
 
     @Override

@@ -13,6 +13,8 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Optional<Item> findById(Long id);
 
+    Optional<Item> findByTitleAndDescription(String title,String description);
+
     Optional<Item> findByTitle(String title);
 
     Optional<Item> findAllByDescriptionContaining(String description);

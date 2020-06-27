@@ -29,21 +29,33 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public OpinionServiceModel createOpinion(OpinionServiceModel opinionServiceModel) {
+
+        //No exception thrown here because one user can have multiple opinions
         Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
+
         return this.modelMapper.map( this.opinionRepository.saveAndFlush(opinion), OpinionServiceModel.class);
+
     }
 
     @Override
     public void updateOpinion(OpinionServiceModel opinionServiceModel) {
+
         Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
+
+        this.opinionRepository.findById(opinionServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Opinion with id '%d' not found .", opinionServiceModel.getId())));
+
          this.modelMapper.map( this.opinionRepository.saveAndFlush(opinion), OpinionServiceModel.class);
+
     }
 
     @Override
     public OpinionServiceViewModel getOpinionById(long id) {
+
         return this.modelMapper
                 .map(this.opinionRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Opinion  with ID %s not found.", id))), OpinionServiceViewModel.class);
+
     }
 
     @Override
