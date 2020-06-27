@@ -19,7 +19,7 @@ public class ContactInformation extends BaseEntity{
     public ContactInformation() {
     }
     @Email()
-    @Column(name = "email")
+    @Column(name = "email",unique = true)
     public String getEmail() {
         return this.email;
     }
