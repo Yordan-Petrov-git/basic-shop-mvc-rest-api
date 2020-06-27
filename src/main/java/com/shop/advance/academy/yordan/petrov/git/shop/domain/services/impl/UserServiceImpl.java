@@ -46,7 +46,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public UserServiceModel createUser(@Valid UserServiceModel userServiceModel) {
+    public UserServiceViewModel createUser(@Valid UserServiceModel userServiceModel) {
 
         User user = this.modelMapper.map(userServiceModel, User.class);
 
@@ -79,8 +79,8 @@ public class UserServiceImpl implements UserService {
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
 
-        return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
 
+        return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceViewModel.class);
     }
 
     @Override
