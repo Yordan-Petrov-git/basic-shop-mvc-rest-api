@@ -11,6 +11,13 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     Optional<Address> findById(Long id);
 
-    Optional<Address> findByCityName(String name);
+    Optional<Address> findByCityName(String cityName);
+
+    Optional<Address> findByStreetName(String streetName);
+
+    Optional<Address> findByStreetNumber(String number);
+
+    Optional<Address> findByStreetNumberAndStreetName(String number,String streetName);
+
 
 }

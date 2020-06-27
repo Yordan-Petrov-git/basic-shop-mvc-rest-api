@@ -34,8 +34,9 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void updateItem(ItemServiceModel Item) {
-
+    public void updateItem(ItemServiceModel itemServiceModel) {
+        Item item = this.modelMapper.map(itemServiceModel, Item.class);
+         this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.util.Objects;
 
 public class OrderServiceModel {
 
+    private Long id;
     private String number;
     private BigDecimal vat;
     private BigDecimal price;
@@ -21,6 +22,14 @@ public class OrderServiceModel {
     public OrderServiceModel() {
     }
 
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNumber() {
         return this.number;

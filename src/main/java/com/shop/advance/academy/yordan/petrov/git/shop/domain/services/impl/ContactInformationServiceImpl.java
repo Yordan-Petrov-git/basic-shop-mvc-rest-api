@@ -36,7 +36,8 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
     @Override
     public void updateContactInformation(ContactInformationServiceModel ContactInformation) {
-
+        ContactInformation contactInformation = this.modelMapper.map(ContactInformation, ContactInformation.class);
+         this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceModel.class);
     }
 
     @Override

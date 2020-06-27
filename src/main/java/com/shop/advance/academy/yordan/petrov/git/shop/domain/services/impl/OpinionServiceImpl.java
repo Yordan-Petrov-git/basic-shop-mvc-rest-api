@@ -35,7 +35,8 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public void updateOpinion(OpinionServiceModel opinionServiceModel) {
-
+        Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
+         this.modelMapper.map( this.opinionRepository.saveAndFlush(opinion), OpinionServiceModel.class);
     }
 
     @Override

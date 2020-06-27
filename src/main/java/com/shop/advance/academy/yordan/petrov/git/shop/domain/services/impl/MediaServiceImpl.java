@@ -35,8 +35,9 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public void updateMedia(MediaServiceModel Media) {
-
+    public void updateMedia(MediaServiceModel mediaServiceModel) {
+        Media media = this.modelMapper.map(mediaServiceModel, Media.class);
+         this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceModel.class);
     }
 
     @Override

@@ -2,8 +2,6 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -31,12 +29,23 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressServiceModel createAddress(AddressServiceModel addressServiceModel) {
+
         Address address = this.modelMapper.map(addressServiceModel, Address.class);
+
+        this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Address with number '%s' and street '%s' in city '%s' already exists.", addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName(), addressServiceModel.getCity().getName()));
+
+        });
+
         return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceModel.class);
+
     }
 
     @Override
     public void updateAddress(AddressServiceModel addressServiceModel) {
+
+        Address address = this.modelMapper.map(addressServiceModel, Address.class);
+        this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceModel.class);
 
     }
 

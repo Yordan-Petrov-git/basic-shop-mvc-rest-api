@@ -87,10 +87,9 @@ public class UserServiceImpl implements UserService {
 
         User user = this.modelMapper.map(userServiceModel, User.class);
 
-        this.userRepository.findByUsername(user.getUsername()).ifPresent(c -> {
-            throw new InvalidEntityException(String.format("Username '%s' not found.", user.getUsername()));
+        this.userRepository.findById(user.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("User with id '%d' not found .", user.getId())));
 
-        });
 
         this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
 

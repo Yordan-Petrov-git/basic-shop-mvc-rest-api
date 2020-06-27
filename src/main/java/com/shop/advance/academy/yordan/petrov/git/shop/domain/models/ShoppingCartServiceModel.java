@@ -1,19 +1,25 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class ShoppingCartServiceModel {
 
-
+    private Long id;
     private List<ItemServiceViewModel> addedItems =  new ArrayList<>();
     private UserServiceModel user;
 
 
     public ShoppingCartServiceModel() {
+    }
+
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<ItemServiceViewModel> getAddedItems() {

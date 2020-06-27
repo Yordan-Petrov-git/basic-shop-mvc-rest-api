@@ -34,7 +34,8 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public void updateCard(CardServiceModel cardServiceModel) {
-
+        Card card = this.modelMapper.map(cardServiceModel, Card.class);
+         this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceModel.class);
     }
 
     @Override

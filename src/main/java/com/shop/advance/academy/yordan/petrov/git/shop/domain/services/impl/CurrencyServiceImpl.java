@@ -34,8 +34,9 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public void updateCurrency(CurrencyServiceModel Currency) {
-
+    public void updateCurrency(CurrencyServiceModel currencyServiceModel) {
+        Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
+         this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
     }
 
     @Override

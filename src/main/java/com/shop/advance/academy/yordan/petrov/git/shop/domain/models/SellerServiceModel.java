@@ -9,6 +9,7 @@ import java.util.Set;
 
 public class SellerServiceModel {
 
+    private Long id;
     private String name;
     private Set<ItemServiceModel> stock = new HashSet<>();
     private ContactInformation contactInformation;
@@ -16,6 +17,15 @@ public class SellerServiceModel {
 
 
     public SellerServiceModel() {
+    }
+
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -33,8 +33,9 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrder(OrderServiceModel Order) {
-
+    public void updateOrder(OrderServiceModel orderServiceModel) {
+        Order order = this.modelMapper.map(orderServiceModel, Order.class);
+         this.modelMapper.map( this.orderRepository.saveAndFlush(order), OrderServiceModel.class);
     }
 
     @Override

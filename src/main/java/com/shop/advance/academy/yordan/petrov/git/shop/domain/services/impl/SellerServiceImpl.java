@@ -40,7 +40,8 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public void updateSeller(SellerServiceModel sellerServiceModel) {
-
+        Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
+         this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
     }
 
     @Override
