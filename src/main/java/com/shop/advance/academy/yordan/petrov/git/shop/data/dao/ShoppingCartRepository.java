@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.dao;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +13,8 @@ import java.util.Optional;
 public interface ShoppingCartRepository extends JpaRepository<ShoppingCart, Long> {
 
     Optional<ShoppingCart> findById(Long id);
+
+    Optional<ShoppingCart> findByAddedItems (Item item);
 
 }
 

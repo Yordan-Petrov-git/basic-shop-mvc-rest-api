@@ -29,21 +29,36 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public CurrencyServiceModel createCurrency(CurrencyServiceModel currencyServiceModel) {
+
         Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
+
+        this.currencyRepository.findByName(currencyServiceModel.getName()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Currency with name '%s' already exists.", currencyServiceModel.getName()));
+        });
+
         return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
+
     }
 
     @Override
     public void updateCurrency(CurrencyServiceModel currencyServiceModel) {
+
         Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
-         this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
+
+        this.currencyRepository.findById(currencyServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Currency with id '%d' not found .", currencyServiceModel.getId())));
+
+        this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
+
     }
 
     @Override
     public CurrencyServiceViewModel getCurrencyById(long id) {
+
         return this.modelMapper
                 .map(this.currencyRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Currency  with ID %s not found.", id))), CurrencyServiceViewModel.class);
+
     }
 
     @Override

@@ -1,13 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.SellerRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
@@ -34,14 +30,27 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public SellerServiceModel createSeller(SellerServiceModel sellerServiceModel) {
+
         Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
+
+        this.sellerRepository.findByName(sellerServiceModel.getName()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Seller with name '%s' already exists.", sellerServiceModel.getName()));
+        });
+
         return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
+
     }
 
     @Override
     public void updateSeller(SellerServiceModel sellerServiceModel) {
+
         Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
-         this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
+
+        this.sellerRepository.findById(sellerServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Seller with id '%d' not found .", sellerServiceModel.getId())));
+
+        this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
+
     }
 
     @Override

@@ -28,21 +28,36 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardServiceModel createCard(CardServiceModel cardServiceModel) {
+
         Card card = this.modelMapper.map(cardServiceModel, Card.class);
+
+        this.cardRepository.findByNumber(cardServiceModel.getNumber()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Card with number '%s' already exists.", cardServiceModel.getNumber()));
+        });
+
         return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceModel.class);
+
     }
 
     @Override
     public void updateCard(CardServiceModel cardServiceModel) {
+
         Card card = this.modelMapper.map(cardServiceModel, Card.class);
-         this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceModel.class);
+
+        this.cardRepository.findById(cardServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", cardServiceModel.getId())));
+
+        this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceModel.class);
+
     }
 
     @Override
     public CardServiceViewModel getCardById(long id) {
+
         return this.modelMapper
                 .map(this.cardRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Card  with ID %s not found.", id))), CardServiceViewModel.class);
+
     }
 
     @Override
@@ -57,6 +72,7 @@ public class CardServiceImpl implements CardService {
 
         return modelMapper.map(cards, new TypeToken<List<CardServiceViewModel>>() {
         }.getType());
+
     }
 
     @Override

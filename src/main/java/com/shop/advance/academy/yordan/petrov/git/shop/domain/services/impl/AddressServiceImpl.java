@@ -45,6 +45,8 @@ public class AddressServiceImpl implements AddressService {
     public void updateAddress(AddressServiceModel addressServiceModel) {
 
         Address address = this.modelMapper.map(addressServiceModel, Address.class);
+
+
         this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceModel.class);
 
     }
@@ -54,6 +56,7 @@ public class AddressServiceImpl implements AddressService {
         return this.modelMapper
                 .map(this.addressRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Address  with ID %s not found.", id))), AddressServiceViewModel.class);
+
     }
 
     @Override
@@ -68,6 +71,7 @@ public class AddressServiceImpl implements AddressService {
 
         return modelMapper.map(addresses, new TypeToken<List<AddressServiceViewModel>>() {
         }.getType());
+
     }
 
     @Override
@@ -77,5 +81,7 @@ public class AddressServiceImpl implements AddressService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("Address  with id '%d' not found .", id)));
 
         this.addressRepository.deleteById(id);
+
     }
+
 }
