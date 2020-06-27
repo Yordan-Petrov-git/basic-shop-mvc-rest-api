@@ -3,6 +3,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity
@@ -16,6 +18,7 @@ public class ContactInformation extends BaseEntity{
 
     public ContactInformation() {
     }
+    @Email()
     @Column(name = "email")
     public String getEmail() {
         return this.email;
@@ -24,6 +27,8 @@ public class ContactInformation extends BaseEntity{
     public void setEmail(String email) {
         this.email = email;
     }
+
+    @Pattern(regexp = "^[0-9]{10}$")
     @Column(name = "phone_number")
     public String getPhoneNumber() {
         return this.phoneNumber;
@@ -32,6 +37,7 @@ public class ContactInformation extends BaseEntity{
     public void setPhoneNumber(String phoneNumber) {
         this.phoneNumber = phoneNumber;
     }
+
     @Column(name = "country_code")
     public String getCountryCode() {
         return this.countryCode;

@@ -11,6 +11,7 @@ import java.util.Set;
 
 public class UserServiceModel {
 
+    private Long id;
     private String username;
     private String password;
     private UserType userType = UserType.REGULAR;
@@ -34,13 +35,8 @@ public class UserServiceModel {
     public UserServiceModel() {
     }
 
-    public UserServiceModel( String username, String password, UserType userType,
-                            Instant dateRegistered, LocalDate dateOfBirth, String firstName,
-                            String lastName, String phone, String email, Set<AddressServiceModel> addresses,
-                            Set<CardServiceModel> cards, Set<ContactInformationServiceModel> contactInformation,
-                            Set<RoleServiceModel> roles, boolean isEnabled, boolean isCredentialsNonExpired,
-                            boolean isAccountNonLocked, boolean isAccountNonExpired) {
-
+    public UserServiceModel(Long id, String username, String password, UserType userType, Instant dateRegistered, LocalDate dateOfBirth, String firstName, String lastName, String phone, String email, Set<AddressServiceModel> addresses, Set<CardServiceModel> cards, Set<ContactInformationServiceModel> contactInformation, Set<RoleServiceModel> roles, boolean isEnabled, boolean isCredentialsNonExpired, boolean isAccountNonLocked, boolean isAccountNonExpired) {
+        this.id = id;
         this.username = username;
         this.password = password;
         this.userType = userType;
@@ -60,7 +56,13 @@ public class UserServiceModel {
         this.isAccountNonExpired = isAccountNonExpired;
     }
 
+    public Long getId() {
+        return this.id;
+    }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return this.username;

@@ -2,8 +2,10 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
@@ -63,10 +65,10 @@ public class UserServiceImpl implements UserService {
                     .map(r -> this.modelMapper.map(r, Role.class))
                     .collect(Collectors.toSet()));
 
-        }else{
+        } else {
             user.setAuthorities(new LinkedHashSet<>());
             user.getAuthorities()
-                    .add(this.modelMapper.map(this.roleRepository.findByAuthority("USER"),Role.class));
+                    .add(this.modelMapper.map(this.roleRepository.findByAuthority("USER"), Role.class));
         }
 
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
@@ -76,13 +78,20 @@ public class UserServiceImpl implements UserService {
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
 
-        return this.modelMapper.map( this.userRepository.saveAndFlush(user),UserServiceModel.class);
-
+        return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
 
     }
 
     @Override
-    public void updateUser(@Valid UserServiceModel user) {
+    public void updateUser(@Valid UserServiceModel userServiceModel) {
+
+        User user = this.modelMapper.map(userServiceModel, User.class);
+
+        this.userRepository.findById(user.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("User with id '%d' not found .", user.getId())));
+
+
+        this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
 
     }
 
@@ -97,21 +106,32 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserServiceViewModel> getAllUsers() {
 
-        List<User> users = userRepository.findAll();
+        this.userRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Users were found"));
 
-        return modelMapper.map(users, new TypeToken<List<UserServiceViewModel>>() {
+        List<User> users = this.userRepository.findAll();
+
+        return this.modelMapper.map(users, new TypeToken<List<UserServiceViewModel>>() {
         }.getType());
 
     }
 
     @Override
     public void deleteUserById(long id) {
-           userRepository.deleteById(id);
+
+        this.userRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("User with id '%d' not found .", id)));
+
+        this.userRepository.deleteById(id);
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.userRepository.findByUsername(username).orElse(null);
+
+        return this.userRepository.findByUsername(username).orElseThrow(InvalidEntityException::new);
+
     }
 }

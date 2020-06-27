@@ -10,6 +10,9 @@ import java.util.Optional;
 
 @Repository
 public interface OpinionRepository extends JpaRepository<Opinion, Long> {
+
     Optional<Opinion> findById(Long id);
+
+
 
 }

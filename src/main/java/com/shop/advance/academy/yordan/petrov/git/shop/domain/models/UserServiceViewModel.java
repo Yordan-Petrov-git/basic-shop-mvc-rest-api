@@ -1,5 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
 import java.time.Instant;
@@ -76,7 +77,7 @@ public class UserServiceViewModel {
     public void setDateRegistered(Instant dateRegistered) {
         this.dateRegistered = dateRegistered;
     }
-
+    @JsonFormat(pattern="yyyy-MM-dd")
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }

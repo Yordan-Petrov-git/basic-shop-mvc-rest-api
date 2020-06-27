@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,8 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public void updateOpinion(OpinionServiceModel opinionServiceModel) {
-
+        Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
+         this.modelMapper.map( this.opinionRepository.saveAndFlush(opinion), OpinionServiceModel.class);
     }
 
     @Override
@@ -46,6 +48,12 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public List<OpinionServiceViewModel> getAllOpinions() {
+
+        this.opinionRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Opinions were found"));
+
         List<Opinion> opinions = opinionRepository.findAll();
 
         return modelMapper.map(opinions, new TypeToken<List<OpinionServiceViewModel>>() {
@@ -54,6 +62,10 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public void deleteOpinionById(long id) {
-        opinionRepository.deleteById(id);
+
+        this.opinionRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("Opinion  with id '%d' not found .", id)));
+
+        this.opinionRepository.deleteById(id);
     }
 }

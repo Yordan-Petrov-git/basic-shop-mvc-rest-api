@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,13 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemServiceModel createItem(ItemServiceModel itemServiceModel) {
         Item item = this.modelMapper.map(itemServiceModel, Item.class);
-        return this.modelMapper.map( this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
+        return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
     }
 
     @Override
-    public void updateItem(ItemServiceModel Item) {
-
+    public void updateItem(ItemServiceModel itemServiceModel) {
+        Item item = this.modelMapper.map(itemServiceModel, Item.class);
+         this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
     }
 
     @Override
@@ -46,6 +48,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemServiceViewModel> getAllItems() {
+
+        this.itemRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Items were found"));
+
         List<Item> items = itemRepository.findAll();
 
         return modelMapper.map(items, new TypeToken<List<ItemServiceViewModel>>() {
@@ -54,6 +62,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItemById(long id) {
-        itemRepository.deleteById(id);
+
+        this.itemRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("Item  with id '%d' not found .", id)));
+
+        this.itemRepository.deleteById(id);
     }
 }

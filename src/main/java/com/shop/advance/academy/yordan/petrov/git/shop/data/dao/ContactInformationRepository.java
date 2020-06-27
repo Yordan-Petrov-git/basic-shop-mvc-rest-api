@@ -11,6 +11,14 @@ import java.util.Optional;
 
 @Repository
 public interface ContactInformationRepository extends JpaRepository<ContactInformation, Long> {
+
     Optional<ContactInformation> findById(Long id);
+
+    Optional<ContactInformation> findByPhoneNumber(String phoneNumber);
+
+    Optional<ContactInformation> findByEmail(String phoneNumber);
+
+
+
 }
 

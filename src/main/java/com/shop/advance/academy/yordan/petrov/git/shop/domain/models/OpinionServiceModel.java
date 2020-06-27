@@ -6,6 +6,7 @@ import java.util.Objects;
 
 public class OpinionServiceModel {
 
+    private Long id;
     private String comment;
     private Rating rating = Rating.NONE;
     private Double vote;
@@ -23,6 +24,14 @@ public class OpinionServiceModel {
         this.vote = vote;
         this.media = media;
         this.user = user;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getComment() {

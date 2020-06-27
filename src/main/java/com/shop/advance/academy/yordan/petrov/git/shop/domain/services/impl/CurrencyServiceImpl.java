@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,12 +30,13 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public CurrencyServiceModel createCurrency(CurrencyServiceModel currencyServiceModel) {
         Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
-        return this.modelMapper.map( this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
+        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
     }
 
     @Override
-    public void updateCurrency(CurrencyServiceModel Currency) {
-
+    public void updateCurrency(CurrencyServiceModel currencyServiceModel) {
+        Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
+         this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
     }
 
     @Override
@@ -46,6 +48,12 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public List<CurrencyServiceViewModel> getAllCurrencies() {
+
+        this.currencyRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Currencies were found"));
+
         List<Currency> currencies = currencyRepository.findAll();
 
         return modelMapper.map(currencies, new TypeToken<List<CurrencyServiceViewModel>>() {
@@ -54,5 +62,10 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void deleteCurrencyById(long id) {
-        currencyRepository.deleteById(id);    }
+
+        this.currencyRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("Currency with id '%d' not found .", id)));
+
+        this.currencyRepository.deleteById(id);
+    }
 }

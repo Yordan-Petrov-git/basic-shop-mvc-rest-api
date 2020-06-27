@@ -1,11 +1,10 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,32 +27,59 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceModel createCity(CityServiceModel cityServiceModel) {
+
         City city = this.modelMapper.map(cityServiceModel, City.class);
-        return this.modelMapper.map( this.cityRepository.saveAndFlush(city), CityServiceModel.class);
+
+        this.cityRepository.findCityByName(city.getName()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("City '%s' already exists.", city.getName()));
+
+        });
+
+        return this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceModel.class);
     }
 
     @Override
-    public void updateCity(CityServiceModel City) {
+    public void updateCity(CityServiceModel cityServiceModel) {
+
+        City city = this.modelMapper.map(cityServiceModel, City.class);
+
+        this.cityRepository.findById(cityServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("City with id '%d' not found .", cityServiceModel.getId())));
+
+
+        this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceModel.class);
 
     }
 
     @Override
     public CityServiceViewModel getCityById(long id) {
+
         return this.modelMapper
                 .map(this.cityRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("City  with ID %s not found.", id))), CityServiceViewModel.class);
+
     }
 
     @Override
     public List<CityServiceViewModel> getAllCities() {
-        List<City> cities = cityRepository.findAll();
 
-        return modelMapper.map(cities, new TypeToken<List<CityServiceViewModel>>() {
+        this.cityRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No cities were found"));
+
+        List<City> cities = this.cityRepository.findAll();
+
+        return this.modelMapper.map(cities, new TypeToken<List<CityServiceViewModel>>() {
         }.getType());
     }
 
     @Override
     public void deleteCityById(long id) {
-        cityRepository.deleteById(id);
+
+        this.cityRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("City with id '%d' not found .", id)));
+
+        this.cityRepository.deleteById(id);
     }
 }

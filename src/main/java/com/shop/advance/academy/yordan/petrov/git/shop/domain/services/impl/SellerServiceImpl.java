@@ -9,6 +9,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServi
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +35,13 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public SellerServiceModel createSeller(SellerServiceModel sellerServiceModel) {
         Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
-        return this.modelMapper.map( this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
+        return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
     }
 
     @Override
     public void updateSeller(SellerServiceModel sellerServiceModel) {
-
+        Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
+         this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
     }
 
     @Override
@@ -52,6 +54,12 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public List<SellerServiceViewModel> getAllSellers() {
+
+        this.sellerRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Sellers were found"));
+
         List<Seller> sellers = sellerRepository.findAll();
 
         return modelMapper.map(sellers, new TypeToken<List<SellerServiceViewModel>>() {
@@ -60,6 +68,10 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public void deleteSellerById(long id) {
-        sellerRepository.deleteById(id);
+
+        this.sellerRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("Seller  with id '%d' not found .", id)));
+
+        this.sellerRepository.deleteById(id);
     }
 }

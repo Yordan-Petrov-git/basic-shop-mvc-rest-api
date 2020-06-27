@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Media;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.MediaService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,12 +31,13 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public MediaServiceModel createMedia(MediaServiceModel mediaServiceModel) {
         Media media = this.modelMapper.map(mediaServiceModel, Media.class);
-        return this.modelMapper.map( this.mediaRepository.saveAndFlush(media), MediaServiceModel.class);
+        return this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceModel.class);
     }
 
     @Override
-    public void updateMedia(MediaServiceModel Media) {
-
+    public void updateMedia(MediaServiceModel mediaServiceModel) {
+        Media media = this.modelMapper.map(mediaServiceModel, Media.class);
+         this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceModel.class);
     }
 
     @Override
@@ -47,6 +49,12 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public List<MediaServiceViewModel> getAllMedias() {
+
+        this.mediaRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Media was found"));
+
         List<Media> media = mediaRepository.findAll();
 
         return modelMapper.map(media, new TypeToken<List<MediaServiceViewModel>>() {
@@ -55,6 +63,10 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public void deleteMediaById(long id) {
-        mediaRepository.deleteById(id);
+
+        this.mediaRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("Media  with id '%d' not found .", id)));
+
+        this.mediaRepository.deleteById(id);
     }
 }

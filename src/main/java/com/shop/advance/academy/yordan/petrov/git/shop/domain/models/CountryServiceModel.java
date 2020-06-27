@@ -4,6 +4,7 @@ import java.util.Objects;
 
 public class CountryServiceModel {
 
+    private Long id;
     private String name;
     private String coordinates;
 
@@ -15,6 +16,14 @@ public class CountryServiceModel {
     public CountryServiceModel(String name, String coordinates) {
         this.name = name;
         this.coordinates = coordinates;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

@@ -3,7 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import java.util.Objects;
 
 public class MediaServiceModel {
-
+    private Long id;
     private String picturePath;
     private String videoPath;
     private String documentPath;
@@ -16,6 +16,14 @@ public class MediaServiceModel {
         this.picturePath = picturePath;
         this.videoPath = videoPath;
         this.documentPath = documentPath;
+    }
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getPicturePath() {
