@@ -53,7 +53,7 @@ public class CountryServiceImpl implements CountryService {
         this.countryRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Countries were found"));
 
         List<Country> countries = countryRepository.findAll();
 
@@ -65,7 +65,7 @@ public class CountryServiceImpl implements CountryService {
     public void deleteCountryById(long id) {
 
         this.countryRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Country  with id '%d' not found .", id)));
 
         this.countryRepository.deleteById(id);
     }

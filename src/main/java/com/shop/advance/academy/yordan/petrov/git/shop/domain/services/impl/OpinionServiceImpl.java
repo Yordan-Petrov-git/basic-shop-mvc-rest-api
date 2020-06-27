@@ -51,7 +51,7 @@ public class OpinionServiceImpl implements OpinionService {
         this.opinionRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Opinions were found"));
 
         List<Opinion> opinions = opinionRepository.findAll();
 
@@ -63,7 +63,7 @@ public class OpinionServiceImpl implements OpinionService {
     public void deleteOpinionById(long id) {
 
         this.opinionRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Opinion  with id '%d' not found .", id)));
 
         this.opinionRepository.deleteById(id);
     }

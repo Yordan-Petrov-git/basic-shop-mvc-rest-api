@@ -30,7 +30,7 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemServiceModel createItem(ItemServiceModel itemServiceModel) {
         Item item = this.modelMapper.map(itemServiceModel, Item.class);
-        return this.modelMapper.map( this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
+        return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ItemServiceImpl implements ItemService {
         this.itemRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Items were found"));
 
         List<Item> items = itemRepository.findAll();
 
@@ -63,7 +63,7 @@ public class ItemServiceImpl implements ItemService {
     public void deleteItemById(long id) {
 
         this.itemRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Item  with id '%d' not found .", id)));
 
         this.itemRepository.deleteById(id);
     }

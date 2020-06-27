@@ -35,7 +35,7 @@ public class SellerServiceImpl implements SellerService {
     @Override
     public SellerServiceModel createSeller(SellerServiceModel sellerServiceModel) {
         Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
-        return this.modelMapper.map( this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
+        return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
     }
 
     @Override
@@ -57,7 +57,7 @@ public class SellerServiceImpl implements SellerService {
         this.sellerRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Sellers were found"));
 
         List<Seller> sellers = sellerRepository.findAll();
 
@@ -69,7 +69,7 @@ public class SellerServiceImpl implements SellerService {
     public void deleteSellerById(long id) {
 
         this.sellerRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Seller  with id '%d' not found .", id)));
 
         this.sellerRepository.deleteById(id);
     }

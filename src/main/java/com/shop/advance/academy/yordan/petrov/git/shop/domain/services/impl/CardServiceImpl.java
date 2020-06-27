@@ -50,7 +50,7 @@ public class CardServiceImpl implements CardService {
         this.cardRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Cards were found"));
 
         List<Card> cards = cardRepository.findAll();
 
@@ -62,7 +62,7 @@ public class CardServiceImpl implements CardService {
     public void deleteCardById(long id) {
 
         this.cardRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Card  with id '%d' not found .", id)));
 
         this.cardRepository.deleteById(id);
     }

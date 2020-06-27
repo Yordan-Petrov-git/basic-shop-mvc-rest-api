@@ -32,13 +32,13 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Override
     public ShoppingCartServiceModel createShoppingCart(ShoppingCartServiceModel ShoppingCart) {
         ShoppingCart shoppingCart = this.modelMapper.map(ShoppingCart, ShoppingCart.class);
-        return this.modelMapper.map( this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceModel.class);
+        return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceModel.class);
     }
 
     @Override
     public void updateShoppingCart(ShoppingCartServiceModel ShoppingCart) {
         ShoppingCart shoppingCart = this.modelMapper.map(ShoppingCart, ShoppingCart.class);
-         this.modelMapper.map( this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceModel.class);
+        this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceModel.class);
     }
 
     @Override
@@ -56,7 +56,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         this.shoppingCartRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Shopping carts were found"));
 
         List<ShoppingCart> shoppingCarts = shoppingCartRepository.findAll();
 
@@ -68,7 +68,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public void deleteShoppingCartById(long id) {
 
         this.shoppingCartRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Shopping Cart with id '%d' not found .", id)));
 
         this.shoppingCartRepository.deleteById(id);
     }

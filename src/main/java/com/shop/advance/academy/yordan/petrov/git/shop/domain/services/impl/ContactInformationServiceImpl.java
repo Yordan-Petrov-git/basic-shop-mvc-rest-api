@@ -31,7 +31,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     @Override
     public ContactInformationServiceModel createContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
         ContactInformation contactInformation = this.modelMapper.map(contactInformationServiceModel, ContactInformation.class);
-        return this.modelMapper.map( this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceModel.class);
+        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceModel.class);
     }
 
     @Override
@@ -52,7 +52,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
         this.contactInformationRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Contact information was found"));
 
         List<ContactInformation> contactInformations = contactInformationRepository.findAll();
 
@@ -64,7 +64,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     public void deleteContactInformationById(long id) {
 
         this.contactInformationRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Contact information  with id '%d' not found .", id)));
 
         this.contactInformationRepository.deleteById(id);
     }

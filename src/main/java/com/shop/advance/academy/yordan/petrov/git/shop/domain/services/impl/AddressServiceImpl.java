@@ -32,7 +32,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressServiceModel createAddress(AddressServiceModel addressServiceModel) {
         Address address = this.modelMapper.map(addressServiceModel, Address.class);
-        return this.modelMapper.map( this.addressRepository.saveAndFlush(address), AddressServiceModel.class);
+        return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceModel.class);
     }
 
     @Override
@@ -53,7 +53,7 @@ public class AddressServiceImpl implements AddressService {
         this.addressRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Addresses were found"));
 
         List<Address> addresses = addressRepository.findAll();
 
@@ -65,7 +65,7 @@ public class AddressServiceImpl implements AddressService {
     public void deleteAddressById(long id) {
 
         this.addressRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Address  with id '%d' not found .", id)));
 
         this.addressRepository.deleteById(id);
     }

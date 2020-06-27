@@ -30,7 +30,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public CurrencyServiceModel createCurrency(CurrencyServiceModel currencyServiceModel) {
         Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
-        return this.modelMapper.map( this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
+        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         this.currencyRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Currencies were found"));
 
         List<Currency> currencies = currencyRepository.findAll();
 
@@ -63,7 +63,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     public void deleteCurrencyById(long id) {
 
         this.currencyRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Currency with id '%d' not found .", id)));
 
         this.currencyRepository.deleteById(id);
     }

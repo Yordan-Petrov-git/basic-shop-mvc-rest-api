@@ -52,7 +52,7 @@ public class MediaServiceImpl implements MediaService {
         this.mediaRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Media was found"));
 
         List<Media> media = mediaRepository.findAll();
 
@@ -64,7 +64,7 @@ public class MediaServiceImpl implements MediaService {
     public void deleteMediaById(long id) {
 
         this.mediaRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Media  with id '%d' not found .", id)));
 
         this.mediaRepository.deleteById(id);
     }

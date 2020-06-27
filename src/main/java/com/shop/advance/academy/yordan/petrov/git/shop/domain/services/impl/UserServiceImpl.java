@@ -110,7 +110,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Users were found"));
 
         List<User> users = this.userRepository.findAll();
 
@@ -123,7 +123,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUserById(long id) {
 
         this.userRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("User with id '%d' not found .", id)));
 
         this.userRepository.deleteById(id);
     }
@@ -131,6 +131,8 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.userRepository.findByUsername(username).orElse(null);
+
+        return this.userRepository.findByUsername(username).orElseThrow(InvalidEntityException::new);
+
     }
 }

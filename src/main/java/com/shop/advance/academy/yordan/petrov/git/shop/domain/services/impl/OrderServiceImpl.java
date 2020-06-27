@@ -51,7 +51,7 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No Orders were found"));
 
         List<Order> orders = orderRepository.findAll();
 
@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
     public void deleteOrderById(long id) {
 
         this.orderRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("Order with id '%d' not found .", id)));
 
         this.orderRepository.deleteById(id);
     }
