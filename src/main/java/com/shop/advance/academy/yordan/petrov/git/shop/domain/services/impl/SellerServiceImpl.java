@@ -9,6 +9,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServi
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,6 +53,12 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public List<SellerServiceViewModel> getAllSellers() {
+
+        this.sellerRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow((InvalidEntityException::new));
+
         List<Seller> sellers = sellerRepository.findAll();
 
         return modelMapper.map(sellers, new TypeToken<List<SellerServiceViewModel>>() {
@@ -60,6 +67,10 @@ public class SellerServiceImpl implements SellerService {
 
     @Override
     public void deleteSellerById(long id) {
-        sellerRepository.deleteById(id);
+
+        this.sellerRepository.findById(id)
+                .orElseThrow((InvalidEntityException::new));
+
+        this.sellerRepository.deleteById(id);
     }
 }

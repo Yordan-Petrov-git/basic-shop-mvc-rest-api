@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,12 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public List<AddressServiceViewModel> getAllAddresses() {
+
+        this.addressRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow((InvalidEntityException::new));
+
         List<Address> addresses = addressRepository.findAll();
 
         return modelMapper.map(addresses, new TypeToken<List<AddressServiceViewModel>>() {
@@ -56,6 +63,10 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public void deleteAddressById(long id) {
-        addressRepository.deleteById(id);
+
+        this.addressRepository.findById(id)
+                .orElseThrow((InvalidEntityException::new));
+
+        this.addressRepository.deleteById(id);
     }
 }

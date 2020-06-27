@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public List<OpinionServiceViewModel> getAllOpinions() {
+
+        this.opinionRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow((InvalidEntityException::new));
+
         List<Opinion> opinions = opinionRepository.findAll();
 
         return modelMapper.map(opinions, new TypeToken<List<OpinionServiceViewModel>>() {
@@ -54,6 +61,10 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public void deleteOpinionById(long id) {
-        opinionRepository.deleteById(id);
+
+        this.opinionRepository.findById(id)
+                .orElseThrow((InvalidEntityException::new));
+
+        this.opinionRepository.deleteById(id);
     }
 }

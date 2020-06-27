@@ -2,8 +2,10 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
@@ -81,7 +83,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUser(@Valid UserServiceModel user) {
+    public void updateUser(@Valid UserServiceModel userServiceModel) {
+
+        User user = this.modelMapper.map(userServiceModel, User.class);
+
+        this.userRepository.findByUsername(user.getUsername()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Username '%s' not found.", user.getUsername()));
+
+        });
+
+        this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
 
     }
 
@@ -96,6 +107,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserServiceViewModel> getAllUsers() {
 
+        this.userRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow((InvalidEntityException::new));
+
         List<User> users = this.userRepository.findAll();
 
         return this.modelMapper.map(users, new TypeToken<List<UserServiceViewModel>>() {
@@ -105,6 +121,10 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void deleteUserById(long id) {
+
+        this.userRepository.findById(id)
+                .orElseThrow((InvalidEntityException::new));
+
         this.userRepository.deleteById(id);
     }
 

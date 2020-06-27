@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInfo
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -47,6 +48,12 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
     @Override
     public List<ContactInformationServiceViewModel> getAllContactInformations() {
+
+        this.contactInformationRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow((InvalidEntityException::new));
+
         List<ContactInformation> contactInformations = contactInformationRepository.findAll();
 
         return modelMapper.map(contactInformations, new TypeToken<List<ContactInformationServiceViewModel>>() {
@@ -55,6 +62,10 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
     @Override
     public void deleteContactInformationById(long id) {
-        contactInformationRepository.deleteById(id);
+
+        this.contactInformationRepository.findById(id)
+                .orElseThrow((InvalidEntityException::new));
+
+        this.contactInformationRepository.deleteById(id);
     }
 }

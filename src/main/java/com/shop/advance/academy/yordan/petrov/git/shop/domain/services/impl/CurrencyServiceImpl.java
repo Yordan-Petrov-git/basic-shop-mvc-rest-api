@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public List<CurrencyServiceViewModel> getAllCurrencies() {
+
+        this.currencyRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow((InvalidEntityException::new));
+
         List<Currency> currencies = currencyRepository.findAll();
 
         return modelMapper.map(currencies, new TypeToken<List<CurrencyServiceViewModel>>() {
@@ -54,5 +61,10 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public void deleteCurrencyById(long id) {
-        currencyRepository.deleteById(id);    }
+
+        this.currencyRepository.findById(id)
+                .orElseThrow((InvalidEntityException::new));
+
+        this.currencyRepository.deleteById(id);
+    }
 }

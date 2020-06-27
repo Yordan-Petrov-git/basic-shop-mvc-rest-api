@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCar
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,12 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public List<CountryServiceViewModel> getAllCountries() {
+
+        this.countryRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow((InvalidEntityException::new));
+
         List<Country> countries = countryRepository.findAll();
 
         return modelMapper.map(countries, new TypeToken<List<CountryServiceViewModel>>() {
@@ -56,6 +63,10 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public void deleteCountryById(long id) {
-        countryRepository.deleteById(id);
+
+        this.countryRepository.findById(id)
+                .orElseThrow((InvalidEntityException::new));
+
+        this.countryRepository.deleteById(id);
     }
 }

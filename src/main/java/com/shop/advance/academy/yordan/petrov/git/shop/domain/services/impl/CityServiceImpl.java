@@ -43,19 +43,21 @@ public class CityServiceImpl implements CityService {
 
         City city = this.modelMapper.map(cityServiceModel, City.class);
 
-        this.cityRepository.findCityByName(city.getName()).ifPresent(c -> {
-            throw new InvalidEntityException(String.format("City '%s' not found.", city.getName()));
+        this.cityRepository.findById(cityServiceModel.getId())
+                .orElseThrow(() -> new InvalidEntityException(String.format("City with id '%d' not found .", cityServiceModel.getId())));
 
-        });
 
         this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceModel.class);
+
     }
 
     @Override
     public CityServiceViewModel getCityById(long id) {
+
         return this.modelMapper
                 .map(this.cityRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("City  with ID %s not found.", id))), CityServiceViewModel.class);
+
     }
 
     @Override
@@ -64,7 +66,7 @@ public class CityServiceImpl implements CityService {
         this.cityRepository.findAll()
                 .stream()
                 .findAny()
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException("No cities were found"));
 
         List<City> cities = this.cityRepository.findAll();
 
@@ -76,7 +78,7 @@ public class CityServiceImpl implements CityService {
     public void deleteCityById(long id) {
 
         this.cityRepository.findById(id)
-                .orElseThrow((InvalidEntityException::new));
+                .orElseThrow(() -> new InvalidEntityException(String.format("City with id '%d' not found .", id)));
 
         this.cityRepository.deleteById(id);
     }

@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public List<ItemServiceViewModel> getAllItems() {
+
+        this.itemRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow((InvalidEntityException::new));
+
         List<Item> items = itemRepository.findAll();
 
         return modelMapper.map(items, new TypeToken<List<ItemServiceViewModel>>() {
@@ -54,6 +61,10 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public void deleteItemById(long id) {
-        itemRepository.deleteById(id);
+
+        this.itemRepository.findById(id)
+                .orElseThrow((InvalidEntityException::new));
+
+        this.itemRepository.deleteById(id);
     }
 }
