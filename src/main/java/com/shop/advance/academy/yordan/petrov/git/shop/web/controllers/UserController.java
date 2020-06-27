@@ -25,9 +25,9 @@ public class UserController {
 
     @PostMapping("/register")
     @PreAuthorize("isAnonymous()")
-    public ResponseEntity<UserServiceModel> createUser(@RequestBody UserServiceModel userServiceModel) {
-        userService.createUser(userServiceModel);
-        return new ResponseEntity<>(userServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<UserServiceViewModel> createUser(@RequestBody UserServiceModel userServiceModel) {
+        UserServiceViewModel  userServiceViewModel =  userService.createUser(userServiceModel);
+        return new ResponseEntity<>(userServiceViewModel, HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

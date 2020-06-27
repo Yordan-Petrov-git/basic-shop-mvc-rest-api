@@ -25,8 +25,6 @@ public class User extends BaseEntity implements UserDetails {
     private LocalDate dateOfBirth;
     private String firstName;
     private String lastName;
-    private String phone;
-    private String email;
     private Set<Address> addresses = new HashSet<>();
     private Set<Card> cards = new HashSet<>();
     private Set<ContactInformation> contactInformation = new HashSet<>();
@@ -68,6 +66,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Column(name = "user_type")
+    @Enumerated(EnumType.STRING)
     public UserType getUserType() {
         return this.userType;
     }
@@ -112,24 +111,6 @@ public class User extends BaseEntity implements UserDetails {
         this.lastName = lastName;
     }
 
-    @Column(name = "phone")
-    public String getPhone() {
-        return this.phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    @Column(name = "email")
-    @Email()
-    public String getEmail() {
-        return this.email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
 
     @ManyToMany(targetEntity = Address.class,
             cascade = CascadeType.ALL,
@@ -243,14 +224,14 @@ public class User extends BaseEntity implements UserDetails {
                 Objects.equals(dateRegistered, user.dateRegistered) &&
                 Objects.equals(dateOfBirth, user.dateOfBirth) &&
                 Objects.equals(firstName, user.firstName) &&
-                Objects.equals(lastName, user.lastName) &&
-                Objects.equals(phone, user.phone) &&
-                Objects.equals(email, user.email);
+                Objects.equals(lastName, user.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), username, password, userType, dateRegistered, dateOfBirth, firstName, lastName, phone, email, isEnabled, isCredentialsNonExpired, isAccountNonLocked, isAccountNonExpired);
+        return Objects.hash(super.hashCode(), username, password, userType, dateRegistered,
+                dateOfBirth, firstName, lastName, isEnabled, isCredentialsNonExpired,
+                isAccountNonLocked, isAccountNonExpired);
     }
 
     @Override
@@ -263,8 +244,6 @@ public class User extends BaseEntity implements UserDetails {
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
-        sb.append(", phone='").append(phone).append('\'');
-        sb.append(", email='").append(email).append('\'');
         sb.append(", isEnabled=").append(isEnabled);
         sb.append(", isCredentialsNonExpired=").append(isCredentialsNonExpired);
         sb.append(", isAccountNonLocked=").append(isAccountNonLocked);

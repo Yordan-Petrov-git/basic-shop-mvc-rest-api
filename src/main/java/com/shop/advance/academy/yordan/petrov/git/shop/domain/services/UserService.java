@@ -10,7 +10,7 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
 
 
-    UserServiceModel createUser(UserServiceModel user);
+    UserServiceViewModel createUser(UserServiceModel user);
 
     void updateUser(UserServiceModel user);
 
