@@ -1,9 +1,13 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
+import io.micrometer.core.lang.NonNull;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.HashSet;
@@ -12,7 +16,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = "users")
-public class User extends BaseEntity  implements UserDetails  {
+public class User extends BaseEntity implements UserDetails {
 
     private String username;
     private String password;
@@ -38,9 +42,9 @@ public class User extends BaseEntity  implements UserDetails  {
 
 
     @Override
-    //@NonNull
-   // @NotEmpty
-   // @Length(min = 2, max = 128)
+    @NonNull
+    @NotEmpty
+    @Length(min = 2, max = 128)
     @Column(name = "username", unique = true, nullable = false)
     public String getUsername() {
         return this.username;
@@ -51,8 +55,9 @@ public class User extends BaseEntity  implements UserDetails  {
     }
 
     @Override
-    //@NonNull
-    //@NotEmpty
+    @NonNull
+    @NotEmpty
+    @Length(min = 8, max = 128)
     @Column(name = "password", unique = true, nullable = false)
     public String getPassword() {
         return this.password;
@@ -79,6 +84,7 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setDateRegistered(Instant dateRegistered) {
         this.dateRegistered = dateRegistered;
     }
+
     @Column(name = "date_of_birth")
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
@@ -87,6 +93,7 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
+
     @Column(name = "first_name")
     public String getFirstName() {
         return this.firstName;
@@ -95,6 +102,7 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+
     @Column(name = "last_name")
     public String getLastName() {
         return this.lastName;
@@ -103,6 +111,7 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
+
     @Column(name = "phone")
     public String getPhone() {
         return this.phone;
@@ -111,7 +120,9 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
     @Column(name = "email")
+    @Email()
     public String getEmail() {
         return this.email;
     }
@@ -121,7 +132,7 @@ public class User extends BaseEntity  implements UserDetails  {
     }
 
     @ManyToMany(targetEntity = Address.class,
-            cascade=CascadeType.ALL,
+            cascade = CascadeType.ALL,
             fetch = FetchType.LAZY)
     @JoinTable(
             name = "users_address",
@@ -138,7 +149,8 @@ public class User extends BaseEntity  implements UserDetails  {
 
 
     @OneToMany(targetEntity = Card.class,
-            fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL)
     @JoinTable(name = "user_cards",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
@@ -152,7 +164,7 @@ public class User extends BaseEntity  implements UserDetails  {
 
 
     @OneToMany(targetEntity = ContactInformation.class,
-            fetch = FetchType.LAZY,cascade=CascadeType.ALL)
+            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinTable(name = "user_contact_information",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "contact_information_id", referencedColumnName = "id"))
@@ -172,6 +184,7 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return this.isCredentialsNonExpired;
@@ -180,6 +193,7 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         isCredentialsNonExpired = credentialsNonExpired;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return this.isAccountNonLocked;
@@ -188,6 +202,7 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setAccountNonLocked(boolean accountNonLocked) {
         isAccountNonLocked = accountNonLocked;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return this.isAccountNonExpired;
@@ -196,6 +211,7 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setAccountNonExpired(boolean accountNonExpired) {
         isAccountNonExpired = accountNonExpired;
     }
+
     @Override
     @ManyToMany(targetEntity = Role.class,
             fetch = FetchType.EAGER)
@@ -209,7 +225,6 @@ public class User extends BaseEntity  implements UserDetails  {
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
-
 
 
     @Override

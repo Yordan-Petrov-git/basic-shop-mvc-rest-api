@@ -33,8 +33,9 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void updateCity(CityServiceModel City) {
-
+    public void updateCity(CityServiceModel cityServiceModel) {
+        City city = this.modelMapper.map(cityServiceModel, City.class);
+         this.modelMapper.map( this.cityRepository.saveAndFlush(city), CityServiceModel.class);
     }
 
     @Override
