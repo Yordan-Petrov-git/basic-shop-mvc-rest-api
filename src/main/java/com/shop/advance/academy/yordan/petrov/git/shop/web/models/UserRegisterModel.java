@@ -2,7 +2,6 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.models;
 
 public class UserRegisterModel {
 
-
     private String username;
     private String password;
     private String confirmPassword;

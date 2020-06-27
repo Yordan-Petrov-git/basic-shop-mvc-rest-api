@@ -21,7 +21,6 @@ public class Item extends BaseEntity{
     private BigDecimal vat;
     private ItemCategory itemCategory = ItemCategory.NONE;
 
-
     public Item() {
     }
 

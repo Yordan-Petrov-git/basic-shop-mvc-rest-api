@@ -63,10 +63,10 @@ public class UserServiceImpl implements UserService {
                     .map(r -> this.modelMapper.map(r, Role.class))
                     .collect(Collectors.toSet()));
 
-        }else{
+        } else {
             user.setAuthorities(new LinkedHashSet<>());
             user.getAuthorities()
-                    .add(this.modelMapper.map(this.roleRepository.findByAuthority("USER"),Role.class));
+                    .add(this.modelMapper.map(this.roleRepository.findByAuthority("USER"), Role.class));
         }
 
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
@@ -76,8 +76,7 @@ public class UserServiceImpl implements UserService {
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
 
-        return this.modelMapper.map( this.userRepository.saveAndFlush(user),UserServiceModel.class);
-
+        return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
 
     }
 
@@ -97,16 +96,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public List<UserServiceViewModel> getAllUsers() {
 
-        List<User> users = userRepository.findAll();
+        List<User> users = this.userRepository.findAll();
 
-        return modelMapper.map(users, new TypeToken<List<UserServiceViewModel>>() {
+        return this.modelMapper.map(users, new TypeToken<List<UserServiceViewModel>>() {
         }.getType());
 
     }
 
     @Override
     public void deleteUserById(long id) {
-           userRepository.deleteById(id);
+        this.userRepository.deleteById(id);
     }
 
 
