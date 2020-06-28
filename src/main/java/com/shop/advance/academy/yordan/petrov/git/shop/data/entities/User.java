@@ -6,7 +6,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -113,8 +112,11 @@ public class User extends BaseEntity implements UserDetails {
 
 
     @ManyToMany(targetEntity = Address.class,
-            cascade = CascadeType.ALL,
-            fetch = FetchType.LAZY)
+            fetch = FetchType.LAZY,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE,
+            })
     @JoinTable(
             name = "users_address",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -131,7 +133,8 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(targetEntity = Card.class,
             fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL)
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true)
     @JoinTable(name = "user_cards",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
@@ -145,7 +148,9 @@ public class User extends BaseEntity implements UserDetails {
 
 
     @OneToMany(targetEntity = ContactInformation.class,
-            fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.ALL},
+            orphanRemoval = true)
     @JoinTable(name = "user_contact_information",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "contact_information_id", referencedColumnName = "id"))

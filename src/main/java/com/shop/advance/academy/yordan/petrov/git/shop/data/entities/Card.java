@@ -4,16 +4,17 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardP
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardType;
 
 import javax.persistence.*;
+import javax.print.attribute.standard.MediaSize;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
 @Entity
 @Table(name = "cards")
-public class Card extends BaseEntity{
+public class Card extends BaseEntity {
 
     private CardType cardType = CardType.NONE;
-    private CardProviders cardProviders= CardProviders.NONE;
+    private CardProviders cardProviders = CardProviders.NONE;
     private Instant expirationDate;
     private String cvvCode;
     private String pinCode;
@@ -35,6 +36,7 @@ public class Card extends BaseEntity{
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
+
     @Column(name = "card_provider")
     @Enumerated(EnumType.STRING)
     public CardProviders getCardProviders() {
@@ -44,7 +46,8 @@ public class Card extends BaseEntity{
     public void setCardProviders(CardProviders cardProviders) {
         this.cardProviders = cardProviders;
     }
-    @Column(name = "epiration_date")
+
+    @Column(name = "expiration_date")
     public Instant getExpirationDate() {
         return this.expirationDate;
     }
@@ -52,6 +55,7 @@ public class Card extends BaseEntity{
     public void setExpirationDate(Instant expirationDate) {
         this.expirationDate = expirationDate;
     }
+
     @Column(name = "cvv_code")
     public String getCvvCode() {
         return this.cvvCode;
@@ -60,6 +64,7 @@ public class Card extends BaseEntity{
     public void setCvvCode(String cvvCode) {
         this.cvvCode = cvvCode;
     }
+
     @Column(name = "pin")
     public String getPinCode() {
         return this.pinCode;
@@ -68,6 +73,7 @@ public class Card extends BaseEntity{
     public void setPinCode(String pinCode) {
         this.pinCode = pinCode;
     }
+
     @Column(name = "number")
     public String getNumber() {
         return this.number;
@@ -76,6 +82,7 @@ public class Card extends BaseEntity{
     public void setNumber(String number) {
         this.number = number;
     }
+
     @Column(name = "balance")
     public BigDecimal getBalance() {
         return this.balance;
@@ -87,10 +94,12 @@ public class Card extends BaseEntity{
 
 
     @ManyToOne(targetEntity = Currency.class,
-            fetch = FetchType.EAGER,cascade=CascadeType.ALL)
-    @JoinTable(name = "card_currency",
-            joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "currency_id", referencedColumnName = "id"))
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.ALL})
+    @JoinColumn(name = "currency_id")
+//    @JoinTable(name = "card_currency",
+//            joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "currency_id", referencedColumnName = "id"))
     public Currency getCurrency() {
         return this.currency;
     }

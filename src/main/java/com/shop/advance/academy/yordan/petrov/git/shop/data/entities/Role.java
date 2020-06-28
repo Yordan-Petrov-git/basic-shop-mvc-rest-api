@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity implements GrantedAuthority {
@@ -35,7 +36,12 @@ public class Role extends BaseEntity implements GrantedAuthority {
 
     @ManyToMany(targetEntity = User.class,
             mappedBy = "authorities",
-            fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER,
+            cascade = {
+                    CascadeType.PERSIST,
+                    CascadeType.MERGE
+            }
+    )
     public Set<User> getUsers() {
         return this.users;
     }

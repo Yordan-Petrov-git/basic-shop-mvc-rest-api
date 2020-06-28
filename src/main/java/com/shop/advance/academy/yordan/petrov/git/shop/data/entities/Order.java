@@ -4,13 +4,14 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Order
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.PaymentType;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ShipmentType;
 
+import javax.naming.Name;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
 @Table(name = "orders")
-public class Order extends BaseEntity{
+public class Order extends BaseEntity {
 
     private String number;
     private BigDecimal vat;
@@ -22,6 +23,7 @@ public class Order extends BaseEntity{
 
     public Order() {
     }
+
     @Column(name = "number")
     public String getNumber() {
         return this.number;
@@ -30,6 +32,7 @@ public class Order extends BaseEntity{
     public void setNumber(String number) {
         this.number = number;
     }
+
     @Column(name = "vat")
     public BigDecimal getVat() {
         return this.vat;
@@ -38,6 +41,7 @@ public class Order extends BaseEntity{
     public void setVat(BigDecimal vat) {
         this.vat = vat;
     }
+
     @Column(name = "price")
     public BigDecimal getPrice() {
         return this.price;
@@ -49,9 +53,10 @@ public class Order extends BaseEntity{
 
     @ManyToOne(targetEntity = ShoppingCart.class,
             fetch = FetchType.EAGER)
-    @JoinTable(name = "order_shopping_cart",
-            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "shopping_cart_id", referencedColumnName = "id"))
+    @JoinColumn(name = "sopping_cart_id")
+//    @JoinTable(name = "order_shopping_cart",
+//            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
+//            inverseJoinColumns = @JoinColumn(name = "shopping_cart_id", referencedColumnName = "id"))
     public ShoppingCart getShoppingCart() {
         return this.shoppingCart;
     }
@@ -59,6 +64,7 @@ public class Order extends BaseEntity{
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
+
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
     public OrderStatus getOrderStatus() {
@@ -68,6 +74,7 @@ public class Order extends BaseEntity{
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
+
     @Column(name = "shipment_type")
     @Enumerated(EnumType.STRING)
     public ShipmentType getShipmentType() {
@@ -77,6 +84,7 @@ public class Order extends BaseEntity{
     public void setShipmentType(ShipmentType shipmentType) {
         this.shipmentType = shipmentType;
     }
+
     @Column(name = "payment_type")
     @Enumerated(EnumType.STRING)
     public PaymentType getPaymentType() {
