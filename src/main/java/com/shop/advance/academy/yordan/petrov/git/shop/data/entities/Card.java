@@ -4,9 +4,10 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardP
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardType;
 
 import javax.persistence.*;
-import javax.print.attribute.standard.MediaSize;
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
@@ -15,7 +16,8 @@ public class Card extends BaseEntity {
 
     private CardType cardType = CardType.NONE;
     private CardProviders cardProviders = CardProviders.NONE;
-    private Instant expirationDate;
+    private LocalDate expirationDate;
+    private LocalDateTime dateIssued;
     private String cvvCode;
     private String pinCode;
     private String number;
@@ -48,12 +50,21 @@ public class Card extends BaseEntity {
     }
 
     @Column(name = "expiration_date")
-    public Instant getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return this.expirationDate;
     }
 
-    public void setExpirationDate(Instant expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    @Column(name = "issued_date")
+    public LocalDateTime getDateIssued() {
+        return this.dateIssued;
+    }
+
+    public void setDateIssued(LocalDateTime dateIssued) {
+        this.dateIssued = dateIssued;
     }
 
     @Column(name = "cvv_code")
@@ -96,10 +107,8 @@ public class Card extends BaseEntity {
     @ManyToOne(targetEntity = Currency.class,
             fetch = FetchType.EAGER,
             cascade = {CascadeType.ALL})
-    @JoinColumn(name = "currency_id")
-//    @JoinTable(name = "card_currency",
-//            joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "currency_id", referencedColumnName = "id"))
+    @JoinColumn(name = "currency_id"
+            , referencedColumnName = "id")
     public Currency getCurrency() {
         return this.currency;
     }

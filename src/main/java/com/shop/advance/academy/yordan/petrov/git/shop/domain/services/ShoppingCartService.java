@@ -10,7 +10,7 @@ public interface ShoppingCartService {
 
     ShoppingCartServiceModel createShoppingCart(ShoppingCartServiceModel ShoppingCart);
 
-    void updateShoppingCart(ShoppingCartServiceModel ShoppingCart);
+    ShoppingCartServiceModel updateShoppingCart(ShoppingCartServiceModel ShoppingCart);
 
     ShoppingCartServiceViewModel getShoppingCartById(long id);
 

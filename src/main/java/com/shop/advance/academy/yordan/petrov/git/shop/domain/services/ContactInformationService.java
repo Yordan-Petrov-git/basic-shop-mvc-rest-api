@@ -8,9 +8,9 @@ import java.util.List;
 @Service
 public interface ContactInformationService {
 
-    ContactInformationServiceModel createContactInformation(ContactInformationServiceModel ContactInformation);
+    ContactInformationServiceViewModel createContactInformation(ContactInformationServiceModel ContactInformation);
 
-    void updateContactInformation(ContactInformationServiceModel ContactInformation);
+    ContactInformationServiceViewModel updateContactInformation(ContactInformationServiceModel ContactInformation);
 
     ContactInformationServiceViewModel getContactInformationById(long id);
 

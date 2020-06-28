@@ -8,9 +8,9 @@ import java.util.List;
 @Service
 public interface OpinionService {
 
-    OpinionServiceModel createOpinion(OpinionServiceModel opinionServiceModel);
+    OpinionServiceViewModel createOpinion(OpinionServiceModel opinionServiceModel);
 
-    void updateOpinion(OpinionServiceModel opinionServiceModel);
+    OpinionServiceViewModel updateOpinion(OpinionServiceModel opinionServiceModel);
 
     OpinionServiceViewModel getOpinionById(long id);
 

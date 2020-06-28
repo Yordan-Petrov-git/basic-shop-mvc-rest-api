@@ -8,9 +8,9 @@ import java.util.List;
 @Service
 public interface ItemService {
 
-    ItemServiceModel createItem(ItemServiceModel Item);
+    ItemServiceViewModel createItem(ItemServiceModel Item);
 
-    void updateItem(ItemServiceModel Item);
+    ItemServiceViewModel updateItem(ItemServiceModel Item);
 
     ItemServiceViewModel getItemById(long id);
 

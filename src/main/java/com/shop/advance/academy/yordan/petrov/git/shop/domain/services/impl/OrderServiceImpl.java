@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public OrderServiceModel createOrder(OrderServiceModel orderServiceModel) {
+    public OrderServiceViewModel createOrder(OrderServiceModel orderServiceModel) {
 
         Order order = this.modelMapper.map(orderServiceModel, Order.class);
 
@@ -34,12 +35,13 @@ public class OrderServiceImpl implements OrderService {
             throw new InvalidEntityException(String.format("Order with number '%s' already exists.", orderServiceModel.getNumber()));
         });
 
-        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceModel.class);
+        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
 
     }
 
     @Override
-    public void updateOrder(OrderServiceModel orderServiceModel) {
+    @Transactional
+    public OrderServiceViewModel updateOrder(OrderServiceModel orderServiceModel) {
 
         Order order = this.modelMapper.map(orderServiceModel, Order.class);
 
@@ -47,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("Order with id '%d' not found .", orderServiceModel.getId())));
 
 
-        this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceModel.class);
+       return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
 
     }
 

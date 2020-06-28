@@ -8,9 +8,9 @@ import java.util.List;
 @Service
 public interface OrderService {
 
-    OrderServiceModel createOrder(OrderServiceModel Order);
+    OrderServiceViewModel createOrder(OrderServiceModel Order);
 
-    void updateOrder(OrderServiceModel Order);
+    OrderServiceViewModel updateOrder(OrderServiceModel Order);
 
     OrderServiceViewModel getOrderById(long id);
 

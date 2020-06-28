@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     }
 
     @Override
-    public ContactInformationServiceModel createContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
+    public ContactInformationServiceViewModel createContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
 
         ContactInformation contactInformation = this.modelMapper.map(contactInformationServiceModel, ContactInformation.class);
 
@@ -40,19 +41,20 @@ public class ContactInformationServiceImpl implements ContactInformationService 
         });
 
 
-        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceModel.class);
+        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
 
     }
 
     @Override
-    public void updateContactInformation(ContactInformationServiceModel ContactInformation) {
+    @Transactional
+    public ContactInformationServiceViewModel updateContactInformation(ContactInformationServiceModel ContactInformation) {
 
         ContactInformation contactInformation = this.modelMapper.map(ContactInformation, ContactInformation.class);
 
         this.contactInformationRepository.findById(ContactInformation.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Contact information with id '%d' not found .", ContactInformation.getId())));
 
-        this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceModel.class);
+        return  this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
 
     }
 

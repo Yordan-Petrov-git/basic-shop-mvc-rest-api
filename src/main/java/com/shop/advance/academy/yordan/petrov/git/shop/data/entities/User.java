@@ -9,6 +9,7 @@ import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -22,6 +23,8 @@ public class User extends BaseEntity implements UserDetails {
     private UserType userType;
     private Instant dateRegistered;
     private LocalDate dateOfBirth;
+    private LocalDateTime created;
+    private LocalDateTime modified;
     private String firstName;
     private String lastName;
     private Set<Address> addresses = new HashSet<>();
@@ -90,6 +93,24 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
+    }
+
+    @Column(name = "created")
+    public LocalDateTime getCreated() {
+        return this.created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+
+    @Column(name = "modified")
+    public LocalDateTime getModified() {
+        return this.modified;
+    }
+
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
     }
 
     @Column(name = "first_name")

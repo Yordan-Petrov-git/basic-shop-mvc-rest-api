@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public interface CurrencyService {
-    CurrencyServiceModel createCurrency(CurrencyServiceModel Currency);
 
-    void updateCurrency(CurrencyServiceModel Currency);
+    CurrencyServiceViewModel createCurrency(CurrencyServiceModel Currency);
+
+    CurrencyServiceViewModel updateCurrency(CurrencyServiceModel Currency);
 
     CurrencyServiceViewModel getCurrencyById(long id);
 

@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -28,24 +29,25 @@ public class OpinionServiceImpl implements OpinionService {
     }
 
     @Override
-    public OpinionServiceModel createOpinion(OpinionServiceModel opinionServiceModel) {
+    public OpinionServiceViewModel createOpinion(OpinionServiceModel opinionServiceModel) {
 
         //No exception thrown here because one user can have multiple opinions
         Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
 
-        return this.modelMapper.map( this.opinionRepository.saveAndFlush(opinion), OpinionServiceModel.class);
+        return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
 
     }
 
     @Override
-    public void updateOpinion(OpinionServiceModel opinionServiceModel) {
+    @Transactional
+    public OpinionServiceViewModel updateOpinion(OpinionServiceModel opinionServiceModel) {
 
         Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
 
         this.opinionRepository.findById(opinionServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Opinion with id '%d' not found .", opinionServiceModel.getId())));
 
-         this.modelMapper.map( this.opinionRepository.saveAndFlush(opinion), OpinionServiceModel.class);
+        return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
 
     }
 

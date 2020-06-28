@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
+
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,7 +30,7 @@ public class CardServiceImpl implements CardService {
 
 
     @Override
-    public CardServiceModel createCard(CardServiceModel cardServiceModel) {
+    public CardServiceViewModel createCard(CardServiceModel cardServiceModel) {
 
         Card card = this.modelMapper.map(cardServiceModel, Card.class);
 
@@ -35,19 +38,23 @@ public class CardServiceImpl implements CardService {
             throw new InvalidEntityException(String.format("Card with number '%s' already exists.", cardServiceModel.getNumber()));
         });
 
-        return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceModel.class);
+
+        card.setDateIssued(LocalDateTime.now());
+
+        return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
 
     }
 
     @Override
-    public void updateCard(CardServiceModel cardServiceModel) {
+    @Transactional
+    public CardServiceViewModel updateCard(CardServiceModel cardServiceModel) {
 
         Card card = this.modelMapper.map(cardServiceModel, Card.class);
 
         this.cardRepository.findById(cardServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", cardServiceModel.getId())));
 
-        this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceModel.class);
+      return   this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
 
     }
 

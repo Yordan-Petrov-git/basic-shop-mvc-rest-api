@@ -36,10 +36,8 @@ public class Address extends BaseEntity {
     @ManyToOne(targetEntity = City.class,
             cascade = {CascadeType.ALL}
             , fetch = FetchType.LAZY)
-    @JoinColumn(name = "city_id")
-//    @JoinTable(name = "address_city",
-//            joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id"))
+    @JoinColumn(name = "city_id"
+            , referencedColumnName = "id")
     public City getCity() {
         return this.city;
     }

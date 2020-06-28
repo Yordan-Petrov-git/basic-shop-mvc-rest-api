@@ -10,7 +10,7 @@ public interface SellerService {
 
     SellerServiceModel createSeller(SellerServiceModel sellerServiceModel);
 
-    void updateSeller(SellerServiceModel sellerServiceModel);
+    SellerServiceViewModel updateSeller(SellerServiceModel sellerServiceModel);
 
     SellerServiceViewModel getSellerById(long id);
 

@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -40,6 +41,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
+    @Transactional
     public CountryServiceViewModel updateCountry(CountryServiceModel countryServiceModel) {
 
         Country country = this.modelMapper.map(countryServiceModel, Country.class);
