@@ -13,13 +13,7 @@ public class CityServiceViewModel {
     public CityServiceViewModel() {
     }
 
-    public CityServiceViewModel(Long id, String name, CountryServiceViewModel country, String region, String province) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
-        this.region = region;
-        this.province = province;
-    }
+
 
     public Long getId() {
         return this.id;

@@ -4,6 +4,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepo
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
@@ -29,24 +30,24 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public ShoppingCartServiceModel createShoppingCart(ShoppingCartServiceModel ShoppingCart) {
+    public ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel ShoppingCart) {
 
         ShoppingCart shoppingCart = this.modelMapper.map(ShoppingCart, ShoppingCart.class);
 
-        return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceModel.class);
+        return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceViewModel.class);
 
     }
 
     @Override
     @Transactional
-    public ShoppingCartServiceModel updateShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
+    public ShoppingCartServiceViewModel updateShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
 
         ShoppingCart shoppingCart = this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
 
         this.shoppingCartRepository.findById(shoppingCartServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Shopping with id '%d' not found .", shoppingCartServiceModel.getId())));
 
-       return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceModel.class);
+       return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceViewModel.class);
 
     }
 
@@ -74,11 +75,17 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     @Override
-    public void deleteShoppingCartById(long id) {
+    public ShoppingCartServiceViewModel deleteShoppingCartById(long id) {
 
         this.shoppingCartRepository.findById(id)
                 .orElseThrow(() -> new InvalidEntityException(String.format("Shopping Cart with id '%d' not found .", id)));
 
+        ShoppingCartServiceViewModel deletedShoppingCart = this.getShoppingCartById(id);
+
+
         this.shoppingCartRepository.deleteById(id);
+
+        return this.modelMapper.map(deletedShoppingCart, ShoppingCartServiceViewModel.class);
+
     }
 }

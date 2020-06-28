@@ -35,9 +35,6 @@ public class ShoppingCart extends BaseEntity {
     @ManyToOne(targetEntity = User.class,
             fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-//    @JoinTable(name = "shopping_cart_user",
-//            joinColumns = @JoinColumn(name = "shoping_cart_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     public User getUser() {
         return this.user;
     }

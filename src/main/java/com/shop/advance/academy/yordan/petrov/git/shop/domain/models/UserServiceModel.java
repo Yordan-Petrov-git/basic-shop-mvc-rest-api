@@ -3,7 +3,6 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -34,26 +33,6 @@ public class UserServiceModel {
     public UserServiceModel() {
     }
 
-
-    public UserServiceModel(Long id, String username, String password, UserType userType, LocalDate dateOfBirth, LocalDateTime created, LocalDateTime modified, String firstName, String lastName, Set<AddressServiceModel> addresses, Set<CardServiceModel> cards, Set<ContactInformationServiceModel> contactInformation, Set<RoleServiceModel> roles, boolean isEnabled, boolean isCredentialsNonExpired, boolean isAccountNonLocked, boolean isAccountNonExpired) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.userType = userType;
-        this.dateOfBirth = dateOfBirth;
-        this.created = created;
-        this.modified = modified;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.addresses = addresses;
-        this.cards = cards;
-        this.contactInformation = contactInformation;
-        this.roles = roles;
-        this.isEnabled = isEnabled;
-        this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.isAccountNonLocked = isAccountNonLocked;
-        this.isAccountNonExpired = isAccountNonExpired;
-    }
 
     public Long getId() {
         return this.id;

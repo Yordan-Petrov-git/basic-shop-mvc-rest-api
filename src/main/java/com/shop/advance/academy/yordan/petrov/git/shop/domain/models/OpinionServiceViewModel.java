@@ -6,7 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Ratin
 import java.util.Objects;
 
 public class OpinionServiceViewModel {
-
+    private Long id;
     private String comment;
     private Rating rating = Rating.NONE;
     private Double vote;
@@ -14,6 +14,16 @@ public class OpinionServiceViewModel {
     private UserServiceViewModel user;
 
     public OpinionServiceViewModel() {
+    }
+
+
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getComment() {

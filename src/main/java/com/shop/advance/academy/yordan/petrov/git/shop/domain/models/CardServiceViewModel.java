@@ -27,23 +27,7 @@ public class CardServiceViewModel {
     public CardServiceViewModel() {
     }
 
-    public CardServiceViewModel(Long id, CardType cardType, CardProviders cardProviders,
-                                LocalDate expirationDate, LocalDateTime dateIssued,
-                                String cvvCode, String pinCode, String number,
-                                BigDecimal balance, CurrencyServiceViewModel currency,
-                                boolean isActive) {
-        this.id = id;
-        this.cardType = cardType;
-        this.cardProviders = cardProviders;
-        this.expirationDate = expirationDate;
-        this.dateIssued = dateIssued;
-        this.cvvCode = cvvCode;
-        this.pinCode = pinCode;
-        this.number = number;
-        this.balance = balance;
-        this.currency = currency;
-        this.isActive = isActive;
-    }
+
 
     public Long getId() {
         return this.id;

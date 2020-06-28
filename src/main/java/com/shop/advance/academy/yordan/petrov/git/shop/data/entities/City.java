@@ -30,9 +30,6 @@ public class City extends BaseEntity{
             , fetch = FetchType.LAZY
     )
     @JoinColumn(name = "country_id")
-//    @JoinTable(name = "city_country",
-//            joinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "country_id", referencedColumnName = "id"))
     public Country getCountry() {
         return this.country;
     }

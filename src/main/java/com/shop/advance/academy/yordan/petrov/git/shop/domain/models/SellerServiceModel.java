@@ -20,6 +20,7 @@ public class SellerServiceModel {
     }
 
 
+
     public Long getId() {
         return this.id;
     }

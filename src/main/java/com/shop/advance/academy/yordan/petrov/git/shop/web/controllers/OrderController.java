@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/order")
+@Slf4j
 public class OrderController {
 
     private final OrderService orderService;
@@ -24,19 +26,18 @@ public class OrderController {
 
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
     public ResponseEntity<OrderServiceModel> createOrder(@RequestBody OrderServiceModel orderServiceModel) {
         orderService.createOrder(orderServiceModel);
         return new ResponseEntity<>(orderServiceModel, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public void updateOrder(@PathVariable("id") Long id,@RequestBody OrderServiceModel orderServiceModel) {
         orderService.updateOrder(orderServiceModel);
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public OrderServiceViewModel getOrder(@PathVariable("id")final Long id) {
         return orderService.getOrderById(id);
     }
@@ -46,7 +47,7 @@ public class OrderController {
         return orderService.getAllOrders();
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("{id}")
     public void deleteOrder(@PathVariable("id") Long id) {
         orderService.deleteOrderById(id);
     }

@@ -22,16 +22,6 @@ public class UserServiceViewModel {
     private Set<AddressServiceModel> addresses = new HashSet<>();
     private Set<ContactInformationServiceViewModel> contactInformation = new HashSet<>();
 
-    public UserServiceViewModel(Long id, String username, UserType userType, LocalDate dateOfBirth, String firstName, String lastName, Set<AddressServiceModel> addresses, Set<ContactInformationServiceViewModel> contactInformation) {
-        this.id = id;
-        this.username = username;
-        this.userType = userType;
-        this.dateOfBirth = dateOfBirth;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.addresses = addresses;
-        this.contactInformation = contactInformation;
-    }
 
     public UserServiceViewModel() {
     }

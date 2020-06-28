@@ -13,10 +13,7 @@ public class CountryServiceModel {
     }
 
 
-    public CountryServiceModel(String name, String coordinates) {
-        this.name = name;
-        this.coordinates = coordinates;
-    }
+
 
     public Long getId() {
         return this.id;

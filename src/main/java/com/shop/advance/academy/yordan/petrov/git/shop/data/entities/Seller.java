@@ -48,9 +48,6 @@ public class Seller extends BaseEntity {
     @ManyToOne(targetEntity = ContactInformation.class,
             fetch = FetchType.EAGER)
     @JoinColumn(name = "contact_information_id")
-//    @JoinTable(name = "seller_contact_information",
-//            joinColumns = @JoinColumn(name = "seller_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "contact_information_id", referencedColumnName = "id"))
     public ContactInformation getContactInformation() {
         return this.contactInformation;
     }

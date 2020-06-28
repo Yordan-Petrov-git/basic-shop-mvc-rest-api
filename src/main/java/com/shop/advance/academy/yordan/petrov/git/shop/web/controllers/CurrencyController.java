@@ -4,6 +4,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/currency")
+@Slf4j
 public class CurrencyController {
 
     private final CurrencyService currencyService;

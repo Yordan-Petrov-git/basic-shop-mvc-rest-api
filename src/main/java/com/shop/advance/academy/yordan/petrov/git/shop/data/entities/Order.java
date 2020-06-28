@@ -54,9 +54,6 @@ public class Order extends BaseEntity {
     @ManyToOne(targetEntity = ShoppingCart.class,
             fetch = FetchType.EAGER)
     @JoinColumn(name = "sopping_cart_id")
-//    @JoinTable(name = "order_shopping_cart",
-//            joinColumns = @JoinColumn(name = "order_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "shopping_cart_id", referencedColumnName = "id"))
     public ShoppingCart getShoppingCart() {
         return this.shoppingCart;
     }

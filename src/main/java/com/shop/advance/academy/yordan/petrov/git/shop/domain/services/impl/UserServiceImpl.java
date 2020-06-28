@@ -4,10 +4,8 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepositor
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
@@ -145,12 +143,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceViewModel deleteUserById(long id) {
 
-        this.userRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("User with id '%d' not found .", id)));
-
-
         UserServiceViewModel deletedUser = this.getUserById(id);
-
 
         this.userRepository.deleteById(id);
 

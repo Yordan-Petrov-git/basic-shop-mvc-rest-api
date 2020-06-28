@@ -17,14 +17,6 @@ public class OpinionServiceModel {
     }
 
 
-    public OpinionServiceModel(String comment, Rating rating, Double vote,
-                               MediaServiceModel media, UserServiceModel user) {
-        this.comment = comment;
-        this.rating = rating;
-        this.vote = vote;
-        this.media = media;
-        this.user = user;
-    }
 
     public Long getId() {
         return this.id;

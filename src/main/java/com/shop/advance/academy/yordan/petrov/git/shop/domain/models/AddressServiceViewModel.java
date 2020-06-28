@@ -3,7 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import java.util.Objects;
 
 public class AddressServiceViewModel {
-
+    private Long id;
     private String streetNumber;
     private String streetName;
     private CityServiceViewModel city;
@@ -12,10 +12,14 @@ public class AddressServiceViewModel {
     public AddressServiceViewModel() {
     }
 
-    public AddressServiceViewModel(String streetNumber, String streetName, CityServiceViewModel city) {
-        this.streetNumber = streetNumber;
-        this.streetName = streetName;
-        this.city = city;
+
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getStreetNumber() {

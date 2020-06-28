@@ -1,5 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
@@ -28,7 +29,7 @@ public class UserController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     @PreAuthorize("isAnonymous()")
     public ResponseEntity<UserServiceViewModel> createUser(@RequestBody UserServiceModel userServiceModel) {
 
@@ -42,7 +43,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.CREATED).body(userServiceViewModel);
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("{id}")
     public ResponseEntity<UserServiceViewModel> updateUser(@PathVariable("id") Long id, @RequestBody UserServiceModel userServiceModel) {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
@@ -50,12 +51,12 @@ public class UserController {
         URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateUser", UserServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(userServiceViewModel.getId()).toUri();
 
-        log.info("User updated: {} %n {}", location,userServiceViewModel);
+        log.info("User updated: {} %n {}", location, userServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
-    @PatchMapping("/{id}")
+    @PatchMapping("{id}")
     public ResponseEntity<UserServiceViewModel> partialUpdateUser(@PathVariable("id") Long id, @RequestBody UserServiceModel userServiceModel) {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
@@ -63,13 +64,13 @@ public class UserController {
         URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "partialUpdateUser", UserServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(userServiceViewModel.getId()).toUri();
 
-        log.info("User updated: {} %n {}", location, userServiceViewModel);
+        log.info("User updated: {} , {}", location, userServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
 
-    @GetMapping("/{id}")
+    @GetMapping("{id}")
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
 
         UserServiceViewModel userServiceViewModel = userService.getUserById(id);
@@ -85,13 +86,15 @@ public class UserController {
 
         List<UserServiceViewModel> userServiceViewModel = userService.getAllUsers();
 
-        log.info("Users Found: {}", userServiceViewModel);
+        log.info("Users Found: {} ", userServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
+
+        //TODO Delete not working fix it
 
         UserServiceViewModel userServiceViewModel = userService.deleteUserById(id);
 

@@ -9,7 +9,7 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 public class OrderServiceViewModel {
-
+    private Long id;
     private String number;
     private BigDecimal vat;
     private BigDecimal price;
@@ -22,6 +22,15 @@ public class OrderServiceViewModel {
     public OrderServiceViewModel() {
     }
 
+
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getNumber() {
         return this.number;

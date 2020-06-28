@@ -46,9 +46,6 @@ public class Opinion extends BaseEntity{
     @ManyToOne(targetEntity = Media.class,
             fetch = FetchType.EAGER)
     @JoinColumn(name = "media_id")
-//    @JoinTable(name = "opinion_media",
-//            joinColumns = @JoinColumn(name = "opinion_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "media_id", referencedColumnName = "id"))
     public Media getMedia() {
         return this.media;
     }
@@ -61,9 +58,6 @@ public class Opinion extends BaseEntity{
     @ManyToOne(targetEntity = User.class,
             fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
-//    @JoinTable(name = "opinion_user",
-//            joinColumns = @JoinColumn(name = "opinion_id", referencedColumnName = "id"),
-//            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     public User getUser() {
         return this.user;
     }

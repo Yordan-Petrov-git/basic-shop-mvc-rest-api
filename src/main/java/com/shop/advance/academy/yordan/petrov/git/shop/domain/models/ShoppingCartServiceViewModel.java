@@ -5,12 +5,22 @@ import java.util.List;
 
 public class ShoppingCartServiceViewModel {
 
-
+    private Long id;
     private List<ItemServiceViewModel> addedItems = new ArrayList<>();
     private UserServiceViewModel user;
 
 
     public ShoppingCartServiceViewModel() {
+    }
+
+
+
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public List<ItemServiceViewModel> getAddedItems() {

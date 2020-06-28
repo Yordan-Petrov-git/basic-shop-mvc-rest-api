@@ -43,15 +43,15 @@ public class CityServiceImpl implements CityService {
 
     @Override
     @Transactional
-    public CityServiceViewModel updateCity(CityServiceModel cityServiceModel) {
+    public CityServiceViewModel updateCity(long id) {
 
-        City city = this.modelMapper.map(cityServiceModel, City.class);
+        City city = this.modelMapper.map(this.getCityById(id), City.class);
 
-        this.cityRepository.findById(cityServiceModel.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("City with id '%d' not found .", cityServiceModel.getId())));
+        CityServiceViewModel cityServiceViewModel = this.getCityById(id);
 
+        this.cityRepository.saveAndFlush(city);
 
-        return this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceViewModel.class);
+        return cityServiceViewModel;
 
     }
 
@@ -89,11 +89,12 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public void deleteCityById(long id) {
+    public CityServiceViewModel deleteCityById(long id) {
 
-        this.cityRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("City with id '%d' not found .", id)));
+        CityServiceViewModel cityServiceViewModel = this.getCityById(id);
 
         this.cityRepository.deleteById(id);
+
+        return cityServiceViewModel;
     }
 }
