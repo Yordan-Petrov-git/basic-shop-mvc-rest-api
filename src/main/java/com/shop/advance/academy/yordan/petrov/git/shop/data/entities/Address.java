@@ -23,6 +23,7 @@ public class Address extends BaseEntity {
     public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
+
     @Column(name = "street_name")
     public String getStreetName() {
         return this.streetName;
@@ -32,8 +33,7 @@ public class Address extends BaseEntity {
         this.streetName = streetName;
     }
 
-    @ManyToOne(targetEntity = City.class,
-            cascade=CascadeType.ALL   )
+    @ManyToOne(targetEntity = City.class)
     @JoinTable(name = "address_city",
             joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id"))

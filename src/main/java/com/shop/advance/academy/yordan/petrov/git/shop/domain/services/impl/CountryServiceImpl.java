@@ -27,7 +27,7 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public CountryServiceModel createCountry(CountryServiceModel countryServiceModel) {
+    public CountryServiceViewModel createCountry(CountryServiceModel countryServiceModel) {
 
         Country country = this.modelMapper.map(countryServiceModel, Country.class);
 
@@ -35,12 +35,12 @@ public class CountryServiceImpl implements CountryService {
             throw new InvalidEntityException(String.format("Country '%s' already exists.", countryServiceModel.getName()));
         });
 
-        return this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceModel.class);
+        return this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceViewModel.class);
 
     }
 
     @Override
-    public void updateCountry(CountryServiceModel countryServiceModel) {
+    public CountryServiceViewModel updateCountry(CountryServiceModel countryServiceModel) {
 
         Country country = this.modelMapper.map(countryServiceModel, Country.class);
 
@@ -49,6 +49,7 @@ public class CountryServiceImpl implements CountryService {
 
         this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceModel.class);
 
+        return null;
     }
 
     @Override
@@ -57,6 +58,17 @@ public class CountryServiceImpl implements CountryService {
         return this.modelMapper
                 .map(this.countryRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Country  with ID %s not found.", id))), CountryServiceViewModel.class);
+
+    }
+
+
+
+    @Override
+    public CountryServiceViewModel getCountryName(String name) {
+
+        return this.modelMapper
+                .map(this.countryRepository.findByName(name).orElseThrow(() ->
+                        new EntityNotFoundException(String.format("Country  with name %s not found.", name))), CountryServiceViewModel.class);
 
     }
 
@@ -80,7 +92,7 @@ public class CountryServiceImpl implements CountryService {
         this.countryRepository.findById(id)
                 .orElseThrow(() -> new InvalidEntityException(String.format("Country  with id '%d' not found .", id)));
 
-        this.countryRepository.deleteById(id);
+       this.countryRepository.deleteById(id);
 
     }
 }

@@ -10,9 +10,9 @@ import java.util.List;
 @Service
 public interface CityService {
 
-    CityServiceModel createCity(CityServiceModel City);
+    CityServiceViewModel createCity(CityServiceModel City);
 
-    void updateCity(CityServiceModel City);
+    CityServiceViewModel updateCity(CityServiceModel City);
 
     CityServiceViewModel getCityById(long id);
 
@@ -20,5 +20,6 @@ public interface CityService {
 
     void deleteCityById(long id);
 
+    CityServiceViewModel getCityByName(String name);
 
 }
