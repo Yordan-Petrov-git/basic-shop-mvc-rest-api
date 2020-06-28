@@ -26,7 +26,7 @@ public class CityServiceImpl implements CityService {
     }
 
     @Override
-    public CityServiceModel createCity(CityServiceModel cityServiceModel) {
+    public CityServiceViewModel createCity(CityServiceModel cityServiceModel) {
 
         City city = this.modelMapper.map(cityServiceModel, City.class);
 
@@ -35,11 +35,11 @@ public class CityServiceImpl implements CityService {
 
         });
 
-        return this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceModel.class);
+        return this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceViewModel.class);
     }
 
     @Override
-    public void updateCity(CityServiceModel cityServiceModel) {
+    public CityServiceViewModel updateCity(CityServiceModel cityServiceModel) {
 
         City city = this.modelMapper.map(cityServiceModel, City.class);
 
@@ -47,7 +47,17 @@ public class CityServiceImpl implements CityService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("City with id '%d' not found .", cityServiceModel.getId())));
 
 
-        this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceModel.class);
+       return this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceViewModel.class);
+
+    }
+
+
+    @Override
+    public CityServiceViewModel getCityByName(String name) {
+
+        return this.modelMapper
+                .map(this.cityRepository.findCityByName(name).orElseThrow(() ->
+                        new EntityNotFoundException(String.format("City  with Name  %s not found.", name))), CityServiceViewModel.class);
 
     }
 

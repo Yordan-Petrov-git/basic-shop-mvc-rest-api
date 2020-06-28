@@ -11,7 +11,7 @@ public interface AddressService {
 
     AddressServiceModel createAddress(AddressServiceModel addressServiceModel);
 
-    void updateAddress(AddressServiceModel addressServiceModel);
+    AddressServiceViewModel updateAddress(AddressServiceModel addressServiceModel);
 
     AddressServiceViewModel getAddressById(long id);
 

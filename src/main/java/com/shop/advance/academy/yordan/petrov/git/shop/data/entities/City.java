@@ -26,7 +26,7 @@ public class City extends BaseEntity{
 
 
     @ManyToOne(targetEntity = Country.class,
-            fetch = FetchType.EAGER,cascade=CascadeType.ALL)
+            fetch = FetchType.EAGER)
     @JoinTable(name = "city_country",
             joinColumns = @JoinColumn(name = "city_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "country_id", referencedColumnName = "id"))

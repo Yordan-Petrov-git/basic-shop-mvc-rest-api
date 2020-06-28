@@ -1,9 +1,12 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -18,36 +21,50 @@ public class AddressServiceImpl implements AddressService {
 
 
     private final AddressRepository addressRepository;
+    private final CityRepository cityRepository;
+    private final CityService cityService;
     private final ModelMapper modelMapper;
 
 
     @Autowired
-    public AddressServiceImpl(AddressRepository addressRepository, ModelMapper modelMapper) {
+    public AddressServiceImpl(AddressRepository addressRepository, CityRepository cityRepository, CityService cityService, ModelMapper modelMapper) {
         this.addressRepository = addressRepository;
+        this.cityRepository = cityRepository;
+        this.cityService = cityService;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public AddressServiceModel createAddress(AddressServiceModel addressServiceModel) {
-
+//Create address only if the city is alredy in the database
         Address address = this.modelMapper.map(addressServiceModel, Address.class);
 
-        this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName()).ifPresent(c -> {
-            throw new InvalidEntityException(String.format("Address with number '%s' and street '%s' in city '%s' already exists.", addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName(), addressServiceModel.getCity().getName()));
+        this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName())
+                .ifPresent(c -> {
+                    throw new InvalidEntityException(
+                            String.format("Address with number '%s' and street '%s' in city '%s' already exists.",
+                                    addressServiceModel.getStreetNumber(),
+                                    addressServiceModel.getStreetName(),
+                                    addressServiceModel.getCity().getName()));
+                });
 
-        });
+        CityServiceViewModel cityServiceViewModel = this.cityService.getCityByName(addressServiceModel.getCity().getName());
+
+        cityRepository.findCityByName(addressServiceModel.getCity().getName())
+                .ifPresent(c -> {
+                    address.setCity(this.modelMapper.map(cityServiceViewModel, City.class));
+                });
 
         return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceModel.class);
-
     }
 
     @Override
-    public void updateAddress(AddressServiceModel addressServiceModel) {
+    public AddressServiceViewModel updateAddress(AddressServiceModel addressServiceModel) {
 
         Address address = this.modelMapper.map(addressServiceModel, Address.class);
 
 
-        this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceModel.class);
+        return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);
 
     }
 

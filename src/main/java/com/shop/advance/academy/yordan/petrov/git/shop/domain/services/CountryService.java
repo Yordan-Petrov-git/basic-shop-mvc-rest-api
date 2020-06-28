@@ -8,11 +8,13 @@ import java.util.List;
 @Service
 public interface CountryService {
 
-    CountryServiceModel createCountry(CountryServiceModel Country);
+    CountryServiceViewModel createCountry(CountryServiceModel Country);
 
-    void updateCountry(CountryServiceModel Country);
+    CountryServiceViewModel updateCountry(CountryServiceModel Country);
 
     CountryServiceViewModel getCountryById(long id);
+
+    CountryServiceViewModel getCountryName(String name);
 
     List<CountryServiceViewModel> getAllCountries();
 
