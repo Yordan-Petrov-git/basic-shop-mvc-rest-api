@@ -8,9 +8,9 @@ import java.util.List;
 @Service
 public interface  CardService {
 
-    CardServiceModel createCard(CardServiceModel cardServiceModel);
+    CardServiceViewModel createCard(CardServiceModel cardServiceModel);
 
-    void updateCard(CardServiceModel cardServiceModel);
+    CardServiceViewModel updateCard(CardServiceModel cardServiceModel);
 
     CardServiceViewModel getCardById(long id);
 

@@ -5,10 +5,7 @@ public class RoleServiceModel {
     private Long id;
     private String authority;
 
-    public RoleServiceModel(Long id, String authority) {
-        this.id = id;
-        this.authority = authority;
-    }
+
 
     public RoleServiceModel() {
     }

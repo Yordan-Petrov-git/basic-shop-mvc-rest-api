@@ -13,13 +13,7 @@ public class CityServiceModel {
     public CityServiceModel() {
     }
 
-    public CityServiceModel(Long id, String name, CountryServiceModel country, String region, String province) {
-        this.id = id;
-        this.name = name;
-        this.country = country;
-        this.region = region;
-        this.province = province;
-    }
+
 
     public Long getId() {
         return this.id;

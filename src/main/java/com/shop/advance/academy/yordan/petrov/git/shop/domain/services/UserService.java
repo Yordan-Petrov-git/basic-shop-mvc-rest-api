@@ -12,12 +12,12 @@ public interface UserService extends UserDetailsService {
 
     UserServiceViewModel createUser(UserServiceModel user);
 
-    void updateUser(UserServiceModel user);
+    UserServiceViewModel updateUser(UserServiceModel user);
 
     UserServiceViewModel getUserById(long id);
 
     List<UserServiceViewModel> getAllUsers();
 
-    void deleteUserById(long id);
+    UserServiceViewModel deleteUserById(long id);
 
 }

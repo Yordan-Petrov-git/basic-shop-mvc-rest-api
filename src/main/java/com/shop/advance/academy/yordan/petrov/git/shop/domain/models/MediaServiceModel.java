@@ -12,11 +12,7 @@ public class MediaServiceModel {
     public MediaServiceModel() {
     }
 
-    public MediaServiceModel(String picturePath, String videoPath, String documentPath) {
-        this.picturePath = picturePath;
-        this.videoPath = videoPath;
-        this.documentPath = documentPath;
-    }
+
 
     public Long getId() {
         return this.id;

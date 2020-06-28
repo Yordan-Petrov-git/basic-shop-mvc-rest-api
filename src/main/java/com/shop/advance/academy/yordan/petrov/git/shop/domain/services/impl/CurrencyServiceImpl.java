@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -28,7 +29,7 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public CurrencyServiceModel createCurrency(CurrencyServiceModel currencyServiceModel) {
+    public CurrencyServiceViewModel createCurrency(CurrencyServiceModel currencyServiceModel) {
 
         Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
 
@@ -36,19 +37,20 @@ public class CurrencyServiceImpl implements CurrencyService {
             throw new InvalidEntityException(String.format("Currency with name '%s' already exists.", currencyServiceModel.getName()));
         });
 
-        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
+        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
 
     }
 
     @Override
-    public void updateCurrency(CurrencyServiceModel currencyServiceModel) {
+    @Transactional
+    public CurrencyServiceViewModel updateCurrency(CurrencyServiceModel currencyServiceModel) {
 
         Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
 
         this.currencyRepository.findById(currencyServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Currency with id '%d' not found .", currencyServiceModel.getId())));
 
-        this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceModel.class);
+      return   this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
 
     }
 

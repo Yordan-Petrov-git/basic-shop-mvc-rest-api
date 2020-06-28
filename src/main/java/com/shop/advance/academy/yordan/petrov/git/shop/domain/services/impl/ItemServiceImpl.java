@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -26,7 +27,7 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public ItemServiceModel createItem(ItemServiceModel itemServiceModel) {
+    public ItemServiceViewModel createItem(ItemServiceModel itemServiceModel) {
 
         Item item = this.modelMapper.map(itemServiceModel, Item.class);
 
@@ -34,19 +35,20 @@ public class ItemServiceImpl implements ItemService {
             throw new InvalidEntityException(String.format("Item with title '%s' and description '%s' already exists.", itemServiceModel.getTitle(), itemServiceModel.getDescription()));
         });
 
-        return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
+        return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceViewModel.class);
 
     }
 
     @Override
-    public void updateItem(ItemServiceModel itemServiceModel) {
+    @Transactional
+    public ItemServiceViewModel updateItem(ItemServiceModel itemServiceModel) {
 
         Item item = this.modelMapper.map(itemServiceModel, Item.class);
 
         this.itemRepository.findById(itemServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Item with id '%d' not found .", itemServiceModel.getId())));
 
-        this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceModel.class);
+       return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceViewModel.class);
 
     }
 

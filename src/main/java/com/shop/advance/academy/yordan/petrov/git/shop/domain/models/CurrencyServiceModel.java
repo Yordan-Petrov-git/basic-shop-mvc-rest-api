@@ -15,13 +15,7 @@ public class CurrencyServiceModel {
     }
 
 
-    public CurrencyServiceModel(Long id, String name, String iso2, String iso3, Integer multiplierForCurrency) {
-        this.id = id;
-        this.name = name;
-        this.iso2 = iso2;
-        this.iso3 = iso3;
-        this.multiplierForCurrency = multiplierForCurrency;
-    }
+
 
     public Long getId() {
         return this.id;

@@ -4,6 +4,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/city")
+@Slf4j
 public class CityController {
 
     private final CityService cityService;
@@ -32,13 +34,23 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
-    public void updateCity(@PathVariable("id") Long id,@RequestBody CityServiceModel cityServiceModel) {
-        cityService.updateCity(cityServiceModel);
+    public void updateCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
+
+        cityService.updateCity(id);
+    }
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<CityServiceViewModel> updateSpecificAttributesCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
+
+        CityServiceViewModel cityServiceViewModel =  cityService.updateCity(id);
+
+        return new ResponseEntity<>(cityServiceViewModel, HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
-    public CityServiceViewModel getCity(@PathVariable("id")final Long id) {
+    public CityServiceViewModel getCity(@PathVariable("id") final Long id) {
         return cityService.getCityById(id);
     }
 
@@ -48,8 +60,13 @@ public class CityController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteCity(@PathVariable("id") Long id) {
+    public ResponseEntity<CityServiceViewModel> deleteCity(@PathVariable("id") Long id) {
+
+        CityServiceViewModel cityServiceViewModel = cityService.getCityById(id);
+
         cityService.deleteCityById(id);
+
+        return  ResponseEntity.status(HttpStatus.OK).body(cityServiceViewModel);
     }
 
 }

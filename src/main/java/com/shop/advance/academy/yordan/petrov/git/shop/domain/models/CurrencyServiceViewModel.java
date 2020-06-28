@@ -3,7 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import java.util.Objects;
 
 public class CurrencyServiceViewModel {
-
+    private Long id;
     private String name;
     private String iso2;
     private String iso3;
@@ -14,13 +14,14 @@ public class CurrencyServiceViewModel {
     }
 
 
-    public CurrencyServiceViewModel(String name, String iso2, String iso3, Integer multiplierForCurrency) {
-        this.name = name;
-        this.iso2 = iso2;
-        this.iso3 = iso3;
-        this.multiplierForCurrency = multiplierForCurrency;
+
+    public Long getId() {
+        return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getName() {
         return this.name;

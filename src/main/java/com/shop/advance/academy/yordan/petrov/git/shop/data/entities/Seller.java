@@ -4,9 +4,10 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 @Entity
 @Table(name = "sellers")
-public class Seller extends BaseEntity{
+public class Seller extends BaseEntity {
 
 
     private String name;
@@ -16,6 +17,7 @@ public class Seller extends BaseEntity{
 
     public Seller() {
     }
+
     @Column(name = "name")
     public String getName() {
         return this.name;
@@ -27,7 +29,7 @@ public class Seller extends BaseEntity{
 
 
     @ManyToMany(targetEntity = Item.class,
-            cascade = CascadeType.PERSIST,
+            cascade = {CascadeType.PERSIST},
             fetch = FetchType.EAGER)
     @JoinTable(
             name = "seller_item",
@@ -45,9 +47,7 @@ public class Seller extends BaseEntity{
 
     @ManyToOne(targetEntity = ContactInformation.class,
             fetch = FetchType.EAGER)
-    @JoinTable(name = "seller_contact_information",
-            joinColumns = @JoinColumn(name = "seller_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "contact_information_id", referencedColumnName = "id"))
+    @JoinColumn(name = "contact_information_id")
     public ContactInformation getContactInformation() {
         return this.contactInformation;
     }

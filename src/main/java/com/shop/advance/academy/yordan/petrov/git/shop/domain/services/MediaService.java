@@ -7,9 +7,10 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 @Service
 public interface MediaService {
-    MediaServiceModel createMedia(MediaServiceModel Media);
 
-    void updateMedia(MediaServiceModel Media);
+    MediaServiceViewModel createMedia(MediaServiceModel Media);
+
+    MediaServiceViewModel updateMedia(MediaServiceModel Media);
 
     MediaServiceViewModel getMediaById(long id);
 

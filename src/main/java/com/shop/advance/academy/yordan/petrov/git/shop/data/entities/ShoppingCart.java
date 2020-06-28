@@ -7,10 +7,10 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "shopping_carts")
-public class ShoppingCart extends BaseEntity{
+public class ShoppingCart extends BaseEntity {
 
 
-    private List<Item> addedItems =  new ArrayList<Item>();
+    private List<Item> addedItems = new ArrayList<Item>();
     private User user;
 
 
@@ -18,7 +18,8 @@ public class ShoppingCart extends BaseEntity{
     }
 
 
-    @OneToMany(targetEntity = Item.class,
+    @ManyToMany(
+            targetEntity = Item.class,
             fetch = FetchType.EAGER)
     @JoinTable(name = "shopping_cart_item",
             joinColumns = @JoinColumn(name = "shoping_cart_id", referencedColumnName = "id"),
@@ -33,9 +34,7 @@ public class ShoppingCart extends BaseEntity{
 
     @ManyToOne(targetEntity = User.class,
             fetch = FetchType.EAGER)
-    @JoinTable(name = "shopping_cart_user",
-            joinColumns = @JoinColumn(name = "shoping_cart_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    @JoinColumn(name = "user_id")
     public User getUser() {
         return this.user;
     }

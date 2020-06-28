@@ -14,6 +14,7 @@ public class ShoppingCartServiceModel {
     }
 
 
+
     public Long getId() {
         return this.id;
     }

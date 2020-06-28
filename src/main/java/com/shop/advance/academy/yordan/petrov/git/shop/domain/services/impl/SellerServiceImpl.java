@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -42,14 +43,15 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public void updateSeller(SellerServiceModel sellerServiceModel) {
+    @Transactional
+    public SellerServiceViewModel updateSeller(SellerServiceModel sellerServiceModel) {
 
         Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
 
         this.sellerRepository.findById(sellerServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Seller with id '%d' not found .", sellerServiceModel.getId())));
 
-        this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
+      return   this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceViewModel.class);
 
     }
 

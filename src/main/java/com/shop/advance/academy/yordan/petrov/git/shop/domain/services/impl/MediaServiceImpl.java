@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -29,7 +30,7 @@ public class MediaServiceImpl implements MediaService {
 
 
     @Override
-    public MediaServiceModel createMedia(MediaServiceModel mediaServiceModel) {
+    public MediaServiceViewModel createMedia(MediaServiceModel mediaServiceModel) {
 
         Media media = this.modelMapper.map(mediaServiceModel, Media.class);
 
@@ -45,19 +46,20 @@ public class MediaServiceImpl implements MediaService {
             throw new InvalidEntityException(String.format("Media with video path '%s' already exists.", mediaServiceModel.getVideoPath()));
         });
 
-        return this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceModel.class);
+        return this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceViewModel.class);
 
     }
 
     @Override
-    public void updateMedia(MediaServiceModel mediaServiceModel) {
+    @Transactional
+    public MediaServiceViewModel updateMedia(MediaServiceModel mediaServiceModel) {
 
         Media media = this.modelMapper.map(mediaServiceModel, Media.class);
 
         this.mediaRepository.findById(mediaServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Media with id '%d' not found .", mediaServiceModel.getId())));
 
-         this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceModel.class);
+        return this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceViewModel.class);
 
     }
 

@@ -10,7 +10,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "items")
-public class Item extends BaseEntity{
+public class Item extends BaseEntity {
 
     private Media media;
     private List<Opinion> opinions = new ArrayList<>();
@@ -37,8 +37,9 @@ public class Item extends BaseEntity{
         this.media = media;
     }
 
-    @OneToMany(targetEntity = Opinion.class,
-            fetch = FetchType.EAGER)
+    @ManyToMany(targetEntity = Opinion.class,
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.ALL})
     @JoinTable(name = "item_opinion",
             joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "opinion_id", referencedColumnName = "id"))
@@ -49,6 +50,7 @@ public class Item extends BaseEntity{
     public void setOpinions(List<Opinion> opinions) {
         this.opinions = opinions;
     }
+
     @Column(name = "title")
     public String getTitle() {
         return this.title;
@@ -57,6 +59,7 @@ public class Item extends BaseEntity{
     public void setTitle(String title) {
         this.title = title;
     }
+
     @Column(name = "description")
     public String getDescription() {
         return this.description;
@@ -65,6 +68,7 @@ public class Item extends BaseEntity{
     public void setDescription(String description) {
         this.description = description;
     }
+
     @Column(name = "price")
     public BigDecimal getPrice() {
         return this.price;
@@ -73,6 +77,7 @@ public class Item extends BaseEntity{
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
+
     @Column(name = "weight")
     public Double getWeight() {
         return this.weight;
@@ -81,6 +86,7 @@ public class Item extends BaseEntity{
     public void setWeight(Double weight) {
         this.weight = weight;
     }
+
     @Column(name = "vat")
     public BigDecimal getVat() {
         return this.vat;
@@ -89,6 +95,7 @@ public class Item extends BaseEntity{
     public void setVat(BigDecimal vat) {
         this.vat = vat;
     }
+
     @Column(name = "item_category")
     @Enumerated(EnumType.STRING)
     public ItemCategory getItemCategory() {

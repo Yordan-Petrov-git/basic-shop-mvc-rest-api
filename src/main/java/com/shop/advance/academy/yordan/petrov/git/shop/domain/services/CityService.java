@@ -12,13 +12,13 @@ public interface CityService {
 
     CityServiceViewModel createCity(CityServiceModel City);
 
-    CityServiceViewModel updateCity(CityServiceModel City);
+    CityServiceViewModel updateCity(long id);
 
     CityServiceViewModel getCityById(long id);
 
     List<CityServiceViewModel> getAllCities();
 
-    void deleteCityById(long id);
+    CityServiceViewModel deleteCityById(long id);
 
     CityServiceViewModel getCityByName(String name);
 

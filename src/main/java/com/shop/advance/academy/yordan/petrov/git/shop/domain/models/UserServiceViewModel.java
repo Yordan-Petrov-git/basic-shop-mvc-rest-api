@@ -16,26 +16,12 @@ public class UserServiceViewModel {
     private Long id;
     private String username;
     private UserType userType;
-    private Instant dateRegistered;
     private LocalDate dateOfBirth;
     private String firstName;
     private String lastName;
     private Set<AddressServiceModel> addresses = new HashSet<>();
     private Set<ContactInformationServiceViewModel> contactInformation = new HashSet<>();
 
-    public UserServiceViewModel(Long id, String username, UserType userType, Instant dateRegistered,
-                                LocalDate dateOfBirth, String firstName, String lastName, Set<AddressServiceModel> addresses,
-                                Set<ContactInformationServiceViewModel> contactInformation) {
-        this.id = id;
-        this.username = username;
-        this.userType = userType;
-        this.dateRegistered = dateRegistered;
-        this.dateOfBirth = dateOfBirth;
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.addresses = addresses;
-        this.contactInformation = contactInformation;
-    }
 
     public UserServiceViewModel() {
     }
@@ -65,13 +51,7 @@ public class UserServiceViewModel {
         this.userType = userType;
     }
 
-    public Instant getDateRegistered() {
-        return this.dateRegistered;
-    }
 
-    public void setDateRegistered(Instant dateRegistered) {
-        this.dateRegistered = dateRegistered;
-    }
     @JsonFormat(pattern="yyyy-MM-dd")
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
@@ -120,7 +100,6 @@ public class UserServiceViewModel {
         UserServiceViewModel that = (UserServiceViewModel) o;
         return Objects.equals(username, that.username) &&
                 userType == that.userType &&
-                Objects.equals(dateRegistered, that.dateRegistered) &&
                 Objects.equals(dateOfBirth, that.dateOfBirth) &&
                 Objects.equals(firstName, that.firstName) &&
                 Objects.equals(lastName, that.lastName);
@@ -128,7 +107,7 @@ public class UserServiceViewModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(username, userType, dateRegistered, dateOfBirth, firstName, lastName);
+        return Objects.hash(username, userType, dateOfBirth, firstName, lastName);
     }
 
 
@@ -137,7 +116,6 @@ public class UserServiceViewModel {
         final StringBuilder sb = new StringBuilder("UserServiceViewModel{");
         sb.append("username='").append(username).append('\'');
         sb.append(", userType=").append(userType);
-        sb.append(", dateRegistered=").append(dateRegistered);
         sb.append(", dateOfBirth=").append(dateOfBirth);
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');

@@ -9,6 +9,7 @@ import java.util.Objects;
 
 public class ItemServiceViewModel {
 
+    private Long id;
     private MediaServiceViewModel media;
     private List<OpinionServiceViewModel> opinions = new ArrayList<>();
     private String title;
@@ -22,19 +23,15 @@ public class ItemServiceViewModel {
     }
 
 
-    public ItemServiceViewModel(MediaServiceViewModel media, List<OpinionServiceViewModel> opinions,
-                                String title, String description, BigDecimal price, Double weight, BigDecimal vat,
-                                ItemCategory itemCategory) {
-        this.media = media;
-        this.opinions = opinions;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.weight = weight;
-        this.vat = vat;
-        this.itemCategory = itemCategory;
+
+
+    public Long getId() {
+        return this.id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public MediaServiceViewModel getMedia() {
         return this.media;

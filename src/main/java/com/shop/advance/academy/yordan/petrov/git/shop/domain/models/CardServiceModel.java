@@ -6,14 +6,17 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardT
 
 import java.math.BigDecimal;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 public class CardServiceModel {
 
     private Long id;
     private CardType cardType = CardType.NONE;
-    private CardProviders cardProviders= CardProviders.NONE;
-    private Instant expirationDate;
+    private CardProviders cardProviders = CardProviders.NONE;
+    private LocalDate expirationDate;
+    private LocalDateTime dateIssued;
     private String cvvCode;
     private String pinCode;
     private String number;
@@ -25,20 +28,7 @@ public class CardServiceModel {
     public CardServiceModel() {
     }
 
-    public CardServiceModel(Long id, CardType cardType, CardProviders cardProviders,
-                            Instant expirationDate, String cvvCode, String pinCode, String number,
-                            BigDecimal balance, CurrencyServiceModel currency, boolean isActive) {
-        this.id = id;
-        this.cardType = cardType;
-        this.cardProviders = cardProviders;
-        this.expirationDate = expirationDate;
-        this.cvvCode = cvvCode;
-        this.pinCode = pinCode;
-        this.number = number;
-        this.balance = balance;
-        this.currency = currency;
-        this.isActive = isActive;
-    }
+
 
     public Long getId() {
         return this.id;
@@ -64,12 +54,20 @@ public class CardServiceModel {
         this.cardProviders = cardProviders;
     }
 
-    public Instant getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return this.expirationDate;
     }
 
-    public void setExpirationDate(Instant expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
+    }
+
+    public LocalDateTime getDateIssued() {
+        return this.dateIssued;
+    }
+
+    public void setDateIssued(LocalDateTime dateIssued) {
+        this.dateIssued = dateIssued;
     }
 
     public String getCvvCode() {

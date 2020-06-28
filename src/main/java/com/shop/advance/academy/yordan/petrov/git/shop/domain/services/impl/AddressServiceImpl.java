@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -35,7 +36,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public AddressServiceModel createAddress(AddressServiceModel addressServiceModel) {
+    public AddressServiceViewModel createAddress(AddressServiceModel addressServiceModel) {
 //Create address only if the city is alredy in the database
         Address address = this.modelMapper.map(addressServiceModel, Address.class);
 
@@ -55,10 +56,12 @@ public class AddressServiceImpl implements AddressService {
                     address.setCity(this.modelMapper.map(cityServiceViewModel, City.class));
                 });
 
-        return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceModel.class);
+
+        return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);
     }
 
     @Override
+    @Transactional
     public AddressServiceViewModel updateAddress(AddressServiceModel addressServiceModel) {
 
         Address address = this.modelMapper.map(addressServiceModel, Address.class);

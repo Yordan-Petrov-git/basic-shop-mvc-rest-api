@@ -23,17 +23,7 @@ public class ItemServiceModel {
     public ItemServiceModel() {
     }
 
-    public ItemServiceModel(Long id, MediaServiceModel media, List<OpinionServiceModel> opinions, String title, String description, BigDecimal price, Double weight, BigDecimal vat, ItemCategory itemCategory) {
-        this.id = id;
-        this.media = media;
-        this.opinions = opinions;
-        this.title = title;
-        this.description = description;
-        this.price = price;
-        this.weight = weight;
-        this.vat = vat;
-        this.itemCategory = itemCategory;
-    }
+
 
     public Long getId() {
         return this.id;

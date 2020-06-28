@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface AddressService {
 
-    AddressServiceModel createAddress(AddressServiceModel addressServiceModel);
+    AddressServiceViewModel createAddress(AddressServiceModel addressServiceModel);
 
     AddressServiceViewModel updateAddress(AddressServiceModel addressServiceModel);
 

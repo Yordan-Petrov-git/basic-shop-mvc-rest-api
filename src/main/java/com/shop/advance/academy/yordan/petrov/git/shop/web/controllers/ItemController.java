@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/item")
+@Slf4j
 public class ItemController {
 
     private final ItemService itemService;

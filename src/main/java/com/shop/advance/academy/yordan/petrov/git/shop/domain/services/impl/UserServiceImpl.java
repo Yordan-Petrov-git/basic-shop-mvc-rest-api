@@ -4,10 +4,8 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepositor
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
@@ -22,7 +20,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -73,6 +73,7 @@ public class UserServiceImpl implements UserService {
             throw new InvalidEntityException(String.format("Phone number : '%s' is  already registered.", p.getPhoneNumber()));
         });
 
+        //Sets 1 st registered user as admin role
         if (userRepository.count() == 0) {
             this.roleService.seedRolesInDatabase();
 
@@ -81,6 +82,7 @@ public class UserServiceImpl implements UserService {
                     .map(r -> this.modelMapper.map(r, Role.class))
                     .collect(Collectors.toSet()));
 
+            //Sets 2 and so on user  as user role
         } else {
             user.setAuthorities(new LinkedHashSet<>());
             user.getAuthorities()
@@ -95,20 +97,24 @@ public class UserServiceImpl implements UserService {
         user.setAccountNonExpired(true);
 
 
+        user.setCreated(LocalDateTime.now());
+        user.setModified(LocalDateTime.now());
+
         return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceViewModel.class);
     }
 
     @Override
-    public void updateUser(@Valid UserServiceModel userServiceModel) {
+    @Transactional
+    public UserServiceViewModel updateUser(@Valid UserServiceModel userServiceModel) {
 
         User user = this.modelMapper.map(userServiceModel, User.class);
 
         this.userRepository.findById(user.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("User with id '%d' not found .", user.getId())));
 
+        user.setModified(LocalDateTime.now());
 
-        this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceModel.class);
-
+        return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceViewModel.class);
     }
 
     @Override
@@ -135,12 +141,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void deleteUserById(long id) {
+    public UserServiceViewModel deleteUserById(long id) {
 
-        this.userRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("User with id '%d' not found .", id)));
+        UserServiceViewModel deletedUser = this.getUserById(id);
 
         this.userRepository.deleteById(id);
+
+        return this.modelMapper.map(deletedUser, UserServiceViewModel.class);
     }
 
 

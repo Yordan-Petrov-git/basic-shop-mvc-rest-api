@@ -8,15 +8,15 @@ import java.util.List;
 @Service
 public interface ShoppingCartService {
 
-    ShoppingCartServiceModel createShoppingCart(ShoppingCartServiceModel ShoppingCart);
+    ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel ShoppingCart);
 
-    void updateShoppingCart(ShoppingCartServiceModel ShoppingCart);
+    ShoppingCartServiceViewModel updateShoppingCart(ShoppingCartServiceModel ShoppingCart);
 
     ShoppingCartServiceViewModel getShoppingCartById(long id);
 
     List<ShoppingCartServiceViewModel> getAllShoppingCarts();
 
-    void deleteShoppingCartById(long id);
+    ShoppingCartServiceViewModel deleteShoppingCartById(long id);
 
 
 }
