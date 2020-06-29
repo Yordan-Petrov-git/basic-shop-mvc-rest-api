@@ -54,7 +54,7 @@ public class CardServiceImpl implements CardService {
         this.cardRepository.findById(cardServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", cardServiceModel.getId())));
 
-      return   this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
+        return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
 
     }
 
@@ -83,11 +83,13 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void deleteCardById(long id) {
+    public CardServiceViewModel deleteCardById(long id) {
 
-        this.cardRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Card  with id '%d' not found .", id)));
+        CardServiceViewModel cardServiceViewModel = this.getCardById(id);
 
         this.cardRepository.deleteById(id);
+
+        return cardServiceViewModel;
+
     }
 }

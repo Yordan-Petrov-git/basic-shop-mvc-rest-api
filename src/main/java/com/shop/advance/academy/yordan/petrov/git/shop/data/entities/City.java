@@ -26,8 +26,8 @@ public class City extends BaseEntity{
 
 
     @ManyToOne(targetEntity = Country.class
-            , cascade = {CascadeType.ALL}
-            , fetch = FetchType.LAZY
+            , cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE}
+            , fetch = FetchType.EAGER
     )
     @JoinColumn(name = "country_id")
     public Country getCountry() {

@@ -31,8 +31,7 @@ public class ShoppingCartController {
     @PostMapping("/register")
     public ResponseEntity<ShoppingCartServiceViewModel> createShoppingCart(@RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
 
-        ShoppingCartServiceViewModel shoppingCartServiceViewModel  = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
-
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
 
         URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createUser", UserServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
@@ -43,24 +42,48 @@ public class ShoppingCartController {
     }
 
     @PutMapping("/{id}")
-    public void updateShoppingCart(@PathVariable("id") Long id, @RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
-        shoppingCartService.updateShoppingCart(shoppingCartServiceModel);
+    public ResponseEntity<ShoppingCartServiceViewModel> updateShoppingCart(@PathVariable("id") Long id, @RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
+
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.updateShoppingCart(shoppingCartServiceModel);
+
+        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createUser", UserServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
+
+        log.info("Shopping cart updated: {} {}", shoppingCartServiceViewModel, location);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(shoppingCartServiceViewModel);
     }
 
 
     @GetMapping("/{id}")
-    public ShoppingCartServiceViewModel getShoppingCart(@PathVariable("id") final Long id) {
-        return shoppingCartService.getShoppingCartById(id);
+    public ResponseEntity<ShoppingCartServiceViewModel> getShoppingCart(@PathVariable("id") final Long id) {
+
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.getShoppingCartById(id);
+
+        log.info("Shopping cart found: {}", shoppingCartServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(shoppingCartServiceViewModel);
     }
 
     @GetMapping()
-    public List<ShoppingCartServiceViewModel> getShoppingCarts() {
-        return shoppingCartService.getAllShoppingCarts();
+    public ResponseEntity<List<ShoppingCartServiceViewModel>> getShoppingCarts() {
+
+        List<ShoppingCartServiceViewModel> shoppingCartServiceViewModels = shoppingCartService.getAllShoppingCarts();
+
+        log.info("Shopping Carts Found: {} ", shoppingCartServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(shoppingCartServiceViewModels);
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteShoppingCart(@PathVariable("id") Long id) {
-        shoppingCartService.deleteShoppingCartById(id);
+    public ResponseEntity<ShoppingCartServiceViewModel> deleteShoppingCart(@PathVariable("id") Long id) {
+
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.deleteShoppingCartById(id);
+
+        log.info("Shopping Cart deleted: {}", shoppingCartServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(shoppingCartServiceViewModel);
     }
 
 

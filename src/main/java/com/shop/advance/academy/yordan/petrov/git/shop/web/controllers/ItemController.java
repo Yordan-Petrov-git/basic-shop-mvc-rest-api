@@ -1,7 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,31 +25,59 @@ public class ItemController {
 
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<ItemServiceModel> createItem(@RequestBody ItemServiceModel itemServiceModel) {
-        itemService.createItem(itemServiceModel);
-        return new ResponseEntity<>(itemServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<ItemServiceViewModel> createItem(@RequestBody ItemServiceModel itemServiceModel) {
+
+        ItemServiceViewModel itemServiceViewModel = itemService.createItem(itemServiceModel);
+
+        log.info("Item  created : {}", itemServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(itemServiceViewModel);
+
     }
 
     @PutMapping("/{id}")
-    public void updateItem(@PathVariable("id") Long id,@RequestBody ItemServiceModel itemServiceModel) {
-        itemService.updateItem(itemServiceModel);
+    public ResponseEntity<ItemServiceViewModel> updateItem(@PathVariable("id") Long id, @RequestBody ItemServiceModel itemServiceModel) {
+
+        ItemServiceViewModel itemServiceViewModel = itemService.updateItem(itemServiceModel);
+
+        log.info("Item  UPDATED : {}", itemServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(itemServiceViewModel);
+
+
     }
 
 
     @GetMapping("/{id}")
-    public ItemServiceViewModel getItem(@PathVariable("id")final Long id) {
-        return itemService.getItemById(id);
+    public ResponseEntity<ItemServiceViewModel> getItem(@PathVariable("id") final Long id) {
+
+        ItemServiceViewModel itemServiceViewModel = itemService.getItemById(id);
+
+        log.info("Item  found : {}", itemServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModel);
+
     }
 
     @GetMapping()
-    public List<ItemServiceViewModel> getItems() {
-        return itemService.getAllItems();
+    public ResponseEntity<List<ItemServiceViewModel>> getItems() {
+
+        List<ItemServiceViewModel> itemServiceViewModels = itemService.getAllItems();
+
+        log.info("Item Found: {} ", itemServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModels);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteItem(@PathVariable("id") Long id) {
-        itemService.deleteItemById(id);
+    public ResponseEntity<ItemServiceViewModel> deleteItem(@PathVariable("id") Long id) {
+
+        ItemServiceViewModel itemServiceViewModel = itemService.deleteItemById(id);
+
+        log.info("Item  deleted : {}", itemServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(itemServiceViewModel);
+
     }
 
 }

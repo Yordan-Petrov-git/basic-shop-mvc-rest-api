@@ -76,11 +76,13 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
-    public void deleteItemById(long id) {
+    public ItemServiceViewModel deleteItemById(long id) {
 
-        this.itemRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Item  with id '%d' not found .", id)));
+        ItemServiceViewModel itemServiceViewModel = this.getItemById(id);
 
         this.itemRepository.deleteById(id);
+
+        return itemServiceViewModel;
+
     }
 }

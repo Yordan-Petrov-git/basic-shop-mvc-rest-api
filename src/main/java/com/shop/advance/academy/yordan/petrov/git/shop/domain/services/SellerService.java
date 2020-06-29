@@ -8,7 +8,7 @@ import java.util.List;
 @Service
 public interface SellerService {
 
-    SellerServiceModel createSeller(SellerServiceModel sellerServiceModel);
+    SellerServiceViewModel createSeller(SellerServiceModel sellerServiceModel);
 
     SellerServiceViewModel updateSeller(SellerServiceModel sellerServiceModel);
 
@@ -16,7 +16,7 @@ public interface SellerService {
 
     List<SellerServiceViewModel> getAllSellers();
 
-    void deleteSellerById(long id);
+    SellerServiceViewModel deleteSellerById(long id);
 
 
 

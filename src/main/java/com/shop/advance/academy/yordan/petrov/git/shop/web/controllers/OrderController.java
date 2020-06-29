@@ -1,13 +1,14 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,30 +27,60 @@ public class OrderController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<OrderServiceModel> createOrder(@RequestBody OrderServiceModel orderServiceModel) {
-        orderService.createOrder(orderServiceModel);
-        return new ResponseEntity<>(orderServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<OrderServiceViewModel> createOrder(@RequestBody OrderServiceModel orderServiceModel) {
+
+        OrderServiceViewModel contactInformationServiceViewModel = orderService.createOrder(orderServiceModel);
+
+        log.info("Order  created : {}", contactInformationServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(contactInformationServiceViewModel);
+
+
     }
 
     @PutMapping("{id}")
-    public void updateOrder(@PathVariable("id") Long id,@RequestBody OrderServiceModel orderServiceModel) {
-        orderService.updateOrder(orderServiceModel);
+    public ResponseEntity<OrderServiceViewModel> updateOrder(@PathVariable("id") Long id, @RequestBody OrderServiceModel orderServiceModel) {
+
+        OrderServiceViewModel contactInformationServiceViewModel = orderService.updateOrder(orderServiceModel);
+
+        log.info("Order  UPDATED : {}", contactInformationServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(contactInformationServiceViewModel);
+
+
     }
 
 
     @GetMapping("{id}")
-    public OrderServiceViewModel getOrder(@PathVariable("id")final Long id) {
-        return orderService.getOrderById(id);
+    public ResponseEntity<OrderServiceViewModel> getOrder(@PathVariable("id") final Long id) {
+
+        OrderServiceViewModel contactInformationServiceViewModel = orderService.getOrderById(id);
+
+        log.info("Order  found : {}", contactInformationServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(contactInformationServiceViewModel);
+
     }
 
     @GetMapping()
-    public List<OrderServiceViewModel> getOrders() {
-        return orderService.getAllOrders();
+    public ResponseEntity<List<OrderServiceViewModel>> getOrders() {
+
+        List<OrderServiceViewModel> orderServiceViewModels = orderService.getAllOrders();
+
+        log.info("Sellers Found: {} ", orderServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(orderServiceViewModels);
     }
 
     @DeleteMapping("{id}")
-    public void deleteOrder(@PathVariable("id") Long id) {
-        orderService.deleteOrderById(id);
+    public ResponseEntity<OrderServiceViewModel> deleteOrder(@PathVariable("id") Long id) {
+
+        OrderServiceViewModel contactInformationServiceViewModel = orderService.deleteOrderById(id);
+
+        log.info("Order  deleted : {}", contactInformationServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(contactInformationServiceViewModel);
+
     }
 
 }

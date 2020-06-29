@@ -49,7 +49,7 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("Order with id '%d' not found .", orderServiceModel.getId())));
 
 
-       return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
+        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
 
     }
 
@@ -76,11 +76,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteOrderById(long id) {
+    public OrderServiceViewModel deleteOrderById(long id) {
 
-        this.orderRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Order with id '%d' not found .", id)));
+        OrderServiceViewModel orderServiceViewModel = this.getOrderById(id);
 
         this.orderRepository.deleteById(id);
+
+        return orderServiceViewModel;
     }
 }

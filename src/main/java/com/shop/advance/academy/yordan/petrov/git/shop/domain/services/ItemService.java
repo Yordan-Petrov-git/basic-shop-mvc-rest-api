@@ -5,6 +5,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemService
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+
 @Service
 public interface ItemService {
 
@@ -16,7 +17,7 @@ public interface ItemService {
 
     List<ItemServiceViewModel> getAllItems();
 
-    void deleteItemById(long id);
+    ItemServiceViewModel deleteItemById(long id);
 
 
 }

@@ -34,7 +34,7 @@ public class CityServiceImpl implements CityService {
         this.cityRepository.findCityByName(city.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("City '%s' already exists.", city.getName()));
 
-            //TODO ADD BL TO BE ABLE TO CREATE CITY ONLY IF COUNTRY EXISTS IN THE DATABASE
+            //TO BE ABLE TO CREATE CITY ONLY IF COUNTRY EXISTS IN THE DATABASE
 
         });
 

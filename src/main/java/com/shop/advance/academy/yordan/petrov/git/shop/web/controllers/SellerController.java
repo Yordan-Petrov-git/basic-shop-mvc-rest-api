@@ -1,7 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,30 +24,54 @@ public class SellerController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<SellerServiceModel> createSeller(@RequestBody SellerServiceModel sellerServiceModel) {
-        sellerService.createSeller(sellerServiceModel);
-        return new ResponseEntity<>(sellerServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<SellerServiceViewModel> createSeller(@RequestBody SellerServiceModel sellerServiceModel) {
+
+        SellerServiceViewModel sellerServiceViewModel = sellerService.createSeller(sellerServiceModel);
+
+        log.info("Seller  created : {}", sellerServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(sellerServiceViewModel);
     }
 
     @PutMapping("/{id}")
-    public void updateSeller(@PathVariable("id") Long id,@RequestBody SellerServiceModel sellerServiceModel) {
-        sellerService.updateSeller(sellerServiceModel);
+    public ResponseEntity<SellerServiceViewModel> updateSeller(@PathVariable("id") Long id, @RequestBody SellerServiceModel sellerServiceModel) {
+
+        SellerServiceViewModel sellerServiceViewModel = sellerService.updateSeller(sellerServiceModel);
+
+        log.info("Seller  found : {}", sellerServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(sellerServiceViewModel);
     }
 
 
     @GetMapping("/{id}")
-    public SellerServiceViewModel getSeller(@PathVariable("id")final Long id) {
-        return sellerService.getSellerById(id);
+    public ResponseEntity<SellerServiceViewModel> getSeller(@PathVariable("id") final Long id) {
+
+
+        SellerServiceViewModel sellerServiceViewModel = sellerService.getSellerById(id);
+
+        log.info("Seller  found : {}", sellerServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(sellerServiceViewModel);
     }
 
     @GetMapping()
-    public List<SellerServiceViewModel> getSellers() {
-        return sellerService.getAllSellers();
+    public ResponseEntity<List<SellerServiceViewModel>> getSellers() {
+
+        List<SellerServiceViewModel> sellerServiceViewModels = sellerService.getAllSellers();
+
+        log.info("Seller Found: {} ", sellerServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(sellerServiceViewModels);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteSeller(@PathVariable("id") Long id) {
-        sellerService.deleteSellerById(id);
-    }
+    public ResponseEntity<SellerServiceViewModel> deleteSeller(@PathVariable("id") Long id) {
 
+        SellerServiceViewModel sellerServiceViewModel = sellerService.deleteSellerById(id);
+
+        log.info("Seller  deleted : {}", sellerServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(sellerServiceViewModel);
+    }
 }

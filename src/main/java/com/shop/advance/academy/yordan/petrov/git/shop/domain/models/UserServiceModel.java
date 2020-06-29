@@ -66,7 +66,7 @@ public class UserServiceModel {
         this.userType = userType;
     }
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreated() {
         return this.created;
     }
@@ -74,7 +74,7 @@ public class UserServiceModel {
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
-
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getModified() {
         return this.modified;
     }
@@ -196,7 +196,8 @@ public class UserServiceModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, userType, dateOfBirth, created, modified, firstName, lastName, isEnabled, isCredentialsNonExpired, isAccountNonLocked, isAccountNonExpired);
+        return Objects.hash(id, username, password, userType, dateOfBirth, created, modified, firstName,
+                lastName, isEnabled, isCredentialsNonExpired, isAccountNonLocked, isAccountNonExpired);
     }
 
     @Override

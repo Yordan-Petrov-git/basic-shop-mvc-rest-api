@@ -1,8 +1,10 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,30 +29,57 @@ public class OpinionController {
 
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<OpinionServiceModel> createOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
-        opinionService.createOpinion(opinionServiceModel);
-        return new ResponseEntity<>(opinionServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<OpinionServiceViewModel> createOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
+
+        OpinionServiceViewModel opinionServiceViewModel = opinionService.createOpinion(opinionServiceModel);
+
+        log.info("Opinion  created : {}", opinionServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(opinionServiceViewModel);
     }
 
     @PutMapping("/{id}")
-    public void updateOpinion(@PathVariable("id") Long id,@RequestBody OpinionServiceModel opinionServiceModel) {
-        opinionService.updateOpinion(opinionServiceModel);
+    public ResponseEntity<OpinionServiceViewModel> updateOpinion(@PathVariable("id") Long id, @RequestBody OpinionServiceModel opinionServiceModel) {
+        OpinionServiceViewModel opinionServiceViewModel = opinionService.updateOpinion(opinionServiceModel);
+
+        log.info("Opinion  updated : {}", opinionServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(opinionServiceViewModel);
+
     }
 
 
     @GetMapping("/{id}")
-    public OpinionServiceViewModel getOpinion(@PathVariable("id")final Long id) {
-        return opinionService.getOpinionById(id);
+    public ResponseEntity<OpinionServiceViewModel> getOpinion(@PathVariable("id") final Long id) {
+        OpinionServiceViewModel opinionServiceViewModel = opinionService.getOpinionById(id);
+
+        log.info("Opinion  FOUND : {}", opinionServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(opinionServiceViewModel);
+
     }
 
     @GetMapping()
-    public List<OpinionServiceViewModel> getOpinions() {
-        return opinionService.getAllOpinions();
+    public ResponseEntity<List<OpinionServiceViewModel>> getOpinions() {
+
+        List<OpinionServiceViewModel> opinionServiceViewModelList = opinionService.getAllOpinions();
+
+        log.info("Opinions Found: {} ", opinionServiceViewModelList);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(opinionServiceViewModelList);
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteOpinion(@PathVariable("id") Long id) {
-        opinionService.deleteOpinionById(id);
+    public ResponseEntity<OpinionServiceViewModel> deleteOpinion(@PathVariable("id") Long id) {
+
+
+        OpinionServiceViewModel opinionServiceViewModel = opinionService.deleteOpinionById(id);
+
+        log.info("Opinion  deleted : {}", opinionServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(opinionServiceViewModel);
+
+
     }
 }

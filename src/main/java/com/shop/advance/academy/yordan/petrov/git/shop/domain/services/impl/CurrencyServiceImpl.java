@@ -50,7 +50,7 @@ public class CurrencyServiceImpl implements CurrencyService {
         this.currencyRepository.findById(currencyServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Currency with id '%d' not found .", currencyServiceModel.getId())));
 
-      return   this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
+        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
 
     }
 
@@ -78,11 +78,12 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
-    public void deleteCurrencyById(long id) {
+    public CurrencyServiceViewModel deleteCurrencyById(long id) {
 
-        this.currencyRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Currency with id '%d' not found .", id)));
+        CurrencyServiceViewModel cityServiceViewModel = this.getCurrencyById(id);
 
         this.currencyRepository.deleteById(id);
+
+        return cityServiceViewModel;
     }
 }

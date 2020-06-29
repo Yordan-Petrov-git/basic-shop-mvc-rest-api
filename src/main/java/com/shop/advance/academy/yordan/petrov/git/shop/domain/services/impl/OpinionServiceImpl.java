@@ -75,11 +75,12 @@ public class OpinionServiceImpl implements OpinionService {
     }
 
     @Override
-    public void deleteOpinionById(long id) {
+    public OpinionServiceViewModel deleteOpinionById(long id) {
 
-        this.opinionRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Opinion  with id '%d' not found .", id)));
+        OpinionServiceViewModel opinionServiceViewModel = this.getOpinionById(id);
 
         this.opinionRepository.deleteById(id);
+
+        return opinionServiceViewModel;
     }
 }

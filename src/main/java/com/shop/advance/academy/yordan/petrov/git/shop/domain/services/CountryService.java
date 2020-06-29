@@ -18,7 +18,7 @@ public interface CountryService {
 
     List<CountryServiceViewModel> getAllCountries();
 
-    void deleteCountryById(long id);
+    CountryServiceViewModel deleteCountryById(long id);
 
 
 }

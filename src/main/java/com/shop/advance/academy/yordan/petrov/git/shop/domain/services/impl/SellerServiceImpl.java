@@ -2,6 +2,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.SellerRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
@@ -30,7 +31,7 @@ public class SellerServiceImpl implements SellerService {
 
 
     @Override
-    public SellerServiceModel createSeller(SellerServiceModel sellerServiceModel) {
+    public SellerServiceViewModel createSeller(SellerServiceModel sellerServiceModel) {
 
         Seller seller = this.modelMapper.map(sellerServiceModel, Seller.class);
 
@@ -38,7 +39,7 @@ public class SellerServiceImpl implements SellerService {
             throw new InvalidEntityException(String.format("Seller with name '%s' already exists.", sellerServiceModel.getName()));
         });
 
-        return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceModel.class);
+        return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceViewModel.class);
 
     }
 
@@ -78,11 +79,13 @@ public class SellerServiceImpl implements SellerService {
     }
 
     @Override
-    public void deleteSellerById(long id) {
+    public SellerServiceViewModel deleteSellerById(long id) {
 
-        this.sellerRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Seller  with id '%d' not found .", id)));
+        SellerServiceViewModel sellerServiceViewModel = this.getSellerById(id);
 
         this.sellerRepository.deleteById(id);
+
+        return sellerServiceViewModel;
+
     }
 }

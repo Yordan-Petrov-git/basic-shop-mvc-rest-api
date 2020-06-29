@@ -2,6 +2,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,31 +26,58 @@ public class AddressController {
     }
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<AddressServiceModel> createAddress(@RequestBody AddressServiceModel addressServiceModel) {
-        addressService.createAddress(addressServiceModel);
-        return new ResponseEntity<>(addressServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<AddressServiceViewModel> createAddress(@RequestBody AddressServiceModel addressServiceModel) {
+
+
+        AddressServiceViewModel addressServiceViewModel = addressService.createAddress(addressServiceModel);
+
+        log.info("Address  created : {}", addressServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(addressServiceViewModel);
+
     }
 
     @PutMapping("/{id}")
-    public void updateAddress(@PathVariable("id") Long id,@RequestBody AddressServiceModel addressServiceModel) {
-        addressService.updateAddress(addressServiceModel);
+    public ResponseEntity<AddressServiceViewModel> updateAddress(@PathVariable("id") Long id, @RequestBody AddressServiceModel addressServiceModel) {
+
+
+        AddressServiceViewModel addressServiceViewModel = addressService.updateAddress(addressServiceModel);
+
+        log.info("Address  updated : {}", addressServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(addressServiceViewModel);
     }
 
 
     @GetMapping("/{id}")
-    public AddressServiceViewModel getAddress(@PathVariable("id")final Long id) {
-        return addressService.getAddressById(id);
+    public ResponseEntity<AddressServiceViewModel> getAddress(@PathVariable("id") final Long id) {
+
+        AddressServiceViewModel addressServiceViewModel = addressService.getAddressById(id);
+
+        log.info("Address  found : {}", addressServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(addressServiceViewModel);
     }
 
     @GetMapping()
-    public List<AddressServiceViewModel> getAddresss() {
-        return addressService.getAllAddresses();
+    public ResponseEntity<List<AddressServiceViewModel>> getAddress() {
+
+        List<AddressServiceViewModel> addressServiceViewModel = addressService.getAllAddresses();
+
+        log.info("Addresses  found : {}", addressServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(addressServiceViewModel);
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteAddress(@PathVariable("id") Long id) {
-        addressService.getAddressById(id);
+    public ResponseEntity<AddressServiceViewModel> deleteAddress(@PathVariable("id") Long id) {
+
+        AddressServiceViewModel addressServiceViewModel = addressService.getAddressById(id);
+
+        log.info("Address deleted : {}", addressServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(addressServiceViewModel);
     }
 
 

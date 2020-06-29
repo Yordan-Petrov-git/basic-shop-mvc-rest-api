@@ -16,7 +16,7 @@ public interface MediaService {
 
     List<MediaServiceViewModel> getAllMedias();
 
-    void deleteMediaById(long id);
+    MediaServiceViewModel deleteMediaById(long id);
 
 
 }

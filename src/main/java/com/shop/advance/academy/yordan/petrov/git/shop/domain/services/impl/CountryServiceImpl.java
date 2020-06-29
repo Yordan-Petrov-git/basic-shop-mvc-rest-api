@@ -89,12 +89,13 @@ public class CountryServiceImpl implements CountryService {
     }
 
     @Override
-    public void deleteCountryById(long id) {
+    public CountryServiceViewModel deleteCountryById(long id) {
 
-        this.countryRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Country  with id '%d' not found .", id)));
 
-       this.countryRepository.deleteById(id);
+        CountryServiceViewModel countryServiceViewModel = this.getCountryById(id);
 
+        this.countryRepository.deleteById(id);
+
+        return countryServiceViewModel;
     }
 }

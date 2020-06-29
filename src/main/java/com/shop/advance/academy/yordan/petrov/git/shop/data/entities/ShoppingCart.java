@@ -20,7 +20,8 @@ public class ShoppingCart extends BaseEntity {
 
     @ManyToMany(
             targetEntity = Item.class,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
     @JoinTable(name = "shopping_cart_item",
             joinColumns = @JoinColumn(name = "shoping_cart_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"))

@@ -16,7 +16,7 @@ public interface CurrencyService {
 
     List<CurrencyServiceViewModel> getAllCurrencies();
 
-    void deleteCurrencyById(long id);
+    CurrencyServiceViewModel deleteCurrencyById(long id);
 
 
 }
