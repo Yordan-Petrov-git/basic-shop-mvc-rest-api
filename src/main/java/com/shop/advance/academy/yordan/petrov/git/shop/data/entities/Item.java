@@ -26,9 +26,7 @@ public class Item extends BaseEntity {
 
     @ManyToOne(targetEntity = Media.class,
             fetch = FetchType.EAGER)
-    @JoinTable(name = "item_media",
-            joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "media_id", referencedColumnName = "id"))
+    @JoinColumn(name = "media_id", referencedColumnName = "id")
     public Media getMedia() {
         return this.media;
     }
@@ -39,7 +37,7 @@ public class Item extends BaseEntity {
 
     @ManyToMany(targetEntity = Opinion.class,
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.ALL})
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinTable(name = "item_opinion",
             joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "opinion_id", referencedColumnName = "id"))
