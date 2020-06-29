@@ -45,7 +45,7 @@ public class Opinion extends BaseEntity{
 
     @ManyToOne(targetEntity = Media.class,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "media_id")
+    @JoinColumn(name = "media_id",referencedColumnName = "id")
     public Media getMedia() {
         return this.media;
     }
