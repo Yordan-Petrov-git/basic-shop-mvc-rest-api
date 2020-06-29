@@ -11,7 +11,7 @@ import java.util.Set;
 
 public class UserServiceModel {
 
-    private Long id;
+//    private Long id;
     private String username;
     private String password;
     private UserType userType = UserType.REGULAR;
@@ -33,14 +33,14 @@ public class UserServiceModel {
     public UserServiceModel() {
     }
 
-
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
+//
+//    public Long getId() {
+//        return this.id;
+//    }
+//
+//    public void setId(Long id) {
+//        this.id = id;
+//    }
 
     public String getUsername() {
         return this.username;
@@ -74,6 +74,7 @@ public class UserServiceModel {
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getModified() {
         return this.modified;
@@ -183,7 +184,6 @@ public class UserServiceModel {
                 isCredentialsNonExpired == that.isCredentialsNonExpired &&
                 isAccountNonLocked == that.isAccountNonLocked &&
                 isAccountNonExpired == that.isAccountNonExpired &&
-                Objects.equals(id, that.id) &&
                 Objects.equals(username, that.username) &&
                 Objects.equals(password, that.password) &&
                 userType == that.userType &&
@@ -196,14 +196,14 @@ public class UserServiceModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, username, password, userType, dateOfBirth, created, modified, firstName,
+        return Objects.hash( username, password, userType, dateOfBirth, created, modified, firstName,
                 lastName, isEnabled, isCredentialsNonExpired, isAccountNonLocked, isAccountNonExpired);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("UserServiceModel{");
-        sb.append("id=").append(id);
+
         sb.append(", username='").append(username).append('\'');
         sb.append(", password='").append(password).append('\'');
         sb.append(", userType=").append(userType);
