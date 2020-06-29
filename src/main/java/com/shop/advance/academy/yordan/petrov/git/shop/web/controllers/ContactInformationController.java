@@ -1,10 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,21 +26,37 @@ public class ContactInformationController {
 
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<ContactInformationServiceModel> createContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
-        contactInformationService.createContactInformation(contactInformationServiceModel);
-        return new ResponseEntity<>(contactInformationServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<ContactInformationServiceViewModel> createContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
+
+        ContactInformationServiceViewModel contactInformationServiceViewModel =   contactInformationService.createContactInformation(contactInformationServiceModel);
+
+        log.info("Contact Information  created : {}", contactInformationServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(contactInformationServiceViewModel);
+
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<> updateContactInformation(@PathVariable("id") Long id, @RequestBody ContactInformationServiceModel contactInformationServiceModel) {
-        contactInformationService.updateContactInformation(contactInformationServiceModel);
+    public  ResponseEntity<ContactInformationServiceViewModel> updateContactInformation(@PathVariable("id") Long id, @RequestBody ContactInformationServiceModel contactInformationServiceModel) {
+
+        ContactInformationServiceViewModel contactInformationServiceViewModel =   contactInformationService.updateContactInformation(contactInformationServiceModel);
+
+        log.info("Contact Information  updated : {}", contactInformationServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(contactInformationServiceViewModel);
+
     }
 
 
     @GetMapping("/{id}")
-    public ContactInformationServiceViewModel getContactInformation(@PathVariable("id") final Long id) {
-        return contactInformationService.getContactInformationById(id);
+    public  ResponseEntity<ContactInformationServiceViewModel> getContactInformation(@PathVariable("id") final Long id) {
+
+        ContactInformationServiceViewModel contactInformationServiceViewModel =   contactInformationService.getContactInformationById(id);
+
+        log.info("Contact Information  found : {}", contactInformationServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(contactInformationServiceViewModel);
+
     }
 
     @GetMapping()
@@ -54,11 +67,18 @@ public class ContactInformationController {
         log.info("Contact Information Found: {} ", contactInformationServiceViewModels);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(contactInformationServiceViewModels);
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public  ResponseEntity<> deleteContactInformation(@PathVariable("id") Long id) {
-        contactInformationService.deleteContactInformationById(id);
+    public  ResponseEntity<ContactInformationServiceViewModel> deleteContactInformation(@PathVariable("id") Long id) {
+
+        ContactInformationServiceViewModel contactInformationServiceViewModel =      contactInformationService.deleteContactInformationById(id);
+
+        log.info("Contact Information deleted : {}", contactInformationServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(contactInformationServiceViewModel);
+
     }
 
 }

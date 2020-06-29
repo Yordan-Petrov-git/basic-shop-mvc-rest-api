@@ -45,7 +45,7 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     @NonNull
     @NotEmpty(message = "Username cannot be empty")
-    @Length(min = 2, max = 128,message = "Username must be at least 2 characters")
+    @Length(min = 2, max = 128, message = "Username must be at least 2 characters")
     @Column(name = "username", unique = true, nullable = false)
     public String getUsername() {
         return this.username;
@@ -58,7 +58,7 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     @NonNull
     @NotEmpty
-    @Length(min = 8, max = 128,message = "password must be at least 8 characters")
+    @Length(min = 8, max = 128, message = "password must be at least 8 characters")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", unique = true, nullable = false)
     public String getPassword() {
@@ -143,7 +143,8 @@ public class User extends BaseEntity implements UserDetails {
 
 
     @OneToMany(targetEntity = Card.class,
-            fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "user_cards",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
@@ -158,7 +159,8 @@ public class User extends BaseEntity implements UserDetails {
 
     @OneToMany(targetEntity = ContactInformation.class
             , fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE })
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
+            orphanRemoval = true)
     @JoinTable(name = "user_contact_information",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "contact_information_id", referencedColumnName = "id"))

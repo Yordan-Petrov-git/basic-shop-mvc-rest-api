@@ -1,9 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,21 +25,37 @@ public class CountryController {
 
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<CountryServiceModel> createCountry(@RequestBody CountryServiceModel countryServiceModel) {
-        countryService.createCountry(countryServiceModel);
-        return new ResponseEntity<>(countryServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<CountryServiceViewModel> createCountry(@RequestBody CountryServiceModel countryServiceModel) {
+
+        CountryServiceViewModel countryServiceViewModel = countryService.createCountry(countryServiceModel);
+
+        log.info("Country  created : {}", countryServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(countryServiceViewModel);
+
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<> updateCountry(@PathVariable("id") Long id, @RequestBody CountryServiceModel countryServiceModel) {
-        countryService.updateCountry(countryServiceModel);
+    public ResponseEntity<CountryServiceViewModel> updateCountry(@PathVariable("id") Long id, @RequestBody CountryServiceModel countryServiceModel) {
+
+        CountryServiceViewModel countryServiceViewModel = countryService.updateCountry(countryServiceModel);
+
+        log.info("Country  Updated : {}", countryServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(countryServiceViewModel);
+
     }
 
 
     @GetMapping("/{id}")
-    public CountryServiceViewModel getCountry(@PathVariable("id") final Long id) {
-        return countryService.getCountryById(id);
+    public ResponseEntity<CountryServiceViewModel> getCountry(@PathVariable("id") final Long id) {
+
+        CountryServiceViewModel countryServiceViewModel = countryService.getCountryById(id);
+
+        log.info("Countrys  found : {}", countryServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(countryServiceViewModel);
+
     }
 
     @GetMapping()
@@ -57,8 +70,14 @@ public class CountryController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public  ResponseEntity<> deleteCountry(@PathVariable("id") Long id) {
-        countryService.deleteCountryById(id);
+    public ResponseEntity<CountryServiceViewModel> deleteCountry(@PathVariable("id") Long id) {
+
+        CountryServiceViewModel countryServiceViewModel = countryService.deleteCountryById(id);
+
+        log.info("Country  deleted : {}", countryServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(countryServiceViewModel);
+
     }
 
 }

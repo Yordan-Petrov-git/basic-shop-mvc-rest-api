@@ -29,37 +29,54 @@ public class CityController {
 
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<CityServiceModel> createCity(@RequestBody CityServiceModel cityServiceModel) {
-        cityService.createCity(cityServiceModel);
-        return new ResponseEntity<>(cityServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<CityServiceViewModel> createCity(@RequestBody CityServiceModel cityServiceModel) {
+
+        CityServiceViewModel cityServiceViewModel = cityService.createCity(cityServiceModel);
+
+        log.info("City  created : {}", cityServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(cityServiceViewModel);
+
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<> updateCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
+    public ResponseEntity<CityServiceViewModel> updateCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
 
-        cityService.updateCity(id);
+        CityServiceViewModel cityServiceViewModel = cityService.updateCity(id);
+
+        log.info("City  UPDATED : {}", cityServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(cityServiceViewModel);
+
+
     }
 
 
     @PatchMapping("/{id}")
     public ResponseEntity<CityServiceViewModel> updateSpecificAttributesCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
 
-        CityServiceViewModel cityServiceViewModel =  cityService.updateCity(id);
+        CityServiceViewModel cityServiceViewModel = cityService.updateCity(id);
+
+        log.info("City  UPDATED : {}", cityServiceViewModel);
 
         return new ResponseEntity<>(cityServiceViewModel, HttpStatus.OK);
     }
 
 
     @GetMapping("/{id}")
-    public CityServiceViewModel getCity(@PathVariable("id") final Long id) {
-        return cityService.getCityById(id);
+    public ResponseEntity<CityServiceViewModel> getCity(@PathVariable("id") final Long id) {
+
+        CityServiceViewModel cityServiceViewModel = cityService.getCityById(id);
+
+        log.info("City  FOUND : {}", cityServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(cityServiceViewModel);
     }
 
     @GetMapping()
     public ResponseEntity<List<CityServiceViewModel>> getCites() {
 
-        List<CityServiceViewModel> cityServiceViewModels =  cityService.getAllCities();
+        List<CityServiceViewModel> cityServiceViewModels = cityService.getAllCities();
 
         log.info("Cities Found: {} ", cityServiceViewModels);
 
@@ -74,7 +91,7 @@ public class CityController {
 
         cityService.deleteCityById(id);
 
-        return  ResponseEntity.status(HttpStatus.OK).body(cityServiceViewModel);
+        return ResponseEntity.status(HttpStatus.OK).body(cityServiceViewModel);
     }
 
 }

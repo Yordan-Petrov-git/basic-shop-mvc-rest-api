@@ -1,10 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,27 +26,44 @@ public class CurrencyController {
 
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<CurrencyServiceModel> createCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
-        currencyService.createCurrency(currencyServiceModel);
-        return new ResponseEntity<>(currencyServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<CurrencyServiceViewModel> createCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
+
+        CurrencyServiceViewModel currencyServiceViewModel = currencyService.createCurrency(currencyServiceModel);
+
+        log.info("Currency  created : {}", currencyServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(currencyServiceViewModel);
+
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<> updateCurrency(@PathVariable("id") Long id,@RequestBody CurrencyServiceModel currencyServiceModel) {
-        currencyService.updateCurrency(currencyServiceModel);
+    public ResponseEntity<CurrencyServiceViewModel> updateCurrency(@PathVariable("id") Long id, @RequestBody CurrencyServiceModel currencyServiceModel) {
+
+
+        CurrencyServiceViewModel currencyServiceViewModel = currencyService.updateCurrency(currencyServiceModel);
+
+        log.info("Currency  updated : {}", currencyServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(currencyServiceViewModel);
+
+
     }
 
 
     @GetMapping("/{id}")
-    public CurrencyServiceViewModel getCurrency(@PathVariable("id")final Long id) {
-        return currencyService.getCurrencyById(id);
+    public ResponseEntity<CurrencyServiceViewModel> getCurrency(@PathVariable("id") final Long id) {
+
+        CurrencyServiceViewModel currencyServiceViewModel = currencyService.getCurrencyById(id);
+
+        log.info("Currency  found : {}", currencyServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(currencyServiceViewModel);
     }
 
     @GetMapping()
-    public  ResponseEntity<List<CurrencyServiceViewModel>> getCurrencies() {
+    public ResponseEntity<List<CurrencyServiceViewModel>> getCurrencies() {
 
-        List<CurrencyServiceViewModel> currencyServiceViewModels =  currencyService.getAllCurrencies();
+        List<CurrencyServiceViewModel> currencyServiceViewModels = currencyService.getAllCurrencies();
 
         log.info("Currency Found: {} ", currencyServiceViewModels);
 
@@ -58,8 +72,14 @@ public class CurrencyController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public  ResponseEntity<> deleteCurrency(@PathVariable("id") Long id) {
-        currencyService.deleteCurrencyById(id);
+    public ResponseEntity<CurrencyServiceViewModel> deleteCurrency(@PathVariable("id") Long id) {
+
+        CurrencyServiceViewModel currencyServiceViewModel = currencyService.deleteCurrencyById(id);
+
+        log.info("Currency  deleted : {}", currencyServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(currencyServiceViewModel);
+
     }
 
 }

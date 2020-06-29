@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
@@ -27,31 +28,58 @@ public class CardController {
 
 
     @PostMapping("/register")
-    @PreAuthorize("isAnonymous()")
-    public ResponseEntity<CardServiceModel> createCard(@RequestBody CardServiceModel cardServiceModel) {
-        cardService.createCard(cardServiceModel);
-        return new ResponseEntity<>(cardServiceModel, HttpStatus.CREATED);
+    public ResponseEntity<CardServiceViewModel> createCard(@RequestBody CardServiceModel cardServiceModel) {
+
+        CardServiceViewModel cardServiceViewModel =  cardService.createCard(cardServiceModel);
+
+        log.info("Card  created : {}", cardServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(cardServiceViewModel);
+
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<> updateCard(@PathVariable("id") Long id,@RequestBody CardServiceModel cardServiceModel) {
-        cardService.updateCard(cardServiceModel);
+    public  ResponseEntity<CardServiceViewModel> updateCard(@PathVariable("id") Long id,@RequestBody CardServiceModel cardServiceModel) {
+
+        CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
+
+        log.info("Card  updated : {}", cardServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(cardServiceViewModel);
+
+
     }
 
 
     @GetMapping("/{id}")
-    public CardServiceViewModel getCard(@PathVariable("id")final Long id) {
-        return cardService.getCardById(id);
+    public  ResponseEntity<CardServiceViewModel> getCard(@PathVariable("id")final Long id) {
+
+        CardServiceViewModel cardServiceViewModel = cardService.getCardById(id);
+
+        log.info("Card  found : {}", cardServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(cardServiceViewModel);
     }
 
     @GetMapping()
-    public List<CardServiceViewModel> getCards() {
-        return cardService.getAllCards();
+    public ResponseEntity<List<CardServiceViewModel>> getCards() {
+
+        List<CardServiceViewModel> cardServiceViewModel =  cardService.getAllCards();
+
+        log.info("CardS  found : {}", cardServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(cardServiceViewModel);
     }
 
     @DeleteMapping("/delete/{id}")
-    public  ResponseEntity<> deleteCard(@PathVariable("id") Long id) {
-        cardService.deleteCardById(id);
+    public  ResponseEntity<CardServiceViewModel> deleteCard(@PathVariable("id") Long id) {
+
+        CardServiceViewModel cardServiceViewModel =      cardService.deleteCardById(id);
+
+        log.info("Card deleted : {}", cardServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(cardServiceViewModel);
+
     }
 
 
