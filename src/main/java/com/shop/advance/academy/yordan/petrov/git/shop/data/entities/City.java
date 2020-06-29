@@ -26,10 +26,10 @@ public class City extends BaseEntity{
 
 
     @ManyToOne(targetEntity = Country.class
-            , cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE}
+            , cascade = {CascadeType.MERGE,CascadeType.PERSIST}
             , fetch = FetchType.EAGER
     )
-    @JoinColumn(name = "country_id")
+    @JoinColumn(name = "country_id",referencedColumnName = "id")
     public Country getCountry() {
         return this.country;
     }

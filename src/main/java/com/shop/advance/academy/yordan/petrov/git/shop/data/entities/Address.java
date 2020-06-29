@@ -34,7 +34,7 @@ public class Address extends BaseEntity {
     }
 
     @ManyToOne(targetEntity = City.class
-            ,cascade = {CascadeType.PERSIST,CascadeType.MERGE}
+            , cascade = {CascadeType.DETACH}
             , fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id"
             , referencedColumnName = "id")
