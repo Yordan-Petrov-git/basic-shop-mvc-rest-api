@@ -16,7 +16,7 @@ public interface OpinionService {
 
     List<OpinionServiceViewModel> getAllOpinions();
 
-    void deleteOpinionById(long id);
+    OpinionServiceViewModel deleteOpinionById(long id);
 
 
 }

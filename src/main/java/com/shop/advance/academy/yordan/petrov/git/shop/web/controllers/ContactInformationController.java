@@ -3,7 +3,10 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/contactinformation")
+@Slf4j
 public class ContactInformationController {
 
     private final ContactInformationService contactInformationService;
@@ -32,23 +36,28 @@ public class ContactInformationController {
     }
 
     @PutMapping("/{id}")
-        public void updateContactInformation(@PathVariable("id") Long id,@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
+    public  ResponseEntity<> updateContactInformation(@PathVariable("id") Long id, @RequestBody ContactInformationServiceModel contactInformationServiceModel) {
         contactInformationService.updateContactInformation(contactInformationServiceModel);
     }
 
 
     @GetMapping("/{id}")
-    public ContactInformationServiceViewModel getContactInformation(@PathVariable("id")final Long id) {
+    public ContactInformationServiceViewModel getContactInformation(@PathVariable("id") final Long id) {
         return contactInformationService.getContactInformationById(id);
     }
 
     @GetMapping()
-    public List<ContactInformationServiceViewModel> getContactInformations() {
-        return contactInformationService.getAllContactInformations();
+    public ResponseEntity<List<ContactInformationServiceViewModel>> getContactInformations() {
+
+        List<ContactInformationServiceViewModel> contactInformationServiceViewModels = contactInformationService.getAllContactInformations();
+
+        log.info("Contact Information Found: {} ", contactInformationServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(contactInformationServiceViewModels);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteContactInformation(@PathVariable("id") Long id) {
+    public  ResponseEntity<> deleteContactInformation(@PathVariable("id") Long id) {
         contactInformationService.deleteContactInformationById(id);
     }
 

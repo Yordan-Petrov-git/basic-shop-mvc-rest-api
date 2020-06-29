@@ -29,7 +29,7 @@ public class Seller extends BaseEntity {
 
 
     @ManyToMany(targetEntity = Item.class,
-            cascade = {CascadeType.PERSIST},
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE },
             fetch = FetchType.EAGER)
     @JoinTable(
             name = "seller_item",
@@ -57,7 +57,7 @@ public class Seller extends BaseEntity {
     }
 
     @ManyToMany(targetEntity = Address.class,
-            cascade = CascadeType.PERSIST,
+            cascade ={ CascadeType.PERSIST, CascadeType.MERGE },
             fetch = FetchType.EAGER)
     @JoinTable(
             name = "users_address",

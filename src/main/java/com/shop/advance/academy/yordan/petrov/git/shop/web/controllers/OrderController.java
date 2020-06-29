@@ -2,12 +2,12 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +32,7 @@ public class OrderController {
     }
 
     @PutMapping("{id}")
-    public void updateOrder(@PathVariable("id") Long id,@RequestBody OrderServiceModel orderServiceModel) {
+    public  ResponseEntity<> updateOrder(@PathVariable("id") Long id,@RequestBody OrderServiceModel orderServiceModel) {
         orderService.updateOrder(orderServiceModel);
     }
 
@@ -43,12 +43,17 @@ public class OrderController {
     }
 
     @GetMapping()
-    public List<OrderServiceViewModel> getOrders() {
-        return orderService.getAllOrders();
+    public   ResponseEntity<List<OrderServiceViewModel>>  getOrders() {
+
+        List<OrderServiceViewModel> orderServiceViewModels = orderService.getAllOrders();
+
+        log.info("Seller Found: {} ", orderServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(orderServiceViewModels);
     }
 
     @DeleteMapping("{id}")
-    public void deleteOrder(@PathVariable("id") Long id) {
+    public  ResponseEntity<> deleteOrder(@PathVariable("id") Long id) {
         orderService.deleteOrderById(id);
     }
 

@@ -58,21 +58,23 @@ public class UserServiceImpl implements UserService {
         });
 
 
-        this.contactInformationRepository.findByEmail(userServiceModel.getContactInformation()
-                .stream()
-                .findAny()
-                .get().getEmail()).ifPresent(e -> {
-            throw new InvalidEntityException(String.format("Email '%s' is  already registered.", e.getEmail()));
-        });
+        if (contactInformationRepository.count() != 0 ) {
+
+            this.contactInformationRepository.findByEmail(userServiceModel.getContactInformation()
+                    .stream()
+                    .findAny()
+                    .get().getEmail()).ifPresent(e -> {
+                throw new InvalidEntityException(String.format("Email '%s' is  already registered.", e.getEmail()));
+            });
 
 
-        this.contactInformationRepository.findByPhoneNumber(userServiceModel.getContactInformation()
-                .stream()
-                .findAny()
-                .get().getPhoneNumber()).ifPresent(p -> {
-            throw new InvalidEntityException(String.format("Phone number : '%s' is  already registered.", p.getPhoneNumber()));
-        });
-
+            this.contactInformationRepository.findByPhoneNumber(userServiceModel.getContactInformation()
+                    .stream()
+                    .findAny()
+                    .get().getPhoneNumber()).ifPresent(p -> {
+                throw new InvalidEntityException(String.format("Phone number : '%s' is  already registered.", p.getPhoneNumber()));
+            });
+        }
         //Sets 1 st registered user as admin role
         if (userRepository.count() == 0) {
             this.roleService.seedRolesInDatabase();
@@ -83,7 +85,7 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.toSet()));
 
             //Sets 2 and so on user  as user role
-        } else {
+        } else    {
             user.setAuthorities(new LinkedHashSet<>());
             user.getAuthorities()
                     .add(this.modelMapper.map(this.roleRepository.findByAuthority("USER"), Role.class));
@@ -141,6 +143,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    @Transactional
     public UserServiceViewModel deleteUserById(long id) {
 
         UserServiceViewModel deletedUser = this.getUserById(id);

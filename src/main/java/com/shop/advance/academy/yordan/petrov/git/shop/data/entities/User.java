@@ -1,13 +1,15 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 import io.micrometer.core.lang.NonNull;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -21,7 +23,6 @@ public class User extends BaseEntity implements UserDetails {
     private String username;
     private String password;
     private UserType userType;
-    private Instant dateRegistered;
     private LocalDate dateOfBirth;
     private LocalDateTime created;
     private LocalDateTime modified;
@@ -43,8 +44,8 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     @NonNull
-    @NotEmpty
-    @Length(min = 2, max = 128)
+    @NotEmpty(message = "Username cannot be empty")
+    @Length(min = 2, max = 128,message = "Username must be at least 2 characters")
     @Column(name = "username", unique = true, nullable = false)
     public String getUsername() {
         return this.username;
@@ -57,7 +58,8 @@ public class User extends BaseEntity implements UserDetails {
     @Override
     @NonNull
     @NotEmpty
-    @Length(min = 8, max = 128)
+    @Length(min = 8, max = 128,message = "password must be at least 8 characters")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @Column(name = "password", unique = true, nullable = false)
     public String getPassword() {
         return this.password;
@@ -75,15 +77,6 @@ public class User extends BaseEntity implements UserDetails {
 
     public void setUserType(UserType userType) {
         this.userType = userType;
-    }
-
-    @Column(name = "date_registered")
-    public Instant getDateRegistered() {
-        return this.dateRegistered;
-    }
-
-    public void setDateRegistered(Instant dateRegistered) {
-        this.dateRegistered = dateRegistered;
     }
 
     @Column(name = "date_of_birth")
@@ -133,11 +126,8 @@ public class User extends BaseEntity implements UserDetails {
 
 
     @ManyToMany(targetEntity = Address.class,
-            fetch = FetchType.LAZY,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE,
-            })
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "users_address",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -153,9 +143,7 @@ public class User extends BaseEntity implements UserDetails {
 
 
     @OneToMany(targetEntity = Card.class,
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL},
-            orphanRemoval = true)
+            fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "user_cards",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
@@ -168,10 +156,9 @@ public class User extends BaseEntity implements UserDetails {
     }
 
 
-    @OneToMany(targetEntity = ContactInformation.class,
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.ALL},
-            orphanRemoval = true)
+    @OneToMany(targetEntity = ContactInformation.class
+            , fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "user_contact_information",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "contact_information_id", referencedColumnName = "id"))
@@ -221,7 +208,8 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     @ManyToMany(targetEntity = Role.class,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH})
     @JoinTable(name = "user_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
@@ -232,7 +220,6 @@ public class User extends BaseEntity implements UserDetails {
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
-
 
     @Override
     public boolean equals(Object o) {
@@ -247,17 +234,17 @@ public class User extends BaseEntity implements UserDetails {
                 Objects.equals(username, user.username) &&
                 Objects.equals(password, user.password) &&
                 userType == user.userType &&
-                Objects.equals(dateRegistered, user.dateRegistered) &&
                 Objects.equals(dateOfBirth, user.dateOfBirth) &&
+                Objects.equals(created, user.created) &&
+                Objects.equals(modified, user.modified) &&
                 Objects.equals(firstName, user.firstName) &&
                 Objects.equals(lastName, user.lastName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), username, password, userType, dateRegistered,
-                dateOfBirth, firstName, lastName, isEnabled, isCredentialsNonExpired,
-                isAccountNonLocked, isAccountNonExpired);
+        return Objects.hash(super.hashCode(), username, password, userType, dateOfBirth, created, modified,
+                firstName, lastName, isEnabled, isCredentialsNonExpired, isAccountNonLocked, isAccountNonExpired);
     }
 
     @Override
@@ -266,8 +253,9 @@ public class User extends BaseEntity implements UserDetails {
         sb.append("username='").append(username).append('\'');
         sb.append(", password='").append(password).append('\'');
         sb.append(", userType=").append(userType);
-        sb.append(", dateRegistered=").append(dateRegistered);
         sb.append(", dateOfBirth=").append(dateOfBirth);
+        sb.append(", created=").append(created);
+        sb.append(", modified=").append(modified);
         sb.append(", firstName='").append(firstName).append('\'');
         sb.append(", lastName='").append(lastName).append('\'');
         sb.append(", isEnabled=").append(isEnabled);

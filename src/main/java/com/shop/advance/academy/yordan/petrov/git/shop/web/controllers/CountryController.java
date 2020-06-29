@@ -2,6 +2,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +35,29 @@ public class CountryController {
     }
 
     @PutMapping("/{id}")
-    public void updateCountry(@PathVariable("id") Long id,@RequestBody CountryServiceModel countryServiceModel) {
+    public  ResponseEntity<> updateCountry(@PathVariable("id") Long id, @RequestBody CountryServiceModel countryServiceModel) {
         countryService.updateCountry(countryServiceModel);
     }
 
 
     @GetMapping("/{id}")
-    public CountryServiceViewModel getCountry(@PathVariable("id")final Long id) {
+    public CountryServiceViewModel getCountry(@PathVariable("id") final Long id) {
         return countryService.getCountryById(id);
     }
 
     @GetMapping()
-    public List<CountryServiceViewModel> getCountrys() {
-        return countryService.getAllCountries();
+    public ResponseEntity<List<CountryServiceViewModel>> getCountries() {
+
+        List<CountryServiceViewModel> countryServiceViewModels = countryService.getAllCountries();
+
+        log.info("Country Found: {} ", countryServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(countryServiceViewModels);
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteCountry(@PathVariable("id") Long id) {
+    public  ResponseEntity<> deleteCountry(@PathVariable("id") Long id) {
         countryService.deleteCountryById(id);
     }
 

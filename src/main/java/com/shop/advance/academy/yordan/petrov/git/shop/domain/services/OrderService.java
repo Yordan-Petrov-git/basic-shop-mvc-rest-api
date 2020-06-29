@@ -16,7 +16,7 @@ public interface OrderService {
 
     List<OrderServiceViewModel> getAllOrders();
 
-    void deleteOrderById(long id);
+    OrderServiceViewModel deleteOrderById(long id);
 
 
 }

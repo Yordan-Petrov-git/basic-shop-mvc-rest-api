@@ -34,7 +34,7 @@ public class CardController {
     }
 
     @PutMapping("/{id}")
-    public void updateCard(@PathVariable("id") Long id,@RequestBody CardServiceModel cardServiceModel) {
+    public  ResponseEntity<> updateCard(@PathVariable("id") Long id,@RequestBody CardServiceModel cardServiceModel) {
         cardService.updateCard(cardServiceModel);
     }
 
@@ -50,7 +50,7 @@ public class CardController {
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteCard(@PathVariable("id") Long id) {
+    public  ResponseEntity<> deleteCard(@PathVariable("id") Long id) {
         cardService.deleteCardById(id);
     }
 

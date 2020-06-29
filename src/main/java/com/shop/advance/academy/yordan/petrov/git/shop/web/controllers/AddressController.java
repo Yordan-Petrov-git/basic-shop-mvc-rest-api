@@ -32,7 +32,7 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    public void updateAddress(@PathVariable("id") Long id,@RequestBody AddressServiceModel addressServiceModel) {
+    public  ResponseEntity<> updateAddress(@PathVariable("id") Long id,@RequestBody AddressServiceModel addressServiceModel) {
         addressService.updateAddress(addressServiceModel);
     }
 
@@ -43,12 +43,12 @@ public class AddressController {
     }
 
     @GetMapping()
-    public List<AddressServiceViewModel> getAddresss() {
+    public List<AddressServiceViewModel> getAddress() {
         return addressService.getAllAddresses();
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteAddress(@PathVariable("id") Long id) {
+    public  ResponseEntity<> deleteAddress(@PathVariable("id") Long id) {
         addressService.getAddressById(id);
     }
 

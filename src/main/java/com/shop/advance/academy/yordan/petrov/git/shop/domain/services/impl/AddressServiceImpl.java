@@ -37,7 +37,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressServiceViewModel createAddress(AddressServiceModel addressServiceModel) {
-//Create address only if the city is alredy in the database
+//Create address only if the city is already in the database
         Address address = this.modelMapper.map(addressServiceModel, Address.class);
 
         this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName())
@@ -95,12 +95,13 @@ public class AddressServiceImpl implements AddressService {
     }
 
     @Override
-    public void deleteAddressById(long id) {
+    public AddressServiceViewModel deleteAddressById(long id) {
 
-        this.addressRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Address  with id '%d' not found .", id)));
+        AddressServiceViewModel addressServiceViewModel = this.getAddressById(id);
 
         this.addressRepository.deleteById(id);
+
+        return addressServiceViewModel;
 
     }
 

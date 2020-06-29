@@ -33,9 +33,9 @@ public class Address extends BaseEntity {
         this.streetName = streetName;
     }
 
-    @ManyToOne(targetEntity = City.class,
-            cascade = {CascadeType.ALL}
-            , fetch = FetchType.LAZY)
+    @ManyToOne(targetEntity = City.class
+            ,cascade = {CascadeType.PERSIST,CascadeType.MERGE}
+            , fetch = FetchType.EAGER)
     @JoinColumn(name = "city_id"
             , referencedColumnName = "id")
     public City getCity() {

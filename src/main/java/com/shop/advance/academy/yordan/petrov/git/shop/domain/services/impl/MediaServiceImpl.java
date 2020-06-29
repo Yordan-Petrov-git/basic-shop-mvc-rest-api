@@ -86,12 +86,12 @@ public class MediaServiceImpl implements MediaService {
     }
 
     @Override
-    public void deleteMediaById(long id) {
+    public MediaServiceViewModel deleteMediaById(long id) {
 
-        this.mediaRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Media  with id '%d' not found .", id)));
+        MediaServiceViewModel mediaServiceViewModel = this.getMediaById(id);
 
         this.mediaRepository.deleteById(id);
 
+        return mediaServiceViewModel;
     }
 }

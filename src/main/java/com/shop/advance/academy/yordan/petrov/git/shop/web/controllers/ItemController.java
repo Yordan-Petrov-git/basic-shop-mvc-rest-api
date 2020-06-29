@@ -2,6 +2,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.MediaServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,23 +35,28 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
-    public void updateItem(@PathVariable("id") Long id,@RequestBody ItemServiceModel itemServiceModel) {
+    public  ResponseEntity<> updateItem(@PathVariable("id") Long id, @RequestBody ItemServiceModel itemServiceModel) {
         itemService.updateItem(itemServiceModel);
     }
 
 
     @GetMapping("/{id}")
-    public ItemServiceViewModel getItem(@PathVariable("id")final Long id) {
+    public ItemServiceViewModel getItem(@PathVariable("id") final Long id) {
         return itemService.getItemById(id);
     }
 
     @GetMapping()
-    public List<ItemServiceViewModel> getItems() {
-        return itemService.getAllItems();
+    public ResponseEntity<List<ItemServiceViewModel>> getItems() {
+
+        List<ItemServiceViewModel> itemServiceViewModels = itemService.getAllItems();
+
+        log.info("Item Found: {} ", itemServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModels);
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteItem(@PathVariable("id") Long id) {
+    public  ResponseEntity<> deleteItem(@PathVariable("id") Long id) {
         itemService.deleteItemById(id);
     }
 

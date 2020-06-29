@@ -54,7 +54,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
         this.contactInformationRepository.findById(ContactInformation.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Contact information with id '%d' not found .", ContactInformation.getId())));
 
-        return  this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
+        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
 
     }
 
@@ -75,20 +75,20 @@ public class ContactInformationServiceImpl implements ContactInformationService 
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Contact information was found"));
 
-        List<ContactInformation> contactInformations = contactInformationRepository.findAll();
+        List<ContactInformation> contactInformation = contactInformationRepository.findAll();
 
-        return modelMapper.map(contactInformations, new TypeToken<List<ContactInformationServiceViewModel>>() {
+        return modelMapper.map(contactInformation, new TypeToken<List<ContactInformationServiceViewModel>>() {
         }.getType());
 
     }
 
     @Override
-    public void deleteContactInformationById(long id) {
+    public ContactInformationServiceViewModel deleteContactInformationById(long id) {
 
-        this.contactInformationRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Contact information  with id '%d' not found .", id)));
+        ContactInformationServiceViewModel contactInformationServiceViewModel = this.getContactInformationById(id);
 
         this.contactInformationRepository.deleteById(id);
 
+        return contactInformationServiceViewModel;
     }
 }

@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
@@ -73,7 +73,7 @@ public class UserController {
     @GetMapping("{id}")
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
 
-        UserServiceViewModel userServiceViewModel = userService.getUserById(id);
+        UserServiceViewModel userServiceViewModel =userService.getUserById(id);
 
         log.info("User found: {}", userServiceViewModel);
 
@@ -94,7 +94,6 @@ public class UserController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
 
-        //TODO Delete not working fix it
 
         UserServiceViewModel userServiceViewModel = userService.deleteUserById(id);
 
@@ -103,5 +102,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
 
     }
+
+
 
 }

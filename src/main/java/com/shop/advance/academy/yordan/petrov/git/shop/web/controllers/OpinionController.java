@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +35,7 @@ public class OpinionController {
     }
 
     @PutMapping("/{id}")
-    public void updateOpinion(@PathVariable("id") Long id,@RequestBody OpinionServiceModel opinionServiceModel) {
+    public  ResponseEntity<> updateOpinion(@PathVariable("id") Long id,@RequestBody OpinionServiceModel opinionServiceModel) {
         opinionService.updateOpinion(opinionServiceModel);
     }
 
@@ -45,12 +46,18 @@ public class OpinionController {
     }
 
     @GetMapping()
-    public List<OpinionServiceViewModel> getOpinions() {
-        return opinionService.getAllOpinions();
+    public ResponseEntity<List<OpinionServiceViewModel>>  getOpinions() {
+
+        List<OpinionServiceViewModel> opinionServiceViewModelList = opinionService.getAllOpinions();
+
+        log.info("Opinions Found: {} ", opinionServiceViewModelList);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(opinionServiceViewModelList);
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteOpinion(@PathVariable("id") Long id) {
+    public  ResponseEntity<> deleteOpinion(@PathVariable("id") Long id) {
         opinionService.deleteOpinionById(id);
     }
 }

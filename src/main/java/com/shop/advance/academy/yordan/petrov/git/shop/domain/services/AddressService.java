@@ -17,7 +17,7 @@ public interface AddressService {
 
     List<AddressServiceViewModel> getAllAddresses();
 
-    void deleteAddressById(long id);
+    AddressServiceViewModel deleteAddressById(long id);
 
 
 }

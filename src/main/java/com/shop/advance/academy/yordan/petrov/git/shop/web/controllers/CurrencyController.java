@@ -3,6 +3,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class CurrencyController {
     }
 
     @PutMapping("/{id}")
-    public void updateCurrency(@PathVariable("id") Long id,@RequestBody CurrencyServiceModel currencyServiceModel) {
+    public  ResponseEntity<> updateCurrency(@PathVariable("id") Long id,@RequestBody CurrencyServiceModel currencyServiceModel) {
         currencyService.updateCurrency(currencyServiceModel);
     }
 
@@ -45,12 +47,18 @@ public class CurrencyController {
     }
 
     @GetMapping()
-    public List<CurrencyServiceViewModel> getCurrencys() {
-        return currencyService.getAllCurrencies();
+    public  ResponseEntity<List<CurrencyServiceViewModel>> getCurrencies() {
+
+        List<CurrencyServiceViewModel> currencyServiceViewModels =  currencyService.getAllCurrencies();
+
+        log.info("Currency Found: {} ", currencyServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(currencyServiceViewModels);
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteCurrency(@PathVariable("id") Long id) {
+    public  ResponseEntity<> deleteCurrency(@PathVariable("id") Long id) {
         currencyService.deleteCurrencyById(id);
     }
 

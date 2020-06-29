@@ -16,7 +16,7 @@ public interface ContactInformationService {
 
     List<ContactInformationServiceViewModel> getAllContactInformations();
 
-    void deleteContactInformationById(long id);
+    ContactInformationServiceViewModel deleteContactInformationById(long id);
 
 
 }

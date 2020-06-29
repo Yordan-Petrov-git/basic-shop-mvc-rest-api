@@ -54,14 +54,27 @@ public class ShoppingCartController {
     }
 
     @GetMapping()
-    public List<ShoppingCartServiceViewModel> getShoppingCarts() {
-        return shoppingCartService.getAllShoppingCarts();
+    public ResponseEntity<List<ShoppingCartServiceViewModel>> getShoppingCarts() {
+
+        List<ShoppingCartServiceViewModel> shoppingCartServiceViewModels = shoppingCartService.getAllShoppingCarts();
+
+        log.info("Shopping Carts Found: {} ", shoppingCartServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(shoppingCartServiceViewModels);
+
     }
 
     @DeleteMapping("/delete/{id}")
-    public void deleteShoppingCart(@PathVariable("id") Long id) {
-        shoppingCartService.deleteShoppingCartById(id);
+    public ResponseEntity<ShoppingCartServiceViewModel> deleteShoppingCart(@PathVariable("id") Long id) {
+
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.deleteShoppingCartById(id);
+
+
+        log.info("Shopping Cart deleted: {}", shoppingCartServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(shoppingCartServiceViewModel);
     }
 
 
-}
+
+    }

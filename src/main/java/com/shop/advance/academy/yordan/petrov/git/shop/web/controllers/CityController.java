@@ -3,6 +3,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +36,7 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
-    public void updateCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
+    public  ResponseEntity<> updateCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
 
         cityService.updateCity(id);
     }
@@ -55,8 +57,14 @@ public class CityController {
     }
 
     @GetMapping()
-    public List<CityServiceViewModel> getCitys() {
-        return cityService.getAllCities();
+    public ResponseEntity<List<CityServiceViewModel>> getCites() {
+
+        List<CityServiceViewModel> cityServiceViewModels =  cityService.getAllCities();
+
+        log.info("Cities Found: {} ", cityServiceViewModels);
+
+        return ResponseEntity.status(HttpStatus.FOUND).body(cityServiceViewModels);
+
     }
 
     @DeleteMapping("/delete/{id}")
