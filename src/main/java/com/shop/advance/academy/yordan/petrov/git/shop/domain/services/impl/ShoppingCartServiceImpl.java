@@ -47,7 +47,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         this.shoppingCartRepository.findById(shoppingCartServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Shopping with id '%d' not found .", shoppingCartServiceModel.getId())));
 
-       return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceViewModel.class);
+        return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceViewModel.class);
 
     }
 
