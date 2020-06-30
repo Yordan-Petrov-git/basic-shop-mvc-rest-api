@@ -4,11 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 import io.micrometer.core.lang.NonNull;
 import org.hibernate.validator.constraints.Length;
-import org.springframework.boot.actuate.endpoint.annotation.DeleteOperation;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.web.bind.annotation.DeleteMapping;
 
 import javax.persistence.*;
+import javax.transaction.Transactional;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
