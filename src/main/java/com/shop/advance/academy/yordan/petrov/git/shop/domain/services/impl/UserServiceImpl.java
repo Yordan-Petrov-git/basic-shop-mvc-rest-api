@@ -112,7 +112,9 @@ public class UserServiceImpl implements UserService {
 
         User user = this.modelMapper.map(userServiceModel, User.class);
 
-        this.getUserById(user.getId());
+        this.userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
+            throw new InvalidEntityException(String.format("User with username '%s' already exists.", user.getUsername()));
+        });
 
         user.setModified(LocalDateTime.now());
 
@@ -157,7 +159,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        return this.userRepository.findByUsername(username).orElseThrow(InvalidEntityException::new);
+        return this.userRepository.findByUsername(username)
+                .orElseThrow((InvalidEntityException::new));
 
     }
 }
