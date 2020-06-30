@@ -12,7 +12,6 @@ public class Country extends BaseEntity{
     private String name;
     private String coordinates;
 
-
     public Country() {
     }
     @Column(name = "country_name")

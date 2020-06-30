@@ -32,8 +32,9 @@ public class ShoppingCartController {
 
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createUser", UserServiceViewModel.class)
-                .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
+ 
+        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createShoppingCart", UserServiceViewModel.class)
+          .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
 
         log.info("Shopping Cart created: {}", location);
 
@@ -45,7 +46,10 @@ public class ShoppingCartController {
 
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.updateShoppingCart(shoppingCartServiceModel);
 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createUser", UserServiceViewModel.class)
+ shop_services
+        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateShoppingCart", UserServiceViewModel.class)
+
+
                 .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
 
         log.info("Shopping cart updated: {} {}", shoppingCartServiceViewModel, location);

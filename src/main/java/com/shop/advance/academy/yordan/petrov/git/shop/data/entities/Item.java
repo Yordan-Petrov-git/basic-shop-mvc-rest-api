@@ -12,13 +12,13 @@ import java.util.Objects;
 @Table(name = "items")
 public class Item extends BaseEntity {
 
-    private Media media;
-    private List<Opinion> opinions = new ArrayList<>();
     private String title;
     private String description;
     private BigDecimal price;
     private Double weight;
     private BigDecimal vat;
+    private Media media;
+    private List<Opinion> opinions = new ArrayList<>();
     private ItemCategory itemCategory = ItemCategory.NONE;
 
     public Item() {

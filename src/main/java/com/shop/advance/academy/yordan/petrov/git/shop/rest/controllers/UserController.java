@@ -47,10 +47,9 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateUser", UserServiceViewModel.class)
-                .pathSegment("{id}").buildAndExpand(userServiceViewModel.getId()).toUri();
+ 
+        log.info("User updated: {}", userServiceViewModel);
 
-        log.info("User updated: {} %n {}", location, userServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
@@ -60,10 +59,10 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "partialUpdateUser", UserServiceViewModel.class)
-                .pathSegment("{id}").buildAndExpand(userServiceViewModel.getId()).toUri();
 
-        log.info("User updated: {} , {}", location, userServiceViewModel);
+
+        log.info("User updated: {} , ",  userServiceViewModel);
+
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
@@ -74,7 +73,9 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.getUserById(id);
 
-        log.info("User found: {}", userServiceViewModel);
+
+
+
 
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
 
@@ -90,13 +91,13 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
 
         UserServiceViewModel userServiceViewModel = userService.deleteUserById(id);
 
-        log.info("Users deleted: {}", userServiceViewModel);
+        log.info("Users deleted: {} ", userServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
 
