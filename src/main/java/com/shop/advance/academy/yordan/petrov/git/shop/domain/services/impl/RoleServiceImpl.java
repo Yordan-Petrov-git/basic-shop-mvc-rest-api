@@ -30,9 +30,11 @@ public class    RoleServiceImpl implements RoleService {
     public void seedRolesInDatabase() {
 
         Role admin = new Role("ADMIN");
+        Role moderator = new Role("MODERATOR");
         Role user = new Role("USER");
 
         this.roleRepository.saveAndFlush(admin);
+        this.roleRepository.saveAndFlush(moderator);
         this.roleRepository.saveAndFlush(user);
 
     }

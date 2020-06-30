@@ -53,7 +53,7 @@ public class Order extends BaseEntity {
 
     @ManyToOne(targetEntity = ShoppingCart.class,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "sopping_cart_id")
+    @JoinColumn(name = "sopping_cart_id",referencedColumnName = "id")
     public ShoppingCart getShoppingCart() {
         return this.shoppingCart;
     }

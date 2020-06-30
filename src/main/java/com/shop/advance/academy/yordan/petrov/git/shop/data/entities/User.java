@@ -209,11 +209,10 @@ public class User extends BaseEntity implements UserDetails {
 
     @Override
     @ManyToMany(targetEntity = Role.class,
-            fetch = FetchType.EAGER,
-            cascade = {CascadeType.DETACH})
-    @JoinTable(name = "user_roles",
+            fetch = FetchType.EAGER)
+    @JoinTable(name = "user_authorities",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"))
+            inverseJoinColumns = @JoinColumn(name = "authorities_id", referencedColumnName = "id"))
     public Set<Role> getAuthorities() {
         return this.authorities;
     }

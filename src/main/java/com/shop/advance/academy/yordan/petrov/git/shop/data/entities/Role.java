@@ -36,11 +36,7 @@ public class Role extends BaseEntity implements GrantedAuthority {
 
     @ManyToMany(targetEntity = User.class,
             mappedBy = "authorities",
-            fetch = FetchType.EAGER,
-            cascade = {
-                    CascadeType.PERSIST,
-                    CascadeType.MERGE
-            }
+            fetch = FetchType.EAGER
     )
     public Set<User> getUsers() {
         return this.users;

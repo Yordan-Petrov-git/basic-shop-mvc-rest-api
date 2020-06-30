@@ -11,6 +11,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserService
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
+import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
@@ -58,7 +60,7 @@ public class UserServiceImpl implements UserService {
         });
 
 
-        if (contactInformationRepository.count() != 0 ) {
+        if (contactInformationRepository.count() != 0) {
 
             this.contactInformationRepository.findByEmail(userServiceModel.getContactInformation()
                     .stream()
@@ -75,8 +77,9 @@ public class UserServiceImpl implements UserService {
                 throw new InvalidEntityException(String.format("Phone number : '%s' is  already registered.", p.getPhoneNumber()));
             });
         }
-        //Sets 1 st registered user as admin role
+
         if (userRepository.count() == 0) {
+            //Sets 1 st registered user as admin role
             this.roleService.seedRolesInDatabase();
 
             user.setAuthorities(this.roleService.findAllRoles()
@@ -84,8 +87,8 @@ public class UserServiceImpl implements UserService {
                     .map(r -> this.modelMapper.map(r, Role.class))
                     .collect(Collectors.toSet()));
 
+        } else if (userRepository.count() > 0) {
             //Sets 2 and so on user  as user role
-        } else    {
             user.setAuthorities(new LinkedHashSet<>());
             user.getAuthorities()
                     .add(this.modelMapper.map(this.roleRepository.findByAuthority("USER"), Role.class));
@@ -98,10 +101,8 @@ public class UserServiceImpl implements UserService {
         user.setAccountNonLocked(true);
         user.setAccountNonExpired(true);
 
-
         user.setCreated(LocalDateTime.now());
         user.setModified(LocalDateTime.now());
-
         return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceViewModel.class);
     }
 
@@ -111,8 +112,7 @@ public class UserServiceImpl implements UserService {
 
         User user = this.modelMapper.map(userServiceModel, User.class);
 
-        this.userRepository.findById(user.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("User with id '%d' not found .", user.getId())));
+        this.getUserById(user.getId());
 
         user.setModified(LocalDateTime.now());
 
