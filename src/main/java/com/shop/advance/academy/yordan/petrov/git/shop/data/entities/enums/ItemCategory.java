@@ -4,7 +4,13 @@ public enum ItemCategory {
 
     NONE,
     BOOKS,
+    OFFICE_SUPPLIES,
     CLOTHES,
-    ELECTRONICS;
+    ELECTRONICS,
+    MOBILE_DEVICES,
+    PC_GAMES,
+    PSP_GAMES,
+    PS5_GAMES,
+    XBOX_GAMES;
 
 }

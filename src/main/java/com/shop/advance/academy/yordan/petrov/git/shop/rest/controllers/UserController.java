@@ -1,6 +1,5 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
@@ -48,10 +47,7 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateUser", UserServiceViewModel.class)
-                .pathSegment("{id}").buildAndExpand(userServiceViewModel.getId()).toUri();
-
-        log.info("User updated: {} %n {}", location, userServiceViewModel);
+        log.info("User updated: {}", userServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
@@ -61,10 +57,8 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "partialUpdateUser", UserServiceViewModel.class)
-                .pathSegment("{id}").buildAndExpand(userServiceViewModel.getId()).toUri();
 
-        log.info("User updated: {} , {}", location, userServiceViewModel);
+        log.info("User updated: {} , ",  userServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
@@ -73,7 +67,8 @@ public class UserController {
     @GetMapping("{id}")
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
 
-        UserServiceViewModel userServiceViewModel =userService.getUserById(id);
+        UserServiceViewModel userServiceViewModel = userService.getUserById(id);
+
 
         log.info("User found: {}", userServiceViewModel);
 
@@ -91,18 +86,16 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
-
 
         UserServiceViewModel userServiceViewModel = userService.deleteUserById(id);
 
-        log.info("Users deleted: {}", userServiceViewModel);
+        log.info("Users deleted: {} ", userServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
 
     }
-
 
 
 }

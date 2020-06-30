@@ -115,7 +115,7 @@ public class UserServiceImpl implements UserService {
         this.userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
             throw new InvalidEntityException(String.format("User with username '%s' already exists.", user.getUsername()));
         });
-
+        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
         user.setModified(LocalDateTime.now());
 
         return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceViewModel.class);

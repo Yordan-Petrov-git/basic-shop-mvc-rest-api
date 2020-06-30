@@ -49,6 +49,12 @@ public class AddressServiceImpl implements AddressService {
                                     addressServiceModel.getCity().getName()));
                 });
 
+
+        //TODO
+        //  if addres city name exsist add it to addres if not add it to database cityies AND THEN TO ADDRESS
+        // cityRepository.findCityByName(addressServiceModel.getCity().getName());
+
+
         CityServiceViewModel cityServiceViewModel = this.cityService.getCityByName(addressServiceModel.getCity().getName());
 
         cityRepository.findCityByName(addressServiceModel.getCity().getName())

@@ -4,7 +4,6 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepo
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;

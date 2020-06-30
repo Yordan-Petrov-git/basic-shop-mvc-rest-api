@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.web.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
@@ -33,7 +32,7 @@ public class ShoppingCartController {
 
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createUser", UserServiceViewModel.class)
+        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createShoppingCart", UserServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
 
         log.info("Shopping Cart created: {}", location);
@@ -46,7 +45,7 @@ public class ShoppingCartController {
 
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.updateShoppingCart(shoppingCartServiceModel);
 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createUser", UserServiceViewModel.class)
+        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateShoppingCart", UserServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
 
         log.info("Shopping cart updated: {} {}", shoppingCartServiceViewModel, location);

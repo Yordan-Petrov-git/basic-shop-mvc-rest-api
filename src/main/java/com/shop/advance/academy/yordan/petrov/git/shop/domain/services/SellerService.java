@@ -19,5 +19,4 @@ public interface SellerService {
     SellerServiceViewModel deleteSellerById(long id);
 
 
-
 }
