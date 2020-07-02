@@ -9,7 +9,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "coontact_informations")
-public class ContactInformation extends BaseEntity{
+public class ContactInformation extends BaseEntity {
 
     private String email;
     private String phoneNumber;
@@ -18,8 +18,9 @@ public class ContactInformation extends BaseEntity{
 
     public ContactInformation() {
     }
+
     @Email()
-    @Column(name = "email",unique = true)
+    @Column(name = "email", unique = true)
     public String getEmail() {
         return this.email;
     }

@@ -5,16 +5,16 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "cities")
-public class City extends BaseEntity{
+public class City extends BaseEntity {
 
     private String name;
     private String region;
     private String province;
     private Country country;
 
-
     public City() {
     }
+
     @Column(name = "city_name")
     public String getName() {
         return this.name;
@@ -24,12 +24,11 @@ public class City extends BaseEntity{
         this.name = name;
     }
 
-
     @ManyToOne(targetEntity = Country.class
-            , cascade = {CascadeType.MERGE,CascadeType.PERSIST}
-            , fetch = FetchType.EAGER
+            , cascade = {CascadeType.PERSIST,CascadeType.MERGE}
+            , fetch = FetchType.LAZY
     )
-    @JoinColumn(name = "country_id",referencedColumnName = "id")
+    @JoinColumn(name = "country_id", referencedColumnName = "id")
     public Country getCountry() {
         return this.country;
     }
@@ -37,6 +36,7 @@ public class City extends BaseEntity{
     public void setCountry(Country country) {
         this.country = country;
     }
+
     @Column(name = "region")
     public String getRegion() {
         return this.region;
@@ -45,6 +45,7 @@ public class City extends BaseEntity{
     public void setRegion(String region) {
         this.region = region;
     }
+
     @Column(name = "province")
     public String getProvince() {
         return this.province;

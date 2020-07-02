@@ -71,7 +71,9 @@ public class AddressController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<AddressServiceViewModel> deleteAddress(@PathVariable("id") Long id) {
 
-        AddressServiceViewModel addressServiceViewModel = addressService.getAddressById(id);
+
+
+        AddressServiceViewModel addressServiceViewModel = addressService.deleteAddressById(id);
 
         log.info("Address deleted : {}", addressServiceViewModel);
 

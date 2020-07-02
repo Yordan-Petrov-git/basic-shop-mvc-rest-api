@@ -26,6 +26,7 @@ public class Role extends BaseEntity implements GrantedAuthority {
     @Column(name = "authority",
             unique = true,
             nullable = false)
+    @JoinColumn(name = "authority", referencedColumnName = "id")
     public String getAuthority() {
         return this.authority;
     }
@@ -38,6 +39,7 @@ public class Role extends BaseEntity implements GrantedAuthority {
             mappedBy = "authorities",
             fetch = FetchType.EAGER
     )
+
     public Set<User> getUsers() {
         return this.users;
     }

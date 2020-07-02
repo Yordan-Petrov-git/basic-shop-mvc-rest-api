@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "medias")
-public class Media extends BaseEntity{
+public class Media extends BaseEntity {
 
     private String picturePath;
     private String videoPath;
@@ -15,6 +15,7 @@ public class Media extends BaseEntity{
 
     public Media() {
     }
+
     @Column(name = "picture_path")
     public String getPicturePath() {
         return this.picturePath;
@@ -23,6 +24,7 @@ public class Media extends BaseEntity{
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
+
     @Column(name = "video_path")
     public String getVideoPath() {
         return this.videoPath;
@@ -31,6 +33,7 @@ public class Media extends BaseEntity{
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
     }
+
     @Column(name = "document_path")
     public String getDocumentPath() {
         return this.documentPath;

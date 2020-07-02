@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "curencies")
-public class Currency extends BaseEntity{
+public class Currency extends BaseEntity {
 
     private String name;
     private String iso2;
@@ -26,6 +26,7 @@ public class Currency extends BaseEntity{
     public void setName(String name) {
         this.name = name;
     }
+
     @Column(name = "iso_2")
     public String getIso2() {
         return this.iso2;
@@ -34,6 +35,7 @@ public class Currency extends BaseEntity{
     public void setIso2(String iso2) {
         this.iso2 = iso2;
     }
+
     @Column(name = "iso_3")
     public String getIso3() {
         return this.iso3;
@@ -42,6 +44,7 @@ public class Currency extends BaseEntity{
     public void setIso3(String iso3) {
         this.iso3 = iso3;
     }
+
     @Column(name = "multiplier")
     public Integer getMultiplierForCurrency() {
         return this.multiplierForCurrency;

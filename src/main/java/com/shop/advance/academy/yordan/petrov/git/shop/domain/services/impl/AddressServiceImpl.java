@@ -54,15 +54,15 @@ public class AddressServiceImpl implements AddressService {
         //  if addres city name exsist add it to addres if not add it to database cityies AND THEN TO ADDRESS
         // cityRepository.findCityByName(addressServiceModel.getCity().getName());
 
+//
+//        CityServiceViewModel cityServiceViewModel = this.cityService.getCityByName(addressServiceModel.getCity().getName());
+//
+//        cityRepository.findCityByName(addressServiceModel.getCity().getName())
+//                .ifPresent(c -> {
+//                    address.setCity(this.modelMapper.map(cityServiceViewModel, City.class));
+//                });
 
-        CityServiceViewModel cityServiceViewModel = this.cityService.getCityByName(addressServiceModel.getCity().getName());
-
-        cityRepository.findCityByName(addressServiceModel.getCity().getName())
-                .ifPresent(c -> {
-                    address.setCity(this.modelMapper.map(cityServiceViewModel, City.class));
-                });
-
-
+    
         return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);
     }
 
@@ -76,6 +76,17 @@ public class AddressServiceImpl implements AddressService {
         return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);
 
     }
+
+
+//    @Override
+//    public CityServiceViewModel getCityById(long id) {
+//
+//        return this.modelMapper
+//                .map(this.cityRepository.findById(id).orElseThrow(() ->
+//                        new EntityNotFoundException(String.format("City  with ID %s not found.", id))), CityServiceViewModel.class);
+//
+//    }
+
 
     @Override
     public AddressServiceViewModel getAddressById(long id) {
@@ -110,5 +121,6 @@ public class AddressServiceImpl implements AddressService {
         return addressServiceViewModel;
 
     }
+
 
 }

@@ -7,7 +7,7 @@ import java.util.Objects;
 
 @Entity
 @Table(name = "opinions")
-public class Opinion extends BaseEntity{
+public class Opinion extends BaseEntity {
 
     private String comment;
     private Rating rating = Rating.NONE;
@@ -17,6 +17,7 @@ public class Opinion extends BaseEntity{
 
     public Opinion() {
     }
+
     @Column(name = "comment")
     public String getComment() {
         return this.comment;
@@ -25,6 +26,7 @@ public class Opinion extends BaseEntity{
     public void setComment(String comment) {
         this.comment = comment;
     }
+
     @Column(name = "rating")
     @Enumerated(EnumType.STRING)
     public Rating getRating() {
@@ -34,6 +36,7 @@ public class Opinion extends BaseEntity{
     public void setRating(Rating rating) {
         this.rating = rating;
     }
+
     @Column(name = "vote")
     public Double getVote() {
         return this.vote;
@@ -45,7 +48,7 @@ public class Opinion extends BaseEntity{
 
     @ManyToOne(targetEntity = Media.class,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "media_id",referencedColumnName = "id")
+    @JoinColumn(name = "media_id", referencedColumnName = "id")
     public Media getMedia() {
         return this.media;
     }
@@ -57,7 +60,7 @@ public class Opinion extends BaseEntity{
 
     @ManyToOne(targetEntity = User.class,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getUser() {
         return this.user;
     }
