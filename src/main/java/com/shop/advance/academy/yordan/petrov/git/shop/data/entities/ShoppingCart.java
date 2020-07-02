@@ -21,7 +21,7 @@ public class ShoppingCart extends BaseEntity {
     @ManyToMany(
             targetEntity = Item.class,
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE} )
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(name = "shopping_cart_item",
             joinColumns = @JoinColumn(name = "shoping_cart_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"))
@@ -35,7 +35,7 @@ public class ShoppingCart extends BaseEntity {
 
     @ManyToOne(targetEntity = User.class,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id",referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getUser() {
         return this.user;
     }

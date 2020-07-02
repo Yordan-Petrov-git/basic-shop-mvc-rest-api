@@ -1,9 +1,11 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -21,7 +23,7 @@ public class CityServiceImpl implements CityService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository, ModelMapper modelMapper) {
+    public CityServiceImpl(CityRepository cityRepository, ModelMapper modelMapper, CountryService countryService) {
         this.cityRepository = cityRepository;
         this.modelMapper = modelMapper;
     }
@@ -39,6 +41,8 @@ public class CityServiceImpl implements CityService {
             // TO BE ABLE TO CREATE CITY ONLY IF COUNTRY EXISTS IN THE DATABASE
 
         });
+
+
 
         return this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceViewModel.class);
     }

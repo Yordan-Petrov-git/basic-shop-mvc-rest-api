@@ -2,18 +2,22 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Collection;
 import java.util.Objects;
 
 @Entity
 @Table(name = "countries")
-public class Country extends BaseEntity{
+public class Country extends BaseEntity {
 
     private String name;
     private String coordinates;
 
+
     public Country() {
     }
+
     @Column(name = "country_name")
     public String getName() {
         return this.name;
@@ -22,6 +26,7 @@ public class Country extends BaseEntity{
     public void setName(String name) {
         this.name = name;
     }
+
     @Column(name = "coordinates")
     public String getCoordinates() {
         return this.coordinates;

@@ -11,7 +11,6 @@ public class Address extends BaseEntity {
     private String streetName;
     private City city;
 
-
     public Address() {
     }
 
@@ -33,11 +32,11 @@ public class Address extends BaseEntity {
         this.streetName = streetName;
     }
 
+
     @ManyToOne(targetEntity = City.class
-            , cascade = {CascadeType.DETACH}
-            , fetch = FetchType.EAGER)
-    @JoinColumn(name = "city_id"
-            , referencedColumnName = "id")
+            , cascade = {CascadeType.PERSIST,CascadeType.MERGE}
+            , fetch = FetchType.LAZY)
+    @JoinColumn(name = "city_id", referencedColumnName = "id")
     public City getCity() {
         return this.city;
     }

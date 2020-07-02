@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -84,9 +85,10 @@ public class CityController {
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<CityServiceViewModel> deleteCity(@PathVariable("id") Long id) {
 
-        CityServiceViewModel cityServiceViewModel = cityService.getCityById(id);
 
-        cityService.deleteCityById(id);
+        CityServiceViewModel cityServiceViewModel =  cityService.deleteCityById(id);
+
+        log.info("City deleted: {} ", cityServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.OK).body(cityServiceViewModel);
     }

@@ -4,7 +4,6 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Order
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.PaymentType;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ShipmentType;
 
-import javax.naming.Name;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -53,7 +52,7 @@ public class Order extends BaseEntity {
 
     @ManyToOne(targetEntity = ShoppingCart.class,
             fetch = FetchType.EAGER)
-    @JoinColumn(name = "sopping_cart_id",referencedColumnName = "id")
+    @JoinColumn(name = "sopping_cart_id", referencedColumnName = "id")
     public ShoppingCart getShoppingCart() {
         return this.shoppingCart;
     }

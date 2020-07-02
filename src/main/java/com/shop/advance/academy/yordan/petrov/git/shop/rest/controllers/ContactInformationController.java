@@ -72,7 +72,7 @@ public class ContactInformationController {
     @DeleteMapping("/delete/{id}")
     public  ResponseEntity<ContactInformationServiceViewModel> deleteContactInformation(@PathVariable("id") Long id) {
 
-        ContactInformationServiceViewModel contactInformationServiceViewModel =      contactInformationService.deleteContactInformationById(id);
+        ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.deleteContactInformationById(id);
 
         log.info("Contact Information deleted : {}", contactInformationServiceViewModel);
 
