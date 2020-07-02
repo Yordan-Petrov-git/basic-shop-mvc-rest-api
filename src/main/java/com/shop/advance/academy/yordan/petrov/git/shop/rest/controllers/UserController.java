@@ -47,7 +47,9 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
+ 
         log.info("User updated: {}", userServiceViewModel);
+
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
@@ -58,7 +60,9 @@ public class UserController {
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
 
+
         log.info("User updated: {} , ",  userServiceViewModel);
+
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
@@ -70,7 +74,8 @@ public class UserController {
         UserServiceViewModel userServiceViewModel = userService.getUserById(id);
 
 
-        log.info("User found: {}", userServiceViewModel);
+
+
 
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
 
@@ -85,6 +90,7 @@ public class UserController {
 
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
