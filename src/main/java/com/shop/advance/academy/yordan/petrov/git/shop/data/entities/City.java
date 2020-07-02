@@ -25,7 +25,7 @@ public class City extends BaseEntity {
     }
 
     @ManyToOne(targetEntity = Country.class
-            , cascade = {CascadeType.PERSIST,CascadeType.MERGE}
+            , cascade = {CascadeType.DETACH}
             , fetch = FetchType.LAZY
     )
     @JoinColumn(name = "country_id", referencedColumnName = "id")
