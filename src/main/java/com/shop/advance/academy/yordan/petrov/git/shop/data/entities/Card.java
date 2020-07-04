@@ -1,5 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardProviders;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardType;
 
@@ -49,6 +50,7 @@ public class Card extends BaseEntity {
     }
 
     @Column(name = "expiration_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDate getExpirationDate() {
         return this.expirationDate;
     }
@@ -58,6 +60,7 @@ public class Card extends BaseEntity {
     }
 
     @Column(name = "issued_date")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getDateIssued() {
         return this.dateIssued;
     }
