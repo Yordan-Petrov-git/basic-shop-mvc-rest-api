@@ -25,7 +25,7 @@ public class CardController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<CardServiceViewModel> createCard(@RequestBody CardServiceModel cardServiceModel) {
 
         CardServiceViewModel cardServiceViewModel =  cardService.createCard(cardServiceModel);
@@ -69,7 +69,7 @@ public class CardController {
         return ResponseEntity.status(HttpStatus.FOUND).body(cardServiceViewModel);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public  ResponseEntity<CardServiceViewModel> deleteCard(@PathVariable("id") Long id) {
 
         CardServiceViewModel cardServiceViewModel =      cardService.deleteCardById(id);

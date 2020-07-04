@@ -4,48 +4,50 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ItemC
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "items")
 public class Item extends BaseEntity {
 
-    private String title;
+    private String title;   
     private String description;
     private BigDecimal price;
     private Double weight;
-    private BigDecimal vat;
-    private Media media;
-    private List<Opinion> opinions = new ArrayList<>();
+    private Set<Media> media= new HashSet<>();
+    private Set<Opinion> opinions = new HashSet<>();
     private ItemCategory itemCategory = ItemCategory.NONE;
 
     public Item() {
     }
 
-    @ManyToOne(targetEntity = Media.class,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
-    public Media getMedia() {
+    @OneToMany(targetEntity = Media.class,
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE},orphanRemoval = true)
+    @JoinTable(name = "items_media",
+            joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "media_id", referencedColumnName = "id"))
+    public Set<Media> getMedia() {
         return this.media;
     }
 
-    public void setMedia(Media media) {
+    public void setMedia(Set<Media> media) {
         this.media = media;
     }
 
-    @ManyToMany(targetEntity = Opinion.class,
+    @OneToMany(targetEntity = Opinion.class,
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
     @JoinTable(name = "item_opinion",
             joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "opinion_id", referencedColumnName = "id"))
-    public List<Opinion> getOpinions() {
+    public Set<Opinion> getOpinions() {
         return this.opinions;
     }
 
-    public void setOpinions(List<Opinion> opinions) {
+    public void setOpinions(Set<Opinion> opinions) {
         this.opinions = opinions;
     }
 
@@ -85,14 +87,6 @@ public class Item extends BaseEntity {
         this.weight = weight;
     }
 
-    @Column(name = "vat")
-    public BigDecimal getVat() {
-        return this.vat;
-    }
-
-    public void setVat(BigDecimal vat) {
-        this.vat = vat;
-    }
 
     @Column(name = "item_category")
     @Enumerated(EnumType.STRING)
@@ -114,13 +108,12 @@ public class Item extends BaseEntity {
                 Objects.equals(description, item.description) &&
                 Objects.equals(price, item.price) &&
                 Objects.equals(weight, item.weight) &&
-                Objects.equals(vat, item.vat) &&
                 itemCategory == item.itemCategory;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), title, description, price, weight, vat, itemCategory);
+        return Objects.hash(super.hashCode(), title, description, price, weight, itemCategory);
     }
 
     @Override
@@ -130,7 +123,6 @@ public class Item extends BaseEntity {
         sb.append(", description='").append(description).append('\'');
         sb.append(", price=").append(price);
         sb.append(", weight=").append(weight);
-        sb.append(", vat=").append(vat);
         sb.append(", itemCategory=").append(itemCategory);
         sb.append(", id=").append(id);
         sb.append('}');

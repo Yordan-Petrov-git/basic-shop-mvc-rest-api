@@ -27,16 +27,12 @@ public class ShoppingCartController {
         this.shoppingCartService = shoppingCartService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/{id}")
     public ResponseEntity<ShoppingCartServiceViewModel> createShoppingCart(@RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
 
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
 
- 
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createShoppingCart", UserServiceViewModel.class)
-          .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
-
-        log.info("Shopping Cart created: {}", location);
+        log.info("Shopping Cart created: {}", shoppingCartServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCartServiceViewModel);
     }
@@ -46,9 +42,8 @@ public class ShoppingCartController {
 
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.updateShoppingCart(shoppingCartServiceModel);
 
- shop_services
-        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateShoppingCart", UserServiceViewModel.class)
 
+        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateShoppingCart", UserServiceViewModel.class)
 
                 .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
 
@@ -79,7 +74,7 @@ public class ShoppingCartController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ShoppingCartServiceViewModel> deleteShoppingCart(@PathVariable("id") Long id) {
 
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.deleteShoppingCartById(id);

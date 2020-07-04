@@ -3,27 +3,23 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ItemCategory;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 public class ItemServiceViewModel {
 
     private Long id;
-    private MediaServiceViewModel media;
-    private List<OpinionServiceViewModel> opinions = new ArrayList<>();
+    private Set<MediaServiceViewModel> media= new HashSet<>();
+    private Set<OpinionServiceViewModel> opinions = new HashSet<>();
     private String title;
     private String description;
     private BigDecimal price;
     private Double weight;
-    private BigDecimal vat;
     private ItemCategory itemCategory = ItemCategory.NONE;
 
     public ItemServiceViewModel() {
     }
-
-
-
 
     public Long getId() {
         return this.id;
@@ -33,19 +29,19 @@ public class ItemServiceViewModel {
         this.id = id;
     }
 
-    public MediaServiceViewModel getMedia() {
+    public Set<MediaServiceViewModel> getMedia() {
         return this.media;
     }
 
-    public void setMedia(MediaServiceViewModel media) {
+    public void setMedia(Set<MediaServiceViewModel> media) {
         this.media = media;
     }
 
-    public List<OpinionServiceViewModel> getOpinions() {
+    public Set<OpinionServiceViewModel> getOpinions() {
         return this.opinions;
     }
 
-    public void setOpinions(List<OpinionServiceViewModel> opinions) {
+    public void setOpinions(Set<OpinionServiceViewModel> opinions) {
         this.opinions = opinions;
     }
 
@@ -81,13 +77,7 @@ public class ItemServiceViewModel {
         this.weight = weight;
     }
 
-    public BigDecimal getVat() {
-        return this.vat;
-    }
 
-    public void setVat(BigDecimal vat) {
-        this.vat = vat;
-    }
 
     public ItemCategory getItemCategory() {
         return this.itemCategory;
@@ -107,13 +97,12 @@ public class ItemServiceViewModel {
                 Objects.equals(description, that.description) &&
                 Objects.equals(price, that.price) &&
                 Objects.equals(weight, that.weight) &&
-                Objects.equals(vat, that.vat) &&
                 itemCategory == that.itemCategory;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, price, weight, vat, itemCategory);
+        return Objects.hash(title, description, price, weight, itemCategory);
     }
 
 
@@ -124,7 +113,6 @@ public class ItemServiceViewModel {
         sb.append(", description='").append(description).append('\'');
         sb.append(", price=").append(price);
         sb.append(", weight=").append(weight);
-        sb.append(", vat=").append(vat);
         sb.append(", itemCategory=").append(itemCategory);
         sb.append('}');
         return sb.toString();

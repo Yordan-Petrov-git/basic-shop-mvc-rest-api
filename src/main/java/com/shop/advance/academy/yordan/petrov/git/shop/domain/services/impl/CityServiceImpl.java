@@ -3,7 +3,10 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -21,11 +24,15 @@ public class CityServiceImpl implements CityService {
 
     private final CityRepository cityRepository;
     private final ModelMapper modelMapper;
+    private final CountryService countryService;
+    private final CountryRepository countryRepository;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository, ModelMapper modelMapper, CountryService countryService) {
+    public CityServiceImpl(CityRepository cityRepository, ModelMapper modelMapper, CountryService countryService, CountryService countryService1, CountryRepository countryRepository) {
         this.cityRepository = cityRepository;
         this.modelMapper = modelMapper;
+        this.countryService = countryService1;
+        this.countryRepository = countryRepository;
     }
 
     @Override
@@ -36,13 +43,17 @@ public class CityServiceImpl implements CityService {
         this.cityRepository.findCityByName(city.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("City '%s' already exists.", city.getName()));
 
-            //TODO
-            // IF COUNTRY EXISTS ADD IT TO CITY IF NOT ADD IT TO DATABASE AND TO CITY
-            // TO BE ABLE TO CREATE CITY ONLY IF COUNTRY EXISTS IN THE DATABASE
 
         });
 
 
+        //Create city only if the country is alredy in teh database
+        CountryServiceViewModel countryServiceViewModel = this.countryService.getCountryName(cityServiceModel.getCountry().getName());
+
+        countryRepository.findByName(cityServiceModel.getCountry().getName())
+                .ifPresent(c -> {
+                    city.setCountry(this.modelMapper.map(countryServiceViewModel, Country.class));
+                });
 
         return this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceViewModel.class);
     }

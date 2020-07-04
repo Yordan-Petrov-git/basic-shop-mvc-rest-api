@@ -1,9 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -12,7 +8,7 @@ public class SellerServiceModel {
     private Long id;
     private String name;
     private Set<ItemServiceModel> stock = new HashSet<>();
-    private ContactInformation contactInformation;
+    private ContactInformationServiceModel contactInformation;
     private Set<AddressServiceModel> addresses = new HashSet<>();
 
 
@@ -45,11 +41,11 @@ public class SellerServiceModel {
         this.stock = stock;
     }
 
-    public ContactInformation getContactInformation() {
+    public ContactInformationServiceModel getContactInformation() {
         return this.contactInformation;
     }
 
-    public void setContactInformation(ContactInformation contactInformation) {
+    public void setContactInformation(ContactInformationServiceModel contactInformation) {
         this.contactInformation = contactInformation;
     }
 

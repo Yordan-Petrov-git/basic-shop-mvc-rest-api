@@ -1,7 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,7 @@ public class CurrencyController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<CurrencyServiceViewModel> createCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
 
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.createCurrency(currencyServiceModel);
@@ -70,7 +71,7 @@ public class CurrencyController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CurrencyServiceViewModel> deleteCurrency(@PathVariable("id") Long id) {
 
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.deleteCurrencyById(id);

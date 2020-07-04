@@ -25,7 +25,7 @@ public class OpinionController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<OpinionServiceViewModel> createOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
 
         OpinionServiceViewModel opinionServiceViewModel = opinionService.createOpinion(opinionServiceModel);
@@ -67,7 +67,7 @@ public class OpinionController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<OpinionServiceViewModel> deleteOpinion(@PathVariable("id") Long id) {
 
 

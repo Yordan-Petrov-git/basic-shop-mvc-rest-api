@@ -8,6 +8,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -38,15 +39,19 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final AddressRepository addressRepository;
+    private final AddressService addressService;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, ContactInformationRepository contactInformationRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, ContactInformationRepository contactInformationRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder, AddressRepository addressRepository1, AddressService addressService) {
         this.userRepository = userRepository;
         this.contactInformationRepository = contactInformationRepository;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
         this.roleService = roleService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.addressRepository = addressRepository1;
+        this.addressService = addressService;
     }
 
 
@@ -78,6 +83,7 @@ public class UserServiceImpl implements UserService {
             });
         }
 
+
         if (userRepository.count() == 0) {
             //Sets 1 st registered user as admin role
             this.roleService.seedRolesInDatabase();
@@ -91,7 +97,7 @@ public class UserServiceImpl implements UserService {
             //Sets 2 and so on user  as user role
             user.setAuthorities(new LinkedHashSet<>());
             user.getAuthorities()
-                    .add(this.modelMapper.map(this.roleRepository.findByAuthority("USER"), Role.class));
+                    .add(this.modelMapper.map(this.roleRepository.findByAuthority("ROLE_USER"), Role.class));
         }
 
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));

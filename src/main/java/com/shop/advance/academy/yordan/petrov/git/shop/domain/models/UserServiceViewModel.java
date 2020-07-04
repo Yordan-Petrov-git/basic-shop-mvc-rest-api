@@ -1,7 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
 import java.time.LocalDate;
@@ -18,7 +17,7 @@ public class UserServiceViewModel {
     private LocalDate dateOfBirth;
     private String firstName;
     private String lastName;
-    private Set<AddressServiceModel> addresses = new HashSet<>();
+    private Set<AddressServiceViewModel> addresses = new HashSet<>();
     private Set<ContactInformationServiceViewModel> contactInformation = new HashSet<>();
 
 
@@ -51,7 +50,6 @@ public class UserServiceViewModel {
     }
 
 
-    @JsonFormat(pattern="yyyy-MM-dd")
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
@@ -76,11 +74,11 @@ public class UserServiceViewModel {
         this.lastName = lastName;
     }
 
-    public Set<AddressServiceModel> getAddresses() {
+    public Set<AddressServiceViewModel> getAddresses() {
         return this.addresses;
     }
 
-    public void setAddresses(Set<AddressServiceModel> addresses) {
+    public void setAddresses(Set<AddressServiceViewModel> addresses) {
         this.addresses = addresses;
     }
 

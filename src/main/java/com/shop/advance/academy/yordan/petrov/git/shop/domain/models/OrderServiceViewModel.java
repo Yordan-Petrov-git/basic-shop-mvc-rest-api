@@ -1,6 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.OrderStatus;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.PaymentType;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ShipmentType;

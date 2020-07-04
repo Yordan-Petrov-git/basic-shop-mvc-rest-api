@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +24,7 @@ public class CountryController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<CountryServiceViewModel> createCountry(@RequestBody CountryServiceModel countryServiceModel) {
 
         CountryServiceViewModel countryServiceViewModel = countryService.createCountry(countryServiceModel);
@@ -68,7 +69,7 @@ public class CountryController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CountryServiceViewModel> deleteCountry(@PathVariable("id") Long id) {
 
         CountryServiceViewModel countryServiceViewModel = countryService.deleteCountryById(id);

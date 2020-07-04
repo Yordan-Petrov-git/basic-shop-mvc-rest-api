@@ -4,7 +4,9 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepositor
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -37,7 +39,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressServiceViewModel createAddress(AddressServiceModel addressServiceModel) {
-//Create address only if the city is already in the database
+
         Address address = this.modelMapper.map(addressServiceModel, Address.class);
 
         this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName())
@@ -50,17 +52,14 @@ public class AddressServiceImpl implements AddressService {
                 });
 
 
-        //TODO
-        //  if addres city name exsist add it to addres if not add it to database cityies AND THEN TO ADDRESS
-        // cityRepository.findCityByName(addressServiceModel.getCity().getName());
+        //Create address only if the city is already in the database
+        //  if the city is not in the database throw error
+        CityServiceViewModel cityServiceViewModel = this.cityService.getCityByName(addressServiceModel.getCity().getName());
 
-//
-//        CityServiceViewModel cityServiceViewModel = this.cityService.getCityByName(addressServiceModel.getCity().getName());
-//
-//        cityRepository.findCityByName(addressServiceModel.getCity().getName())
-//                .ifPresent(c -> {
-//                    address.setCity(this.modelMapper.map(cityServiceViewModel, City.class));
-//                });
+        cityRepository.findCityByName(addressServiceModel.getCity().getName())
+                .ifPresent(c -> {
+                    address.setCity(this.modelMapper.map(cityServiceViewModel, City.class));
+                });
 
     
         return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);

@@ -2,9 +2,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
-import java.util.Collection;
 import java.util.Objects;
 
 @Entity

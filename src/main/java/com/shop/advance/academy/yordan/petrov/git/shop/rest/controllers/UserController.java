@@ -47,7 +47,7 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
- 
+
         log.info("User updated: {}", userServiceViewModel);
 
 
@@ -60,8 +60,7 @@ public class UserController {
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
 
-
-        log.info("User updated: {} , ",  userServiceViewModel);
+        log.info("User updated: {} , ", userServiceViewModel);
 
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
@@ -72,10 +71,6 @@ public class UserController {
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
 
         UserServiceViewModel userServiceViewModel = userService.getUserById(id);
-
-
-
-
 
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
 

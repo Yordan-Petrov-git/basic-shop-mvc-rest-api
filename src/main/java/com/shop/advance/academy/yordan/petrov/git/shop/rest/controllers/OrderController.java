@@ -24,7 +24,7 @@ public class OrderController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping("/{id}")
     public ResponseEntity<OrderServiceViewModel> createOrder(@RequestBody OrderServiceModel orderServiceModel) {
 
         OrderServiceViewModel contactInformationServiceViewModel = orderService.createOrder(orderServiceModel);

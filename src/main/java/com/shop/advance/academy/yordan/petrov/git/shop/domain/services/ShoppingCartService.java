@@ -8,9 +8,9 @@ import java.util.List;
 @Service
 public interface ShoppingCartService {
 
-    ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel ShoppingCart);
+    ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel);
 
-    ShoppingCartServiceViewModel updateShoppingCart(ShoppingCartServiceModel ShoppingCart);
+    ShoppingCartServiceViewModel updateShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel);
 
     ShoppingCartServiceViewModel getShoppingCartById(long id);
 
