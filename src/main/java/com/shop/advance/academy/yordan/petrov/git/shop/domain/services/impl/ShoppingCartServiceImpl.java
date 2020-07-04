@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
@@ -19,6 +20,8 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -45,13 +48,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
 
         ShoppingCart shoppingCart = this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
-//
-//        ItemServiceViewModel itemServiceViewModel = this.itemService.getItemById(shoppingCartServiceModel.getAddedItems());
-//
-//        userRepository.findById(shoppingCartServiceModel.getUser().getId())
-//                .ifPresent(c -> {
-//                    shoppingCart.setUser(this.modelMapper.map(userServiceModel, User.class));
-//                });
 
 //Adds shopping cart to user
         UserServiceViewModel userServiceModel = this.userService.getUserById(shoppingCartServiceModel.getUser().getId());
@@ -61,12 +57,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     shoppingCart.setUser(this.modelMapper.map(userServiceModel, User.class));
                 });
 
+        //add item only if it exists
 
         shoppingCart.setCreated(LocalDateTime.now());
         shoppingCart.setModified(LocalDateTime.now());
 
         return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceViewModel.class);
-
     }
 
     @Override

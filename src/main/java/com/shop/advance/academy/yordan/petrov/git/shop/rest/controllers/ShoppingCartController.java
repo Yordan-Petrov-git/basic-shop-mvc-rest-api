@@ -32,10 +32,6 @@ public class ShoppingCartController {
 
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
 
-//
-//        URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createShoppingCart", UserServiceViewModel.class)
-//          .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
-
         log.info("Shopping Cart created: {}", shoppingCartServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCartServiceViewModel);
@@ -48,7 +44,6 @@ public class ShoppingCartController {
 
 
         URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateShoppingCart", UserServiceViewModel.class)
-
 
                 .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
 

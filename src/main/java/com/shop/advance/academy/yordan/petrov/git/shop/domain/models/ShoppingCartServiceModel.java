@@ -1,5 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCartItem;
+
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +9,7 @@ import java.util.List;
 public class ShoppingCartServiceModel {
 
     private Long id;
-    private List<ItemServiceModel> addedItems =  new ArrayList<>();
+    private List<ShoppingCartItemServiceModel> shoppingCartItem = new ArrayList<>();
     private UserServiceModel user;
     private LocalDateTime created;
     private LocalDateTime modified;
@@ -24,12 +26,12 @@ public class ShoppingCartServiceModel {
         this.id = id;
     }
 
-    public List<ItemServiceModel> getAddedItems() {
-        return this.addedItems;
+    public List<ShoppingCartItemServiceModel> getShoppingCartItem() {
+        return this.shoppingCartItem;
     }
 
-    public void setAddedItems(List<ItemServiceModel> addedItems) {
-        this.addedItems = addedItems;
+    public void setShoppingCartItem(List<ShoppingCartItemServiceModel> shoppingCartItem) {
+        this.shoppingCartItem = shoppingCartItem;
     }
 
     public UserServiceModel getUser() {

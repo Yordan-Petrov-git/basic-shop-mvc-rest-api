@@ -13,30 +13,31 @@ import java.util.Objects;
 @Table(name = "shopping_carts")
 public class ShoppingCart extends BaseEntity {
 
-    private List<Item> addedItems = new ArrayList<>();
-  //  private List<ShoppingCartItem> shoppingCartItem = new ArrayList<>();
+    private List<ShoppingCartItem> shoppingCartItem = new ArrayList<>();
     private LocalDateTime created;
     private LocalDateTime modified;
-    private Integer itemCount;
     private User user;
 
     public ShoppingCart() {
     }
 
+
     @OneToMany(
-            targetEntity = Item.class,
+            targetEntity = ShoppingCartItem.class,
             fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "shopping_cart_item",
-            joinColumns = @JoinColumn(name = "shoping_cart_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"))
-    public List<Item> getAddedItems() {
-        return this.addedItems;
+    @JoinTable(name = "shopping_cart_shopping_cart_item",
+            joinColumns = @JoinColumn(name = "shopping_cart_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "shopping_cart_item_id", referencedColumnName = "id"))
+    public List<ShoppingCartItem> getShoppingCartItem() {
+        return this.shoppingCartItem;
     }
 
-    public void setAddedItems(List<Item> addedItems) {
-        this.addedItems = addedItems;
+    public void setShoppingCartItem(List<ShoppingCartItem> shoppingCartItem) {
+        this.shoppingCartItem = shoppingCartItem;
     }
+
+
     @Column(name ="date_time_created")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreated() {

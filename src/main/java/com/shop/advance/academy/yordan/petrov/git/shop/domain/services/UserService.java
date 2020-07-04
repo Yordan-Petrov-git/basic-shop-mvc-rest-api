@@ -10,9 +10,9 @@ import java.util.List;
 public interface UserService extends UserDetailsService {
 
 
-    UserServiceViewModel createUser(UserServiceModel user);
+    UserServiceViewModel createUser(UserServiceModel userServiceModel);
 
-    UserServiceViewModel updateUser(UserServiceModel user);
+    UserServiceViewModel updateUser(UserServiceModel userServiceModel);
 
     UserServiceViewModel getUserById(long id);
 
