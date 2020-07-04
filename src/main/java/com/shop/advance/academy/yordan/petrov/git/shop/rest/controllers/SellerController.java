@@ -23,7 +23,7 @@ public class SellerController {
         this.sellerService = sellerService;
     }
 
-    @PostMapping("/{id}")
+    @PostMapping()
     public ResponseEntity<SellerServiceViewModel> createSeller(@RequestBody SellerServiceModel sellerServiceModel) {
 
         SellerServiceViewModel sellerServiceViewModel = sellerService.createSeller(sellerServiceModel);

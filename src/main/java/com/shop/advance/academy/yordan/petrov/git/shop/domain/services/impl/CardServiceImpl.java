@@ -9,6 +9,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityExc
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -21,11 +22,13 @@ public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
     private final ModelMapper modelMapper;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public CardServiceImpl(CardRepository cardRepository, ModelMapper modelMapper) {
+    public CardServiceImpl(CardRepository cardRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.cardRepository = cardRepository;
         this.modelMapper = modelMapper;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
 
@@ -40,7 +43,7 @@ public class CardServiceImpl implements CardService {
 
 
         card.setDateIssued(LocalDateTime.now());
-
+        card.setPinCode(this.bCryptPasswordEncoder.encode(cardServiceModel.getPinCode()));
         return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
 
     }

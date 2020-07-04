@@ -39,7 +39,7 @@ public class Item extends BaseEntity {
 
     @OneToMany(targetEntity = Opinion.class,
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST,CascadeType.REMOVE},orphanRemoval = true)
+            cascade = {CascadeType.DETACH,CascadeType.REMOVE},orphanRemoval = true)
     @JoinTable(name = "item_opinion",
             joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "opinion_id", referencedColumnName = "id"))

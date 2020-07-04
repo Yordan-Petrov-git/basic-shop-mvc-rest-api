@@ -16,7 +16,6 @@ public class CardServiceViewModel {
     private LocalDate expirationDate;
     private LocalDateTime dateIssued;
     private String cvvCode;
-    private String pinCode;
     private String number;
     private BigDecimal balance;
     private CurrencyServiceViewModel currency;
@@ -77,13 +76,6 @@ public class CardServiceViewModel {
         this.cvvCode = cvvCode;
     }
 
-    public String getPinCode() {
-        return this.pinCode;
-    }
-
-    public void setPinCode(String pinCode) {
-        this.pinCode = pinCode;
-    }
 
     public String getNumber() {
         return this.number;
@@ -129,14 +121,13 @@ public class CardServiceViewModel {
                 cardProviders == that.cardProviders &&
                 Objects.equals(expirationDate, that.expirationDate) &&
                 Objects.equals(cvvCode, that.cvvCode) &&
-                Objects.equals(pinCode, that.pinCode) &&
                 Objects.equals(number, that.number) &&
                 Objects.equals(balance, that.balance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, cardType, cardProviders, expirationDate, cvvCode, pinCode, number, balance, isActive);
+        return Objects.hash(id, cardType, cardProviders, expirationDate, cvvCode, number, balance, isActive);
     }
 
 
@@ -148,7 +139,6 @@ public class CardServiceViewModel {
         sb.append(", cardProviders=").append(cardProviders);
         sb.append(", expirationDate=").append(expirationDate);
         sb.append(", cvvCode='").append(cvvCode).append('\'');
-        sb.append(", pinCode='").append(pinCode).append('\'');
         sb.append(", number='").append(number).append('\'');
         sb.append(", balance=").append(balance);
         sb.append(", isActive=").append(isActive);
