@@ -22,7 +22,7 @@ public class SellerController {
         this.sellerService = sellerService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/{id}")
     public ResponseEntity<SellerServiceViewModel> createSeller(@RequestBody SellerServiceModel sellerServiceModel) {
 
         SellerServiceViewModel sellerServiceViewModel = sellerService.createSeller(sellerServiceModel);
@@ -64,7 +64,7 @@ public class SellerController {
         return ResponseEntity.status(HttpStatus.FOUND).body(sellerServiceViewModels);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<SellerServiceViewModel> deleteSeller(@PathVariable("id") Long id) {
 
         SellerServiceViewModel sellerServiceViewModel = sellerService.deleteSellerById(id);

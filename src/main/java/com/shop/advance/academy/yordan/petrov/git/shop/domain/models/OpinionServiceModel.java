@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Rating;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class OpinionServiceModel {
 
@@ -10,7 +11,7 @@ public class OpinionServiceModel {
     private String comment;
     private Rating rating = Rating.NONE;
     private Double vote;
-    private MediaServiceModel media;
+    private Set<MediaServiceModel> media;
     private UserServiceModel user;
 
     public OpinionServiceModel() {
@@ -50,11 +51,11 @@ public class OpinionServiceModel {
         this.vote = vote;
     }
 
-    public MediaServiceModel getMedia() {
+    public Set<MediaServiceModel> getMedia() {
         return this.media;
     }
 
-    public void setMedia(MediaServiceModel media) {
+    public void setMedia(Set<MediaServiceModel> media) {
         this.media = media;
     }
 

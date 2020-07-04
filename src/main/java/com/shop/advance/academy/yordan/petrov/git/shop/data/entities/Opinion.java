@@ -3,7 +3,9 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Rating;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "opinions")
@@ -12,7 +14,7 @@ public class Opinion extends BaseEntity {
     private String comment;
     private Rating rating = Rating.NONE;
     private Double vote;
-    private Media media;
+    private Set<Media> media= new HashSet<>();
     private User user;
 
     public Opinion() {
@@ -46,20 +48,23 @@ public class Opinion extends BaseEntity {
         this.vote = vote;
     }
 
-    @ManyToOne(targetEntity = Media.class,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "media_id", referencedColumnName = "id")
-    public Media getMedia() {
+    @OneToMany(targetEntity = Media.class,
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.REMOVE,CascadeType.MERGE,CascadeType.PERSIST},
+            orphanRemoval = true)
+    @JoinColumn(name = "opinion_id")
+    public Set<Media> getMedia() {
         return this.media;
     }
 
-    public void setMedia(Media media) {
+    public void setMedia(Set<Media> media) {
         this.media = media;
     }
 
 
     @ManyToOne(targetEntity = User.class,
-            fetch = FetchType.EAGER)
+            fetch = FetchType.LAZY,
+    cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getUser() {
         return this.user;

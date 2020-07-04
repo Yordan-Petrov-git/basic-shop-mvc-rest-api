@@ -23,7 +23,7 @@ public class AddressController {
         this.addressService = addressService;
     }
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<AddressServiceViewModel> createAddress(@RequestBody AddressServiceModel addressServiceModel) {
 
 
@@ -68,7 +68,7 @@ public class AddressController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<AddressServiceViewModel> deleteAddress(@PathVariable("id") Long id) {
 
 

@@ -125,8 +125,8 @@ public class User extends BaseEntity implements UserDetails {
 
 
     @ManyToMany(targetEntity = Address.class,
-            fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+            fetch = FetchType.LAZY,
+            cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
     @JoinTable(
             name = "users_address",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),

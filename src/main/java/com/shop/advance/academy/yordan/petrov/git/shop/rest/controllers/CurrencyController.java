@@ -24,7 +24,7 @@ public class CurrencyController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<CurrencyServiceViewModel> createCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
 
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.createCurrency(currencyServiceModel);
@@ -70,7 +70,7 @@ public class CurrencyController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CurrencyServiceViewModel> deleteCurrency(@PathVariable("id") Long id) {
 
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.deleteCurrencyById(id);

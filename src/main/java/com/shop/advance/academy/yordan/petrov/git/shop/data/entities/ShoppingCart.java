@@ -10,7 +10,7 @@ import java.util.Objects;
 public class ShoppingCart extends BaseEntity {
 
 
-    private List<Item> addedItems = new ArrayList<Item>();
+    private List<Item> addedItems = new ArrayList<>();
     private User user;
 
 
@@ -18,7 +18,7 @@ public class ShoppingCart extends BaseEntity {
     }
 
 
-    @ManyToMany(
+    @OneToMany(
             targetEntity = Item.class,
             fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})

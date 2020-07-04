@@ -26,7 +26,7 @@ public class CityController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<CityServiceViewModel> createCity(@RequestBody CityServiceModel cityServiceModel) {
 
         CityServiceViewModel cityServiceViewModel = cityService.createCity(cityServiceModel);
@@ -82,7 +82,7 @@ public class CityController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CityServiceViewModel> deleteCity(@PathVariable("id") Long id) {
 
 

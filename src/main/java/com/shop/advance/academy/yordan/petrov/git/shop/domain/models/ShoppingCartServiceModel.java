@@ -6,7 +6,7 @@ import java.util.List;
 public class ShoppingCartServiceModel {
 
     private Long id;
-    private List<ItemServiceViewModel> addedItems =  new ArrayList<>();
+    private List<ItemServiceModel> addedItems =  new ArrayList<>();
     private UserServiceModel user;
 
 
@@ -23,11 +23,11 @@ public class ShoppingCartServiceModel {
         this.id = id;
     }
 
-    public List<ItemServiceViewModel> getAddedItems() {
+    public List<ItemServiceModel> getAddedItems() {
         return this.addedItems;
     }
 
-    public void setAddedItems(List<ItemServiceViewModel> addedItems) {
+    public void setAddedItems(List<ItemServiceModel> addedItems) {
         this.addedItems = addedItems;
     }
 

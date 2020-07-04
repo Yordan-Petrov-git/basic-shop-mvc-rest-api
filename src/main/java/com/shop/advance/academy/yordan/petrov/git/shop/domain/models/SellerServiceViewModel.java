@@ -12,7 +12,7 @@ public class SellerServiceViewModel {
     private Long id;
     private String name;
     private Set<ItemServiceViewModel> stock = new HashSet<>();
-    private ContactInformation contactInformation;
+    private ContactInformationServiceViewModel contactInformation;
     private Set<AddressServiceViewModel> addresses = new HashSet<>();
 
 
@@ -45,11 +45,11 @@ public class SellerServiceViewModel {
         this.stock = stock;
     }
 
-    public ContactInformation getContactInformation() {
+    public ContactInformationServiceViewModel getContactInformation() {
         return this.contactInformation;
     }
 
-    public void setContactInformation(ContactInformation contactInformation) {
+    public void setContactInformation(ContactInformationServiceViewModel contactInformation) {
         this.contactInformation = contactInformation;
     }
 

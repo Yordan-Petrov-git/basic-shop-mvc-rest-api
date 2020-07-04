@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/item")
+@RequestMapping("api/items")
 @Slf4j
 public class ItemController {
 
@@ -23,7 +23,7 @@ public class ItemController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<ItemServiceViewModel> createItem(@RequestBody ItemServiceModel itemServiceModel) {
 
         ItemServiceViewModel itemServiceViewModel = itemService.createItem(itemServiceModel);
@@ -68,7 +68,7 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModels);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<ItemServiceViewModel> deleteItem(@PathVariable("id") Long id) {
 
         ItemServiceViewModel itemServiceViewModel = itemService.deleteItemById(id);

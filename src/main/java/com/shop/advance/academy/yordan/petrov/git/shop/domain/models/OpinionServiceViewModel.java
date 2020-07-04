@@ -4,13 +4,14 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Rating;
 
 import java.util.Objects;
+import java.util.Set;
 
 public class OpinionServiceViewModel {
     private Long id;
     private String comment;
     private Rating rating = Rating.NONE;
     private Double vote;
-    private MediaServiceViewModel media;
+    private Set<MediaServiceModel> media;
     private UserServiceViewModel user;
 
     public OpinionServiceViewModel() {
@@ -50,11 +51,11 @@ public class OpinionServiceViewModel {
         this.vote = vote;
     }
 
-    public MediaServiceViewModel getMedia() {
+    public Set<MediaServiceModel> getMedia() {
         return this.media;
     }
 
-    public void setMedia(MediaServiceViewModel media) {
+    public void setMedia(Set<MediaServiceModel> media) {
         this.media = media;
     }
 

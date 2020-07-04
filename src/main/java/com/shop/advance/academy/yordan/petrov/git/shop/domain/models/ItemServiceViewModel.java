@@ -1,17 +1,17 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Media;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ItemCategory;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public class ItemServiceViewModel {
 
     private Long id;
-    private MediaServiceViewModel media;
-    private List<OpinionServiceViewModel> opinions = new ArrayList<>();
+    private Set<MediaServiceViewModel> media= new HashSet<>();
+    private Set<OpinionServiceViewModel> opinions = new HashSet<>();
     private String title;
     private String description;
     private BigDecimal price;
@@ -22,9 +22,6 @@ public class ItemServiceViewModel {
     public ItemServiceViewModel() {
     }
 
-
-
-
     public Long getId() {
         return this.id;
     }
@@ -33,19 +30,19 @@ public class ItemServiceViewModel {
         this.id = id;
     }
 
-    public MediaServiceViewModel getMedia() {
+    public Set<MediaServiceViewModel> getMedia() {
         return this.media;
     }
 
-    public void setMedia(MediaServiceViewModel media) {
+    public void setMedia(Set<MediaServiceViewModel> media) {
         this.media = media;
     }
 
-    public List<OpinionServiceViewModel> getOpinions() {
+    public Set<OpinionServiceViewModel> getOpinions() {
         return this.opinions;
     }
 
-    public void setOpinions(List<OpinionServiceViewModel> opinions) {
+    public void setOpinions(Set<OpinionServiceViewModel> opinions) {
         this.opinions = opinions;
     }
 

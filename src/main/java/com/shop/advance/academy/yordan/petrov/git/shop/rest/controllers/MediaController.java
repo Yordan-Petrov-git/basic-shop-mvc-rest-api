@@ -24,7 +24,7 @@ public class MediaController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<MediaServiceViewModel> createMedia(@RequestBody MediaServiceModel mediaServiceModel) {
 
 
@@ -71,7 +71,7 @@ public class MediaController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<MediaServiceViewModel> deleteMedia(@PathVariable("id") Long id) {
 
         MediaServiceViewModel mediaServiceViewModel = mediaService.deleteMediaById(id);

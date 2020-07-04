@@ -23,7 +23,7 @@ public class CountryController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<CountryServiceViewModel> createCountry(@RequestBody CountryServiceModel countryServiceModel) {
 
         CountryServiceViewModel countryServiceViewModel = countryService.createCountry(countryServiceModel);
@@ -68,7 +68,7 @@ public class CountryController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<CountryServiceViewModel> deleteCountry(@PathVariable("id") Long id) {
 
         CountryServiceViewModel countryServiceViewModel = countryService.deleteCountryById(id);

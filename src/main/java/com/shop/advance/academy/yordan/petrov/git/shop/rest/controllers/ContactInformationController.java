@@ -24,7 +24,7 @@ public class ContactInformationController {
     }
 
 
-    @PostMapping("/register")
+    @PostMapping()
     public ResponseEntity<ContactInformationServiceViewModel> createContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
 
         ContactInformationServiceViewModel contactInformationServiceViewModel =   contactInformationService.createContactInformation(contactInformationServiceModel);
@@ -69,7 +69,7 @@ public class ContactInformationController {
 
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public  ResponseEntity<ContactInformationServiceViewModel> deleteContactInformation(@PathVariable("id") Long id) {
 
         ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.deleteContactInformationById(id);

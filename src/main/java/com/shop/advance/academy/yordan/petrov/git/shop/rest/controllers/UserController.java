@@ -73,10 +73,6 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.getUserById(id);
 
-
-
-
-
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
 
     }
