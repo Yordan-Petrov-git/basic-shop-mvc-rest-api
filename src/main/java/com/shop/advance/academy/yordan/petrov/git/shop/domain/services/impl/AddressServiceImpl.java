@@ -4,7 +4,9 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepositor
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;

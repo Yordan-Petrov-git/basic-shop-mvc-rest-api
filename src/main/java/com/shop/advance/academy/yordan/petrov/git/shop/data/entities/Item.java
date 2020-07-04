@@ -4,7 +4,9 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ItemC
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "items")
@@ -14,7 +16,6 @@ public class Item extends BaseEntity {
     private String description;
     private BigDecimal price;
     private Double weight;
-    private BigDecimal vat;
     private Set<Media> media= new HashSet<>();
     private Set<Opinion> opinions = new HashSet<>();
     private ItemCategory itemCategory = ItemCategory.NONE;
@@ -86,14 +87,6 @@ public class Item extends BaseEntity {
         this.weight = weight;
     }
 
-    @Column(name = "vat")
-    public BigDecimal getVat() {
-        return this.vat;
-    }
-
-    public void setVat(BigDecimal vat) {
-        this.vat = vat;
-    }
 
     @Column(name = "item_category")
     @Enumerated(EnumType.STRING)
@@ -115,13 +108,12 @@ public class Item extends BaseEntity {
                 Objects.equals(description, item.description) &&
                 Objects.equals(price, item.price) &&
                 Objects.equals(weight, item.weight) &&
-                Objects.equals(vat, item.vat) &&
                 itemCategory == item.itemCategory;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), title, description, price, weight, vat, itemCategory);
+        return Objects.hash(super.hashCode(), title, description, price, weight, itemCategory);
     }
 
     @Override
@@ -131,7 +123,6 @@ public class Item extends BaseEntity {
         sb.append(", description='").append(description).append('\'');
         sb.append(", price=").append(price);
         sb.append(", weight=").append(weight);
-        sb.append(", vat=").append(vat);
         sb.append(", itemCategory=").append(itemCategory);
         sb.append(", id=").append(id);
         sb.append('}');

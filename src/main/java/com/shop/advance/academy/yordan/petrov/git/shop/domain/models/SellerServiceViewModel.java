@@ -1,9 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
-
 import java.util.HashSet;
 import java.util.Set;
 

@@ -1,11 +1,11 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Media;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ItemCategory;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 public class ItemServiceModel {
 
@@ -17,7 +17,6 @@ public class ItemServiceModel {
     private String description;
     private BigDecimal price;
     private Double weight;
-    private BigDecimal vat;
     private ItemCategory itemCategory = ItemCategory.NONE;
 
     public ItemServiceModel() {
@@ -79,13 +78,6 @@ public class ItemServiceModel {
         this.weight = weight;
     }
 
-    public BigDecimal getVat() {
-        return this.vat;
-    }
-
-    public void setVat(BigDecimal vat) {
-        this.vat = vat;
-    }
 
     public ItemCategory getItemCategory() {
         return this.itemCategory;
@@ -104,13 +96,12 @@ public class ItemServiceModel {
                 Objects.equals(description, that.description) &&
                 Objects.equals(price, that.price) &&
                 Objects.equals(weight, that.weight) &&
-                Objects.equals(vat, that.vat) &&
                 itemCategory == that.itemCategory;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, price, weight, vat, itemCategory);
+        return Objects.hash(title, description, price, weight, itemCategory);
     }
 
     @Override
@@ -120,7 +111,6 @@ public class ItemServiceModel {
         sb.append(", description='").append(description).append('\'');
         sb.append(", price=").append(price);
         sb.append(", weight=").append(weight);
-        sb.append(", vat=").append(vat);
         sb.append(", itemCategory=").append(itemCategory);
         sb.append('}');
         return sb.toString();

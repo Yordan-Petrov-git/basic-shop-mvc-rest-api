@@ -47,7 +47,7 @@ public class UserController {
 
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
- 
+
         log.info("User updated: {}", userServiceViewModel);
 
 
@@ -60,8 +60,7 @@ public class UserController {
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
 
 
-
-        log.info("User updated: {} , ",  userServiceViewModel);
+        log.info("User updated: {} , ", userServiceViewModel);
 
 
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);

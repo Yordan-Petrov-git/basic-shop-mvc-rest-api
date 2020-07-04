@@ -1,7 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

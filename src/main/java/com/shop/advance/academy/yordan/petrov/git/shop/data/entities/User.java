@@ -1,5 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 import io.micrometer.core.lang.NonNull;
@@ -7,10 +8,10 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
-import javax.transaction.Transactional;
 import javax.validation.constraints.NotEmpty;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity implements UserDetails {
+
 
     private String username;
     private String password;
@@ -35,11 +37,10 @@ public class User extends BaseEntity implements UserDetails {
     private boolean isAccountNonLocked = true;
     private boolean isAccountNonExpired = true;
     private Set<Role> authorities = new HashSet<>();
-
+    private Collection<ShoppingCart> shoppingCart;
 
     public User() {
     }
-
 
     @Override
     @NonNull
@@ -79,6 +80,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Column(name = "date_of_birth")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
@@ -88,6 +90,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Column(name = "created")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreated() {
         return this.created;
     }
@@ -97,6 +100,7 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     @Column(name = "modified")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getModified() {
         return this.modified;
     }
@@ -126,7 +130,7 @@ public class User extends BaseEntity implements UserDetails {
 
     @ManyToMany(targetEntity = Address.class,
             fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST,CascadeType.REMOVE})
+            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
     @JoinTable(
             name = "users_address",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -220,6 +224,18 @@ public class User extends BaseEntity implements UserDetails {
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
+
+    @OneToMany(fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH, CascadeType.REMOVE}
+            , mappedBy = "user")
+    public Collection<ShoppingCart> getShoppingCart() {
+        return this.shoppingCart;
+    }
+
+    public void setShoppingCart(Collection<ShoppingCart> shoppingCart) {
+        this.shoppingCart = shoppingCart;
+    }
+
 
     @Override
     public boolean equals(Object o) {

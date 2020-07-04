@@ -2,7 +2,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;

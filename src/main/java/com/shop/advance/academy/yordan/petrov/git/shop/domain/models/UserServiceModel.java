@@ -1,6 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
 import java.time.LocalDate;
@@ -11,6 +10,7 @@ import java.util.Set;
 
 public class UserServiceModel {
 
+    private Long id;
 
     private String username;
     private String password;
@@ -33,6 +33,13 @@ public class UserServiceModel {
     public UserServiceModel() {
     }
 
+    public Long getId() {
+        return this.id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return this.username;
@@ -58,7 +65,7 @@ public class UserServiceModel {
         this.userType = userType;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     public LocalDateTime getCreated() {
         return this.created;
     }
@@ -67,7 +74,7 @@ public class UserServiceModel {
         this.created = created;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+
     public LocalDateTime getModified() {
         return this.modified;
     }
@@ -76,7 +83,7 @@ public class UserServiceModel {
         this.modified = modified;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }

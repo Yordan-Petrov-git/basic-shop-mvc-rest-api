@@ -5,7 +5,6 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardT
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Objects;

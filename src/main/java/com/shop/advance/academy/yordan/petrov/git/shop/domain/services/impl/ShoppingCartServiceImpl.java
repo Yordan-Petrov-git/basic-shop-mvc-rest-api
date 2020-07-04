@@ -1,10 +1,14 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.List;
 
 
@@ -21,17 +26,44 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     private final ShoppingCartRepository shoppingCartRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final UserRepository userRepository;
+    private final ItemRepository itemRepository;
+    private final ItemService itemService;
 
     @Autowired
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ModelMapper modelMapper) {
+    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ModelMapper modelMapper, UserService userService, UserRepository userRepository, ItemRepository itemRepository, ItemService itemService) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.userRepository = userRepository;
+        this.itemRepository = itemRepository;
+        this.itemService = itemService;
     }
 
     @Override
-    public ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel ShoppingCart) {
+    public ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
 
-        ShoppingCart shoppingCart = this.modelMapper.map(ShoppingCart, ShoppingCart.class);
+        ShoppingCart shoppingCart = this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
+//
+//        ItemServiceViewModel itemServiceViewModel = this.itemService.getItemById(shoppingCartServiceModel.getAddedItems());
+//
+//        userRepository.findById(shoppingCartServiceModel.getUser().getId())
+//                .ifPresent(c -> {
+//                    shoppingCart.setUser(this.modelMapper.map(userServiceModel, User.class));
+//                });
+
+//Adds shopping cart to user
+        UserServiceViewModel userServiceModel = this.userService.getUserById(shoppingCartServiceModel.getUser().getId());
+
+        userRepository.findById(shoppingCartServiceModel.getUser().getId())
+                .ifPresent(c -> {
+                    shoppingCart.setUser(this.modelMapper.map(userServiceModel, User.class));
+                });
+
+
+        shoppingCart.setCreated(LocalDateTime.now());
+        shoppingCart.setModified(LocalDateTime.now());
 
         return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceViewModel.class);
 

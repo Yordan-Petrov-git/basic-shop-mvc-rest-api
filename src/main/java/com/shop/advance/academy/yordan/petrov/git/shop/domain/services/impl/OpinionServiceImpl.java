@@ -1,10 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OpinionRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;

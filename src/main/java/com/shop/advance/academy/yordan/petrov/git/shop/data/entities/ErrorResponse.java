@@ -1,31 +1,7 @@
-//package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
-//import lombok.Data;
-//import lombok.NoArgsConstructor;
-//import lombok.NonNull;
-//import lombok.RequiredArgsConstructor;
-//
-//import java.time.LocalDateTime;
-//
-//@Data
-//@RequiredArgsConstructor
-//@NoArgsConstructor
-//public class ErrorResponse {
-//
-//    private LocalDateTime timestamp =LocalDateTime.now();
-//    @NonNull
-//    private String error;
-//
-//    @NonNull
-//    private String message;
-//}
-
-
-
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
-
-
-        import java.time.LocalDateTime;
+import java.time.LocalDateTime;
+import java.util.Objects;
 
 public class ErrorResponse {
 
@@ -69,5 +45,30 @@ public class ErrorResponse {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ErrorResponse)) return false;
+        ErrorResponse that = (ErrorResponse) o;
+        return Objects.equals(timestamp, that.timestamp) &&
+                Objects.equals(error, that.error) &&
+                Objects.equals(message, that.message);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(timestamp, error, message);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ErrorResponse{");
+        sb.append("timestamp=").append(timestamp);
+        sb.append(", error='").append(error).append('\'');
+        sb.append(", message='").append(message).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

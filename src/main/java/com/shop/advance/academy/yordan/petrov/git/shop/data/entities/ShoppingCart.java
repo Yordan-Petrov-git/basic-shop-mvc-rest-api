@@ -1,6 +1,10 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
+
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -9,14 +13,15 @@ import java.util.Objects;
 @Table(name = "shopping_carts")
 public class ShoppingCart extends BaseEntity {
 
-
     private List<Item> addedItems = new ArrayList<>();
+  //  private List<ShoppingCartItem> shoppingCartItem = new ArrayList<>();
+    private LocalDateTime created;
+    private LocalDateTime modified;
+    private Integer itemCount;
     private User user;
-
 
     public ShoppingCart() {
     }
-
 
     @OneToMany(
             targetEntity = Item.class,
@@ -32,9 +37,28 @@ public class ShoppingCart extends BaseEntity {
     public void setAddedItems(List<Item> addedItems) {
         this.addedItems = addedItems;
     }
+    @Column(name ="date_time_created")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public LocalDateTime getCreated() {
+        return this.created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
+    }
+    @Column(name ="date_time_modified")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    public LocalDateTime getModified() {
+        return this.modified;
+    }
+
+    public void setModified(LocalDateTime modified) {
+        this.modified = modified;
+    }
 
     @ManyToOne(targetEntity = User.class,
-            fetch = FetchType.EAGER)
+            cascade = {CascadeType.DETACH},
+            fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getUser() {
         return this.user;
