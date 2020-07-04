@@ -1,7 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
-
 public class ShoppingCartItemServiceModel {
 
     private ItemServiceModel item;

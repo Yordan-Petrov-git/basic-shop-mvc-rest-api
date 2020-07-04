@@ -3,7 +3,6 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OpinionRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;

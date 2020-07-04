@@ -2,7 +2,6 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;

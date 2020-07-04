@@ -29,8 +29,8 @@ public class Seller extends BaseEntity {
 
 
     @ManyToMany(targetEntity = Item.class,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.EAGER)
+            cascade = {CascadeType.DETACH},
+            fetch = FetchType.LAZY)
     @JoinTable(
             name = "seller_item",
             joinColumns = @JoinColumn(name = "seller_id", referencedColumnName = "id"),

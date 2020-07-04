@@ -4,7 +4,6 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepositor
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
@@ -29,8 +28,8 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @Slf4j
@@ -86,7 +85,19 @@ public class UserServiceImpl implements UserService {
             });
         }
 
+        //Set address to the user by id of the address
+        Long addressId = userServiceModel.getAddresses()
+                .stream()
+                .map(AddressServiceModel::getId)
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No addresses were found"));
 
+        user.setAddresses(Set.of(this.addressRepository.findById(addressId).orElseThrow()));
+
+        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
+
+
+      //Add rolse to users
         if (userRepository.count() == 0) {
             //Sets 1 st registered user as admin role
             this.roleService.seedRolesInDatabase();
@@ -103,9 +114,7 @@ public class UserServiceImpl implements UserService {
                     .add(this.modelMapper.map(this.roleRepository.findByAuthority("ROLE_USER"), Role.class));
         }
 
-        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
 
-        
         user.setEnabled(true);
         user.setCredentialsNonExpired(true);
         user.setAccountNonLocked(true);
@@ -113,6 +122,7 @@ public class UserServiceImpl implements UserService {
 
         user.setCreated(LocalDateTime.now());
         user.setModified(LocalDateTime.now());
+
         return this.modelMapper.map(this.userRepository.saveAndFlush(user), UserServiceViewModel.class);
     }
 

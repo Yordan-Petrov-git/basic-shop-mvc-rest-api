@@ -3,10 +3,11 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
@@ -20,8 +21,6 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 
 @Service

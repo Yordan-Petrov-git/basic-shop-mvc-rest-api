@@ -2,8 +2,9 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartItemRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.*;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCartItem;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartItemServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartItemServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartItemService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
