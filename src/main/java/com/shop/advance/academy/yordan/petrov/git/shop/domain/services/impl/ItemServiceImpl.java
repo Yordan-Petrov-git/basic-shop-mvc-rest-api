@@ -49,6 +49,7 @@ public class ItemServiceImpl implements ItemService {
         this.itemRepository.findById(itemServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Item with id '%d' not found .", itemServiceModel.getId())));
 
+
        return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceViewModel.class);
 
     }

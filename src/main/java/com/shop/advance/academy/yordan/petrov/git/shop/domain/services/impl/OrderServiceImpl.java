@@ -1,10 +1,15 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,11 +25,15 @@ public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
+    private final ShoppingCartService shoppingCartService;
+    private final ShoppingCartRepository shoppingCartRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper) {
+    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, ShoppingCartService shoppingCartService, ShoppingCartRepository shoppingCartRepository) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
+        this.shoppingCartService = shoppingCartService;
+        this.shoppingCartRepository = shoppingCartRepository;
     }
 
     @Override
@@ -35,6 +44,13 @@ public class OrderServiceImpl implements OrderService {
         this.orderRepository.findByNumber(orderServiceModel.getNumber()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Order with number '%s' already exists.", orderServiceModel.getNumber()));
         });
+
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel = this.shoppingCartService.getShoppingCartById(orderServiceModel.getShoppingCart().getId());
+
+        shoppingCartRepository.findById(orderServiceModel.getShoppingCart().getId())
+                .ifPresent(c -> {
+                    order.setShoppingCart(this.modelMapper.map(shoppingCartServiceViewModel, ShoppingCart.class));
+                });
 
         return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
 

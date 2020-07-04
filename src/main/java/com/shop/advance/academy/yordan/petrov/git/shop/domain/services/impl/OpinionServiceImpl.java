@@ -1,10 +1,15 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OpinionRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -20,11 +25,15 @@ public class OpinionServiceImpl implements OpinionService {
 
     private final OpinionRepository opinionRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final UserRepository userRepository;
 
     @Autowired
-    public OpinionServiceImpl(OpinionRepository opinionRepository, ModelMapper modelMapper) {
+    public OpinionServiceImpl(OpinionRepository opinionRepository, ModelMapper modelMapper, UserService userService, UserRepository userRepository) {
         this.opinionRepository = opinionRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -32,6 +41,16 @@ public class OpinionServiceImpl implements OpinionService {
 
         //No exception thrown here because one user can have multiple opinions
         Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
+
+        //Adds user  to opinion if user exists
+        UserServiceViewModel userServiceModel = this.userService.getUserById(opinionServiceModel.getUser().getId());
+
+        userRepository.findById(opinionServiceModel.getUser().getId())
+                .ifPresent(c -> {
+                    opinionServiceModel.setUser(this.modelMapper.map(userServiceModel, UserServiceModel.class));
+                });
+
+
 
         return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
 
@@ -45,6 +64,7 @@ public class OpinionServiceImpl implements OpinionService {
 
         this.opinionRepository.findById(opinionServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Opinion with id '%d' not found .", opinionServiceModel.getId())));
+
 
         return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
 
