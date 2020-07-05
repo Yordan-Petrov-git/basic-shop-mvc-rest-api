@@ -60,11 +60,9 @@ public class OrderServiceImpl implements OrderService {
         // FORMULA FOR  without tax (PRICE * QUANTITY)
         BigDecimal tax = orderServiceModel.getTax();
         Long itemId = orderServiceModel.getShoppingCart().getId();
-        ShoppingCartServiceViewModel shoppingCartServiceViewModel1 = this.shoppingCartService.getShoppingCartById(itemId);
-        BigDecimal totalItemsPrice = shoppingCartServiceViewModel1.getTotalItemsPrice();
-        BigDecimal taxInPercentage = tax.divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN).add(BigDecimal.valueOf(1));
-        BigDecimal result = taxInPercentage.multiply(totalItemsPrice);
-        order.setTotalPrice(result);
+        BigDecimal totalItemsPrice = this.shoppingCartService.getShoppingCartById(itemId).getTotalItemsPrice();
+        BigDecimal taxInPercentage = calculateTaxPercentage(tax);
+        order.setTotalPrice(calculateItemAfterTax(taxInPercentage,totalItemsPrice));
 
         return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
     }
@@ -114,4 +112,14 @@ public class OrderServiceImpl implements OrderService {
 
         return orderServiceViewModel;
     }
+
+    public BigDecimal calculateTaxPercentage(BigDecimal tax){
+        return tax.divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN).add(BigDecimal.valueOf(1));
+    }
+
+    public BigDecimal calculateItemAfterTax(BigDecimal taxPercentage,BigDecimal itemTotalPrice){
+        return taxPercentage.multiply(itemTotalPrice);
+
+    }
+
 }

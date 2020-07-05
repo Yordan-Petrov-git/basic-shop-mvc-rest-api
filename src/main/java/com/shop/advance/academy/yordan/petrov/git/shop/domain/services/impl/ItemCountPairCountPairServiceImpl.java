@@ -4,7 +4,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartItem
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPirService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPairService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -15,13 +15,13 @@ import javax.persistence.EntityNotFoundException;
 import java.util.List;
 
 @Service
-public class ItemCountPirCountPirServiceImpl implements ItemCountPirService {
+public class ItemCountPairCountPairServiceImpl implements ItemCountPairService {
 
     private final ShoppingCartItemRepository shoppingCartItemRepository;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ItemCountPirCountPirServiceImpl(ShoppingCartItemRepository shoppingCartItemRepository, ModelMapper modelMapper) {
+    public ItemCountPairCountPairServiceImpl(ShoppingCartItemRepository shoppingCartItemRepository, ModelMapper modelMapper) {
         this.shoppingCartItemRepository = shoppingCartItemRepository;
         this.modelMapper = modelMapper;
     }

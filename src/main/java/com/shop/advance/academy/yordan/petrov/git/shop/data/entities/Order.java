@@ -5,6 +5,9 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Payme
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ShipmentType;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMax;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -32,7 +35,9 @@ public class Order extends BaseEntity {
         this.number = number;
     }
 
-    @Column(name = "tax")
+    @Column(name = "tax",precision=10, scale=2)
+    @DecimalMax(value = "100.00",message = "max 100.00")
+    @DecimalMin(value = "0.00",message = "min 0.00")
     public BigDecimal getTax() {
         return this.tax;
     }

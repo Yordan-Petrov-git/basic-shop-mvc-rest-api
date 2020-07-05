@@ -56,10 +56,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                     shoppingCart.setUser(this.modelMapper.map(userServiceModel, User.class));
                 });
 
-//Int the shopping cart we are creating item count pair with already existing item with id
 
         //add item only if it exists
-        //Get the total price
         Long itemId = shoppingCartServiceModel.getItemCountPair()
                 .stream()
                 .map(e -> e.getItem().getId())
@@ -77,11 +75,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new InvalidEntityException(String.format("No items with id %s was found ", itemId)));
 
-
-        BigDecimal itemPrice = item.getPrice();
-        BigDecimal result = itemPrice.multiply(BigDecimal.valueOf(itemCount));
-        shoppingCart.setTotalItemsPrice(result);
-
+        shoppingCart.setTotalItemsPrice(calculateTotalPrice(itemCount,item.getPrice()));
         shoppingCart.setCreated(LocalDateTime.now());
         shoppingCart.setModified(LocalDateTime.now());
 
@@ -132,10 +126,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
         ShoppingCartServiceViewModel deletedShoppingCart = this.getShoppingCartById(id);
 
-
         this.shoppingCartRepository.deleteById(id);
 
         return this.modelMapper.map(deletedShoppingCart, ShoppingCartServiceViewModel.class);
 
     }
+
+    public BigDecimal calculateTotalPrice(Integer itemCount ,BigDecimal itemPrice ){
+
+        return itemPrice.multiply(BigDecimal.valueOf(itemCount));
+    }
+
 }

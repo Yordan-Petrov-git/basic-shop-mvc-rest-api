@@ -58,7 +58,6 @@ public class SellerServiceImpl implements SellerService {
 //                .findFirst()
 //                .orElseThrow(()->new InvalidEntityException("No items were found "));
 
-
         return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceViewModel.class);
 
     }
