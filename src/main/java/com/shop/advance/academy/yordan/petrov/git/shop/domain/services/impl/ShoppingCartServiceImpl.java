@@ -72,7 +72,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Item item = itemRepository.findById(itemId).orElseThrow(InvalidEntityException::new);
         BigDecimal itemPrice = item.getPrice();
         BigDecimal result = itemPrice.multiply(BigDecimal.valueOf(itemCount));
-
         shoppingCart.setTotalItemsPrice(result);
 
         shoppingCart.setCreated(LocalDateTime.now());
