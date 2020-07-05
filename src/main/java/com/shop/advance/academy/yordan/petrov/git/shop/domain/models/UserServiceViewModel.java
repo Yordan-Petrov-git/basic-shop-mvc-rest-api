@@ -4,6 +4,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -15,6 +16,7 @@ public class UserServiceViewModel {
     private String username;
     private UserType userType;
     private LocalDate dateOfBirth;
+    private LocalDateTime created;
     private String firstName;
     private String lastName;
     private Set<AddressServiceViewModel> addresses = new HashSet<>();
@@ -88,6 +90,14 @@ public class UserServiceViewModel {
 
     public void setContactInformation(Set<ContactInformationServiceViewModel> contactInformation) {
         this.contactInformation = contactInformation;
+    }
+
+    public LocalDateTime getCreated() {
+        return this.created;
+    }
+
+    public void setCreated(LocalDateTime created) {
+        this.created = created;
     }
 
     @Override

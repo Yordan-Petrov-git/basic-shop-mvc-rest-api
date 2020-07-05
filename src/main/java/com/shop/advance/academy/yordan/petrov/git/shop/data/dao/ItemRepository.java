@@ -15,7 +15,7 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     //List<Item> findAll();
 
-    Optional<Item> findByTitleAndDescription(String title,String description);
+    Optional<Item> findByTitleAndDescription(String title, String description);
 
     Optional<Item> findByTitle(String title);
 

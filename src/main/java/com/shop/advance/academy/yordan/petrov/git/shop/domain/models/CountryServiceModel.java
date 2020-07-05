@@ -13,8 +13,6 @@ public class CountryServiceModel {
     }
 
 
-
-
     public Long getId() {
         return this.id;
     }

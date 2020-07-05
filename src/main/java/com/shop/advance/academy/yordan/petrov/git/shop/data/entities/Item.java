@@ -12,11 +12,11 @@ import java.util.Set;
 @Table(name = "items")
 public class Item extends BaseEntity {
 
-    private String title;   
+    private String title;
     private String description;
     private BigDecimal price;
     private Double weight;
-    private Set<Media> media= new HashSet<>();
+    private Set<Media> media = new HashSet<>();
     private Set<Opinion> opinions = new HashSet<>();
     private ItemCategory itemCategory = ItemCategory.NONE;
 
@@ -25,7 +25,7 @@ public class Item extends BaseEntity {
 
     @OneToMany(targetEntity = Media.class,
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE,CascadeType.REMOVE},orphanRemoval = true)
+            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinTable(name = "items_media",
             joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "media_id", referencedColumnName = "id"))
@@ -39,7 +39,7 @@ public class Item extends BaseEntity {
 
     @OneToMany(targetEntity = Opinion.class,
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.DETACH,CascadeType.REMOVE},orphanRemoval = true)
+            cascade = {CascadeType.DETACH, CascadeType.REMOVE}, orphanRemoval = true)
     @JoinTable(name = "item_opinion",
             joinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "opinion_id", referencedColumnName = "id"))

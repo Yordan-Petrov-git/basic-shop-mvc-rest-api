@@ -8,7 +8,6 @@ public class RoleServiceModel {
     private String authority;
 
 
-
     public RoleServiceModel() {
     }
 

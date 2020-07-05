@@ -1,17 +1,18 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalDeleteOperation;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -43,9 +44,11 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AddressRepository addressRepository;
     private final AddressService addressService;
+    private final CardService cardService;
+    private final CardRepository cardRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, ContactInformationRepository contactInformationRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder, AddressRepository addressRepository1, AddressService addressService) {
+    public UserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, ContactInformationRepository contactInformationRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder, AddressRepository addressRepository1, AddressService addressService, CardService cardService, CardRepository cardRepository) {
         this.userRepository = userRepository;
         this.contactInformationRepository = contactInformationRepository;
         this.modelMapper = modelMapper;
@@ -54,6 +57,8 @@ public class UserServiceImpl implements UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.addressRepository = addressRepository1;
         this.addressService = addressService;
+        this.cardService = cardService;
+        this.cardRepository = cardRepository;
     }
 
 
@@ -90,14 +95,16 @@ public class UserServiceImpl implements UserService {
                 .stream()
                 .map(AddressServiceModel::getId)
                 .findAny()
-                .orElseThrow(() -> new InvalidEntityException("No addresses were found"));
+                .orElseThrow(() -> new EntityNotFoundException(("Address id not found.")));
 
-        user.setAddresses(Set.of(this.addressRepository.findById(addressId).orElseThrow()));
+        user.setAddresses(Set.of(this.addressRepository.findById(addressId)
+                .orElseThrow(() -> new InvalidEntityException(String.format("No addresses with id %s were found", addressId)))));
+
 
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
 
 
-      //Add rolse to users
+        //Add roles to users
         if (userRepository.count() == 0) {
             //Sets 1 st registered user as admin role
             this.roleService.seedRolesInDatabase();
@@ -135,6 +142,19 @@ public class UserServiceImpl implements UserService {
         this.userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
             throw new InvalidEntityException(String.format("User with username '%s' already exists.", user.getUsername()));
         });
+
+        Long cardId = userServiceModel.getCards().
+                stream()
+                .map(CardServiceModel::getId)
+                .findAny()
+                .orElseThrow(() -> new EntityNotFoundException(("Card id not found.")));
+
+        Set<Card> cards = cardRepository.findById(cardId)
+                .stream()
+                .collect(Collectors.toSet());
+
+        user.setCards(cards);
+
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
         user.setModified(LocalDateTime.now());
 
@@ -167,6 +187,10 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserServiceViewModel deleteUserById(long id) {
+
+        if (userRepository.findById(1L).isPresent()) {
+            throw new IllegalDeleteOperation("Admin user cannot be deleted");
+        }
 
         UserServiceViewModel deletedUser = this.getUserById(id);
 

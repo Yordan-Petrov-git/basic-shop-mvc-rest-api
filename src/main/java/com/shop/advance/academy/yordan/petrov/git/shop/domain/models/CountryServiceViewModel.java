@@ -12,8 +12,6 @@ public class CountryServiceViewModel {
     }
 
 
-
-
     public Long getId() {
         return this.id;
     }

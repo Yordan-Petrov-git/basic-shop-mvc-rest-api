@@ -27,10 +27,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors().disable()
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/","/users/register","/users/login").anonymous()
+                .antMatchers("/", "/users/register", "/users/login").anonymous()
                 .antMatchers(HttpMethod.POST, "/api/users/register").permitAll();
 //                .antMatchers(HttpMethod.POST, "/**")
- //               .hasAnyAuthority("USER", "ADMIN")
+        //               .hasAnyAuthority("USER", "ADMIN")
 //                .antMatchers(HttpMethod.PUT, "/**")
 //                .hasAnyAuthority("USER", "ADMIN")
 //                .antMatchers(HttpMethod.DELETE, "/**").hasAuthority("ADMIN")

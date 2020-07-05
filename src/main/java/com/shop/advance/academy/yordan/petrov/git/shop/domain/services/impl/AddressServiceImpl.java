@@ -61,7 +61,7 @@ public class AddressServiceImpl implements AddressService {
                     address.setCity(this.modelMapper.map(cityServiceViewModel, City.class));
                 });
 
-    
+
         return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);
     }
 

@@ -1,10 +1,18 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.SellerRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -14,18 +22,23 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class SellerServiceImpl implements SellerService {
 
     private final SellerRepository sellerRepository;
     private final ModelMapper modelMapper;
+    private final UserService userService;
+    private final ItemRepository itemRepository;
 
 
     @Autowired
-    public SellerServiceImpl(SellerRepository sellerRepository, ModelMapper modelMapper) {
+    public SellerServiceImpl(SellerRepository sellerRepository, ModelMapper modelMapper, UserRepository userRepository, UserService userService, ItemService itemService, ItemRepository itemRepository) {
         this.sellerRepository = sellerRepository;
         this.modelMapper = modelMapper;
+        this.userService = userService;
+        this.itemRepository = itemRepository;
     }
 
 
@@ -37,6 +50,18 @@ public class SellerServiceImpl implements SellerService {
         this.sellerRepository.findByName(sellerServiceModel.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Seller with name '%s' already exists.", sellerServiceModel.getName()));
         });
+
+        //Set user account  to seller
+        seller.setUser(this.modelMapper.map(userService
+                .getUserById(sellerServiceModel.getUser().getId()), User.class));
+
+        //should get item count pair id  id
+        Long itemId = sellerServiceModel.getStock()
+                .stream()
+                .map(e -> e.getItem().getId())
+                .findFirst()
+                .orElseThrow(()->new InvalidEntityException("No items were found "));
+
 
         return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceViewModel.class);
 
@@ -51,7 +76,7 @@ public class SellerServiceImpl implements SellerService {
         this.sellerRepository.findById(sellerServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Seller with id '%d' not found .", sellerServiceModel.getId())));
 
-      return   this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceViewModel.class);
+        return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceViewModel.class);
 
     }
 

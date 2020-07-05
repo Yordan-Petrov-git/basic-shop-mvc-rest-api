@@ -19,7 +19,7 @@ public class CardController {
 
     private final CardService cardService;
 
-     @Autowired
+    @Autowired
     public CardController(CardService cardService) {
         this.cardService = cardService;
     }
@@ -28,7 +28,7 @@ public class CardController {
     @PostMapping()
     public ResponseEntity<CardServiceViewModel> createCard(@RequestBody CardServiceModel cardServiceModel) {
 
-        CardServiceViewModel cardServiceViewModel =  cardService.createCard(cardServiceModel);
+        CardServiceViewModel cardServiceViewModel = cardService.createCard(cardServiceModel);
 
         log.info("Card  created : {}", cardServiceViewModel);
 
@@ -37,7 +37,7 @@ public class CardController {
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<CardServiceViewModel> updateCard(@PathVariable("id") Long id,@RequestBody CardServiceModel cardServiceModel) {
+    public ResponseEntity<CardServiceViewModel> updateCard(@PathVariable("id") Long id, @RequestBody CardServiceModel cardServiceModel) {
 
         CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
 
@@ -50,7 +50,7 @@ public class CardController {
 
 
     @GetMapping("/{id}")
-    public  ResponseEntity<CardServiceViewModel> getCard(@PathVariable("id")final Long id) {
+    public ResponseEntity<CardServiceViewModel> getCard(@PathVariable("id") final Long id) {
 
         CardServiceViewModel cardServiceViewModel = cardService.getCardById(id);
 
@@ -62,7 +62,7 @@ public class CardController {
     @GetMapping()
     public ResponseEntity<List<CardServiceViewModel>> getCards() {
 
-        List<CardServiceViewModel> cardServiceViewModel =  cardService.getAllCards();
+        List<CardServiceViewModel> cardServiceViewModel = cardService.getAllCards();
 
         log.info("CardS  found : {}", cardServiceViewModel);
 
@@ -70,9 +70,9 @@ public class CardController {
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<CardServiceViewModel> deleteCard(@PathVariable("id") Long id) {
+    public ResponseEntity<CardServiceViewModel> deleteCard(@PathVariable("id") Long id) {
 
-        CardServiceViewModel cardServiceViewModel =      cardService.deleteCardById(id);
+        CardServiceViewModel cardServiceViewModel = cardService.deleteCardById(id);
 
         log.info("Card deleted : {}", cardServiceViewModel);
 

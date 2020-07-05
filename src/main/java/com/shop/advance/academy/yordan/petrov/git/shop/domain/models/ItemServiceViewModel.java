@@ -10,7 +10,7 @@ import java.util.Set;
 public class ItemServiceViewModel {
 
     private Long id;
-    private Set<MediaServiceViewModel> media= new HashSet<>();
+    private Set<MediaServiceViewModel> media = new HashSet<>();
     private Set<OpinionServiceViewModel> opinions = new HashSet<>();
     private String title;
     private String description;
@@ -76,7 +76,6 @@ public class ItemServiceViewModel {
     public void setWeight(Double weight) {
         this.weight = weight;
     }
-
 
 
     public ItemCategory getItemCategory() {

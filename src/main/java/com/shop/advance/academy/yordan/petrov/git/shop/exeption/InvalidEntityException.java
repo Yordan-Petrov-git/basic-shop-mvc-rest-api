@@ -2,7 +2,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.exeption;
 
 public class InvalidEntityException extends RuntimeException {
 
-    public InvalidEntityException() {}
+    public InvalidEntityException() {
+    }
 
     public InvalidEntityException(String message) {
         super(message);

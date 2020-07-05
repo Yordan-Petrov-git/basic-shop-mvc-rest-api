@@ -50,7 +50,6 @@ public class OpinionServiceImpl implements OpinionService {
                 });
 
 
-
         return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
 
     }

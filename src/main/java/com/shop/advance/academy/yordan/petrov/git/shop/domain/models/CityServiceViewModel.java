@@ -14,7 +14,6 @@ public class CityServiceViewModel {
     }
 
 
-
     public Long getId() {
         return this.id;
     }

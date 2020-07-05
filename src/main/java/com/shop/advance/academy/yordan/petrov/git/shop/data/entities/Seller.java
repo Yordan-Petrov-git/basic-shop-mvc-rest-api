@@ -1,9 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
 import javax.persistence.*;
-import java.util.HashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "sellers")
@@ -11,11 +9,21 @@ public class Seller extends BaseEntity {
 
 
     private String name;
-    private Set<Item> stock = new HashSet<>();
-    private ContactInformation contactInformation;
-    private Set<Address> addresses = new HashSet<>();
+    private List<ItemCountPair> stock = new ArrayList<>();
+    private User user;
 
     public Seller() {
+    }
+
+    @ManyToOne(fetch = FetchType.EAGER
+            , cascade = {CascadeType.DETACH, CascadeType.REMOVE})
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    public User getUser() {
+        return this.user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     @Column(name = "name")
@@ -28,48 +36,20 @@ public class Seller extends BaseEntity {
     }
 
 
-    @ManyToMany(targetEntity = Item.class,
-            cascade = {CascadeType.DETACH},
-            fetch = FetchType.LAZY)
+    @ManyToMany(targetEntity = ItemCountPair.class,
+            cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE},
+            fetch = FetchType.EAGER)
     @JoinTable(
-            name = "seller_item",
+            name = "seller_item_stock",
             joinColumns = @JoinColumn(name = "seller_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "item_id", referencedColumnName = "id")
+            inverseJoinColumns = @JoinColumn(name = "item_count_pair_id", referencedColumnName = "id")
     )
-    public Set<Item> getStock() {
+    public List<ItemCountPair> getStock() {
         return this.stock;
     }
 
-    public void setStock(Set<Item> stock) {
+    public void setStock(List<ItemCountPair> stock) {
         this.stock = stock;
-    }
-
-
-    @ManyToOne(targetEntity = ContactInformation.class,
-            fetch = FetchType.EAGER)
-    @JoinColumn(name = "contact_information_id", referencedColumnName = "id")
-    public ContactInformation getContactInformation() {
-        return this.contactInformation;
-    }
-
-    public void setContactInformation(ContactInformation contactInformation) {
-        this.contactInformation = contactInformation;
-    }
-
-    @ManyToMany(targetEntity = Address.class,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE},
-            fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_address",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id")
-    )
-    public Set<Address> getAddresses() {
-        return this.addresses;
-    }
-
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
     }
 
 
@@ -79,13 +59,12 @@ public class Seller extends BaseEntity {
         if (!(o instanceof Seller)) return false;
         if (!super.equals(o)) return false;
         Seller seller = (Seller) o;
-        return Objects.equals(name, seller.name) &&
-                Objects.equals(contactInformation, seller.contactInformation);
+        return Objects.equals(name, seller.name);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), name, contactInformation);
+        return Objects.hash(super.hashCode(), name);
     }
 
 
@@ -93,7 +72,6 @@ public class Seller extends BaseEntity {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Seller{");
         sb.append("name='").append(name).append('\'');
-        sb.append(", contactInformation=").append(contactInformation);
         sb.append(", id=").append(id);
         sb.append('}');
         return sb.toString();

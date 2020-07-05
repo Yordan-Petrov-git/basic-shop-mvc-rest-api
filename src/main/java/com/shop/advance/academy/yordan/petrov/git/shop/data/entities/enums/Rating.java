@@ -9,5 +9,5 @@ public enum Rating {
     GOOD,
     VERY_GOOD,
     GREAT,
-    EXCELLENT;
+    EXCELLENT
 }

@@ -8,11 +8,12 @@ import java.util.List;
 public class ShoppingCartServiceModel {
 
     private Long id;
-    private List<ShoppingCartItemServiceModel> shoppingCartItem = new ArrayList<>();
+    private List<ItemCountPairServiceModel> shoppingCartItem = new ArrayList<>();
     private UserServiceModel user;
     private LocalDateTime created;
     private LocalDateTime modified;
     private BigDecimal totalItemsPrice;
+
     public ShoppingCartServiceModel() {
     }
 
@@ -25,11 +26,11 @@ public class ShoppingCartServiceModel {
         this.id = id;
     }
 
-    public List<ShoppingCartItemServiceModel> getShoppingCartItem() {
+    public List<ItemCountPairServiceModel> getItemCountPair() {
         return this.shoppingCartItem;
     }
 
-    public void setShoppingCartItem(List<ShoppingCartItemServiceModel> shoppingCartItem) {
+    public void setItemCountPair(List<ItemCountPairServiceModel> shoppingCartItem) {
         this.shoppingCartItem = shoppingCartItem;
     }
 

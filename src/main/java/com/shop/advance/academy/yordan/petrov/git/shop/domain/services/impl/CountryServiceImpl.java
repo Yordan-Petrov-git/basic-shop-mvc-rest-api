@@ -49,9 +49,8 @@ public class CountryServiceImpl implements CountryService {
         this.countryRepository.findById(countryServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Country with id '%d' not found .", countryServiceModel.getId())));
 
-        this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceModel.class);
 
-        return null;
+        return this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceViewModel.class);
     }
 
     @Override
@@ -62,7 +61,6 @@ public class CountryServiceImpl implements CountryService {
                         new EntityNotFoundException(String.format("Country  with ID %s not found.", id))), CountryServiceViewModel.class);
 
     }
-
 
 
     @Override

@@ -13,7 +13,6 @@ public class MediaServiceModel {
     }
 
 
-
     public Long getId() {
         return this.id;
     }

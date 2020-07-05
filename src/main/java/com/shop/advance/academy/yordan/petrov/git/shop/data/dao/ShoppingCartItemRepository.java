@@ -1,14 +1,14 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.dao;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCartItem;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public interface ShoppingCartItemRepository extends JpaRepository<ShoppingCartItem,Long> {
+public interface ShoppingCartItemRepository extends JpaRepository<ItemCountPair, Long> {
 
-    Optional<ShoppingCartItem> findById(Long id);
+    Optional<ItemCountPair> findById(Long id);
 
 }
