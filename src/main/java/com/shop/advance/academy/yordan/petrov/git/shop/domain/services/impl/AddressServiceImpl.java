@@ -77,21 +77,11 @@ public class AddressServiceImpl implements AddressService {
     }
 
 
-//    @Override
-//    public CityServiceViewModel getCityById(long id) {
-//
-//        return this.modelMapper
-//                .map(this.cityRepository.findById(id).orElseThrow(() ->
-//                        new EntityNotFoundException(String.format("City  with ID %s not found.", id))), CityServiceViewModel.class);
-//
-//    }
-
-
     @Override
     public AddressServiceViewModel getAddressById(long id) {
         return this.modelMapper
                 .map(this.addressRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Address  with ID %s not found.", id))), AddressServiceViewModel.class);
+                        new EntityNotFoundException(String.format("Address with ID %s not found.", id))), AddressServiceViewModel.class);
 
     }
 

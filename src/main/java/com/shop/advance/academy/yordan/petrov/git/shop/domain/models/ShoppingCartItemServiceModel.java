@@ -1,11 +1,12 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
+import java.math.BigDecimal;
 
 public class ShoppingCartItemServiceModel {
 
     private ItemServiceModel item;
     private Integer itemCount;
+
 
     public ShoppingCartItemServiceModel() {
     }
@@ -25,4 +26,6 @@ public class ShoppingCartItemServiceModel {
     public void setItemCount(Integer itemCount) {
         this.itemCount = itemCount;
     }
+
+
 }

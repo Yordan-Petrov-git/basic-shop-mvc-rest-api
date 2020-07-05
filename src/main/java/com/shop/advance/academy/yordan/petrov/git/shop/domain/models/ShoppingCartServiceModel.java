@@ -1,7 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCartItem;
-
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +12,7 @@ public class ShoppingCartServiceModel {
     private UserServiceModel user;
     private LocalDateTime created;
     private LocalDateTime modified;
-
+    private BigDecimal totalItemsPrice;
     public ShoppingCartServiceModel() {
     }
 
@@ -56,5 +55,13 @@ public class ShoppingCartServiceModel {
 
     public void setModified(LocalDateTime modified) {
         this.modified = modified;
+    }
+
+    public BigDecimal getTotalItemsPrice() {
+        return this.totalItemsPrice;
+    }
+
+    public void setTotalItemsPrice(BigDecimal totalItemsPrice) {
+        this.totalItemsPrice = totalItemsPrice;
     }
 }

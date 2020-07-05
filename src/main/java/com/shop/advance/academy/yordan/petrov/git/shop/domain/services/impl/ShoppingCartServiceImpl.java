@@ -6,7 +6,9 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
@@ -18,10 +20,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -58,6 +59,20 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 });
 
         //add item only if it exists
+        //Get the total price
+        Long itemId = shoppingCartServiceModel.getShoppingCartItem()
+                .stream()
+                .map(e -> e.getItem().getId())
+                .findFirst()
+                .get();
+        Integer itemCount = shoppingCartServiceModel.getShoppingCartItem()
+                .stream()
+                .map(e -> e.getItemCount())
+                .findFirst().get();
+        Item item = itemRepository.findById(itemId).orElseThrow(InvalidEntityException::new);
+        BigDecimal itemPrice = item.getPrice();
+        BigDecimal result = itemPrice.multiply(BigDecimal.valueOf(itemCount));
+        shoppingCart.setTotalItemsPrice(result);
 
         shoppingCart.setCreated(LocalDateTime.now());
         shoppingCart.setModified(LocalDateTime.now());

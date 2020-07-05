@@ -13,8 +13,8 @@ import java.util.Objects;
 public class Order extends BaseEntity {
 
     private String number;
-    private BigDecimal vat;
-    private BigDecimal price;
+    private BigDecimal tax;
+    private BigDecimal totalPrice;
     private ShoppingCart shoppingCart;
     private OrderStatus orderStatus = OrderStatus.NONE;
     private ShipmentType shipmentType = ShipmentType.NONE;
@@ -32,22 +32,22 @@ public class Order extends BaseEntity {
         this.number = number;
     }
 
-    @Column(name = "vat")
-    public BigDecimal getVat() {
-        return this.vat;
+    @Column(name = "tax")
+    public BigDecimal getTax() {
+        return this.tax;
     }
 
-    public void setVat(BigDecimal vat) {
-        this.vat = vat;
+    public void setTax(BigDecimal vat) {
+        this.tax = vat;
     }
 
     @Column(name = "price")
-    public BigDecimal getPrice() {
-        return this.price;
+    public BigDecimal getTotalPrice() {
+        return this.totalPrice;
     }
 
-    public void setPrice(BigDecimal price) {
-        this.price = price;
+    public void setTotalPrice(BigDecimal price) {
+        this.totalPrice = price;
     }
 
     @ManyToOne(targetEntity = ShoppingCart.class,
@@ -99,8 +99,8 @@ public class Order extends BaseEntity {
         if (!super.equals(o)) return false;
         Order order = (Order) o;
         return Objects.equals(number, order.number) &&
-                Objects.equals(vat, order.vat) &&
-                Objects.equals(price, order.price) &&
+                Objects.equals(tax, order.tax) &&
+                Objects.equals(totalPrice, order.totalPrice) &&
                 orderStatus == order.orderStatus &&
                 shipmentType == order.shipmentType &&
                 paymentType == order.paymentType;
@@ -108,7 +108,7 @@ public class Order extends BaseEntity {
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), number, vat, price, orderStatus, shipmentType, paymentType);
+        return Objects.hash(super.hashCode(), number, tax, totalPrice, orderStatus, shipmentType, paymentType);
     }
 
 
@@ -116,8 +116,8 @@ public class Order extends BaseEntity {
     public String toString() {
         final StringBuilder sb = new StringBuilder("Order{");
         sb.append("number='").append(number).append('\'');
-        sb.append(", vat=").append(vat);
-        sb.append(", price=").append(price);
+        sb.append(", vat=").append(tax);
+        sb.append(", price=").append(totalPrice);
         sb.append(", orderStatus=").append(orderStatus);
         sb.append(", shipmentType=").append(shipmentType);
         sb.append(", paymentType=").append(paymentType);

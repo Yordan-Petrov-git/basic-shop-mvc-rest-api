@@ -2,11 +2,13 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCartItem;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartItemServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
@@ -18,6 +20,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Service
@@ -52,8 +57,19 @@ public class OrderServiceImpl implements OrderService {
                     order.setShoppingCart(this.modelMapper.map(shoppingCartServiceViewModel, ShoppingCart.class));
                 });
 
-        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
+        // FIND ADDED ITEMS BY ID !!!! AND THEN GET THEM AND CALCULATE THE TOTAL PRICE MULTIPLY ALSO BY THEIR COUNT
+        // FORMULA FOR TAXED A ((((TAX %/100)+1)*PRICE)  * QUANTITY)
+        //  FORMULA WITH TAX B ((PRICE * QUANTITY) * (TAX %/100)+1))
+        // FORMULA FOR  without tax (PRICE * QUANTITY)
+        BigDecimal tax =  orderServiceModel.getTax();
+        Long itemId = orderServiceModel.getShoppingCart().getId();
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel1 = this.shoppingCartService.getShoppingCartById(itemId);
+        BigDecimal totalItemsPrice =  shoppingCartServiceViewModel1.getTotalItemsPrice();
+        BigDecimal taxInPercentage = tax.divide(BigDecimal.valueOf(100),RoundingMode.HALF_EVEN).add(BigDecimal.valueOf(1));
+        BigDecimal result = taxInPercentage.multiply(totalItemsPrice);
+        order.setTotalPrice(result);
 
+        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
     }
 
     @Override
