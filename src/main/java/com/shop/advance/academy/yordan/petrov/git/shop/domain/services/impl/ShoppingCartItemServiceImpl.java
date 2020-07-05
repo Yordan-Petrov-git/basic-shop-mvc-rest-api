@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
@@ -37,22 +38,9 @@ public class ShoppingCartItemServiceImpl implements ShoppingCartItemService {
 
         ShoppingCartItem shoppingCartItem = this.modelMapper.map(shoppingCartItemServiceModel, ShoppingCartItem.class);
 
-//        this.itemRepository.findById(shoppingCartItem.getId()).ifPresent(c -> {
-//            throw new InvalidEntityException(String.format("Item '%s' already exists.", shoppingCartItemServiceModel.getItem().getTitle()));
-//        });
-
-
-        //Create shopping cart item only if the item is already in the database
-//        ItemServiceViewModel itemServiceViewModel = this.itemService.getItemById(shoppingCartItemServiceModel.getItem().getId());
-//
-//        itemRepository.findById(shoppingCartItemServiceModel.getItem().getId())
-//                .ifPresent(c -> {
-//                    shoppingCartItem.setItem(this.modelMapper.map(itemServiceViewModel, Item.class));
-//                });
-
         return this.modelMapper.map(this.shoppingCartItemRepository.saveAndFlush(shoppingCartItem), ShoppingCartItemServiceViewModel.class);
-
     }
+
 
     @Override
     public ShoppingCartItemServiceViewModel updateShoppingCartItem(ShoppingCartItemServiceModel shoppingCartItemServiceModel) {

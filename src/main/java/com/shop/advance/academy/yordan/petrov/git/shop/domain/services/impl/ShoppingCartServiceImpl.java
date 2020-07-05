@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -57,6 +59,21 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 });
 
         //add item only if it exists
+        //Get the total price
+        Long itemId = shoppingCartServiceModel.getShoppingCartItem()
+                .stream()
+                .map(e -> e.getItem().getId())
+                .findFirst()
+                .get();
+        Integer itemCount = shoppingCartServiceModel.getShoppingCartItem()
+                .stream()
+                .map(e -> e.getItemCount())
+                .findFirst().get();
+        Item item = itemRepository.findById(itemId).orElseThrow(InvalidEntityException::new);
+        BigDecimal itemPrice = item.getPrice();
+        BigDecimal result = itemPrice.multiply(BigDecimal.valueOf(itemCount));
+
+        shoppingCart.setTotalItemsPrice(result);
 
         shoppingCart.setCreated(LocalDateTime.now());
         shoppingCart.setModified(LocalDateTime.now());

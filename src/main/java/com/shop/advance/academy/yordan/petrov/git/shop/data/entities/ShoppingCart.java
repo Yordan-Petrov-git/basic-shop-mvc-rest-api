@@ -4,6 +4,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ public class ShoppingCart extends BaseEntity {
     private LocalDateTime created;
     private LocalDateTime modified;
     private User user;
+    private BigDecimal totalItemsPrice;
 
     public ShoppingCart() {
     }
@@ -67,6 +69,14 @@ public class ShoppingCart extends BaseEntity {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public BigDecimal getTotalItemsPrice() {
+        return this.totalItemsPrice;
+    }
+
+    public void setTotalItemsPrice(BigDecimal totalItemsPrice) {
+        this.totalItemsPrice = totalItemsPrice;
     }
 
     @Override

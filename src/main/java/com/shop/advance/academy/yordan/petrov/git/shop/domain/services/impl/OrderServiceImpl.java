@@ -2,10 +2,12 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartItemServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
@@ -17,6 +19,9 @@ import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
+import java.sql.SQLOutput;
 import java.util.List;
 
 @Service
@@ -50,6 +55,28 @@ public class OrderServiceImpl implements OrderService {
                 .ifPresent(c -> {
                     order.setShoppingCart(this.modelMapper.map(shoppingCartServiceViewModel, ShoppingCart.class));
                 });
+
+        //TODO FIND ADDED ITEMS BY ID !!!! AND THEN GET THEM AND CALCULATE THE TOTAL PRICE MULTIPLY ALSO BY THEIR COUNT
+
+        //TODO FORMULA FOR TAXED A ((((TAX %/100)+1)*PRICE)  * QUANTITY)
+        // TODO FORMULA WITH TAX B ((PRICE * QUANTITY) * (TAX %/100)+1))
+        //TODO FORMULA FOR  without tax (PRICE * QUANTITY)
+
+        //TODO ADD TOTAL ITEMS TAXED PRICE
+
+         BigDecimal tax =  orderServiceModel.getTax();
+
+         //null should get it by id !!!
+        BigDecimal totalItemsPrice = orderServiceModel.getShoppingCart().getTotalItemsPrice();
+
+        //0.20 should be 1.2
+        BigDecimal taxInPercentage = tax.divide(BigDecimal.valueOf(100).add(BigDecimal.valueOf(1)), RoundingMode.HALF_EVEN);
+
+        System.out.println();
+        //Gives NULL POINTER CHECK ABOVE VALUSES
+     //   BigDecimal result = taxInPercentage.multiply(totalItemsPrice);
+
+     //   orderServiceModel.setPrice(result);
 
         return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
 

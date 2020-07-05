@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers.exeptions;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ErrorResponse;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.model.utils.error.ErrorResponse;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.EntityNotFoundException;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import lombok.extern.slf4j.Slf4j;

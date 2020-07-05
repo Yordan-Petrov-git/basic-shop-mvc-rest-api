@@ -11,18 +11,15 @@ public class OrderServiceModel {
 
     private Long id;
     private String number;
-    private BigDecimal vat;
-    private BigDecimal price;
+    private BigDecimal tax;
+    private BigDecimal totalPrice;
     private ShoppingCartServiceModel shoppingCart;
     private OrderStatus orderStatus = OrderStatus.NONE;
     private ShipmentType shipmentType = ShipmentType.NONE;
     private PaymentType paymentType = PaymentType.NONE;
 
-
     public OrderServiceModel() {
     }
-
-
 
     public Long getId() {
         return this.id;
@@ -40,20 +37,20 @@ public class OrderServiceModel {
         this.number = number;
     }
 
-    public BigDecimal getVat() {
-        return this.vat;
+    public BigDecimal getTax() {
+        return this.tax;
     }
 
-    public void setVat(BigDecimal vat) {
-        this.vat = vat;
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
     }
 
     public BigDecimal getPrice() {
-        return this.price;
+        return this.totalPrice;
     }
 
     public void setPrice(BigDecimal price) {
-        this.price = price;
+        this.totalPrice = price;
     }
 
     public ShoppingCartServiceModel getShoppingCart() {
@@ -94,8 +91,8 @@ public class OrderServiceModel {
         if (!(o instanceof OrderServiceModel)) return false;
         OrderServiceModel that = (OrderServiceModel) o;
         return Objects.equals(number, that.number) &&
-                Objects.equals(vat, that.vat) &&
-                Objects.equals(price, that.price) &&
+                Objects.equals(tax, that.tax) &&
+                Objects.equals(totalPrice, that.totalPrice) &&
                 orderStatus == that.orderStatus &&
                 shipmentType == that.shipmentType &&
                 paymentType == that.paymentType;
@@ -103,7 +100,7 @@ public class OrderServiceModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash(number, vat, price, orderStatus, shipmentType, paymentType);
+        return Objects.hash(number, tax, totalPrice, orderStatus, shipmentType, paymentType);
     }
 
 
@@ -111,8 +108,8 @@ public class OrderServiceModel {
     public String toString() {
         final StringBuilder sb = new StringBuilder("OrderServiceModel{");
         sb.append("number='").append(number).append('\'');
-        sb.append(", vat=").append(vat);
-        sb.append(", price=").append(price);
+        sb.append(", vat=").append(tax);
+        sb.append(", price=").append(totalPrice);
         sb.append(", orderStatus=").append(orderStatus);
         sb.append(", shipmentType=").append(shipmentType);
         sb.append(", paymentType=").append(paymentType);
