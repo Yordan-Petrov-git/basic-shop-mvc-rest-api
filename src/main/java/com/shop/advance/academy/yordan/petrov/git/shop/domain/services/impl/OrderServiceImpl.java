@@ -30,7 +30,8 @@ public class OrderServiceImpl implements OrderService {
     private final ShoppingCartRepository shoppingCartRepository;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, ShoppingCartService shoppingCartService, ShoppingCartRepository shoppingCartRepository) {
+    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, ShoppingCartService shoppingCartService,
+                            ShoppingCartRepository shoppingCartRepository) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.shoppingCartService = shoppingCartService;

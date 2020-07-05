@@ -13,8 +13,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Optional<Item> findById(Long id);
 
-    //List<Item> findAll();
-
     Optional<Item> findByTitleAndDescription(String title, String description);
 
     Optional<Item> findByTitle(String title);
@@ -28,5 +26,6 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
     Optional<Item> findAllByWeight(Double weight);
 
     Optional<Item> findAllByItemCategory(ItemCategory itemCategory);
+
 }
 

@@ -1,15 +1,12 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.*;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalDeleteOperation;
@@ -43,12 +40,13 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final AddressRepository addressRepository;
-    private final AddressService addressService;
-    private final CardService cardService;
     private final CardRepository cardRepository;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, AddressRepository addressRepository, ContactInformationRepository contactInformationRepository, ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService, BCryptPasswordEncoder bCryptPasswordEncoder, AddressRepository addressRepository1, AddressService addressService, CardService cardService, CardRepository cardRepository) {
+    public UserServiceImpl(UserRepository userRepository, ContactInformationRepository contactInformationRepository,
+                           ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService,
+                           BCryptPasswordEncoder bCryptPasswordEncoder, AddressRepository addressRepository1,
+                           CardRepository cardRepository) {
         this.userRepository = userRepository;
         this.contactInformationRepository = contactInformationRepository;
         this.modelMapper = modelMapper;
@@ -56,8 +54,6 @@ public class UserServiceImpl implements UserService {
         this.roleService = roleService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.addressRepository = addressRepository1;
-        this.addressService = addressService;
-        this.cardService = cardService;
         this.cardRepository = cardRepository;
     }
 
@@ -143,17 +139,16 @@ public class UserServiceImpl implements UserService {
             throw new InvalidEntityException(String.format("User with username '%s' already exists.", user.getUsername()));
         });
 
+        //Get card's id
         Long cardId = userServiceModel.getCards().
                 stream()
                 .map(CardServiceModel::getId)
                 .findAny()
                 .orElseThrow(() -> new EntityNotFoundException(("Card id not found.")));
 
-        Set<Card> cards = cardRepository.findById(cardId)
-                .stream()
-                .collect(Collectors.toSet());
-
-        user.setCards(cards);
+        //Add card to user on update
+        user.setCards(Set.of(cardRepository.findById(cardId)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Card with %s not found.", cardId)))));
 
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
         user.setModified(LocalDateTime.now());
@@ -177,9 +172,7 @@ public class UserServiceImpl implements UserService {
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Users were found"));
 
-        List<User> users = this.userRepository.findAll();
-
-        return this.modelMapper.map(users, new TypeToken<List<UserServiceViewModel>>() {
+        return this.modelMapper.map(this.userRepository.findAll(), new TypeToken<List<UserServiceViewModel>>() {
         }.getType());
 
     }
@@ -188,13 +181,13 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserServiceViewModel deleteUserById(long id) {
 
-        if (userRepository.findById(1L).isPresent()) {
-            throw new IllegalDeleteOperation("Admin user cannot be deleted");
-        }
-
         UserServiceViewModel deletedUser = this.getUserById(id);
 
-        this.userRepository.deleteById(id);
+        if (userRepository.findById(1L).isPresent() && id == 1) {
+            throw new IllegalDeleteOperation("Admin user cannot be deleted");
+        } else {
+            this.userRepository.deleteById(id);
+        }
 
         return this.modelMapper.map(deletedUser, UserServiceViewModel.class);
     }

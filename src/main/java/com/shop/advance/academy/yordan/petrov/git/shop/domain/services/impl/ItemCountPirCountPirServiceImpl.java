@@ -1,11 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPirService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
@@ -20,15 +18,11 @@ import java.util.List;
 public class ItemCountPirCountPirServiceImpl implements ItemCountPirService {
 
     private final ShoppingCartItemRepository shoppingCartItemRepository;
-    private final ItemRepository itemRepository;
-    private final ItemService itemService;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ItemCountPirCountPirServiceImpl(ShoppingCartItemRepository shoppingCartItemRepository, ItemRepository itemRepository, ItemService itemService, ModelMapper modelMapper) {
+    public ItemCountPirCountPirServiceImpl(ShoppingCartItemRepository shoppingCartItemRepository, ModelMapper modelMapper) {
         this.shoppingCartItemRepository = shoppingCartItemRepository;
-        this.itemRepository = itemRepository;
-        this.itemService = itemService;
         this.modelMapper = modelMapper;
     }
 

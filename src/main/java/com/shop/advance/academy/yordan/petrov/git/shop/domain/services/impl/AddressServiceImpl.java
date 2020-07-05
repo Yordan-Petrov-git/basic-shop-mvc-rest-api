@@ -30,7 +30,8 @@ public class AddressServiceImpl implements AddressService {
 
 
     @Autowired
-    public AddressServiceImpl(AddressRepository addressRepository, CityRepository cityRepository, CityService cityService, ModelMapper modelMapper) {
+    public AddressServiceImpl(AddressRepository addressRepository, CityRepository cityRepository,
+                              CityService cityService, ModelMapper modelMapper) {
         this.addressRepository = addressRepository;
         this.cityRepository = cityRepository;
         this.cityService = cityService;

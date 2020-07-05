@@ -28,7 +28,8 @@ public class OpinionServiceImpl implements OpinionService {
     private final UserRepository userRepository;
 
     @Autowired
-    public OpinionServiceImpl(OpinionRepository opinionRepository, ModelMapper modelMapper, UserService userService, UserRepository userRepository) {
+    public OpinionServiceImpl(OpinionRepository opinionRepository, ModelMapper modelMapper, UserService userService,
+                              UserRepository userRepository) {
         this.opinionRepository = opinionRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
