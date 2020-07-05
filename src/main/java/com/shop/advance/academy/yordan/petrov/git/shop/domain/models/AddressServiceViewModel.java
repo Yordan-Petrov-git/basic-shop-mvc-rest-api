@@ -13,7 +13,6 @@ public class AddressServiceViewModel {
     }
 
 
-
     public Long getId() {
         return this.id;
     }

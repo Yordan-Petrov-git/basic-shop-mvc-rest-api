@@ -1,30 +1,30 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 @Entity
-@Table(name = "shopping_cart_item")
-public class ShoppingCartItem extends BaseEntity{
+@Table(name = "item_item_count_pairs")
+public class ItemCountPair extends BaseEntity {
 
     private Item item;
     private Integer itemCount;
 
 
-    public ShoppingCartItem(Item item, Integer itemCount) {
+    public ItemCountPair(Item item, Integer itemCount) {
         this.item = item;
         this.itemCount = itemCount;
     }
 
-    public ShoppingCartItem() {
+    public ItemCountPair() {
     }
 
     @ManyToOne(fetch = FetchType.LAZY
-            ,cascade = {CascadeType.DETACH,CascadeType.REMOVE})
-    @JoinColumn(name = "item_id",referencedColumnName = "id")
+            , cascade = {CascadeType.DETACH})
+    @JoinColumn(name = "item_id", referencedColumnName = "id")
     public Item getItem() {
         return this.item;
     }
+
     @Column(name = "item_count")
     public void setItem(Item item) {
         this.item = item;

@@ -27,7 +27,6 @@ public class CardServiceModel {
     }
 
 
-
     public Long getId() {
         return this.id;
     }

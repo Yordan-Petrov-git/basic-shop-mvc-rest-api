@@ -8,7 +8,7 @@ import java.util.List;
 public class ShoppingCartServiceViewModel {
 
     private Long id;
-    private List<ShoppingCartItemServiceViewModel> shoppingCartItem = new ArrayList<>();
+    private List<ItemCountPairServiceViewModel> shoppingCartItem = new ArrayList<>();
     private UserServiceViewModel user;
     private LocalDateTime created;
     private LocalDateTime modified;
@@ -25,11 +25,11 @@ public class ShoppingCartServiceViewModel {
         this.id = id;
     }
 
-    public List<ShoppingCartItemServiceViewModel> getShoppingCartItem() {
+    public List<ItemCountPairServiceViewModel> getItemCountPair() {
         return this.shoppingCartItem;
     }
 
-    public void setShoppingCartItem(List<ShoppingCartItemServiceViewModel> shoppingCartItem) {
+    public void setItemCountPair(List<ItemCountPairServiceViewModel> shoppingCartItem) {
         this.shoppingCartItem = shoppingCartItem;
     }
 

@@ -11,7 +11,7 @@ public class ItemServiceModel {
 
 
     private Long id;
-    private Set<MediaServiceModel> media= new HashSet<>();
+    private Set<MediaServiceModel> media = new HashSet<>();
     private Set<OpinionServiceModel> opinions = new HashSet<>();
     private String title;
     private String description;

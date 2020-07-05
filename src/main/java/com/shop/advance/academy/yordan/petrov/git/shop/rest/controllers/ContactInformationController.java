@@ -28,7 +28,7 @@ public class ContactInformationController {
     @PostMapping()
     public ResponseEntity<ContactInformationServiceViewModel> createContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
 
-        ContactInformationServiceViewModel contactInformationServiceViewModel =   contactInformationService.createContactInformation(contactInformationServiceModel);
+        ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.createContactInformation(contactInformationServiceModel);
 
         log.info("Contact Information  created : {}", contactInformationServiceViewModel);
 
@@ -37,9 +37,9 @@ public class ContactInformationController {
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<ContactInformationServiceViewModel> updateContactInformation(@PathVariable("id") Long id, @RequestBody ContactInformationServiceModel contactInformationServiceModel) {
+    public ResponseEntity<ContactInformationServiceViewModel> updateContactInformation(@PathVariable("id") Long id, @RequestBody ContactInformationServiceModel contactInformationServiceModel) {
 
-        ContactInformationServiceViewModel contactInformationServiceViewModel =   contactInformationService.updateContactInformation(contactInformationServiceModel);
+        ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.updateContactInformation(contactInformationServiceModel);
 
         log.info("Contact Information  updated : {}", contactInformationServiceViewModel);
 
@@ -49,9 +49,9 @@ public class ContactInformationController {
 
 
     @GetMapping("/{id}")
-    public  ResponseEntity<ContactInformationServiceViewModel> getContactInformation(@PathVariable("id") final Long id) {
+    public ResponseEntity<ContactInformationServiceViewModel> getContactInformation(@PathVariable("id") final Long id) {
 
-        ContactInformationServiceViewModel contactInformationServiceViewModel =   contactInformationService.getContactInformationById(id);
+        ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.getContactInformationById(id);
 
         log.info("Contact Information  found : {}", contactInformationServiceViewModel);
 
@@ -71,7 +71,7 @@ public class ContactInformationController {
     }
 
     @DeleteMapping("/{id}")
-    public  ResponseEntity<ContactInformationServiceViewModel> deleteContactInformation(@PathVariable("id") Long id) {
+    public ResponseEntity<ContactInformationServiceViewModel> deleteContactInformation(@PathVariable("id") Long id) {
 
         ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.deleteContactInformationById(id);
 

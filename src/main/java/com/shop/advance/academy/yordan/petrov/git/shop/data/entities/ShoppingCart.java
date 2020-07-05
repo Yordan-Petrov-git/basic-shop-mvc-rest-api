@@ -14,7 +14,7 @@ import java.util.Objects;
 @Table(name = "shopping_carts")
 public class ShoppingCart extends BaseEntity {
 
-    private List<ShoppingCartItem> shoppingCartItem = new ArrayList<>();
+    private List<ItemCountPair> itemCountPair = new ArrayList<>();
     private LocalDateTime created;
     private LocalDateTime modified;
     private User user;
@@ -25,22 +25,22 @@ public class ShoppingCart extends BaseEntity {
 
 
     @OneToMany(
-            targetEntity = ShoppingCartItem.class,
+            targetEntity = ItemCountPair.class,
             fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(name = "shopping_cart_shopping_cart_item",
+    @JoinTable(name = "shopping_cart_item_count_pair",
             joinColumns = @JoinColumn(name = "shopping_cart_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "shopping_cart_item_id", referencedColumnName = "id"))
-    public List<ShoppingCartItem> getShoppingCartItem() {
-        return this.shoppingCartItem;
+            inverseJoinColumns = @JoinColumn(name = "item_count_pair_item_id", referencedColumnName = "id"))
+    public List<ItemCountPair> getItemCountPair() {
+        return this.itemCountPair;
     }
 
-    public void setShoppingCartItem(List<ShoppingCartItem> shoppingCartItem) {
-        this.shoppingCartItem = shoppingCartItem;
+    public void setItemCountPair(List<ItemCountPair> itemCountPair) {
+        this.itemCountPair = itemCountPair;
     }
 
 
-    @Column(name ="date_time_created")
+    @Column(name = "date_time_created")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreated() {
         return this.created;
@@ -49,7 +49,8 @@ public class ShoppingCart extends BaseEntity {
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
-    @Column(name ="date_time_modified")
+
+    @Column(name = "date_time_modified")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getModified() {
         return this.modified;

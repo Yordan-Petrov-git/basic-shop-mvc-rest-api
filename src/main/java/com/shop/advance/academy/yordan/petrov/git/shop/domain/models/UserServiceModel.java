@@ -195,7 +195,7 @@ public class UserServiceModel {
 
     @Override
     public int hashCode() {
-        return Objects.hash( username, password, userType, dateOfBirth, created, modified, firstName,
+        return Objects.hash(username, password, userType, dateOfBirth, created, modified, firstName,
                 lastName, isEnabled, isCredentialsNonExpired, isAccountNonLocked, isAccountNonExpired);
     }
 

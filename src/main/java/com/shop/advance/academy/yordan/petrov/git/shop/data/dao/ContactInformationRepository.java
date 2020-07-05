@@ -13,7 +13,7 @@ public interface ContactInformationRepository extends JpaRepository<ContactInfor
 
     Optional<ContactInformation> findByPhoneNumber(String phoneNumber);
 
-    Optional<ContactInformation> findByCountryCodeAndPhoneNumber(String countryCode,String phoneNumber);
+    Optional<ContactInformation> findByCountryCodeAndPhoneNumber(String countryCode, String phoneNumber);
 
     Optional<ContactInformation> findByEmail(String email);
 

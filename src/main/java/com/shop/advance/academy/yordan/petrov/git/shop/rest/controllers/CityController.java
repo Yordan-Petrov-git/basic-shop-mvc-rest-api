@@ -85,7 +85,7 @@ public class CityController {
     public ResponseEntity<CityServiceViewModel> deleteCity(@PathVariable("id") Long id) {
 
 
-        CityServiceViewModel cityServiceViewModel =  cityService.deleteCityById(id);
+        CityServiceViewModel cityServiceViewModel = cityService.deleteCityById(id);
 
         log.info("City deleted: {} ", cityServiceViewModel);
 

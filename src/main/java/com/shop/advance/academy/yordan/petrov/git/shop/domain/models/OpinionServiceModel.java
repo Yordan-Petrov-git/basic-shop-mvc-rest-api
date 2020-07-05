@@ -18,7 +18,6 @@ public class OpinionServiceModel {
     }
 
 
-
     public Long getId() {
         return this.id;
     }

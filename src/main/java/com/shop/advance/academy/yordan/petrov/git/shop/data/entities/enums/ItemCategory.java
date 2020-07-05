@@ -10,6 +10,6 @@ public enum ItemCategory {
     PC_GAMES,
     PSP_GAMES,
     PS5_GAMES,
-    XBOX_GAMES;
+    XBOX_GAMES
 
 }

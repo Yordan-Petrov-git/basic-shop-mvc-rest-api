@@ -4,5 +4,5 @@ public enum PaymentType {
     NONE,
     BY_CARD,
     BY_CASH,
-    BY_BANK_TRANSFER;
+    BY_BANK_TRANSFER
 }

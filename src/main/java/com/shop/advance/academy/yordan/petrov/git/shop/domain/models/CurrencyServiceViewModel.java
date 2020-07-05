@@ -14,7 +14,6 @@ public class CurrencyServiceViewModel {
     }
 
 
-
     public Long getId() {
         return this.id;
     }

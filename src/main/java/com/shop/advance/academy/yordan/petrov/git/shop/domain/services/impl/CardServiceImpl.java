@@ -1,10 +1,14 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
@@ -23,12 +27,16 @@ public class CardServiceImpl implements CardService {
     private final CardRepository cardRepository;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final CurrencyService currencyService;
+    private final CurrencyRepository currencyRepository;
 
     @Autowired
-    public CardServiceImpl(CardRepository cardRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public CardServiceImpl(CardRepository cardRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder, CurrencyService currencyService, CurrencyRepository currencyRepository) {
         this.cardRepository = cardRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.currencyService = currencyService;
+        this.currencyRepository = currencyRepository;
     }
 
 
@@ -40,6 +48,14 @@ public class CardServiceImpl implements CardService {
         this.cardRepository.findByNumber(cardServiceModel.getNumber()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Card with number '%s' already exists.", cardServiceModel.getNumber()));
         });
+
+
+        CurrencyServiceViewModel countryServiceViewModel = this.currencyService.getCurrencyByName(cardServiceModel.getCurrency().getName());
+
+        currencyRepository.findByName(cardServiceModel.getCurrency().getName())
+                .ifPresent(c -> {
+                    card.setCurrency(this.modelMapper.map(countryServiceViewModel, Currency.class));
+                });
 
 
         card.setDateIssued(LocalDateTime.now());

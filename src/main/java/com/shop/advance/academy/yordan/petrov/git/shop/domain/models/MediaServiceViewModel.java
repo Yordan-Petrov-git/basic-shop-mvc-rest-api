@@ -13,7 +13,6 @@ public class MediaServiceViewModel {
     }
 
 
-
     public Long getId() {
         return this.id;
     }

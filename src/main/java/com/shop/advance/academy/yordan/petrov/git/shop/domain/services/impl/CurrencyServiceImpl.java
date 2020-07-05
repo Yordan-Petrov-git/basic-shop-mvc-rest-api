@@ -63,6 +63,15 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
     @Override
+    public CurrencyServiceViewModel getCurrencyByName(String name) {
+
+        return this.modelMapper
+                .map(this.currencyRepository.findByName(name).orElseThrow(() ->
+                        new EntityNotFoundException(String.format("Currency  with name %s not found.", name))), CurrencyServiceViewModel.class);
+
+    }
+
+    @Override
     public List<CurrencyServiceViewModel> getAllCurrencies() {
 
         this.currencyRepository.findAll()

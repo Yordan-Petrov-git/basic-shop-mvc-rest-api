@@ -14,7 +14,7 @@ public class Opinion extends BaseEntity {
     private String comment;
     private Rating rating = Rating.NONE;
     private Double vote;
-    private Set<Media> media= new HashSet<>();
+    private Set<Media> media = new HashSet<>();
     private User user;
 
     public Opinion() {
@@ -50,7 +50,7 @@ public class Opinion extends BaseEntity {
 
     @OneToMany(targetEntity = Media.class,
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.REMOVE,CascadeType.MERGE,CascadeType.PERSIST},
+            cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.PERSIST},
             orphanRemoval = true)
     @JoinColumn(name = "opinion_id")
     public Set<Media> getMedia() {
@@ -64,7 +64,7 @@ public class Opinion extends BaseEntity {
 
     @ManyToOne(targetEntity = User.class,
             fetch = FetchType.LAZY,
-    cascade = CascadeType.DETACH)
+            cascade = CascadeType.DETACH)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     public User getUser() {
         return this.user;

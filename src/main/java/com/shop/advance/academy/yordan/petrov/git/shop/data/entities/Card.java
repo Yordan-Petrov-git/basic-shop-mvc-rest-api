@@ -107,8 +107,8 @@ public class Card extends BaseEntity {
 
 
     @ManyToOne(targetEntity = Currency.class
-            , fetch = FetchType.EAGER,
-            cascade = {CascadeType.MERGE, CascadeType.PERSIST})
+            , fetch = FetchType.LAZY,
+            cascade = {CascadeType.DETACH})
     @JoinColumn(name = "currency_id"
             , referencedColumnName = "id")
     public Currency getCurrency() {
