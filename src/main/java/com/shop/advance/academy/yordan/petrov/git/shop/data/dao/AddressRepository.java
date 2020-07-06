@@ -19,5 +19,4 @@ public interface AddressRepository extends JpaRepository<Address, Long> {
 
     Optional<Address> findByStreetNumberAndStreetName(String number, String streetName);
 
-
 }

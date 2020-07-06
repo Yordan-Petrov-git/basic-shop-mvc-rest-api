@@ -17,6 +17,5 @@ public interface MediaRepository extends JpaRepository<Media, Long> {
 
     Optional<Media> findByDocumentPath(String path);
 
-
 }
 

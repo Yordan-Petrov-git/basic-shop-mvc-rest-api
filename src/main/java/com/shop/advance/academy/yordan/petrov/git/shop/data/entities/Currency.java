@@ -6,7 +6,7 @@ import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
-@Table(name = "curencies")
+@Table(name = "currencies")
 public class Currency extends BaseEntity {
 
     private String name;

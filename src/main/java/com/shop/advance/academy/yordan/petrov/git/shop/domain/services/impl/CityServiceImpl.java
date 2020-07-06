@@ -28,10 +28,11 @@ public class CityServiceImpl implements CityService {
     private final CountryRepository countryRepository;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository, ModelMapper modelMapper, CountryService countryService, CountryService countryService1, CountryRepository countryRepository) {
+    public CityServiceImpl(CityRepository cityRepository, ModelMapper modelMapper,
+                           CountryService countryService, CountryRepository countryRepository) {
         this.cityRepository = cityRepository;
         this.modelMapper = modelMapper;
-        this.countryService = countryService1;
+        this.countryService = countryService;
         this.countryRepository = countryRepository;
     }
 

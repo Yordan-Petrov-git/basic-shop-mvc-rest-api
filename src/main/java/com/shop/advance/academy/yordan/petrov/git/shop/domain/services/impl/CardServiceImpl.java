@@ -31,7 +31,9 @@ public class CardServiceImpl implements CardService {
     private final CurrencyRepository currencyRepository;
 
     @Autowired
-    public CardServiceImpl(CardRepository cardRepository, ModelMapper modelMapper, BCryptPasswordEncoder bCryptPasswordEncoder, CurrencyService currencyService, CurrencyRepository currencyRepository) {
+    public CardServiceImpl(CardRepository cardRepository, ModelMapper modelMapper,
+                           BCryptPasswordEncoder bCryptPasswordEncoder, CurrencyService currencyService,
+                           CurrencyRepository currencyRepository) {
         this.cardRepository = cardRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;

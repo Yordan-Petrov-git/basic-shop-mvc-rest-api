@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.Optional;
 
 @Repository
-public interface ShoppingCartItemRepository extends JpaRepository<ItemCountPair, Long> {
+public interface ItemCountPairRepository extends JpaRepository<ItemCountPair, Long> {
 
     Optional<ItemCountPair> findById(Long id);
 

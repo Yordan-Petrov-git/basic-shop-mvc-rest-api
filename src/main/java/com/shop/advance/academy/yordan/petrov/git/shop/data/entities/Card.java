@@ -5,6 +5,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardP
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardType;
 
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -69,6 +70,7 @@ public class Card extends BaseEntity {
         this.dateIssued = dateIssued;
     }
 
+    @Pattern(regexp = "^\\d{3}$", message = "cvv code is only 3 numbers")
     @Column(name = "cvv_code")
     public String getCvvCode() {
         return this.cvvCode;
@@ -78,7 +80,9 @@ public class Card extends BaseEntity {
         this.cvvCode = cvvCode;
     }
 
+    //TODO ADD PIN VALIDATION BEFORE BcRYPT Hash SOMEHOW
     @Column(name = "pin")
+    //@Pattern(regexp = "^\\d{4}$|^\\d{8}$",message = "pin number must be either 4 or 8 numbers long")
     public String getPinCode() {
         return this.pinCode;
     }

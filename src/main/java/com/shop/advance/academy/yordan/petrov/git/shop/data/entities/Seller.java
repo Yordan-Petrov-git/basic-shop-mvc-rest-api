@@ -1,7 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
 import javax.persistence.*;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "sellers")
@@ -37,7 +39,7 @@ public class Seller extends BaseEntity {
 
 
     @ManyToMany(targetEntity = ItemCountPair.class,
-            cascade = {CascadeType.MERGE,CascadeType.PERSIST,CascadeType.REMOVE},
+            cascade = {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REMOVE},
             fetch = FetchType.EAGER)
     @JoinTable(
             name = "seller_item_stock",
