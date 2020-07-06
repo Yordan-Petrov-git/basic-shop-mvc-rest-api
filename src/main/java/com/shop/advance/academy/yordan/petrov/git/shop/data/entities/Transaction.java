@@ -9,16 +9,16 @@ import java.time.Instant;
 
 @Entity
 @Table(name = "transactions")
-public class Transaction extends BaseEntity{
+public class Transaction extends BaseEntity {
 
-
+    private String number;
     private Card recipient;
     private Card sender;
     private String description;
     private Instant dateCreated;
     private Instant dateCompleted;
     private Instant dateUpdated;
-    private TransactionStatus transactionStatus = TransactionStatus.NEW;
+    private final TransactionStatus transactionStatus = TransactionStatus.NEW;
     private Long fee;
     private BigDecimal amount;
 

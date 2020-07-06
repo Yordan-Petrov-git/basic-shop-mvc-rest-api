@@ -8,7 +8,7 @@ import java.util.List;
 
 
 @Service
-public interface TransactionService extends TransactionOperationService{
+public interface TransactionService extends TransactionOperationService {
 
     TransactionServiceViewModel createTransaction(TransactionServiceModel transactionServiceModel);
 
