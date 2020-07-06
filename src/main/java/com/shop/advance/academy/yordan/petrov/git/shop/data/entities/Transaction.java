@@ -21,5 +21,6 @@ public class Transaction extends BaseEntity {
     private final TransactionStatus transactionStatus = TransactionStatus.NEW;
     private Long fee;
     private BigDecimal amount;
+    private Currency currency;
 
 }
