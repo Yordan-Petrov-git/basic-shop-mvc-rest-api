@@ -8,7 +8,7 @@ import javax.validation.constraints.Pattern;
 import java.util.Objects;
 
 @Entity
-@Table(name = "coontact_informations")
+@Table(name = "contact_informations")
 public class ContactInformation extends BaseEntity {
 
     private String email;

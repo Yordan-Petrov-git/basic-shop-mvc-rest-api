@@ -80,7 +80,7 @@ public class Card extends BaseEntity {
         this.cvvCode = cvvCode;
     }
 
-    //TODO ADD PIN VALIDATION SOMEHOW
+    //TODO ADD PIN VALIDATION BEFORE BcRYPT Hash SOMEHOW
     @Column(name = "pin")
     //@Pattern(regexp = "^\\d{4}$|^\\d{8}$",message = "pin number must be either 4 or 8 numbers long")
     public String getPinCode() {
