@@ -75,7 +75,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         Item item = itemRepository.findById(itemId)
                 .orElseThrow(() -> new InvalidEntityException(String.format("No items with id %s was found ", itemId)));
 
-        shoppingCart.setTotalItemsPrice(calculateTotalPrice(itemCount,item.getPrice()));
+        shoppingCart.setTotalItemsPrice(calculateTotalPrice(itemCount, item.getPrice()));
         shoppingCart.setCreated(LocalDateTime.now());
         shoppingCart.setModified(LocalDateTime.now());
 
@@ -132,7 +132,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     }
 
-    public BigDecimal calculateTotalPrice(Integer itemCount ,BigDecimal itemPrice ){
+    public BigDecimal calculateTotalPrice(Integer itemCount, BigDecimal itemPrice) {
 
         return itemPrice.multiply(BigDecimal.valueOf(itemCount));
     }

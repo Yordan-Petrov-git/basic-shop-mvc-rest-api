@@ -3,7 +3,6 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardProviders;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardType;
-import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -71,7 +70,7 @@ public class Card extends BaseEntity {
         this.dateIssued = dateIssued;
     }
 
-    @Pattern(regexp = "^\\d{3}$",message = "cvv code is only 3 numbers")
+    @Pattern(regexp = "^\\d{3}$", message = "cvv code is only 3 numbers")
     @Column(name = "cvv_code")
     public String getCvvCode() {
         return this.cvvCode;
