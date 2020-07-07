@@ -30,27 +30,35 @@ public class CurrencyServiceImpl implements CurrencyService {
     @Override
     public CurrencyServiceViewModel createCurrency(CurrencyServiceModel currencyServiceModel) {
 
-        Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
+        Currency currency = mapCurrencyServiceModelToCurrency(currencyServiceModel);
 
         this.currencyRepository.findByName(currencyServiceModel.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Currency with name '%s' already exists.", currencyServiceModel.getName()));
         });
 
-        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
+        return mapCurrencyToCurrencyServiceViewModel(currency);
 
+    }
+
+    private Currency mapCurrencyServiceModelToCurrency(CurrencyServiceModel currencyServiceModel) {
+        return this.modelMapper.map(currencyServiceModel, Currency.class);
     }
 
     @Override
     @Transactional
     public CurrencyServiceViewModel updateCurrency(CurrencyServiceModel currencyServiceModel) {
 
-        Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
+        Currency currency = mapCurrencyServiceModelToCurrency(currencyServiceModel);
 
         this.currencyRepository.findById(currencyServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Currency with id '%d' not found .", currencyServiceModel.getId())));
 
-        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
+        return mapCurrencyToCurrencyServiceViewModel(currency);
 
+    }
+
+    private CurrencyServiceViewModel mapCurrencyToCurrencyServiceViewModel(Currency currency) {
+        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
     }
 
     @Override

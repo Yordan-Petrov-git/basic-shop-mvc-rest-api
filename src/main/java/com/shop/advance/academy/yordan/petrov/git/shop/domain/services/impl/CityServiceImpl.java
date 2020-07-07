@@ -38,25 +38,37 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceViewModel createCity(CityServiceModel cityServiceModel) {
+        City city = mapCityServiceModelToCity(cityServiceModel);
+        getCityByName(city);
+        setCountryByName(cityServiceModel, city);
+        return mapCityToCityServiceViewModel(city);
+    }
 
-        City city = this.modelMapper.map(cityServiceModel, City.class);
-
+    private void getCityByName(City city) {
         this.cityRepository.findCityByName(city.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("City '%s' already exists.", city.getName()));
 
 
         });
+    }
 
-
-        //Create city only if the country is alredy in teh database
-        CountryServiceViewModel countryServiceViewModel = this.countryService.getCountryName(cityServiceModel.getCountry().getName());
-
+    private void setCountryByName(CityServiceModel cityServiceModel, City city) {
         countryRepository.findByName(cityServiceModel.getCountry().getName())
                 .ifPresent(c -> {
-                    city.setCountry(this.modelMapper.map(countryServiceViewModel, Country.class));
+                    city.setCountry(this.modelMapper.map(getCountryServiceViewModel(cityServiceModel), Country.class));
                 });
+    }
 
+    private CountryServiceViewModel getCountryServiceViewModel(CityServiceModel cityServiceModel) {
+        return this.countryService.getCountryName(cityServiceModel.getCountry().getName());
+    }
+
+    private CityServiceViewModel mapCityToCityServiceViewModel(City city) {
         return this.modelMapper.map(this.cityRepository.saveAndFlush(city), CityServiceViewModel.class);
+    }
+
+    private City mapCityServiceModelToCity(CityServiceModel cityServiceModel) {
+        return this.modelMapper.map(cityServiceModel, City.class);
     }
 
     @Override

@@ -41,66 +41,34 @@ public class CardServiceImpl implements CardService {
         this.currencyRepository = currencyRepository;
     }
 
-
     @Override
     public CardServiceViewModel createCard(CardServiceModel cardServiceModel) {
-
-        Card card = this.modelMapper.map(cardServiceModel, Card.class);
-
-        this.cardRepository.findByNumber(cardServiceModel.getNumber()).ifPresent(c -> {
-            throw new InvalidEntityException(String.format("Card with number '%s' already exists.", cardServiceModel.getNumber()));
-        });
-
-
-        CurrencyServiceViewModel countryServiceViewModel = this.currencyService.getCurrencyByName(cardServiceModel.getCurrency().getName());
-
-        currencyRepository.findByName(cardServiceModel.getCurrency().getName())
-                .ifPresent(c -> {
-                    card.setCurrency(this.modelMapper.map(countryServiceViewModel, Currency.class));
-                });
-
-
+        Card card = mapCardServiceModelToCard(cardServiceModel);
+        findCardByNumber(cardServiceModel);
+        setCurrencyByCurrencyName(cardServiceModel, card);
         card.setDateIssued(LocalDateTime.now());
         card.setPinCode(this.bCryptPasswordEncoder.encode(cardServiceModel.getPinCode()));
-        return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
-
+        return mapCardToCardServiceViewModel(card);
     }
 
     @Override
     @Transactional
     public CardServiceViewModel updateCard(CardServiceModel cardServiceModel) {
-
-        Card card = this.modelMapper.map(cardServiceModel, Card.class);
-
-        this.cardRepository.findById(cardServiceModel.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", cardServiceModel.getId())));
-
-        return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
-
+        Card card = mapCardServiceModelToCard(cardServiceModel);
+        getCardById(cardServiceModel.getId());
+        return mapCardToCardServiceViewModel(card);
     }
 
     @Override
     public CardServiceViewModel getCardById(long id) {
-
-        return this.modelMapper
-                .map(this.cardRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Card  with ID %s not found.", id))), CardServiceViewModel.class);
-
+        return mapCardToCardServiceViewModel(getCardByIdFromRepository(id));
     }
 
     @Override
     public List<CardServiceViewModel> getAllCards() {
-
-        this.cardRepository.findAll()
-                .stream()
-                .findAny()
-                .orElseThrow(() -> new InvalidEntityException("No Cards were found"));
-
-        List<Card> cards = cardRepository.findAll();
-
-        return modelMapper.map(cards, new TypeToken<List<CardServiceViewModel>>() {
-        }.getType());
-
+        validateIfCardsExists();
+        List<Card> cards = getListOfCards();
+        return mapCardListToCardServiceViewModelList(cards);
     }
 
     @Override
@@ -110,4 +78,52 @@ public class CardServiceImpl implements CardService {
         return cardServiceViewModel;
 
     }
+
+    private List<Card> getListOfCards() {
+        return cardRepository.findAll();
+    }
+
+    private void validateIfCardsExists() {
+        this.cardRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Cards were found"));
+    }
+
+    private List<CardServiceViewModel> mapCardListToCardServiceViewModelList(List<Card> cards) {
+        return modelMapper.map(cards, new TypeToken<List<CardServiceViewModel>>() {
+        }.getType());
+    }
+
+    private Card getCardByIdFromRepository(long id) {
+
+        return this.cardRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Card  with ID %s not found.", id)));
+    }
+
+    private CardServiceViewModel mapCardToCardServiceViewModel(Card card) {
+        return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
+    }
+
+    private Card mapCardServiceModelToCard(CardServiceModel cardServiceModel) {
+        return this.modelMapper.map(cardServiceModel, Card.class);
+    }
+
+    private void findCardByNumber(CardServiceModel cardServiceModel) {
+        this.cardRepository.findByNumber(cardServiceModel.getNumber()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Card with number '%s' already exists.", cardServiceModel.getNumber()));
+        });
+    }
+
+    private void setCurrencyByCurrencyName(CardServiceModel cardServiceModel, Card card) {
+        currencyRepository.findByName(cardServiceModel.getCurrency().getName())
+                .ifPresent(c -> {
+                    card.setCurrency(this.modelMapper.map(getCurrencyServiceViewModel(cardServiceModel), Currency.class));
+                });
+    }
+
+    private CurrencyServiceViewModel getCurrencyServiceViewModel(CardServiceModel cardServiceModel) {
+        return this.currencyService.getCurrencyByName(cardServiceModel.getCurrency().getName());
+    }
+
 }

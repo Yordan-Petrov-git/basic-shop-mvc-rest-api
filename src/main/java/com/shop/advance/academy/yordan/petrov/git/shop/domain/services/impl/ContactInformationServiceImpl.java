@@ -30,7 +30,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     @Override
     public ContactInformationServiceViewModel createContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
 
-        ContactInformation contactInformation = this.modelMapper.map(contactInformationServiceModel, ContactInformation.class);
+        ContactInformation contactInformation = mapContactInformationServiceModelToContactInformation(contactInformationServiceModel);
 
         this.contactInformationRepository.findByEmail(contactInformationServiceModel.getEmail()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Contact information with email '%s' already exists.", contactInformationServiceModel.getEmail()));
@@ -42,21 +42,29 @@ public class ContactInformationServiceImpl implements ContactInformationService 
         });
 
 
-        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
+        return mapContactInformationToContactInformationServiceViewModel(contactInformation);
 
+    }
+
+    private ContactInformation mapContactInformationServiceModelToContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
+        return this.modelMapper.map(contactInformationServiceModel, ContactInformation.class);
     }
 
     @Override
     @Transactional
     public ContactInformationServiceViewModel updateContactInformation(ContactInformationServiceModel ContactInformation) {
 
-        ContactInformation contactInformation = this.modelMapper.map(ContactInformation, ContactInformation.class);
+        ContactInformation contactInformation = mapContactInformationServiceModelToContactInformation(ContactInformation);
 
         this.contactInformationRepository.findById(ContactInformation.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Contact information with id '%d' not found .", ContactInformation.getId())));
 
-        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
+        return mapContactInformationToContactInformationServiceViewModel(contactInformation);
 
+    }
+
+    private ContactInformationServiceViewModel mapContactInformationToContactInformationServiceViewModel(ContactInformation contactInformation) {
+        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
     }
 
     @Override

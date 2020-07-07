@@ -30,26 +30,34 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public CountryServiceViewModel createCountry(CountryServiceModel countryServiceModel) {
 
-        Country country = this.modelMapper.map(countryServiceModel, Country.class);
+        Country country = mapCountryServiceModelToCountry(countryServiceModel);
 
         this.countryRepository.findByName(countryServiceModel.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Country '%s' already exists.", countryServiceModel.getName()));
         });
 
-        return this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceViewModel.class);
+        return mapCountryToCountryServiceViewModel(country);
 
+    }
+
+    private Country mapCountryServiceModelToCountry(CountryServiceModel countryServiceModel) {
+        return this.modelMapper.map(countryServiceModel, Country.class);
     }
 
     @Override
     @Transactional
     public CountryServiceViewModel updateCountry(CountryServiceModel countryServiceModel) {
 
-        Country country = this.modelMapper.map(countryServiceModel, Country.class);
+        Country country = mapCountryServiceModelToCountry(countryServiceModel);
 
         this.countryRepository.findById(countryServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Country with id '%d' not found .", countryServiceModel.getId())));
 
 
+        return mapCountryToCountryServiceViewModel(country);
+    }
+
+    private CountryServiceViewModel mapCountryToCountryServiceViewModel(Country country) {
         return this.modelMapper.map(this.countryRepository.saveAndFlush(country), CountryServiceViewModel.class);
     }
 
