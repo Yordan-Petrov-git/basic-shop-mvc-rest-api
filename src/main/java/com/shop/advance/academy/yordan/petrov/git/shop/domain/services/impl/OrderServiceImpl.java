@@ -41,18 +41,9 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderServiceViewModel createOrder(OrderServiceModel orderServiceModel) {
 
-        Order order = this.modelMapper.map(orderServiceModel, Order.class);
-
-        this.orderRepository.findByNumber(orderServiceModel.getNumber()).ifPresent(c -> {
-            throw new InvalidEntityException(String.format("Order with number '%s' already exists.", orderServiceModel.getNumber()));
-        });
-
-        ShoppingCartServiceViewModel shoppingCartServiceViewModel = this.shoppingCartService.getShoppingCartById(orderServiceModel.getShoppingCart().getId());
-
-        shoppingCartRepository.findById(orderServiceModel.getShoppingCart().getId())
-                .ifPresent(c -> {
-                    order.setShoppingCart(this.modelMapper.map(shoppingCartServiceViewModel, ShoppingCart.class));
-                });
+        Order order = mapOrderServiceModelToOrder(orderServiceModel);
+        findOrderByNumber(orderServiceModel);
+        setShoppingCartOrder(orderServiceModel, order);
 
         //TODO ADD PROMO CODE SYSTEM AND DISCOUNTS IN % SYSTEM !!!
         //TODO discount = (TOTAL PRICE AETHER TAXES)-((rate%/100)*price before tax )
@@ -72,44 +63,27 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal totalItemsPrice = this.shoppingCartService.getShoppingCartById(itemId).getTotalItemsPrice();
         BigDecimal taxInPercentage = calculateTaxPercentage(tax);
         order.setTotalPrice(calculateItemAfterTax(taxInPercentage, totalItemsPrice));
-
-        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
+        return mapOrderToOrderServiceModel(order);
     }
 
     @Override
     @Transactional
     public OrderServiceViewModel updateOrder(OrderServiceModel orderServiceModel) {
-
-        Order order = this.modelMapper.map(orderServiceModel, Order.class);
-
-        this.orderRepository.findById(orderServiceModel.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("Order with id '%d' not found .", orderServiceModel.getId())));
-
-
-        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
-
+        Order order = mapOrderServiceModelToOrder(orderServiceModel);
+        getOrderById(orderServiceModel.getId());
+        return mapOrderToOrderServiceModel(order);
     }
 
     @Override
     public OrderServiceViewModel getOrderById(long id) {
-        return this.modelMapper
-                .map(this.orderRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Order  with ID %s not found.", id))), OrderServiceViewModel.class);
-
+        return mapOrderToOrderServiceModel(findOrderById(id));
     }
 
     @Override
     public List<OrderServiceViewModel> getAllOrders() {
-
-        this.orderRepository.findAll()
-                .stream()
-                .findAny()
-                .orElseThrow(() -> new InvalidEntityException("No Orders were found"));
-
-        List<Order> orders = orderRepository.findAll();
-
-        return modelMapper.map(orders, new TypeToken<List<OrderServiceViewModel>>() {
-        }.getType());
+        validateIfFoundAnyOrders();
+        List<Order> orders = findAllOrders();
+        return mapListOrderToListOrderServiceViewModel(orders);
     }
 
     @Override
@@ -128,4 +102,53 @@ public class OrderServiceImpl implements OrderService {
 
     }
 
+    public void setShoppingCartOrder(OrderServiceModel orderServiceModel, Order order) {
+        shoppingCartRepository.findById(orderServiceModel.getShoppingCart().getId())
+                .ifPresent(c -> {
+                    order.setShoppingCart(mapOrderServiceModelToShoppingCart(orderServiceModel));
+                });
+    }
+
+    public ShoppingCart mapOrderServiceModelToShoppingCart(OrderServiceModel orderServiceModel) {
+        return this.modelMapper.map(getShoppingCartServiceViewModel(orderServiceModel), ShoppingCart.class);
+    }
+
+    public ShoppingCartServiceViewModel getShoppingCartServiceViewModel(OrderServiceModel orderServiceModel) {
+        return this.shoppingCartService.getShoppingCartById(orderServiceModel.getShoppingCart().getId());
+    }
+
+    public void findOrderByNumber(OrderServiceModel orderServiceModel) {
+        this.orderRepository.findByNumber(orderServiceModel.getNumber()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Order with number '%s' already exists.", orderServiceModel.getNumber()));
+        });
+    }
+
+    public Order mapOrderServiceModelToOrder(OrderServiceModel orderServiceModel) {
+        return this.modelMapper.map(orderServiceModel, Order.class);
+    }
+
+    public OrderServiceViewModel mapOrderToOrderServiceModel(Order order) {
+        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
+    }
+
+    public Order findOrderById(long id) {
+        return this.orderRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Order  with ID %s not found.", id)));
+    }
+
+    public List<OrderServiceViewModel> mapListOrderToListOrderServiceViewModel(List<Order> orders) {
+        return modelMapper.map(orders, new TypeToken<List<OrderServiceViewModel>>() {
+        }.getType());
+    }
+
+    public void validateIfFoundAnyOrders() {
+        this.orderRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Orders were found"));
+    }
+
+    public List<Order> findAllOrders() {
+        return orderRepository.findAll();
+    }
 }
