@@ -51,12 +51,7 @@ public class SellerServiceImpl implements SellerService {
         seller.setUser(this.modelMapper.map(this.userService
                 .getUserById(sellerServiceModel.getUser().getId()), User.class));
 
-//        //should get item count pair id  id
-//        Long itemId = sellerServiceModel.getStock()
-//                .stream()
-//                .map(e -> e.getItem().getId())
-//                .findFirst()
-//                .orElseThrow(()->new InvalidEntityException("No items were found "));
+
 
         return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceViewModel.class);
 

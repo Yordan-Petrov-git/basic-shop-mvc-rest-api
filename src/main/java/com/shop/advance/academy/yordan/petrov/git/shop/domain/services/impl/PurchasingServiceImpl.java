@@ -46,15 +46,11 @@ public class PurchasingServiceImpl implements PurchasingService {
         isOrderStatusCanceled(order.getOrderStatus());
         isOrderStatusFinished(order.getOrderStatus());
 //        updateOrderForPurchase(order);//This breaks the payment
-        payByCardTransactionFieldsNecessarySet(transactionServiceModel, order);
-        createTransactionForPayByCard(transactionServiceModel);
-        return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceModel);
-    }
-
-    private void payByCardTransactionFieldsNecessarySet(TransactionServiceModel transactionServiceModel, Order order) {
         transactionServiceModel.setAmount(order.getTotalPrice());
         transactionServiceModel.setFee(BigDecimal.valueOf(5.00));
         transactionServiceModel.setDescription("Item purchase");
+        createTransactionForPayByCard(transactionServiceModel);
+        return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceModel);
     }
 
     private void createTransactionForPayByCard(TransactionServiceModel transactionServiceModel) {
@@ -73,16 +69,13 @@ public class PurchasingServiceImpl implements PurchasingService {
         isTransactionStatusRefunded(transactionServiceForRefund.getTransactionStatus());
         isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(transactionServiceForRefund.getDateCompleted());
         //updateOrderForRefund(findOrderFromTransactionServiceModelById(transactionServiceModel));
-        transferServiceTransactionNecessaryFieldsSet(transactionServiceForRefund);
+        transactionServiceForRefund.setTransactionStatus(TransactionStatus.REFUNDED);
+        transactionServiceForRefund.setDescription("Refunded for item");
+        transactionServiceForRefund.setDateUpdated(Instant.now());
         refundTransactionById(transactionServiceModel);
         updateTransactionService(transactionServiceForRefund);
     }
 
-    private void transferServiceTransactionNecessaryFieldsSet(TransactionServiceModel transactionServiceForRefund) {
-        transactionServiceForRefund.setTransactionStatus(TransactionStatus.REFUNDED);
-        transactionServiceForRefund.setDescription("Refunded for item");
-        transactionServiceForRefund.setDateUpdated(Instant.now());
-    }
 
     private void refundTransactionById(TransactionServiceModel transactionServiceModel) {
         this.transactionService.refundTransactionById(transactionServiceModel.getId());

@@ -62,7 +62,13 @@ public class UserServiceImpl implements UserService {
         Long addressId = getUserAddressId(userServiceModel);
         userSetAddressByAddressId(user, addressId);
         addRolesToUsers(user);
-        setUserNecessaryFields(userServiceModel, user);
+        user.setEnabled(true);
+        user.setCredentialsNonExpired(true);
+        user.setAccountNonLocked(true);
+        user.setAccountNonExpired(true);
+        user.setCreated(LocalDateTime.now());
+        user.setModified(LocalDateTime.now());
+        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
         return mapUserToUserServiceViewModel(this.userRepository.saveAndFlush(user));
     }
 
@@ -73,7 +79,8 @@ public class UserServiceImpl implements UserService {
         validateIfUsernameExists(user);
         Long cardId = getCardId(userServiceModel);
         addCardToUserOnUpdater(user, cardId);
-        setUserFieldsUponUpdate(userServiceModel, user);
+        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
+        user.setModified(LocalDateTime.now());
         return mapUserToUserServiceViewModel(this.userRepository.saveAndFlush(user));
     }
 
@@ -168,15 +175,6 @@ public class UserServiceImpl implements UserService {
         return this.modelMapper.map(userServiceModel, User.class);
     }
 
-    public void setUserNecessaryFields(@Valid UserServiceModel userServiceModel, User user) {
-        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
-        user.setEnabled(true);
-        user.setCredentialsNonExpired(true);
-        user.setAccountNonLocked(true);
-        user.setAccountNonExpired(true);
-        user.setCreated(LocalDateTime.now());
-        user.setModified(LocalDateTime.now());
-    }
 
     public void userSetAddressByAddressId(User user, Long addressId) {
         user.setAddresses(Set.of(this.addressRepository.findById(addressId)
@@ -218,11 +216,6 @@ public class UserServiceImpl implements UserService {
 
     public Role mapRoleModelServiceToRole(RoleServiceModel r) {
         return this.modelMapper.map(r, Role.class);
-    }
-
-    public void setUserFieldsUponUpdate(@Valid UserServiceModel userServiceModel, User user) {
-        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
-        user.setModified(LocalDateTime.now());
     }
 
     public void addCardToUserOnUpdater(User user, Long cardId) {

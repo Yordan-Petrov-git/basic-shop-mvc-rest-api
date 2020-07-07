@@ -56,7 +56,10 @@ public class TransactionServiceImpl implements TransactionService {
         Long idSender = (transactionServiceModel.getSender().getId());
         this.withdrawMoney(idSender, transactionServiceModel.getFee());
         this.transferMoney(transactionServiceModel.getRecipient().getId(), idSender, transactionServiceModel.getAmount());
-        setTransactionNecessaryFields(transaction);
+        transaction.setDateCreated(Instant.now());
+        transaction.setDateCompleted(Instant.now());
+        transaction.setDateUpdated(Instant.now());
+        transaction.setTransactionStatus(TransactionStatus.CONFIRMED);
         return mapTransactionToTransactionServiceViewModel(this.transactionRepository.saveAndFlush(transaction));
     }
 
@@ -102,7 +105,11 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public void withdrawMoney(Long id, BigDecimal amount) {
         Card card = getCardId(id);
-        checksIfCardBalancedIsSufficientForTransaction(amount, card);
+        if (card.getBalance().compareTo(amount) < 0) {
+            throw new IllegalCardTransactionOperation(String.
+                    format("Current balance of card with number : %s is : %.2f and it is not sufficient to withdraw amount:  %.2f",
+                            card.getNumber(), card.getBalance(), amount));
+        }
         card.setBalance(card.getBalance().subtract(amount));
         cardServiceUpdate(card);
     }
@@ -197,14 +204,6 @@ public class TransactionServiceImpl implements TransactionService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", id)));
     }
 
-    private void checksIfCardBalancedIsSufficientForTransaction(BigDecimal amount, Card card) {
-        if (card.getBalance().compareTo(amount) < 0) {
-            throw new IllegalCardTransactionOperation(String.
-                    format("Current balance of card with number : %s is : %.2f and it is not sufficient to withdraw amount:  %.2f",
-                            card.getNumber(), card.getBalance(), amount));
-        }
-    }
-
     private void checksIfDepositAmountIsZero(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalCardTransactionOperation(String.
@@ -229,12 +228,6 @@ public class TransactionServiceImpl implements TransactionService {
         return this.cardService.getCardById(transactionServiceModel.getSender().getId());
     }
 
-    private void setTransactionNecessaryFields(Transaction transaction) {
-        transaction.setDateCreated(Instant.now());
-        transaction.setDateCompleted(Instant.now());
-        transaction.setDateUpdated(Instant.now());
-        transaction.setTransactionStatus(TransactionStatus.CONFIRMED);
-    }
 
     public Transaction mapTransactionServiceModelToTransaction(TransactionServiceModel transactionServiceModel) {
         return this.modelMapper.map(transactionServiceModel, Transaction.class);
