@@ -75,7 +75,7 @@ public class TransactionServiceImpl implements TransactionService {
                 });
 
         //Order
-        OrderServiceViewModel orderServiceViewModel = this.orderService.getOrderById(transactionServiceModel.getOrder().getId());
+            OrderServiceViewModel orderServiceViewModel = this.orderService.getOrderById(transactionServiceModel.getOrder().getId());
         orderRepository.findById(transactionServiceModel.getOrder().getId())
                 .ifPresent(c -> {
                     transactionServiceModel.setOrder(this.modelMapper.map(orderServiceViewModel, OrderServiceModel.class));
@@ -102,19 +102,15 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public TransactionServiceViewModel updateTransaction(TransactionServiceModel transactionServiceModel) {
-
         Transaction transaction = this.modelMapper.map(transactionServiceModel, Transaction.class);
-
         this.transactionRepository.findById(transactionServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", transactionServiceModel.getId())));
-
-        return this.modelMapper.map(this.transactionRepository.saveAndFlush(transaction), TransactionServiceViewModel.class);
+        return mapTransactionToTransactionServiceViewModel(this.transactionRepository.saveAndFlush(transaction));
 
     }
 
     @Override
     public TransactionServiceViewModel getTransactionById(Long id) {
-
         return this.modelMapper
                 .map(this.transactionRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Transaction  with ID %s not found.", id))), TransactionServiceViewModel.class);
@@ -123,9 +119,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionServiceViewModel> getAllTransactions() {
-
         List<Transaction> transactions = transactionRepository.findAll();
-
         return modelMapper.map(transactions, new TypeToken<List<TransactionServiceViewModel>>() {
         }.getType());
     }
@@ -133,100 +127,122 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public TransactionServiceViewModel deleteTransactionById(Long id) {
-
-        this.transactionRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", id)));
-
-        TransactionServiceViewModel deleteTransaction = this.getTransactionById(id);
-
+        Transaction transaction = getTransactionId(id);
         this.transactionRepository.deleteById(id);
-
-        return this.modelMapper.map(deleteTransaction, TransactionServiceViewModel.class);
+        return mapTransactionToTransactionServiceViewModel(transaction);
     }
 
     @Override
     @Transactional
     public TransactionServiceViewModel refundTransactionById(Long id) {
-
-        Transaction transaction = this.transactionRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", id)));
-
-        BigDecimal amountToBeRefunded = transaction.getAmount();
-
-        Long recipientToBeSender = transaction.getRecipient().getId();
-        Long senderToBeRecipient = transaction.getSender().getId();
-
-        TransactionServiceViewModel refund = this.getTransactionById(id);
-
-        this.refund(recipientToBeSender, senderToBeRecipient, amountToBeRefunded);
-
-        TransactionServiceModel transactionServiceModel = this.modelMapper.map(transaction, TransactionServiceModel.class);
-        this.updateTransaction(transactionServiceModel);
-
-        return this.modelMapper.map(refund, TransactionServiceViewModel.class);
+        Transaction transaction = getTransactionId(id);
+        this.refund(transaction.getRecipient().getId(), transaction.getSender().getId(), transaction.getAmount());
+        this.updateTransaction(mapTransactionToTransactionServiceModel(transaction));
+        return mapTransactionToTransactionServiceViewModel(transaction);
     }
+
 
     @Override
     @Transactional
     public void withdrawMoney(Long id, BigDecimal amount) {
-
-        Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", id)));
-
-        if (card.getBalance().compareTo(amount) < 0) {
-            throw new IllegalCardTransactionOperation(String.
-                    format("Current balance of card with number : %s is : %.2f and it is not sufficient to withdraw amount:  %.2f",
-                            card.getNumber(), card.getBalance(), amount));
-        }
-
+        Card card = getCardId(id);
+        checksIfCardBalancedIsSufficientForTransaction(amount, card);
         card.setBalance(card.getBalance().subtract(amount));
-        cardService.updateCard(this.modelMapper.map(card, CardServiceModel.class));
+        cardServiceUpdate(card);
     }
+
+    private void cardServiceUpdate(Card card) {
+        cardService.updateCard(mapCardToCardServiceModel(card));
+    }
+
 
     @Override
     @Transactional
     public void depositMoney(Long id, BigDecimal amount) {
-
-        Card card = cardRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", id)));
-
-        if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalCardTransactionOperation(String.
-                    format("Deposit amount cannot be : %.2f",
-                            amount));
-        }
-
+        Card card = getCardId(id);
+        checksIfDepositAmountIsZero(amount);
         card.setBalance(card.getBalance().add(amount));
-        cardService.updateCard(this.modelMapper.map(card, CardServiceModel.class));
+        cardServiceUpdate(card);
     }
+
 
     @Override
     @Transactional
     public void transferMoney(Long toId, Long fromId, BigDecimal amount) {
-
         depositMoney(toId, amount);
         withdrawMoney(fromId, amount);
-
-        if (amount.compareTo(BigDecimal.ZERO) < 0) {
-            throw new IllegalCardTransactionOperation(String.
-                    format("Transfer amount cannot be : %.2f",
-                            amount));
-        }
+        checksIfTransferAmountIsZero(amount);
     }
 
     @Override
     @Transactional
     public void refund(Long toId, Long fromId, BigDecimal amount) {
-        //REVERSE TO FROM TRANSFER
         depositMoney(fromId, amount);
         withdrawMoney(toId, amount);
+        checksIfTransferAmountIsZero(amount);
+    }
 
+    private Transaction getTransactionId(Long id) {
+        return this.transactionRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", id)));
+    }
+
+    private Card getCardId(Long id) {
+        return cardRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", id)));
+    }
+
+    private void checksIfCardBalancedIsSufficientForTransaction(BigDecimal amount, Card card) {
+        if (card.getBalance().compareTo(amount) < 0) {
+            throw new IllegalCardTransactionOperation(String.
+                    format("Current balance of card with number : %s is : %.2f and it is not sufficient to withdraw amount:  %.2f",
+                            card.getNumber(), card.getBalance(), amount));
+        }
+    }
+
+    private void checksIfDepositAmountIsZero(BigDecimal amount) {
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalCardTransactionOperation(String.
+                    format("Deposit amount cannot be : %.2f",
+                            amount));
+        }
+    }
+
+    private void checksIfTransferAmountIsZero(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalCardTransactionOperation(String.
                     format("Transfer amount cannot be : %.2f",
                             amount));
         }
+    }
 
+    public TransactionServiceModel mapTransactionServiceViewModelToTransactionServiceModel(TransactionServiceViewModel transactionServiceViewModel) {
+        return this.modelMapper.map(transactionServiceViewModel, TransactionServiceModel.class);
+    }
+
+    public TransactionServiceViewModel mapTransactionServiceModelToTransactionServiceViewModel(TransactionServiceModel transactionServiceModel) {
+        return this.modelMapper.map(transactionServiceModel, TransactionServiceViewModel.class);
+    }
+
+    public CardServiceModel mapCardServiceModelToCardServiceViewModel(CardServiceViewModel cardServiceViewModel) {
+        return this.modelMapper.map(cardServiceViewModel, CardServiceModel.class);
+    }
+
+    public CardServiceViewModel mapCardServiceViewModelToCardServiceModel(CardServiceModel transactionServiceModel) {
+        return this.modelMapper.map(transactionServiceModel, CardServiceViewModel.class);
+    }
+
+    public CardServiceModel mapCardToCardServiceModel(Card card) {
+        return this.modelMapper.map(card, CardServiceModel.class);
+    }
+
+
+    public TransactionServiceViewModel mapTransactionToTransactionServiceViewModel(Transaction transaction) {
+        return this.modelMapper.map(transaction, TransactionServiceViewModel.class);
+    }
+
+    public TransactionServiceModel mapTransactionToTransactionServiceModel(Transaction transaction) {
+        return this.modelMapper.map(transaction, TransactionServiceModel.class);
     }
 
 }

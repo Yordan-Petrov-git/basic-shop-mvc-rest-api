@@ -38,20 +38,27 @@ public class PurchasingServiceImpl implements PurchasingService {
         this.transactionService = transactionService;
     }
 
-
     @Override
-    public TransactionServiceViewModel payByCard(TransactionServiceModel transaction) {
+    public TransactionServiceViewModel payByCard(TransactionServiceModel transactionServiceModel) {
+        Order order = findOrderFromTransactionServiceModelById(transactionServiceModel);
 
-        Order order = orderRepository.findById(transaction.getOrder().getId())
-                .orElseThrow();
+        payByCardTransactionFieldsNecessarySet(transactionServiceModel, order);
 
-        transaction.setAmount(order.getTotalPrice());
-        //Fixed fee for purchase
-        transaction.setFee(BigDecimal.valueOf(5.00));
-        transaction.setDescription("Item purchase");
-        transactionService.createTransaction(transaction);
+        createTransactionForPayByCard(transactionServiceModel);
 
-        return this.modelMapper.map(transaction, TransactionServiceViewModel.class);
+        return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceModel);
+    }
+
+    private void payByCardTransactionFieldsNecessarySet(TransactionServiceModel transactionServiceModel, Order order) {
+        transactionServiceModel.setAmount(order.getTotalPrice());
+
+        transactionServiceModel.setFee(BigDecimal.valueOf(5.00));
+
+        transactionServiceModel.setDescription("Item purchase");
+    }
+
+    private void createTransactionForPayByCard(TransactionServiceModel transactionServiceModel) {
+        transactionService.createTransaction(transactionServiceModel);
     }
 
     @Override
@@ -59,21 +66,33 @@ public class PurchasingServiceImpl implements PurchasingService {
 
         TransactionServiceModel transactionServiceForRefund = getTransactionServiceModelForRefundTransaction(transactionServiceModel);
 
+        refundCardPurchaseValidationAndUpdates(transactionServiceModel, transactionServiceForRefund);
+
+        return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceForRefund);
+    }
+
+    private void refundCardPurchaseValidationAndUpdates(TransactionServiceModel transactionServiceModel, TransactionServiceModel transactionServiceForRefund) {
         isTransactionStatusRefunded(transactionServiceForRefund.getTransactionStatus());
 
         isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(transactionServiceForRefund.getDateCompleted());
 
         updateOrderForRefund(findOrderFromTransactionServiceModelById(transactionServiceModel));
 
+        transferServiceTransactionNecessaryFieldsSet(transactionServiceForRefund);
+
+        refundTransactionById(transactionServiceModel);
+
+        updateTransactionService(transactionServiceForRefund);
+    }
+
+    private void transferServiceTransactionNecessaryFieldsSet(TransactionServiceModel transactionServiceForRefund) {
         transactionServiceForRefund.setTransactionStatus(TransactionStatus.REFUNDED);
         transactionServiceForRefund.setDescription("Refunded for item");
         transactionServiceForRefund.setDateUpdated(Instant.now());
+    }
 
-        transactionService.refundTransactionById(transactionServiceModel.getId());
-
-        updateTransactionService(transactionServiceForRefund);
-
-        return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceForRefund);
+    private void refundTransactionById(TransactionServiceModel transactionServiceModel) {
+        this.transactionService.refundTransactionById(transactionServiceModel.getId());
     }
 
     public void isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(Instant dateTransactionCompleted) {
@@ -139,6 +158,5 @@ public class PurchasingServiceImpl implements PurchasingService {
     public TransactionServiceViewModel mapTransactionServiceModelToTransactionServiceViewModel(TransactionServiceModel transactionServiceModel) {
         return this.modelMapper.map(transactionServiceModel, TransactionServiceViewModel.class);
     }
-
 
 }
