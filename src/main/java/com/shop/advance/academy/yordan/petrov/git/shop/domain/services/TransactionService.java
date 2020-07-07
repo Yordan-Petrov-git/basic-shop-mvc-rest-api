@@ -20,4 +20,5 @@ public interface TransactionService extends TransactionOperationService {
 
     TransactionServiceViewModel deleteTransactionById(Long id);
 
+     TransactionServiceViewModel refundTransactionById(Long id);
 }

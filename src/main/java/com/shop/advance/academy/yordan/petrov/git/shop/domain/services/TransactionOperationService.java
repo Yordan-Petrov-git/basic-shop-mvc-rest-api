@@ -11,6 +11,7 @@ public interface TransactionOperationService {
 
     void depositMoney(Long id, BigDecimal amount);
 
-    void transferMoney(Long toId, Long fromId, BigDecimal amount);
+    void transferMoney(Long RecipientId, Long SenderId, BigDecimal amount);
 
+    void refund(Long toId, Long fromId, BigDecimal amount);
 }
