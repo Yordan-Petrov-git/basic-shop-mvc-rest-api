@@ -60,54 +60,6 @@ public class TransactionServiceImpl implements TransactionService {
         return mapTransactionToTransactionServiceViewModel(this.transactionRepository.saveAndFlush(transaction));
     }
 
-    public void setUpTransactionRouts(TransactionServiceModel transactionServiceModel) {
-        setSender(transactionServiceModel);
-        setRecipient(transactionServiceModel);
-        setCurrency(transactionServiceModel);
-        setOrder(transactionServiceModel);
-    }
-
-    public void setOrder(TransactionServiceModel transactionServiceModel) {
-        orderRepository.findById(transactionServiceModel.getOrder().getId())
-                .ifPresent(c -> {
-                    transactionServiceModel.setOrder(this.modelMapper.map(getOrderForTransaction(transactionServiceModel), OrderServiceModel.class));
-                });
-    }
-
-    public void setCurrency(TransactionServiceModel transactionServiceModel) {
-        currencyRepository.findById(transactionServiceModel.getCurrency().getId())
-                .ifPresent(c -> {
-                    transactionServiceModel.setCurrency(this.modelMapper.map(getCurrencyForTransaction(transactionServiceModel), CurrencyServiceModel.class));
-                });
-    }
-
-    public void setRecipient(TransactionServiceModel transactionServiceModel) {
-        cardRepository.findById(transactionServiceModel.getRecipient().getId())
-                .ifPresent(c -> {
-                    transactionServiceModel.setRecipient(mapCardServiceViewModelToCardServiceModel(getRecipientCard(transactionServiceModel)));
-                });
-    }
-
-    public void setSender(TransactionServiceModel transactionServiceModel) {
-        cardRepository.findById(transactionServiceModel.getSender().getId())
-                .ifPresent(c -> {
-                    transactionServiceModel.setSender(mapCardServiceViewModelToCardServiceModel(getSenderCard(transactionServiceModel)));
-                });
-    }
-
-    private OrderServiceViewModel getOrderForTransaction(TransactionServiceModel transactionServiceModel) {
-        return this.orderService.getOrderById(transactionServiceModel.getOrder().getId());
-    }
-
-    private CurrencyServiceViewModel getCurrencyForTransaction(TransactionServiceModel transactionServiceModel) {
-        return this.currencyService.getCurrencyById(transactionServiceModel.getCurrency().getId());
-    }
-
-    private CardServiceViewModel getRecipientCard(TransactionServiceModel transactionServiceModel) {
-        return this.cardService.getCardById(transactionServiceModel.getRecipient().getId());
-    }
-
-
     @Override
     @Transactional
     public TransactionServiceViewModel updateTransaction(TransactionServiceModel transactionServiceModel) {
@@ -182,6 +134,55 @@ public class TransactionServiceImpl implements TransactionService {
         checksIfTransferAmountIsZero(amount);
     }
 
+    public void setUpTransactionRouts(TransactionServiceModel transactionServiceModel) {
+        setSender(transactionServiceModel);
+        setRecipient(transactionServiceModel);
+        setCurrency(transactionServiceModel);
+        setOrder(transactionServiceModel);
+    }
+
+    public void setOrder(TransactionServiceModel transactionServiceModel) {
+        orderRepository.findById(transactionServiceModel.getOrder().getId())
+                .ifPresent(c -> {
+                    transactionServiceModel.setOrder(this.modelMapper.map(getOrderForTransaction(transactionServiceModel), OrderServiceModel.class));
+                });
+    }
+
+    public void setCurrency(TransactionServiceModel transactionServiceModel) {
+        currencyRepository.findById(transactionServiceModel.getCurrency().getId())
+                .ifPresent(c -> {
+                    transactionServiceModel.setCurrency(this.modelMapper.map(getCurrencyForTransaction(transactionServiceModel), CurrencyServiceModel.class));
+                });
+    }
+
+    public void setRecipient(TransactionServiceModel transactionServiceModel) {
+        cardRepository.findById(transactionServiceModel.getRecipient().getId())
+                .ifPresent(c -> {
+                    transactionServiceModel.setRecipient(mapCardServiceViewModelToCardServiceModel(getRecipientCard(transactionServiceModel)));
+                });
+    }
+
+    public void setSender(TransactionServiceModel transactionServiceModel) {
+        cardRepository.findById(transactionServiceModel.getSender().getId())
+                .ifPresent(c -> {
+                    transactionServiceModel.setSender(mapCardServiceViewModelToCardServiceModel(getSenderCard(transactionServiceModel)));
+                });
+    }
+
+    private OrderServiceViewModel getOrderForTransaction(TransactionServiceModel transactionServiceModel) {
+        return this.orderService.getOrderById(transactionServiceModel.getOrder().getId());
+    }
+
+    private CurrencyServiceViewModel getCurrencyForTransaction(TransactionServiceModel transactionServiceModel) {
+        return this.currencyService.getCurrencyById(transactionServiceModel.getCurrency().getId());
+    }
+
+    private CardServiceViewModel getRecipientCard(TransactionServiceModel transactionServiceModel) {
+        return this.cardService.getCardById(transactionServiceModel.getRecipient().getId());
+    }
+
+
+
     private void cardServiceUpdate(Card card) {
         cardService.updateCard(mapCardToCardServiceModel(card));
     }
@@ -219,6 +220,7 @@ public class TransactionServiceImpl implements TransactionService {
                             amount));
         }
     }
+
     private CardServiceModel mapCardServiceViewModelToCardServiceModel(CardServiceViewModel senderCard) {
         return this.modelMapper.map(senderCard, CardServiceModel.class);
     }

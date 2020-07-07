@@ -27,76 +27,51 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @PostMapping()
     @PreAuthorize("isAnonymous()")
     public ResponseEntity<UserServiceViewModel> createUser(@RequestBody UserServiceModel userServiceModel) {
-
         UserServiceViewModel userServiceViewModel = userService.createUser(userServiceModel);
-
         URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createUser", UserServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(userServiceViewModel.getId()).toUri();
-
         log.info("User created: {}", location);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(userServiceViewModel);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<UserServiceViewModel> updateUser(@PathVariable("id") Long id, @RequestBody UserServiceModel userServiceModel) {
-
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
-
-
         log.info("User updated: {}", userServiceViewModel);
-
-
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
     @PatchMapping("{id}")
     public ResponseEntity<UserServiceViewModel> partialUpdateUser(@PathVariable("id") Long id, @RequestBody UserServiceModel userServiceModel) {
-
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
-
-
         log.info("User updated: {} , ", userServiceViewModel);
-
-
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
 
     @GetMapping("{id}")
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
-
         UserServiceViewModel userServiceViewModel = userService.getUserById(id);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
 
     }
 
     @GetMapping()
     public ResponseEntity<List<UserServiceViewModel>> getUsers() {
-
         List<UserServiceViewModel> userServiceViewModel = userService.getAllUsers();
-
         log.info("Users Found: {} ", userServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
-
     @DeleteMapping("/{id}")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
-
         UserServiceViewModel userServiceViewModel = userService.deleteUserById(id);
-
         log.info("Users deleted: {} ", userServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
 
     }
-
 
 }
