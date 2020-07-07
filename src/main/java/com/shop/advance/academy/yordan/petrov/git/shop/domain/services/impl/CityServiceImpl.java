@@ -108,11 +108,8 @@ public class CityServiceImpl implements CityService {
 
     @Override
     public CityServiceViewModel deleteCityById(long id) {
-
         CityServiceViewModel cityServiceViewModel = this.getCityById(id);
-
         this.cityRepository.deleteById(id);
-
         return cityServiceViewModel;
     }
 }

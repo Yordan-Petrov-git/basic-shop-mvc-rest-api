@@ -87,11 +87,8 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public CurrencyServiceViewModel deleteCurrencyById(long id) {
-
         CurrencyServiceViewModel cityServiceViewModel = this.getCurrencyById(id);
-
         this.currencyRepository.deleteById(id);
-
         return cityServiceViewModel;
     }
 }

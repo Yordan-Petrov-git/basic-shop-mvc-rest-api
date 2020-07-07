@@ -189,7 +189,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
 
-
     private void cardServiceUpdate(Card card) {
         cardService.updateCard(mapCardToCardServiceModel(card));
     }

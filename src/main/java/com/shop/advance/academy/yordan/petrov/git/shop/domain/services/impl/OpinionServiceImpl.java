@@ -94,11 +94,8 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public OpinionServiceViewModel deleteOpinionById(long id) {
-
         OpinionServiceViewModel opinionServiceViewModel = this.getOpinionById(id);
-
         this.opinionRepository.deleteById(id);
-
         return opinionServiceViewModel;
     }
 }

@@ -79,12 +79,8 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemServiceViewModel deleteItemById(long id) {
-
         ItemServiceViewModel itemServiceViewModel = this.getItemById(id);
-
         this.itemRepository.deleteById(id);
-
         return itemServiceViewModel;
-
     }
 }

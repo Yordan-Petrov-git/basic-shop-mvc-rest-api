@@ -86,11 +86,8 @@ public class MediaServiceImpl implements MediaService {
 
     @Override
     public MediaServiceViewModel deleteMediaById(long id) {
-
         MediaServiceViewModel mediaServiceViewModel = this.getMediaById(id);
-
         this.mediaRepository.deleteById(id);
-
         return mediaServiceViewModel;
     }
 }

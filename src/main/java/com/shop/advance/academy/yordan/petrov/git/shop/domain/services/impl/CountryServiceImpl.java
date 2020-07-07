@@ -88,12 +88,8 @@ public class CountryServiceImpl implements CountryService {
 
     @Override
     public CountryServiceViewModel deleteCountryById(long id) {
-
-
         CountryServiceViewModel countryServiceViewModel = this.getCountryById(id);
-
         this.countryRepository.deleteById(id);
-
         return countryServiceViewModel;
     }
 }

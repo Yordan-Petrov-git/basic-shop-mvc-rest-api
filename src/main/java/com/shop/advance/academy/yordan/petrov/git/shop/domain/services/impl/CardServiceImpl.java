@@ -105,11 +105,8 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public CardServiceViewModel deleteCardById(long id) {
-
         CardServiceViewModel cardServiceViewModel = this.getCardById(id);
-
         this.cardRepository.deleteById(id);
-
         return cardServiceViewModel;
 
     }

@@ -158,6 +158,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return itemRepository.findById(itemId)
                 .orElseThrow(() -> new InvalidEntityException(String.format("No items with id %s was found ", itemId)));
     }
+
     public ShoppingCart saveShoppingCart(ShoppingCart shoppingCart) {
         return this.shoppingCartRepository.saveAndFlush(shoppingCart);
     }

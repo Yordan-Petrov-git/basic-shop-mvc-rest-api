@@ -114,11 +114,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderServiceViewModel deleteOrderById(long id) {
-
         OrderServiceViewModel orderServiceViewModel = this.getOrderById(id);
-
         this.orderRepository.deleteById(id);
-
         return orderServiceViewModel;
     }
 

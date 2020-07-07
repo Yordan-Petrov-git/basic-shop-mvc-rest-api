@@ -85,11 +85,8 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
     @Override
     public ContactInformationServiceViewModel deleteContactInformationById(long id) {
-
         ContactInformationServiceViewModel contactInformationServiceViewModel = this.getContactInformationById(id);
-
         this.contactInformationRepository.deleteById(id);
-
         return contactInformationServiceViewModel;
     }
 }

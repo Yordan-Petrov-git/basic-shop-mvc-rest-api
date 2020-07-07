@@ -52,7 +52,6 @@ public class SellerServiceImpl implements SellerService {
                 .getUserById(sellerServiceModel.getUser().getId()), User.class));
 
 
-
         return this.modelMapper.map(this.sellerRepository.saveAndFlush(seller), SellerServiceViewModel.class);
 
     }

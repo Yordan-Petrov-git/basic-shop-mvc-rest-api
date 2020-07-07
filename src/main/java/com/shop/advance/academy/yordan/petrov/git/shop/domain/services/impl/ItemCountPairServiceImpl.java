@@ -28,9 +28,7 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
 
     @Override
     public ItemCountPairServiceViewModel createShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel) {
-
         ItemCountPair itemCountPair = this.modelMapper.map(itemCountPairServiceModel, ItemCountPair.class);
-
         return this.modelMapper.map(this.itemCountPairRepository.saveAndFlush(itemCountPair), ItemCountPairServiceViewModel.class);
     }
 
@@ -43,11 +41,9 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
 
     @Override
     public ItemCountPairServiceViewModel getShoppingCartItemById(long id) {
-
         return this.modelMapper
                 .map(this.itemCountPairRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Item  with ID %s not found.", id))), ItemCountPairServiceViewModel.class);
-
     }
 
     @Override
@@ -56,20 +52,15 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Items were found"));
-
         List<ItemCountPair> item = this.itemCountPairRepository.findAll();
-
         return this.modelMapper.map(item, new TypeToken<List<ItemCountPairServiceViewModel>>() {
         }.getType());
     }
 
     @Override
     public ItemCountPairServiceViewModel deleteShoppingCartItemById(long id) {
-
         ItemCountPairServiceViewModel deleteShoppingCartItem = this.getShoppingCartItemById(id);
-
         this.itemCountPairRepository.deleteById(id);
-
-        return this.modelMapper.map(deleteShoppingCartItem, ItemCountPairServiceViewModel.class);
+        return deleteShoppingCartItem;
     }
 }
