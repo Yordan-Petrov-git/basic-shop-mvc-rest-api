@@ -56,12 +56,12 @@ public class OrderServiceImpl implements OrderService {
 
         //TODO ADD PROMO CODE SYSTEM AND DISCOUNTS IN % SYSTEM !!!
         //TODO discount = (TOTAL PRICE AETHER TAXES)-((rate%/100)*price before tax )
-       //TODO discount code name == discount rate in % fixed store in db !!!
+        //TODO discount code name == discount rate in % fixed store in db !!!
 
-         //TODO ADD SHIPPING BASED ON  ITEM WEIGHT AND SHIPPING TYPE
+        //TODO ADD SHIPPING BASED ON  ITEM WEIGHT AND SHIPPING TYPE
         //TODO  PICK UP FROM STORE FREE
         // TODO STANDARD 4.50 BASE FOR 1 KG + 1 BGN ON EVERY KG // 2 KG 5,50 // 3KG 6.50 ... ((BASE(4.50))+(KG*1))
-         //TODO can have free shipping if total cost of order is above 100 in total
+        //TODO can have free shipping if total cost of order is above 100 in total
 
         // FIND ADDED ITEMS BY ID !!!! AND THEN GET THEM AND CALCULATE THE TOTAL PRICE MULTIPLY ALSO BY THEIR COUNT
         // FORMULA FOR TAXED A ((((TAX %/100)+1)*PRICE)  * QUANTITY)

@@ -37,7 +37,7 @@ public class CardController {
     }
 
     @PutMapping()
-    public ResponseEntity<CardServiceViewModel> updateCard( @RequestBody CardServiceModel cardServiceModel) {
+    public ResponseEntity<CardServiceViewModel> updateCard(@RequestBody CardServiceModel cardServiceModel) {
 
         CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
 
@@ -49,7 +49,7 @@ public class CardController {
 
 
     @PatchMapping()
-    public ResponseEntity<CardServiceViewModel> partialUpdateCard( @RequestBody CardServiceModel cardServiceModel) {
+    public ResponseEntity<CardServiceViewModel> partialUpdateCard(@RequestBody CardServiceModel cardServiceModel) {
 
         CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
 

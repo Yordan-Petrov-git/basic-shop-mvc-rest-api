@@ -85,12 +85,12 @@ public class TransactionServiceImpl implements TransactionService {
         BigDecimal fee = transactionServiceModel.getFee();
         Long idRecipient = (transactionServiceModel.getRecipient().getId());
         BigDecimal amount = transactionServiceModel.getAmount();
-        Long idSender =  (transactionServiceModel.getSender().getId());
+        Long idSender = (transactionServiceModel.getSender().getId());
 
         //Withdraw for the fee of the transaction
-        this.withdrawMoney(idSender,fee);
+        this.withdrawMoney(idSender, fee);
         //Transaction method
-        this.transferMoney(idRecipient,idSender , amount);
+        this.transferMoney(idRecipient, idSender, amount);
         transaction.setDateCreated(Instant.now());
         transaction.setDateCompleted(Instant.now());
         transaction.setDateUpdated(Instant.now());
@@ -148,22 +148,22 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public TransactionServiceViewModel refundTransactionById(Long id) {
 
-      Transaction transaction =   this.transactionRepository.findById(id)
+        Transaction transaction = this.transactionRepository.findById(id)
                 .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", id)));
 
-      BigDecimal amountToBeRefunded =  transaction.getAmount();
+        BigDecimal amountToBeRefunded = transaction.getAmount();
 
-     Long recipientToBeSender  = transaction.getRecipient().getId();
-     Long senderToBeRecipient  =  transaction.getSender().getId();
+        Long recipientToBeSender = transaction.getRecipient().getId();
+        Long senderToBeRecipient = transaction.getSender().getId();
 
         TransactionServiceViewModel refund = this.getTransactionById(id);
 
-        this.refund(recipientToBeSender,senderToBeRecipient,amountToBeRefunded);
+        this.refund(recipientToBeSender, senderToBeRecipient, amountToBeRefunded);
 
-        TransactionServiceModel transactionServiceModel = this.modelMapper.map(transaction,TransactionServiceModel.class);
+        TransactionServiceModel transactionServiceModel = this.modelMapper.map(transaction, TransactionServiceModel.class);
         this.updateTransaction(transactionServiceModel);
 
-        return this.modelMapper.map(refund,TransactionServiceViewModel.class);
+        return this.modelMapper.map(refund, TransactionServiceViewModel.class);
     }
 
     @Override
@@ -176,11 +176,11 @@ public class TransactionServiceImpl implements TransactionService {
         if (card.getBalance().compareTo(amount) < 0) {
             throw new IllegalCardTransactionOperation(String.
                     format("Current balance of card with number : %s is : %.2f and it is not sufficient to withdraw amount:  %.2f",
-                            card.getNumber(),card.getBalance(),amount));
+                            card.getNumber(), card.getBalance(), amount));
         }
 
         card.setBalance(card.getBalance().subtract(amount));
-        cardService.updateCard(this.modelMapper.map(card,CardServiceModel.class));
+        cardService.updateCard(this.modelMapper.map(card, CardServiceModel.class));
     }
 
     @Override
@@ -197,7 +197,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         card.setBalance(card.getBalance().add(amount));
-        cardService.updateCard(this.modelMapper.map(card,CardServiceModel.class));
+        cardService.updateCard(this.modelMapper.map(card, CardServiceModel.class));
     }
 
     @Override
@@ -217,7 +217,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Override
     @Transactional
     public void refund(Long toId, Long fromId, BigDecimal amount) {
-       //REVERSE TO FROM TRANSFER
+        //REVERSE TO FROM TRANSFER
         depositMoney(fromId, amount);
         withdrawMoney(toId, amount);
 

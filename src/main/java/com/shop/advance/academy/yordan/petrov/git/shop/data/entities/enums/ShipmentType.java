@@ -4,5 +4,5 @@ public enum ShipmentType {
     NONE,
     FAST,
     EXPRESS,
-    NEXT_DAY;
+    NEXT_DAY
 }
