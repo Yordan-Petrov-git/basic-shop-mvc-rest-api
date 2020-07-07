@@ -20,6 +20,7 @@ public class TransactionServiceViewModel {
     private BigDecimal fee;
     private BigDecimal amount;
     private CurrencyServiceViewModel currency;
+    private OrderServiceViewModel order;
 
     public TransactionServiceViewModel() {
     }
@@ -120,6 +121,15 @@ public class TransactionServiceViewModel {
         this.currency = currency;
     }
 
+
+    public OrderServiceViewModel getOrder() {
+        return this.order;
+    }
+
+    public void setOrder(OrderServiceViewModel order) {
+        this.order = order;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -134,6 +144,7 @@ public class TransactionServiceViewModel {
                 Objects.equals(fee, that.fee) &&
                 Objects.equals(amount, that.amount);
     }
+
 
     @Override
     public int hashCode() {

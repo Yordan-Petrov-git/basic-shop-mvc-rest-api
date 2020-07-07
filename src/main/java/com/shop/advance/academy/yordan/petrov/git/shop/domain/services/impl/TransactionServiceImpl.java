@@ -2,6 +2,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.TransactionRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
@@ -9,6 +10,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Trans
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.TransactionService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalCardTransactionOperation;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -31,14 +33,20 @@ public class TransactionServiceImpl implements TransactionService {
     private final CurrencyService currencyService;
     private final CurrencyRepository currencyRepository;
     private final ModelMapper modelMapper;
+    private final OrderService orderService;
+    private final OrderRepository orderRepository;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository, CardRepository cardRepository, CardService cardService, CurrencyService currencyService, CurrencyRepository currencyRepository, ModelMapper modelMapper) {
+    public TransactionServiceImpl(TransactionRepository transactionRepository, CardRepository cardRepository,
+                                  CardService cardService, CurrencyService currencyService, CurrencyRepository currencyRepository,
+                                  ModelMapper modelMapper, OrderService orderService, OrderRepository orderRepository) {
         this.transactionRepository = transactionRepository;
         this.cardRepository = cardRepository;
         this.cardService = cardService;
         this.currencyService = currencyService;
         this.currencyRepository = currencyRepository;
         this.modelMapper = modelMapper;
+        this.orderService = orderService;
+        this.orderRepository = orderRepository;
     }
 
     @Override
@@ -48,14 +56,12 @@ public class TransactionServiceImpl implements TransactionService {
 
         //Sender
         CardServiceViewModel cardServiceViewModelSender = this.cardService.getCardById(transactionServiceModel.getSender().getId());
-
         cardRepository.findById(transactionServiceModel.getSender().getId())
                 .ifPresent(c -> {
                     transactionServiceModel.setSender(this.modelMapper.map(cardServiceViewModelSender, CardServiceModel.class));
                 });
         //Recipient
         CardServiceViewModel cardServiceViewModelRecipient = this.cardService.getCardById(transactionServiceModel.getRecipient().getId());
-
         cardRepository.findById(transactionServiceModel.getRecipient().getId())
                 .ifPresent(c -> {
                     transactionServiceModel.setRecipient(this.modelMapper.map(cardServiceViewModelRecipient, CardServiceModel.class));
@@ -68,6 +74,13 @@ public class TransactionServiceImpl implements TransactionService {
                     transactionServiceModel.setCurrency(this.modelMapper.map(currencyServiceViewModel, CurrencyServiceModel.class));
                 });
 
+        //Order
+        OrderServiceViewModel orderServiceViewModel = this.orderService.getOrderById(transactionServiceModel.getOrder().getId());
+        orderRepository.findById(transactionServiceModel.getOrder().getId())
+                .ifPresent(c -> {
+                    transactionServiceModel.setOrder(this.modelMapper.map(orderServiceViewModel, OrderServiceModel.class));
+                });
+
         //TODO ADD EXCHANGE RATE EVENTUALLY IF THE RECEIVER CARD IS IN DIFFERENT CURRENCY
         BigDecimal fee = transactionServiceModel.getFee();
         Long idRecipient = (transactionServiceModel.getRecipient().getId());
@@ -75,9 +88,9 @@ public class TransactionServiceImpl implements TransactionService {
         Long idSender =  (transactionServiceModel.getSender().getId());
 
         //Withdraw for the fee of the transaction
-        withdrawMoney(idSender,fee);
+        this.withdrawMoney(idSender,fee);
         //Transaction method
-        transferMoney(idRecipient,idSender , amount);
+        this.transferMoney(idRecipient,idSender , amount);
         transaction.setDateCreated(Instant.now());
         transaction.setDateCompleted(Instant.now());
         transaction.setDateUpdated(Instant.now());
@@ -91,7 +104,6 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionServiceViewModel updateTransaction(TransactionServiceModel transactionServiceModel) {
 
         Transaction transaction = this.modelMapper.map(transactionServiceModel, Transaction.class);
-
 
         this.transactionRepository.findById(transactionServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", transactionServiceModel.getId())));
@@ -134,10 +146,32 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     @Transactional
+    public TransactionServiceViewModel refundTransactionById(Long id) {
+
+      Transaction transaction =   this.transactionRepository.findById(id)
+                .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", id)));
+
+      BigDecimal amountToBeRefunded =  transaction.getAmount();
+
+     Long recipientToBeSender  = transaction.getRecipient().getId();
+     Long senderToBeRecipient  =  transaction.getSender().getId();
+
+        TransactionServiceViewModel refund = this.getTransactionById(id);
+
+        this.refund(recipientToBeSender,senderToBeRecipient,amountToBeRefunded);
+
+        TransactionServiceModel transactionServiceModel = this.modelMapper.map(transaction,TransactionServiceModel.class);
+        this.updateTransaction(transactionServiceModel);
+
+        return this.modelMapper.map(refund,TransactionServiceViewModel.class);
+    }
+
+    @Override
+    @Transactional
     public void withdrawMoney(Long id, BigDecimal amount) {
 
         Card card = cardRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", id)));
 
         if (card.getBalance().compareTo(amount) < 0) {
             throw new IllegalCardTransactionOperation(String.
@@ -154,7 +188,7 @@ public class TransactionServiceImpl implements TransactionService {
     public void depositMoney(Long id, BigDecimal amount) {
 
         Card card = cardRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", id)));
 
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalCardTransactionOperation(String.
@@ -178,6 +212,21 @@ public class TransactionServiceImpl implements TransactionService {
                     format("Transfer amount cannot be : %.2f",
                             amount));
         }
+    }
+
+    @Override
+    @Transactional
+    public void refund(Long toId, Long fromId, BigDecimal amount) {
+       //REVERSE TO FROM TRANSFER
+        depositMoney(fromId, amount);
+        withdrawMoney(toId, amount);
+
+        if (amount.compareTo(BigDecimal.ZERO) < 0) {
+            throw new IllegalCardTransactionOperation(String.
+                    format("Transfer amount cannot be : %.2f",
+                            amount));
+        }
+
     }
 
 }

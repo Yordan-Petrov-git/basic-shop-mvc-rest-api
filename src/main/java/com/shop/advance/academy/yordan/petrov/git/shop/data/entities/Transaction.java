@@ -22,6 +22,7 @@ public class Transaction extends BaseEntity {
     private BigDecimal fee;
     private BigDecimal amount;
     private Currency currency;
+    private Order order;
 
     public Transaction() {
     }
@@ -136,5 +137,17 @@ public class Transaction extends BaseEntity {
 
     public void setCurrency(Currency currency) {
         this.currency = currency;
+    }
+
+    @ManyToOne(targetEntity = Order.class,
+            cascade = {CascadeType.DETACH},
+            fetch = FetchType.LAZY)
+    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    public Order getOrder() {
+        return this.order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
     }
 }

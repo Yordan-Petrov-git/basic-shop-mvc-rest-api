@@ -42,7 +42,7 @@ class UserServiceTest {
     }
 
     @Test
-    public void testUserRepositoryReturnsAllUsers() {
+    public void testUserServiceReturnsAllUsers() {
         List<User> usersToAdd = new ArrayList<>();
         usersToAdd.add(new User());
 

@@ -1,5 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.TransactionStatus;
 
 import java.math.BigDecimal;
@@ -20,6 +21,7 @@ public class TransactionServiceModel {
     private BigDecimal fee;
     private BigDecimal amount;
     private CurrencyServiceModel currency;
+    private OrderServiceModel order;
 
 
     public TransactionServiceModel() {
@@ -120,6 +122,14 @@ public class TransactionServiceModel {
 
     public void setCurrency(CurrencyServiceModel currency) {
         this.currency = currency;
+    }
+
+    public OrderServiceModel getOrder() {
+        return this.order;
+    }
+
+    public void setOrder(OrderServiceModel order) {
+        this.order = order;
     }
 
     @Override
