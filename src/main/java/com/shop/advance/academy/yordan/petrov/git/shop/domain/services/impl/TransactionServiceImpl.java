@@ -18,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.stereotype.Service;
 
-import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
@@ -51,70 +50,75 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public TransactionServiceViewModel createTransaction(TransactionServiceModel transactionServiceModel) {
+        //TODO ADD EXCHANGE RATE EVENTUALLY IF THE RECEIVER CARD IS IN DIFFERENT CURRENCY
+        Transaction transaction = mapTransactionServiceModelToTransaction(transactionServiceModel);
+        setUpTransactionRouts(transactionServiceModel);
+        Long idSender = (transactionServiceModel.getSender().getId());
+        this.withdrawMoney(idSender, transactionServiceModel.getFee());
+        this.transferMoney(transactionServiceModel.getRecipient().getId(), idSender, transactionServiceModel.getAmount());
+        setTransactionNecessaryFields(transaction);
+        return mapTransactionToTransactionServiceViewModel(this.transactionRepository.saveAndFlush(transaction));
+    }
 
-        Transaction transaction = this.modelMapper.map(transactionServiceModel, Transaction.class);
+    public void setUpTransactionRouts(TransactionServiceModel transactionServiceModel) {
+        setSender(transactionServiceModel);
+        setRecipient(transactionServiceModel);
+        setCurrency(transactionServiceModel);
+        setOrder(transactionServiceModel);
+    }
 
-        //Sender
-        CardServiceViewModel cardServiceViewModelSender = this.cardService.getCardById(transactionServiceModel.getSender().getId());
-        cardRepository.findById(transactionServiceModel.getSender().getId())
-                .ifPresent(c -> {
-                    transactionServiceModel.setSender(this.modelMapper.map(cardServiceViewModelSender, CardServiceModel.class));
-                });
-        //Recipient
-        CardServiceViewModel cardServiceViewModelRecipient = this.cardService.getCardById(transactionServiceModel.getRecipient().getId());
-        cardRepository.findById(transactionServiceModel.getRecipient().getId())
-                .ifPresent(c -> {
-                    transactionServiceModel.setRecipient(this.modelMapper.map(cardServiceViewModelRecipient, CardServiceModel.class));
-                });
-
-        //Currency
-        CurrencyServiceViewModel currencyServiceViewModel = this.currencyService.getCurrencyById(transactionServiceModel.getCurrency().getId());
-        currencyRepository.findById(transactionServiceModel.getCurrency().getId())
-                .ifPresent(c -> {
-                    transactionServiceModel.setCurrency(this.modelMapper.map(currencyServiceViewModel, CurrencyServiceModel.class));
-                });
-
-        //Order
-            OrderServiceViewModel orderServiceViewModel = this.orderService.getOrderById(transactionServiceModel.getOrder().getId());
+    public void setOrder(TransactionServiceModel transactionServiceModel) {
         orderRepository.findById(transactionServiceModel.getOrder().getId())
                 .ifPresent(c -> {
-                    transactionServiceModel.setOrder(this.modelMapper.map(orderServiceViewModel, OrderServiceModel.class));
+                    transactionServiceModel.setOrder(this.modelMapper.map(getOrderForTransaction(transactionServiceModel), OrderServiceModel.class));
                 });
-
-        //TODO ADD EXCHANGE RATE EVENTUALLY IF THE RECEIVER CARD IS IN DIFFERENT CURRENCY
-        BigDecimal fee = transactionServiceModel.getFee();
-        Long idRecipient = (transactionServiceModel.getRecipient().getId());
-        BigDecimal amount = transactionServiceModel.getAmount();
-        Long idSender = (transactionServiceModel.getSender().getId());
-
-        //Withdraw for the fee of the transaction
-        this.withdrawMoney(idSender, fee);
-        //Transaction method
-        this.transferMoney(idRecipient, idSender, amount);
-        transaction.setDateCreated(Instant.now());
-        transaction.setDateCompleted(Instant.now());
-        transaction.setDateUpdated(Instant.now());
-        transaction.setTransactionStatus(TransactionStatus.CONFIRMED);
-        System.out.println();
-        return this.modelMapper.map(this.transactionRepository.saveAndFlush(transaction), TransactionServiceViewModel.class);
     }
+
+    public void setCurrency(TransactionServiceModel transactionServiceModel) {
+        currencyRepository.findById(transactionServiceModel.getCurrency().getId())
+                .ifPresent(c -> {
+                    transactionServiceModel.setCurrency(this.modelMapper.map(getCurrencyForTransaction(transactionServiceModel), CurrencyServiceModel.class));
+                });
+    }
+
+    public void setRecipient(TransactionServiceModel transactionServiceModel) {
+        cardRepository.findById(transactionServiceModel.getRecipient().getId())
+                .ifPresent(c -> {
+                    transactionServiceModel.setRecipient(mapCardServiceViewModelToCardServiceModel(getRecipientCard(transactionServiceModel)));
+                });
+    }
+
+    public void setSender(TransactionServiceModel transactionServiceModel) {
+        cardRepository.findById(transactionServiceModel.getSender().getId())
+                .ifPresent(c -> {
+                    transactionServiceModel.setSender(mapCardServiceViewModelToCardServiceModel(getSenderCard(transactionServiceModel)));
+                });
+    }
+
+    private OrderServiceViewModel getOrderForTransaction(TransactionServiceModel transactionServiceModel) {
+        return this.orderService.getOrderById(transactionServiceModel.getOrder().getId());
+    }
+
+    private CurrencyServiceViewModel getCurrencyForTransaction(TransactionServiceModel transactionServiceModel) {
+        return this.currencyService.getCurrencyById(transactionServiceModel.getCurrency().getId());
+    }
+
+    private CardServiceViewModel getRecipientCard(TransactionServiceModel transactionServiceModel) {
+        return this.cardService.getCardById(transactionServiceModel.getRecipient().getId());
+    }
+
 
     @Override
     @Transactional
     public TransactionServiceViewModel updateTransaction(TransactionServiceModel transactionServiceModel) {
-        Transaction transaction = this.modelMapper.map(transactionServiceModel, Transaction.class);
-        this.transactionRepository.findById(transactionServiceModel.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", transactionServiceModel.getId())));
+        Transaction transaction = mapTransactionServiceModelToTransaction(transactionServiceModel);
+        getTransactionId(transactionServiceModel.getId());
         return mapTransactionToTransactionServiceViewModel(this.transactionRepository.saveAndFlush(transaction));
-
     }
 
     @Override
     public TransactionServiceViewModel getTransactionById(Long id) {
-        return this.modelMapper
-                .map(this.transactionRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Transaction  with ID %s not found.", id))), TransactionServiceViewModel.class);
-
+        return mapTransactionToTransactionServiceViewModel(this.getTransactionId(id));
     }
 
     @Override
@@ -151,10 +155,6 @@ public class TransactionServiceImpl implements TransactionService {
         cardServiceUpdate(card);
     }
 
-    private void cardServiceUpdate(Card card) {
-        cardService.updateCard(mapCardToCardServiceModel(card));
-    }
-
 
     @Override
     @Transactional
@@ -180,6 +180,10 @@ public class TransactionServiceImpl implements TransactionService {
         depositMoney(fromId, amount);
         withdrawMoney(toId, amount);
         checksIfTransferAmountIsZero(amount);
+    }
+
+    private void cardServiceUpdate(Card card) {
+        cardService.updateCard(mapCardToCardServiceModel(card));
     }
 
     private Transaction getTransactionId(Long id) {
@@ -215,27 +219,28 @@ public class TransactionServiceImpl implements TransactionService {
                             amount));
         }
     }
-
-    public TransactionServiceModel mapTransactionServiceViewModelToTransactionServiceModel(TransactionServiceViewModel transactionServiceViewModel) {
-        return this.modelMapper.map(transactionServiceViewModel, TransactionServiceModel.class);
+    private CardServiceModel mapCardServiceViewModelToCardServiceModel(CardServiceViewModel senderCard) {
+        return this.modelMapper.map(senderCard, CardServiceModel.class);
     }
 
-    public TransactionServiceViewModel mapTransactionServiceModelToTransactionServiceViewModel(TransactionServiceModel transactionServiceModel) {
-        return this.modelMapper.map(transactionServiceModel, TransactionServiceViewModel.class);
+    private CardServiceViewModel getSenderCard(TransactionServiceModel transactionServiceModel) {
+        return this.cardService.getCardById(transactionServiceModel.getSender().getId());
     }
 
-    public CardServiceModel mapCardServiceModelToCardServiceViewModel(CardServiceViewModel cardServiceViewModel) {
-        return this.modelMapper.map(cardServiceViewModel, CardServiceModel.class);
+    private void setTransactionNecessaryFields(Transaction transaction) {
+        transaction.setDateCreated(Instant.now());
+        transaction.setDateCompleted(Instant.now());
+        transaction.setDateUpdated(Instant.now());
+        transaction.setTransactionStatus(TransactionStatus.CONFIRMED);
     }
 
-    public CardServiceViewModel mapCardServiceViewModelToCardServiceModel(CardServiceModel transactionServiceModel) {
-        return this.modelMapper.map(transactionServiceModel, CardServiceViewModel.class);
+    public Transaction mapTransactionServiceModelToTransaction(TransactionServiceModel transactionServiceModel) {
+        return this.modelMapper.map(transactionServiceModel, Transaction.class);
     }
 
     public CardServiceModel mapCardToCardServiceModel(Card card) {
         return this.modelMapper.map(card, CardServiceModel.class);
     }
-
 
     public TransactionServiceViewModel mapTransactionToTransactionServiceViewModel(Transaction transaction) {
         return this.modelMapper.map(transaction, TransactionServiceViewModel.class);

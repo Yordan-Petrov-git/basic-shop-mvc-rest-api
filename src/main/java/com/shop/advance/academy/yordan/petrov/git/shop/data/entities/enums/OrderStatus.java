@@ -7,6 +7,7 @@ public enum OrderStatus {
     IN_DESTINATION_COUNTRY,
     IN_SELLER_COUNTRY,
     SHIPPED,
-    CANCELED
+    CANCELED,
+    PICKED_UP_BY
 
 }
