@@ -36,8 +36,8 @@ public class CardController {
 
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<CardServiceViewModel> updateCard(@PathVariable("id") Long id, @RequestBody CardServiceModel cardServiceModel) {
+    @PutMapping()
+    public ResponseEntity<CardServiceViewModel> updateCard( @RequestBody CardServiceModel cardServiceModel) {
 
         CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
 
@@ -45,9 +45,19 @@ public class CardController {
 
         return ResponseEntity.status(HttpStatus.OK).body(cardServiceViewModel);
 
-
     }
 
+
+    @PatchMapping()
+    public ResponseEntity<CardServiceViewModel> partialUpdateCard( @RequestBody CardServiceModel cardServiceModel) {
+
+        CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
+
+        log.info("Card  updated : {}", cardServiceViewModel);
+
+        return ResponseEntity.status(HttpStatus.OK).body(cardServiceViewModel);
+
+    }
 
     @GetMapping("/{id}")
     public ResponseEntity<CardServiceViewModel> getCard(@PathVariable("id") final Long id) {

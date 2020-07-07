@@ -43,11 +43,11 @@ public class OpinionServiceImpl implements OpinionService {
         Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
 
         //Adds user  to opinion if user exists
-        UserServiceViewModel userServiceModel = this.userService.getUserById(opinionServiceModel.getUser().getId());
+        UserServiceViewModel serviceViewModel = this.userService.getUserById(opinionServiceModel.getUser().getId());
 
         userRepository.findById(opinionServiceModel.getUser().getId())
                 .ifPresent(c -> {
-                    opinionServiceModel.setUser(this.modelMapper.map(userServiceModel, UserServiceModel.class));
+                    opinionServiceModel.setUser(this.modelMapper.map(serviceViewModel, UserServiceModel.class));
                 });
 
 

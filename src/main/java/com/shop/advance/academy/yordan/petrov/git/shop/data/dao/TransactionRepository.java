@@ -12,24 +12,24 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
- //   Optional<Transaction> findById(Long id);
+    Optional<Transaction> findById(Long id);
 
-  //  Optional<Transaction> findByNumber(String number);
+    Optional<Transaction> findByNumber(String number);
 
-//    Optional<Transaction> findByRecipient_Id(Long id);
+    Optional<Transaction> findByRecipient(Card card);
 
-//    Optional<Transaction> findBySender(Card card);
-//
-//    Optional<Transaction> findByDateCreated(Instant dateCreated);
-//
-//    Optional<Transaction> findByDateCompleted(Instant dateComplected);
-//
-//    Optional<Transaction> findByDateUpdated(Instant dateUpdated);
-//
-//    Optional<Transaction> findByTransactionStatus(TransactionStatus status);
+    Optional<Transaction> findBySender(Card card);
 
+    Optional<Transaction> findAllByRecipient(Card card);
 
+    Optional<Transaction> findAllBySender(Card card);
 
+    Optional<Transaction> findAllByDateCreated(Instant dateCreated);
 
+    Optional<Transaction> findAllByDateCompleted(Instant dateComplected);
+
+    Optional<Transaction> findAllByDateUpdated(Instant dateUpdated);
+
+    Optional<Transaction> findAllByTransactionStatus(TransactionStatus status);
 
 }

@@ -7,10 +7,10 @@ import java.math.BigDecimal;
 @Service
 public interface TransactionOperationService {
 
-    void withdrawMoney(long id, BigDecimal amount);
+    void withdrawMoney(Long id, BigDecimal amount);
 
-    void depositMoney(long id, BigDecimal amount);
+    void depositMoney(Long id, BigDecimal amount);
 
-    void transferMoney(long toId, long fromId, BigDecimal amount);
+    void transferMoney(Long toId, Long fromId, BigDecimal amount);
 
 }
