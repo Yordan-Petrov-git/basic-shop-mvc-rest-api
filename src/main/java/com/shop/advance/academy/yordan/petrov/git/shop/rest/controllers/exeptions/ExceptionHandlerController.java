@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+@SuppressWarnings("SpellCheckingInspection")
 @ControllerAdvice("com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers")
 @Slf4j
 public class ExceptionHandlerController {

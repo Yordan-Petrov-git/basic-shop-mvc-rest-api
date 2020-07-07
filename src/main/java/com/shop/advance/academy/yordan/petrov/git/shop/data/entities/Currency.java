@@ -18,7 +18,7 @@ public class Currency extends BaseEntity {
     public Currency() {
     }
 
-    @Column(name = "cuurency_name")
+    @Column(name = "currency_name")
     public String getName() {
         return this.name;
     }

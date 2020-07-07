@@ -31,92 +31,137 @@ public class PurchasingServiceImpl implements PurchasingService {
     private final TransactionService transactionService;
 
     @Autowired
-    public PurchasingServiceImpl(OrderService orderService, OrderRepository orderRepository, ModelMapper modelMapper, TransactionService transactionService) {
+    public PurchasingServiceImpl(OrderService orderService, OrderRepository orderRepository
+            , ModelMapper modelMapper, TransactionService transactionService) {
         this.orderService = orderService;
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.transactionService = transactionService;
     }
 
-
     @Override
-    public TransactionServiceViewModel payByCard(TransactionServiceModel transaction) {
+    public TransactionServiceViewModel payByCard(TransactionServiceModel transactionServiceModel) {
+        Order order = findOrderFromTransactionServiceModelById(transactionServiceModel);
+        //Add way to block purchase if order is canceled
+        isOrderStatusCanceled(order.getOrderStatus());
+        isOrderStatusFinished(order.getOrderStatus());
+//        updateOrderForPurchase(order);//This breaks the payment
+        transactionServiceModel.setAmount(order.getTotalPrice());
+        transactionServiceModel.setFee(BigDecimal.valueOf(5.00));
+        transactionServiceModel.setDescription("Item purchase");
+        createTransactionForPayByCard(transactionServiceModel);
+        return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceModel);
+    }
 
-        Order order = orderRepository.findById(transaction.getOrder().getId())
-                .orElseThrow();
-
-        transaction.setAmount(order.getTotalPrice());
-        //Fixed fee for purchase
-        transaction.setFee(BigDecimal.valueOf(5.00));
-        transaction.setDescription("Item purchase");
-        transactionService.createTransaction(transaction);
-
-        return this.modelMapper.map(transaction, TransactionServiceViewModel.class);
+    private void createTransactionForPayByCard(TransactionServiceModel transactionServiceModel) {
+        transactionService.createTransaction(transactionServiceModel);
     }
 
     @Override
-    public TransactionServiceViewModel refundCardPurchase(TransactionServiceModel transaction) {
-        //Refund if only within of 14 days of transaction
-        Instant currentTime = Instant.now();
-        TransactionServiceModel transactionServiceForRefund =
-                modelMapper.map(this.transactionService.getTransactionById(transaction.getId())
-                        , TransactionServiceModel.class);
+    public TransactionServiceViewModel refundCardPurchase(TransactionServiceModel transactionServiceModel) {
+        TransactionServiceModel transactionServiceForRefund = getTransactionServiceModelForRefundTransaction(transactionServiceModel);
+        refundCardPurchaseValidationAndUpdates(transactionServiceModel, transactionServiceForRefund);
+        // TODO FIX here order price is set to null it should not change
+        return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceForRefund);
+    }
 
-        TransactionStatus transactionStatus = transactionServiceForRefund.getTransactionStatus();
-
-        if (transactionStatus == TransactionStatus.REFUNDED) {
-            throw new IllegalCardTransactionOperation("The transaction is already refunded");
-        }
-
-        Instant dateTransactionCompleted = transactionServiceForRefund.getDateCompleted();
-
-        int minutes = Duration.between(dateTransactionCompleted, currentTime).toSecondsPart();
-
-        int daysInSecondsBetweenPurchaseAndTransaction = 1209600;
-
-        if (minutes >= daysInSecondsBetweenPurchaseAndTransaction) {
-            throw new IllegalCardTransactionOperation("The order cannot be refunded due to 14 days have passed from the purchase till now");
-        }
-
-        Order order = orderRepository.findById(transaction.getOrder().getId())
-                .orElseThrow(() ->
-                        new EntityNotFoundException("No Order have been found"));
-
-        //TODO ADD ORDER STATUS CANCELED AND EDIT IT
-        order.setOrderStatus(OrderStatus.CANCELED);
-        order.setShipmentType(ShipmentType.NONE);
-        order.setPaymentType(PaymentType.BY_CARD);
-        //Update
-        OrderServiceModel orderServiceModel = this.modelMapper.map(order, OrderServiceModel.class);
-        orderService.updateOrder(orderServiceModel);
-
+    private void refundCardPurchaseValidationAndUpdates(TransactionServiceModel transactionServiceModel, TransactionServiceModel transactionServiceForRefund) {
+        isTransactionStatusRefunded(transactionServiceForRefund.getTransactionStatus());
+        isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(transactionServiceForRefund.getDateCompleted());
+        //updateOrderForRefund(findOrderFromTransactionServiceModelById(transactionServiceModel));
         transactionServiceForRefund.setTransactionStatus(TransactionStatus.REFUNDED);
         transactionServiceForRefund.setDescription("Refunded for item");
         transactionServiceForRefund.setDateUpdated(Instant.now());
-
-        transactionService.refundTransactionById(transaction.getId());
-        transactionService.updateTransaction(transactionServiceForRefund);
-
-        return this.modelMapper.map(transactionServiceForRefund, TransactionServiceViewModel.class);
+        refundTransactionById(transactionServiceModel);
+        updateTransactionService(transactionServiceForRefund);
     }
 
-    public boolean isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(Instant dateTransactionCompleted) {
-        boolean isTimeForRefundDue = true;
+
+    private void refundTransactionById(TransactionServiceModel transactionServiceModel) {
+        this.transactionService.refundTransactionById(transactionServiceModel.getId());
+    }
+
+    public void isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(Instant dateTransactionCompleted) {
+        boolean isNonRefundable;
         //14 days in seconds
         int daysInSecondsBetweenPurchaseAndTransaction = 1209600;
-        Instant currentTime = Instant.now();
-
         int minutes = Duration
-                .between(dateTransactionCompleted, currentTime)
+                .between(dateTransactionCompleted, Instant.now())
                 .toSecondsPart();
-
-        if (minutes >= daysInSecondsBetweenPurchaseAndTransaction) {
-            isTimeForRefundDue = true;
+        isNonRefundable = minutes >= daysInSecondsBetweenPurchaseAndTransaction;
+        if (isNonRefundable) {
             throw new IllegalCardTransactionOperation("The order cannot be refunded due to 14 days have passed from the purchase till now");
-        } else {
-            isTimeForRefundDue = false;
         }
-
-        return isTimeForRefundDue;
     }
+
+    public void isTransactionStatusRefunded(TransactionStatus transactionStatus) {
+        boolean isNonRefundable = false;
+        isNonRefundable = transactionStatus == TransactionStatus.REFUNDED;
+        if (isNonRefundable) {
+            throw new IllegalCardTransactionOperation("The transaction is already refunded");
+        }
+    }
+
+    public void isOrderStatusCanceled(OrderStatus orderStatus) {
+        boolean isOrderNonCanceled = false;
+        isOrderNonCanceled = orderStatus == OrderStatus.CANCELED;
+        if (isOrderNonCanceled) {
+            throw new IllegalCardTransactionOperation("The Order is Canceled");
+        }
+    }
+
+    public void isOrderStatusFinished(OrderStatus orderStatus) {
+        boolean isOrderNonCanceled = false;
+        isOrderNonCanceled = orderStatus == OrderStatus.PICKED_UP_BY;
+        if (isOrderNonCanceled) {
+            throw new IllegalCardTransactionOperation("The Order is finished");
+        }
+    }
+
+    public Order findOrderFromTransactionServiceModelById(TransactionServiceModel transaction) {
+        return orderRepository.findById(transaction.getOrder().getId())
+                .orElseThrow(() ->
+                        new EntityNotFoundException("No Order have been found"));
+    }
+
+    public void updateOrderForRefund(Order order) {
+        //TODO
+        // should be GET SET SAVE AND FLUSH
+        order.setOrderStatus(OrderStatus.CANCELED);
+        order.setShipmentType(ShipmentType.NONE);
+        order.setPaymentType(PaymentType.BY_CARD);
+        updateOrder(order);
+    }
+
+    public void updateOrderForPurchase(Order order) {
+        //TODO
+        // should be GET SET SAVE AND FLUSH
+        order.setOrderStatus(OrderStatus.PROCESSING);
+        updateOrder(order);
+    }
+
+    public void updateOrder(Order order) {
+        orderService.updateOrder(mapOrderToOrderServiceModel(order));
+    }
+
+    public OrderServiceModel mapOrderToOrderServiceModel(Order order) {
+        return this.modelMapper.map(order, OrderServiceModel.class);
+    }
+
+    public void updateTransactionService(TransactionServiceModel transactionServiceModel) {
+        transactionService.updateTransaction(transactionServiceModel);
+    }
+
+    public TransactionServiceModel getTransactionServiceModelForRefundTransaction(TransactionServiceModel transactionServiceModel) {
+        return mapTransactionServiceViewModelToTransactionServiceModel(this.transactionService.getTransactionById(transactionServiceModel.getId()));
+    }
+
+    public TransactionServiceModel mapTransactionServiceViewModelToTransactionServiceModel(TransactionServiceViewModel transactionServiceViewModel) {
+        return this.modelMapper.map(transactionServiceViewModel, TransactionServiceModel.class);
+    }
+
+    public TransactionServiceViewModel mapTransactionServiceModelToTransactionServiceViewModel(TransactionServiceModel transactionServiceModel) {
+        return this.modelMapper.map(transactionServiceModel, TransactionServiceViewModel.class);
+    }
+
 }

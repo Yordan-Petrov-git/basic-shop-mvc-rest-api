@@ -29,69 +29,68 @@ public class CurrencyServiceImpl implements CurrencyService {
 
     @Override
     public CurrencyServiceViewModel createCurrency(CurrencyServiceModel currencyServiceModel) {
+        Currency currency = mapCurrencyServiceModelToCurrency(currencyServiceModel);
+        findByName(currencyServiceModel);
+        this.currencyRepository.saveAndFlush(currency);
+        return mapCurrencyToCurrencyServiceViewModel(currency);
+    }
 
-        Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
 
-        this.currencyRepository.findByName(currencyServiceModel.getName()).ifPresent(c -> {
-            throw new InvalidEntityException(String.format("Currency with name '%s' already exists.", currencyServiceModel.getName()));
-        });
-
-        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
-
+    private Currency mapCurrencyServiceModelToCurrency(CurrencyServiceModel currencyServiceModel) {
+        return this.modelMapper.map(currencyServiceModel, Currency.class);
     }
 
     @Override
     @Transactional
     public CurrencyServiceViewModel updateCurrency(CurrencyServiceModel currencyServiceModel) {
-
-        Currency currency = this.modelMapper.map(currencyServiceModel, Currency.class);
-
-        this.currencyRepository.findById(currencyServiceModel.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("Currency with id '%d' not found .", currencyServiceModel.getId())));
-
-        return this.modelMapper.map(this.currencyRepository.saveAndFlush(currency), CurrencyServiceViewModel.class);
+        Currency currency = mapCurrencyServiceModelToCurrency(currencyServiceModel);
+        getCurrencyById(currencyServiceModel.getId());
+        this.currencyRepository.saveAndFlush(currency);
+        return mapCurrencyToCurrencyServiceViewModel(currency);
 
     }
 
+
     @Override
     public CurrencyServiceViewModel getCurrencyById(long id) {
-
         return this.modelMapper
                 .map(this.currencyRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Currency  with ID %s not found.", id))), CurrencyServiceViewModel.class);
-
     }
 
     @Override
     public CurrencyServiceViewModel getCurrencyByName(String name) {
-
         return this.modelMapper
                 .map(this.currencyRepository.findByName(name).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Currency  with name %s not found.", name))), CurrencyServiceViewModel.class);
-
     }
 
     @Override
     public List<CurrencyServiceViewModel> getAllCurrencies() {
-
         this.currencyRepository.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Currencies were found"));
-
         List<Currency> currencies = currencyRepository.findAll();
-
         return modelMapper.map(currencies, new TypeToken<List<CurrencyServiceViewModel>>() {
         }.getType());
     }
 
     @Override
     public CurrencyServiceViewModel deleteCurrencyById(long id) {
-
         CurrencyServiceViewModel cityServiceViewModel = this.getCurrencyById(id);
-
         this.currencyRepository.deleteById(id);
-
         return cityServiceViewModel;
     }
+
+    private void findByName(CurrencyServiceModel currencyServiceModel) {
+        this.currencyRepository.findByName(currencyServiceModel.getName()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Currency with name '%s' already exists.", currencyServiceModel.getName()));
+        });
+    }
+
+    private CurrencyServiceViewModel mapCurrencyToCurrencyServiceViewModel(Currency currency) {
+        return this.modelMapper.map(currency, CurrencyServiceViewModel.class);
+    }
+
 }

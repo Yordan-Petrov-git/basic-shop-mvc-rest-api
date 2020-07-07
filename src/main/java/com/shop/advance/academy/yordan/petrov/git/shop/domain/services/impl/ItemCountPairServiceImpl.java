@@ -28,48 +28,63 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
 
     @Override
     public ItemCountPairServiceViewModel createShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel) {
-
-        ItemCountPair itemCountPair = this.modelMapper.map(itemCountPairServiceModel, ItemCountPair.class);
-
-        return this.modelMapper.map(this.itemCountPairRepository.saveAndFlush(itemCountPair), ItemCountPairServiceViewModel.class);
+        ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
+        this.itemCountPairRepository.saveAndFlush(itemCountPair);
+        return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
-
 
     @Override
     public ItemCountPairServiceViewModel updateShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel) {
-        ItemCountPair itemCountPair = this.modelMapper.map(itemCountPairServiceModel, ItemCountPair.class);
-        return this.modelMapper.map(this.itemCountPairRepository.saveAndFlush(itemCountPair), ItemCountPairServiceViewModel.class);
+        ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
+        this.itemCountPairRepository.saveAndFlush(itemCountPair);
+        return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
     @Override
     public ItemCountPairServiceViewModel getShoppingCartItemById(long id) {
-
-        return this.modelMapper
-                .map(this.itemCountPairRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Item  with ID %s not found.", id))), ItemCountPairServiceViewModel.class);
-
+        return mapItemCountPairToItemCountPairServiceViewModel(findShoppingCartById(id));
     }
 
     @Override
     public List<ItemCountPairServiceViewModel> getAllShoppingCartItems() {
-        this.itemCountPairRepository.findAll()
-                .stream()
-                .findAny()
-                .orElseThrow(() -> new InvalidEntityException("No Items were found"));
-
-        List<ItemCountPair> item = this.itemCountPairRepository.findAll();
-
-        return this.modelMapper.map(item, new TypeToken<List<ItemCountPairServiceViewModel>>() {
-        }.getType());
+        validateIfFoundAny();
+        List<ItemCountPair> item = getItemCountPairsList();
+        return mapItemCountPairListToItemCountPairServiceViewModelList(item);
     }
 
     @Override
     public ItemCountPairServiceViewModel deleteShoppingCartItemById(long id) {
-
         ItemCountPairServiceViewModel deleteShoppingCartItem = this.getShoppingCartItemById(id);
-
         this.itemCountPairRepository.deleteById(id);
+        return deleteShoppingCartItem;
+    }
 
-        return this.modelMapper.map(deleteShoppingCartItem, ItemCountPairServiceViewModel.class);
+    private ItemCountPairServiceViewModel mapItemCountPairToItemCountPairServiceViewModel(ItemCountPair itemCountPair) {
+        return this.modelMapper.map(itemCountPair, ItemCountPairServiceViewModel.class);
+    }
+
+    private ItemCountPair mapItemCountPairServiceModelToItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {
+        return this.modelMapper.map(itemCountPairServiceModel, ItemCountPair.class);
+    }
+
+    private ItemCountPair findShoppingCartById(long id) {
+        return this.itemCountPairRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Item  with ID %s not found.", id)));
+    }
+
+    private List<ItemCountPairServiceViewModel> mapItemCountPairListToItemCountPairServiceViewModelList(List<ItemCountPair> item) {
+        return this.modelMapper.map(item, new TypeToken<List<ItemCountPairServiceViewModel>>() {
+        }.getType());
+    }
+
+    private List<ItemCountPair> getItemCountPairsList() {
+        return this.itemCountPairRepository.findAll();
+    }
+
+    private void validateIfFoundAny() {
+        this.itemCountPairRepository.findAll()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Items were found"));
     }
 }

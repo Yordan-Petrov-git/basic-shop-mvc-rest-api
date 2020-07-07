@@ -4,5 +4,5 @@ public enum TransactionStatus {
     NEW,
     PENDING,
     CONFIRMED,
-    REFUNDED;
+    REFUNDED
 }

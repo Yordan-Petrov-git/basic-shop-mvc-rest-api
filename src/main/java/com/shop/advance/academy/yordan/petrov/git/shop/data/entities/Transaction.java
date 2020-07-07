@@ -142,7 +142,7 @@ public class Transaction extends BaseEntity {
     @ManyToOne(targetEntity = Order.class,
             cascade = {CascadeType.DETACH},
             fetch = FetchType.LAZY)
-    @JoinColumn(name = "order_id",referencedColumnName = "id")
+    @JoinColumn(name = "order_id", referencedColumnName = "id")
     public Order getOrder() {
         return this.order;
     }

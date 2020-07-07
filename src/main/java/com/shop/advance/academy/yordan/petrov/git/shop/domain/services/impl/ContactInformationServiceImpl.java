@@ -29,34 +29,27 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
     @Override
     public ContactInformationServiceViewModel createContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
-
-        ContactInformation contactInformation = this.modelMapper.map(contactInformationServiceModel, ContactInformation.class);
-
-        this.contactInformationRepository.findByEmail(contactInformationServiceModel.getEmail()).ifPresent(c -> {
-            throw new InvalidEntityException(String.format("Contact information with email '%s' already exists.", contactInformationServiceModel.getEmail()));
-        });
-
-
+        ContactInformation contactInformation = mapContactInformationServiceModelToContactInformation(contactInformationServiceModel);
+        findByEmail(contactInformationServiceModel);
         this.contactInformationRepository.findByCountryCodeAndPhoneNumber(contactInformationServiceModel.getCountryCode(), contactInformationServiceModel.getPhoneNumber()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Contact information with phone number '%s','%s' already exists.", contactInformation.getCountryCode(), contactInformationServiceModel.getPhoneNumber()));
         });
-
-
-        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
-
+        this.contactInformationRepository.saveAndFlush(contactInformation);
+        return mapContactInformationToContactInformationServiceViewModel(contactInformation);
     }
+
 
     @Override
     @Transactional
-    public ContactInformationServiceViewModel updateContactInformation(ContactInformationServiceModel ContactInformation) {
+    public ContactInformationServiceViewModel updateContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
+        ContactInformation contactInformation = mapContactInformationServiceModelToContactInformation(contactInformationServiceModel);
+        getContactInformationById(contactInformationServiceModel.getId());
+        this.contactInformationRepository.saveAndFlush(contactInformation);
+        return mapContactInformationToContactInformationServiceViewModel(contactInformation);
+    }
 
-        ContactInformation contactInformation = this.modelMapper.map(ContactInformation, ContactInformation.class);
-
-        this.contactInformationRepository.findById(ContactInformation.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("Contact information with id '%d' not found .", ContactInformation.getId())));
-
-        return this.modelMapper.map(this.contactInformationRepository.saveAndFlush(contactInformation), ContactInformationServiceViewModel.class);
-
+    private ContactInformationServiceViewModel mapContactInformationToContactInformationServiceViewModel(ContactInformation contactInformation) {
+        return this.modelMapper.map(contactInformation, ContactInformationServiceViewModel.class);
     }
 
     @Override
@@ -85,11 +78,19 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
     @Override
     public ContactInformationServiceViewModel deleteContactInformationById(long id) {
-
         ContactInformationServiceViewModel contactInformationServiceViewModel = this.getContactInformationById(id);
-
         this.contactInformationRepository.deleteById(id);
-
         return contactInformationServiceViewModel;
+    }
+
+
+    private void findByEmail(ContactInformationServiceModel contactInformationServiceModel) {
+        this.contactInformationRepository.findByEmail(contactInformationServiceModel.getEmail()).ifPresent(c -> {
+            throw new InvalidEntityException(String.format("Contact information with email '%s' already exists.", contactInformationServiceModel.getEmail()));
+        });
+    }
+
+    private ContactInformation mapContactInformationServiceModelToContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
+        return this.modelMapper.map(contactInformationServiceModel, ContactInformation.class);
     }
 }

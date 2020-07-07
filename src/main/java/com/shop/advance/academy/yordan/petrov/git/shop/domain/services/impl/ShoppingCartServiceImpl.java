@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
@@ -45,96 +46,117 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
 
     @Override
     public ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
-
-        ShoppingCart shoppingCart = this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
-
-        //Adds shopping cart to user
-        UserServiceViewModel userServiceModel = this.userService.getUserById(shoppingCartServiceModel.getUser().getId());
-
-        userRepository.findById(shoppingCartServiceModel.getUser().getId())
-                .ifPresent(c -> {
-                    shoppingCart.setUser(this.modelMapper.map(userServiceModel, User.class));
-                });
-
-
-        //add item only if it exists
-        Long itemId = shoppingCartServiceModel.getItemCountPair()
-                .stream()
-                .map(e -> e.getItem().getId())
-                .findFirst()
-                .orElseThrow(() -> new InvalidEntityException("No items were found "));
-
-
-        Integer itemCount = shoppingCartServiceModel.getItemCountPair()
-                .stream()
-                .map(e -> e.getItemCount())
-                .findFirst()
-                .orElseThrow(() -> new InvalidEntityException("No item counts were found "));
-
-
-        Item item = itemRepository.findById(itemId)
-                .orElseThrow(() -> new InvalidEntityException(String.format("No items with id %s was found ", itemId)));
-
-        shoppingCart.setTotalItemsPrice(calculateTotalPrice(itemCount, item.getPrice()));
+        ShoppingCart shoppingCart = mapShoppingCartServiceModelToShoppingCartViewModel(shoppingCartServiceModel);
+        setShoppingCartToUser(shoppingCartServiceModel, shoppingCart);
+        Item item = findItemById(getItemCountPairId(shoppingCartServiceModel));
+        shoppingCart.setTotalItemsPrice(calculateTotalPrice(getItemCount(shoppingCartServiceModel), item.getPrice()));
         shoppingCart.setCreated(LocalDateTime.now());
         shoppingCart.setModified(LocalDateTime.now());
-
-        return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceViewModel.class);
+        return mapShoppingCartToShoppingCartServiceViewModel(saveShoppingCart(shoppingCart));
     }
 
     @Override
     @Transactional
     public ShoppingCartServiceViewModel updateShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
-
-        ShoppingCart shoppingCart = this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
-
-        this.shoppingCartRepository.findById(shoppingCartServiceModel.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("Shopping with id '%d' not found .", shoppingCartServiceModel.getId())));
-
-        return this.modelMapper.map(this.shoppingCartRepository.saveAndFlush(shoppingCart), ShoppingCartServiceViewModel.class);
-
+        ShoppingCart shoppingCart = mapShoppingCartServiceModelToShoppingCartViewModel(shoppingCartServiceModel);
+        findShoppingCardById(shoppingCartServiceModel.getId());
+        return mapShoppingCartToShoppingCartServiceViewModel(saveShoppingCart(shoppingCart));
     }
+
 
     @Override
     public ShoppingCartServiceViewModel getShoppingCartById(long id) {
-
-        return this.modelMapper
-                .map(this.shoppingCartRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Shopping cart with ID %s not found.", id))), ShoppingCartServiceViewModel.class);
-
+        return mapShoppingCartToShoppingCartServiceViewModel(findShoppingCardById(id));
     }
 
     @Override
     public List<ShoppingCartServiceViewModel> getAllShoppingCarts() {
-
-        this.shoppingCartRepository.findAll()
-                .stream()
-                .findAny()
-                .orElseThrow(() -> new InvalidEntityException("No Shopping carts were found"));
-
-        List<ShoppingCart> shoppingCarts = shoppingCartRepository.findAll();
-
-        return modelMapper.map(shoppingCarts, new TypeToken<List<ShoppingCartServiceViewModel>>() {
-        }.getType());
+        validateIfAnyShoppingCarsArePresent();
+        List<ShoppingCart> shoppingCarts = findAllShoppingCarts();
+        return mapListShoppingCartToShoppingCartViewModel(shoppingCarts);
     }
 
     @Override
     public ShoppingCartServiceViewModel deleteShoppingCartById(long id) {
-
-        this.shoppingCartRepository.findById(id)
-                .orElseThrow(() -> new InvalidEntityException(String.format("Shopping Cart with id '%d' not found .", id)));
-
+        findShoppingCardById(id);
         ShoppingCartServiceViewModel deletedShoppingCart = this.getShoppingCartById(id);
-
         this.shoppingCartRepository.deleteById(id);
-
-        return this.modelMapper.map(deletedShoppingCart, ShoppingCartServiceViewModel.class);
-
+        return deletedShoppingCart;
     }
 
     public BigDecimal calculateTotalPrice(Integer itemCount, BigDecimal itemPrice) {
 
         return itemPrice.multiply(BigDecimal.valueOf(itemCount));
+    }
+
+    private ShoppingCartServiceViewModel mapShoppingCartToShoppingCartServiceViewModel(ShoppingCart shoppingCart) {
+        return this.modelMapper.map(shoppingCart, ShoppingCartServiceViewModel.class);
+    }
+
+    public User mapUserServiceViewModelToUser(UserServiceViewModel userServiceViewModel) {
+        return this.modelMapper.map(userServiceViewModel, User.class);
+    }
+
+    public ShoppingCart findShoppingCardById(long id) {
+        return this.shoppingCartRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.format("Shopping cart with ID %s not found.", id)));
+    }
+
+
+    public List<ShoppingCart> findAllShoppingCarts() {
+        return shoppingCartRepository.findAll();
+    }
+
+    public List<ShoppingCartServiceViewModel> mapListShoppingCartToShoppingCartViewModel(List<ShoppingCart> shoppingCarts) {
+        return modelMapper.map(shoppingCarts, new TypeToken<List<ShoppingCartServiceViewModel>>() {
+        }.getType());
+    }
+
+    public void validateIfAnyShoppingCarsArePresent() {
+        findAllShoppingCarts()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Shopping carts were found"));
+    }
+
+    public Integer getItemCount(ShoppingCartServiceModel shoppingCartServiceModel) {
+        return shoppingCartServiceModel.getItemCountPair()
+                .stream()
+                .map(ItemCountPairServiceModel::getItemCount)
+                .findFirst()
+                .orElseThrow(() -> new InvalidEntityException("No item counts were found "));
+    }
+
+    public Long getItemCountPairId(ShoppingCartServiceModel shoppingCartServiceModel) {
+        return shoppingCartServiceModel.getItemCountPair()
+                .stream()
+                .map(e -> e.getItem().getId())
+                .findFirst()
+                .orElseThrow(() -> new InvalidEntityException("No items were found "));
+    }
+
+    public void setShoppingCartToUser(ShoppingCartServiceModel shoppingCartServiceModel, ShoppingCart shoppingCart) {
+        userRepository.findById(shoppingCartServiceModel.getUser().getId())
+                .ifPresent(c -> {
+                    shoppingCart.setUser(mapUserServiceViewModelToUser(getUserById(shoppingCartServiceModel)));
+                });
+    }
+
+    public UserServiceViewModel getUserById(ShoppingCartServiceModel shoppingCartServiceModel) {
+        return this.userService.getUserById(shoppingCartServiceModel.getUser().getId());
+    }
+
+    public ShoppingCart mapShoppingCartServiceModelToShoppingCartViewModel(ShoppingCartServiceModel shoppingCartServiceModel) {
+        return this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
+    }
+
+    public Item findItemById(Long itemId) {
+        return itemRepository.findById(itemId)
+                .orElseThrow(() -> new InvalidEntityException(String.format("No items with id %s was found ", itemId)));
+    }
+
+    public ShoppingCart saveShoppingCart(ShoppingCart shoppingCart) {
+        return this.shoppingCartRepository.saveAndFlush(shoppingCart);
     }
 
 }

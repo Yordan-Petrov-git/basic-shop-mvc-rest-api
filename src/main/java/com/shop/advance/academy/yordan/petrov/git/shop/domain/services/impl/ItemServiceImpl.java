@@ -29,62 +29,56 @@ public class ItemServiceImpl implements ItemService {
 
     @Override
     public ItemServiceViewModel createItem(ItemServiceModel itemServiceModel) {
-
-        Item item = this.modelMapper.map(itemServiceModel, Item.class);
-
+        Item item = mapItemServiceModelToItem(itemServiceModel);
         this.itemRepository.findByTitleAndDescription(itemServiceModel.getTitle(), itemServiceModel.getDescription()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Item with title '%s' and description '%s' already exists.", itemServiceModel.getTitle(), itemServiceModel.getDescription()));
         });
-
-        return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceViewModel.class);
-
+        this.itemRepository.saveAndFlush(item);
+        return mapItemToItemServiceViewModel(item);
     }
+
 
     @Override
     @Transactional
     public ItemServiceViewModel updateItem(ItemServiceModel itemServiceModel) {
-
-        Item item = this.modelMapper.map(itemServiceModel, Item.class);
-
-        this.itemRepository.findById(itemServiceModel.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("Item with id '%d' not found .", itemServiceModel.getId())));
-
-
-        return this.modelMapper.map(this.itemRepository.saveAndFlush(item), ItemServiceViewModel.class);
+        Item item = mapItemServiceModelToItem(itemServiceModel);
+        getItemById(itemServiceModel.getId());
+        this.itemRepository.saveAndFlush(item);
+        return mapItemToItemServiceViewModel(item);
 
     }
 
     @Override
     public ItemServiceViewModel getItemById(long id) {
-
         return this.modelMapper
                 .map(this.itemRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Item  with ID %s not found.", id))), ItemServiceViewModel.class);
-
     }
 
     @Override
     public List<ItemServiceViewModel> getAllItems() {
-
         this.itemRepository.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Items were found"));
-
         List<Item> items = itemRepository.findAll();
-
         return modelMapper.map(items, new TypeToken<List<ItemServiceViewModel>>() {
         }.getType());
     }
 
     @Override
     public ItemServiceViewModel deleteItemById(long id) {
-
         ItemServiceViewModel itemServiceViewModel = this.getItemById(id);
-
         this.itemRepository.deleteById(id);
-
         return itemServiceViewModel;
+    }
 
+
+    private ItemServiceViewModel mapItemToItemServiceViewModel(Item item) {
+        return this.modelMapper.map(item, ItemServiceViewModel.class);
+    }
+
+    private Item mapItemServiceModelToItem(ItemServiceModel itemServiceModel) {
+        return this.modelMapper.map(itemServiceModel, Item.class);
     }
 }

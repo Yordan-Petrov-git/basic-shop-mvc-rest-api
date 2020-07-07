@@ -22,12 +22,10 @@ import java.util.List;
 @Service
 public class AddressServiceImpl implements AddressService {
 
-
     private final AddressRepository addressRepository;
     private final CityRepository cityRepository;
     private final CityService cityService;
     private final ModelMapper modelMapper;
-
 
     @Autowired
     public AddressServiceImpl(AddressRepository addressRepository, CityRepository cityRepository,
@@ -40,9 +38,7 @@ public class AddressServiceImpl implements AddressService {
 
     @Override
     public AddressServiceViewModel createAddress(AddressServiceModel addressServiceModel) {
-
-        Address address = this.modelMapper.map(addressServiceModel, Address.class);
-
+        Address address = mapAddressServiceModelToAddress(addressServiceModel);
         this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName())
                 .ifPresent(c -> {
                     throw new InvalidEntityException(
@@ -51,65 +47,80 @@ public class AddressServiceImpl implements AddressService {
                                     addressServiceModel.getStreetName(),
                                     addressServiceModel.getCity().getName()));
                 });
-
-
-        //Create address only if the city is already in the database
-        //  if the city is not in the database throw error
-        CityServiceViewModel cityServiceViewModel = this.cityService.getCityByName(addressServiceModel.getCity().getName());
-
-        cityRepository.findCityByName(addressServiceModel.getCity().getName())
-                .ifPresent(c -> {
-                    address.setCity(this.modelMapper.map(cityServiceViewModel, City.class));
-                });
-
-
-        return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);
+        addressSetCity(addressServiceModel, address);
+        this.addressRepository.saveAndFlush(address);
+        return mapAddressToAddressServiceViewModel(address);
     }
 
     @Override
     @Transactional
     public AddressServiceViewModel updateAddress(AddressServiceModel addressServiceModel) {
-
-        Address address = this.modelMapper.map(addressServiceModel, Address.class);
-
-
-        return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);
-
+        Address address = mapAddressServiceModelToAddress(addressServiceModel);
+        getAddressById(addressServiceModel.getId());
+        this.addressRepository.saveAndFlush(address);
+        return mapAddressToAddressServiceViewModel(address);
     }
-
 
     @Override
     public AddressServiceViewModel getAddressById(long id) {
-        return this.modelMapper
-                .map(this.addressRepository.findById(id).orElseThrow(() ->
-                        new EntityNotFoundException(String.format("Address with ID %s not found.", id))), AddressServiceViewModel.class);
-
+        return mapAddressToAddressServiceViewModel(findAddressByIdFromRepository(id));
     }
 
     @Override
     public List<AddressServiceViewModel> getAllAddresses() {
-
-        this.addressRepository.findAll()
-                .stream()
-                .findAny()
-                .orElseThrow(() -> new InvalidEntityException("No Addresses were found"));
-
-        List<Address> addresses = addressRepository.findAll();
-
-        return modelMapper.map(addresses, new TypeToken<List<AddressServiceViewModel>>() {
-        }.getType());
-
+        validateIfFoundAnyAddresses();
+        return mapAddressListToAddressServiceViewModelList(findAllAddressesFromRepository());
     }
 
     @Override
     public AddressServiceViewModel deleteAddressById(long id) {
-
         AddressServiceViewModel addressServiceViewModel = this.getAddressById(id);
-
-        this.addressRepository.deleteById(id);
-
+        this.addressRepository.deleteAddressById(id);
         return addressServiceViewModel;
+    }
 
+    public AddressServiceViewModel mapAddressToAddressServiceViewModel(Address address) {
+        return this.modelMapper.map(address, AddressServiceViewModel.class);
+    }
+
+    public Address mapAddressServiceModelToAddress(AddressServiceModel addressServiceModel) {
+        return this.modelMapper.map(addressServiceModel, Address.class);
+    }
+
+    public List<Address> findAllAddressesFromRepository() {
+        return findAllAddresses();
+    }
+
+    public void validateIfFoundAnyAddresses() {
+        findAllAddresses()
+                .stream()
+                .findAny()
+                .orElseThrow(() -> new InvalidEntityException("No Addresses were found"));
+    }
+
+    private List<Address> findAllAddresses() {
+        return this.addressRepository.findAll();
+    }
+
+    public List<AddressServiceViewModel> mapAddressListToAddressServiceViewModelList(List<Address> addresses) {
+        return modelMapper.map(addresses, new TypeToken<List<AddressServiceViewModel>>() {
+        }.getType());
+    }
+
+    public Address findAddressByIdFromRepository(long id) {
+        return this.addressRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Address with ID %s not found.", id)));
+    }
+
+    public void addressSetCity(AddressServiceModel addressServiceModel, Address address) {
+        cityRepository.findCityByName(addressServiceModel.getCity().getName())
+                .ifPresent(c -> {
+                    address.setCity(this.modelMapper.map(findCityByName(addressServiceModel), City.class));
+                });
+    }
+
+    public CityServiceViewModel findCityByName(AddressServiceModel addressServiceModel) {
+        return this.cityService.getCityByName(addressServiceModel.getCity().getName());
     }
 
 

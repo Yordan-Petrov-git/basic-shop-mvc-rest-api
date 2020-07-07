@@ -60,7 +60,7 @@ public class ContactInformationController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<ContactInformationServiceViewModel>> getContactInformations() {
+    public ResponseEntity<List<ContactInformationServiceViewModel>> getContactInformation() {
 
         List<ContactInformationServiceViewModel> contactInformationServiceViewModels = contactInformationService.getAllContactInformations();
 

@@ -49,12 +49,24 @@ public class TransactionServiceTest {
         transactionToAdd.add(new Transaction());
 
         Mockito.when(transactionRepository.findAll()).thenReturn(transactionToAdd);
-        List<TransactionServiceViewModel> TransactionsFetchedFromRepo = transactionService.getAllTransactions();
+        List<TransactionServiceViewModel> transactionsFetchedFromRepo = transactionService.getAllTransactions();
 
-        assertEquals(3, TransactionsFetchedFromRepo.size());
+        assertEquals(3, transactionsFetchedFromRepo.size());
     }
 
-    //TODO ADD TEST IF GETS  BY ID
+
+    @Test
+    public void testTransactionServiceGetTransactionById() {
+        Transaction transaction = new Transaction();
+        transaction.setId(15L);
+
+        Mockito.when(transactionRepository.findById(15L))
+                .thenReturn(java.util.Optional.of(transaction));
+        TransactionServiceViewModel transactionServiceViewModel = this.modelMapper.map(transaction,TransactionServiceViewModel.class);
+
+        assertEquals(transactionServiceViewModel, transactionService.getTransactionById(15L));
+    }
+
 
     //TODO ADD TEST IF CREATES
 
