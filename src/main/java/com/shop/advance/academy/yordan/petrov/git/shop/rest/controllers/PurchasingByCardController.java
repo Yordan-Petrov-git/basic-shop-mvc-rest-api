@@ -42,7 +42,6 @@ public class PurchasingByCardController {
 
     }
 
-    //TODO ADD REFUND PURCHASE REVERSE TRANSACTION CHANGE STATUS TO REFUNDED CHANGE STATUS OF ORDER TO REFUNDED
 
 //    @PutMapping("/{id}")
 //    public ResponseEntity<AddressServiceViewModel> updateAddress(@PathVariable("id") Long id, @RequestBody AddressServiceModel addressServiceModel) {
