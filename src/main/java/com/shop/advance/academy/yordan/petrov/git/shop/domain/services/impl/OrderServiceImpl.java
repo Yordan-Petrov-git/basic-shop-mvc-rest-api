@@ -63,6 +63,7 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal totalItemsPrice = this.shoppingCartService.getShoppingCartById(itemId).getTotalItemsPrice();
         BigDecimal taxInPercentage = calculateTaxPercentage(tax);
         order.setTotalPrice(calculateItemAfterTax(taxInPercentage, totalItemsPrice));
+        this.orderRepository.saveAndFlush(order);
         return mapOrderToOrderServiceModel(order);
     }
 
@@ -71,6 +72,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderServiceViewModel updateOrder(OrderServiceModel orderServiceModel) {
         Order order = mapOrderServiceModelToOrder(orderServiceModel);
         getOrderById(orderServiceModel.getId());
+        this.orderRepository.saveAndFlush(order);
         return mapOrderToOrderServiceModel(order);
     }
 
@@ -128,7 +130,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public OrderServiceViewModel mapOrderToOrderServiceModel(Order order) {
-        return this.modelMapper.map(this.orderRepository.saveAndFlush(order), OrderServiceViewModel.class);
+        return this.modelMapper.map(order, OrderServiceViewModel.class);
     }
 
     public Order findOrderById(long id) {
@@ -142,13 +144,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void validateIfFoundAnyOrders() {
-        this.orderRepository.findAll()
+        findOrders()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Orders were found"));
     }
 
+    private List<Order> findOrders() {
+        return this.orderRepository.findAll();
+    }
+
     public List<Order> findAllOrders() {
-        return orderRepository.findAll();
+        return findOrders();
     }
 }

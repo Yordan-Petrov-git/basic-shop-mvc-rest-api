@@ -29,12 +29,14 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
     @Override
     public ItemCountPairServiceViewModel createShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel) {
         ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
+        this.itemCountPairRepository.saveAndFlush(itemCountPair);
         return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
     @Override
     public ItemCountPairServiceViewModel updateShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel) {
         ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
+        this.itemCountPairRepository.saveAndFlush(itemCountPair);
         return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
@@ -58,7 +60,7 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
     }
 
     private ItemCountPairServiceViewModel mapItemCountPairToItemCountPairServiceViewModel(ItemCountPair itemCountPair) {
-        return this.modelMapper.map(this.itemCountPairRepository.saveAndFlush(itemCountPair), ItemCountPairServiceViewModel.class);
+        return this.modelMapper.map(itemCountPair, ItemCountPairServiceViewModel.class);
     }
 
     private ItemCountPair mapItemCountPairServiceModelToItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {

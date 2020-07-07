@@ -39,22 +39,32 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressServiceViewModel createAddress(AddressServiceModel addressServiceModel) {
         Address address = mapAddressServiceModelToAddress(addressServiceModel);
-        validateIfAddressExists(addressServiceModel);
+        this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName())
+                .ifPresent(c -> {
+                    throw new InvalidEntityException(
+                            String.format("Address with number '%s' and street '%s' in city '%s' already exists.",
+                                    addressServiceModel.getStreetNumber(),
+                                    addressServiceModel.getStreetName(),
+                                    addressServiceModel.getCity().getName()));
+                });
         addressSetCity(addressServiceModel, address);
+        this.addressRepository.saveAndFlush(address);
         return mapAddressToAddressServiceViewModel(address);
     }
 
     @Override
     @Transactional
     public AddressServiceViewModel updateAddress(AddressServiceModel addressServiceModel) {
-        return mapAddressToAddressServiceViewModel(mapAddressServiceModelToAddress(addressServiceModel));
+        Address address = mapAddressServiceModelToAddress(addressServiceModel);
+        getAddressById(addressServiceModel.getId());
+        this.addressRepository.saveAndFlush(address);
+        return mapAddressToAddressServiceViewModel(address);
     }
 
     @Override
     public AddressServiceViewModel getAddressById(long id) {
         return mapAddressToAddressServiceViewModel(findAddressByIdFromRepository(id));
     }
-
 
     @Override
     public List<AddressServiceViewModel> getAllAddresses() {
@@ -70,7 +80,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     public AddressServiceViewModel mapAddressToAddressServiceViewModel(Address address) {
-        return this.modelMapper.map(this.addressRepository.saveAndFlush(address), AddressServiceViewModel.class);
+        return this.modelMapper.map(address, AddressServiceViewModel.class);
     }
 
     public Address mapAddressServiceModelToAddress(AddressServiceModel addressServiceModel) {
@@ -78,14 +88,18 @@ public class AddressServiceImpl implements AddressService {
     }
 
     public List<Address> findAllAddressesFromRepository() {
-        return addressRepository.findAll();
+        return findAllAddresses();
     }
 
     public void validateIfFoundAnyAddresses() {
-        this.addressRepository.findAll()
+        findAllAddresses()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Addresses were found"));
+    }
+
+    private List<Address> findAllAddresses() {
+        return this.addressRepository.findAll();
     }
 
     public List<AddressServiceViewModel> mapAddressListToAddressServiceViewModelList(List<Address> addresses) {
@@ -109,15 +123,5 @@ public class AddressServiceImpl implements AddressService {
         return this.cityService.getCityByName(addressServiceModel.getCity().getName());
     }
 
-    public void validateIfAddressExists(AddressServiceModel addressServiceModel) {
-        this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName())
-                .ifPresent(c -> {
-                    throw new InvalidEntityException(
-                            String.format("Address with number '%s' and street '%s' in city '%s' already exists.",
-                                    addressServiceModel.getStreetNumber(),
-                                    addressServiceModel.getStreetName(),
-                                    addressServiceModel.getCity().getName()));
-                });
-    }
 
 }

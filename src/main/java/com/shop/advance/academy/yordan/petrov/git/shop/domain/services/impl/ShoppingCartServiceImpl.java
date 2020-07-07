@@ -80,12 +80,8 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCartServiceViewModel deleteShoppingCartById(long id) {
         findShoppingCardById(id);
         ShoppingCartServiceViewModel deletedShoppingCart = this.getShoppingCartById(id);
-        shoppingCartRepositoryDeleteById(id);
-        return deletedShoppingCart;
-    }
-
-    public void shoppingCartRepositoryDeleteById(long id) {
         this.shoppingCartRepository.deleteById(id);
+        return deletedShoppingCart;
     }
 
     public BigDecimal calculateTotalPrice(Integer itemCount, BigDecimal itemPrice) {

@@ -38,64 +38,40 @@ public class OpinionServiceImpl implements OpinionService {
 
     @Override
     public OpinionServiceViewModel createOpinion(OpinionServiceModel opinionServiceModel) {
-
-        //No exception thrown here because one user can have multiple opinions
         Opinion opinion = mapOpinionServiceModelToOpinion(opinionServiceModel);
-
-        //Adds user  to opinion if user exists
-        UserServiceViewModel serviceViewModel = this.userService.getUserById(opinionServiceModel.getUser().getId());
-
-        userRepository.findById(opinionServiceModel.getUser().getId())
-                .ifPresent(c -> {
-                    opinionServiceModel.setUser(this.modelMapper.map(serviceViewModel, UserServiceModel.class));
-                });
-
-
+        setOpinionToUser(opinionServiceModel);
+        this.opinionRepository.saveAndFlush(opinion);
         return mapOpinionToOpinionServiceViewModel(opinion);
-
     }
 
-    public Opinion mapOpinionServiceModelToOpinion(OpinionServiceModel opinionServiceModel) {
-        return this.modelMapper.map(opinionServiceModel, Opinion.class);
-    }
 
     @Override
     @Transactional
     public OpinionServiceViewModel updateOpinion(OpinionServiceModel opinionServiceModel) {
-
         Opinion opinion = mapOpinionServiceModelToOpinion(opinionServiceModel);
-
-        this.opinionRepository.findById(opinionServiceModel.getId())
-                .orElseThrow(() -> new InvalidEntityException(String.format("Opinion with id '%d' not found .", opinionServiceModel.getId())));
-
-
+        getOpinionById(opinionServiceModel.getId());
+        this.opinionRepository.saveAndFlush(opinion);
         return mapOpinionToOpinionServiceViewModel(opinion);
-
     }
 
     public OpinionServiceViewModel mapOpinionToOpinionServiceViewModel(Opinion opinion) {
-        return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
+        return this.modelMapper.map(opinion, OpinionServiceViewModel.class);
     }
 
     @Override
     public OpinionServiceViewModel getOpinionById(long id) {
-
         return this.modelMapper
                 .map(this.opinionRepository.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Opinion  with ID %s not found.", id))), OpinionServiceViewModel.class);
-
     }
 
     @Override
     public List<OpinionServiceViewModel> getAllOpinions() {
-
         this.opinionRepository.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Opinions were found"));
-
         List<Opinion> opinions = opinionRepository.findAll();
-
         return modelMapper.map(opinions, new TypeToken<List<OpinionServiceViewModel>>() {
         }.getType());
     }
@@ -106,4 +82,20 @@ public class OpinionServiceImpl implements OpinionService {
         this.opinionRepository.deleteById(id);
         return opinionServiceViewModel;
     }
+
+    private void setOpinionToUser(OpinionServiceModel opinionServiceModel) {
+        userRepository.findById(opinionServiceModel.getUser().getId())
+                .ifPresent(c -> {
+                    opinionServiceModel.setUser(this.modelMapper.map(getUserServiceViewModel(opinionServiceModel), UserServiceModel.class));
+                });
+    }
+
+    private UserServiceViewModel getUserServiceViewModel(OpinionServiceModel opinionServiceModel) {
+        return this.userService.getUserById(opinionServiceModel.getUser().getId());
+    }
+
+    public Opinion mapOpinionServiceModelToOpinion(OpinionServiceModel opinionServiceModel) {
+        return this.modelMapper.map(opinionServiceModel, Opinion.class);
+    }
+
 }

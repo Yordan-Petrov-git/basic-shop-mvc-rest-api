@@ -48,6 +48,7 @@ public class CardServiceImpl implements CardService {
         setCurrencyByCurrencyName(cardServiceModel, card);
         card.setDateIssued(LocalDateTime.now());
         card.setPinCode(this.bCryptPasswordEncoder.encode(cardServiceModel.getPinCode()));
+        this.cardRepository.saveAndFlush(card);
         return mapCardToCardServiceViewModel(card);
     }
 
@@ -56,6 +57,7 @@ public class CardServiceImpl implements CardService {
     public CardServiceViewModel updateCard(CardServiceModel cardServiceModel) {
         Card card = mapCardServiceModelToCard(cardServiceModel);
         getCardById(cardServiceModel.getId());
+        this.cardRepository.saveAndFlush(card);
         return mapCardToCardServiceViewModel(card);
     }
 
@@ -67,7 +69,7 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<CardServiceViewModel> getAllCards() {
         validateIfCardsExists();
-        List<Card> cards = getListOfCards();
+        List<Card> cards = cardRepository.findAll();
         return mapCardListToCardServiceViewModelList(cards);
     }
 
@@ -77,10 +79,6 @@ public class CardServiceImpl implements CardService {
         this.cardRepository.deleteById(id);
         return cardServiceViewModel;
 
-    }
-
-    private List<Card> getListOfCards() {
-        return cardRepository.findAll();
     }
 
     private void validateIfCardsExists() {
@@ -102,7 +100,7 @@ public class CardServiceImpl implements CardService {
     }
 
     private CardServiceViewModel mapCardToCardServiceViewModel(Card card) {
-        return this.modelMapper.map(this.cardRepository.saveAndFlush(card), CardServiceViewModel.class);
+        return this.modelMapper.map(card, CardServiceViewModel.class);
     }
 
     private Card mapCardServiceModelToCard(CardServiceModel cardServiceModel) {

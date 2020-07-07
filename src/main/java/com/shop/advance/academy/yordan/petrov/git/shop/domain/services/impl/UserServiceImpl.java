@@ -100,7 +100,7 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public UserServiceViewModel deleteUserById(long id) {
         UserServiceViewModel deletedUser = getUserServiceViewModelById(id);
-        validateIfUserRoleAdminPresentForDeleteion(id);
+        validateIfUserRoleAdminPresentForDeletion(id);
         return deletedUser;
     }
 
@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
         return this.userRepository.findAll();
     }
 
-    public void validateIfUserRoleAdminPresentForDeleteion(long id) {
+    public void validateIfUserRoleAdminPresentForDeletion(long id) {
         if (userRepository.findById(1L).isPresent() && id == 1) {
             throw new IllegalDeleteOperation("Admin user cannot be deleted");
         } else {

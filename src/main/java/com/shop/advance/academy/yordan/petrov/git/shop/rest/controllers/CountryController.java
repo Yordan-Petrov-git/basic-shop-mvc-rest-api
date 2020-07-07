@@ -52,7 +52,7 @@ public class CountryController {
 
         CountryServiceViewModel countryServiceViewModel = countryService.getCountryById(id);
 
-        log.info("Countrys  found : {}", countryServiceViewModel);
+        log.info("Country  found : {}", countryServiceViewModel);
 
         return ResponseEntity.status(HttpStatus.FOUND).body(countryServiceViewModel);
 
