@@ -1,5 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.TransactionStatus;
 
 import javax.persistence.*;
@@ -18,7 +19,7 @@ public class Transaction extends BaseEntity {
     private Instant dateCompleted;
     private Instant dateUpdated;
     private TransactionStatus transactionStatus = TransactionStatus.NEW;
-    private Long fee;
+    private BigDecimal fee;
     private BigDecimal amount;
     private Currency currency;
 
@@ -68,6 +69,7 @@ public class Transaction extends BaseEntity {
     }
 
     @Column(name = "date_created")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Instant getDateCreated() {
         return this.dateCreated;
     }
@@ -77,6 +79,7 @@ public class Transaction extends BaseEntity {
     }
 
     @Column(name = "date_completed")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Instant getDateCompleted() {
         return this.dateCompleted;
     }
@@ -86,6 +89,7 @@ public class Transaction extends BaseEntity {
     }
 
     @Column(name = "date_updated")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public Instant getDateUpdated() {
         return this.dateUpdated;
     }
@@ -105,11 +109,11 @@ public class Transaction extends BaseEntity {
     }
 
     @Column(name = "fee")
-    public Long getFee() {
+    public BigDecimal getFee() {
         return this.fee;
     }
 
-    public void setFee(Long fee) {
+    public void setFee(BigDecimal fee) {
         this.fee = fee;
     }
 

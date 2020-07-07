@@ -5,6 +5,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyReposito
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.TransactionRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.TransactionStatus;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.List;
 
 @Service
@@ -56,7 +58,7 @@ public class TransactionServiceImpl implements TransactionService {
 
         cardRepository.findById(transactionServiceModel.getRecipient().getId())
                 .ifPresent(c -> {
-                    transactionServiceModel.setSender(this.modelMapper.map(cardServiceViewModelRecipient, CardServiceModel.class));
+                    transactionServiceModel.setRecipient(this.modelMapper.map(cardServiceViewModelRecipient, CardServiceModel.class));
                 });
 
         //Currency
@@ -66,9 +68,21 @@ public class TransactionServiceImpl implements TransactionService {
                     transactionServiceModel.setCurrency(this.modelMapper.map(currencyServiceViewModel, CurrencyServiceModel.class));
                 });
 
-        //TODO MAKE IT TRANSFER MONEY
-        transferMoney(transactionServiceModel.getSender().getId(), transactionServiceModel.getRecipient().getId(), transactionServiceModel.getAmount());
+        //TODO ADD EXCHANGE RATE EVENTUALLY IF THE RECEIVER CARD IS IN DIFFERENT CURRENCY
+        BigDecimal fee = transactionServiceModel.getFee();
+        Long idRecipient = (transactionServiceModel.getRecipient().getId());
+        BigDecimal amount = transactionServiceModel.getAmount();
+        Long idSender =  (transactionServiceModel.getSender().getId());
 
+        //Withdraw for the fee of the transaction
+        withdrawMoney(idSender,fee);
+        //Transaction method
+        transferMoney(idRecipient,idSender , amount);
+        transaction.setDateCreated(Instant.now());
+        transaction.setDateCompleted(Instant.now());
+        transaction.setDateUpdated(Instant.now());
+        transaction.setTransactionStatus(TransactionStatus.CONFIRMED);
+        System.out.println();
         return this.modelMapper.map(this.transactionRepository.saveAndFlush(transaction), TransactionServiceViewModel.class);
     }
 
@@ -127,13 +141,12 @@ public class TransactionServiceImpl implements TransactionService {
 
         if (card.getBalance().compareTo(amount) < 0) {
             throw new IllegalCardTransactionOperation(String.
-                    format("Current balance : %.2f is not sufficient to withdraw amount:  %.2f",
-                            card.getBalance(), amount));
+                    format("Current balance of card with number : %s is : %.2f and it is not sufficient to withdraw amount:  %.2f",
+                            card.getNumber(),card.getBalance(),amount));
         }
 
         card.setBalance(card.getBalance().subtract(amount));
-        cardRepository.saveAndFlush(card);
-        System.out.println();
+        cardService.updateCard(this.modelMapper.map(card,CardServiceModel.class));
     }
 
     @Override
@@ -150,7 +163,7 @@ public class TransactionServiceImpl implements TransactionService {
         }
 
         card.setBalance(card.getBalance().add(amount));
-        cardRepository.saveAndFlush(card);
+        cardService.updateCard(this.modelMapper.map(card,CardServiceModel.class));
     }
 
     @Override

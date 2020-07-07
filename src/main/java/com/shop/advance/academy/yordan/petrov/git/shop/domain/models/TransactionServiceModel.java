@@ -17,13 +17,14 @@ public class TransactionServiceModel {
     private Instant dateCompleted;
     private Instant dateUpdated;
     private TransactionStatus transactionStatus = TransactionStatus.NEW;
-    private Long fee;
+    private BigDecimal fee;
     private BigDecimal amount;
     private CurrencyServiceModel currency;
 
 
     public TransactionServiceModel() {
     }
+
 
     public Long getId() {
         return this.id;
@@ -97,11 +98,11 @@ public class TransactionServiceModel {
         this.transactionStatus = transactionStatus;
     }
 
-    public Long getFee() {
+    public BigDecimal getFee() {
         return this.fee;
     }
 
-    public void setFee(Long fee) {
+    public void setFee(BigDecimal fee) {
         this.fee = fee;
     }
 

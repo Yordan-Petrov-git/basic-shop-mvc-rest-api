@@ -54,6 +54,7 @@ public class OrderServiceImpl implements OrderService {
                     order.setShoppingCart(this.modelMapper.map(shoppingCartServiceViewModel, ShoppingCart.class));
                 });
 
+        //TODO ADD PROMO CODE SYSTEM AND DISCOUNTS IN % SYSTEM !!!
         // FIND ADDED ITEMS BY ID !!!! AND THEN GET THEM AND CALCULATE THE TOTAL PRICE MULTIPLY ALSO BY THEIR COUNT
         // FORMULA FOR TAXED A ((((TAX %/100)+1)*PRICE)  * QUANTITY)
         //  FORMULA WITH TAX B ((PRICE * QUANTITY) * (TAX %/100)+1))
