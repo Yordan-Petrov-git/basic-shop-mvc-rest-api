@@ -40,7 +40,7 @@ public class OpinionServiceImpl implements OpinionService {
     public OpinionServiceViewModel createOpinion(OpinionServiceModel opinionServiceModel) {
 
         //No exception thrown here because one user can have multiple opinions
-        Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
+        Opinion opinion = mapOpinionServiceModelToOpinion(opinionServiceModel);
 
         //Adds user  to opinion if user exists
         UserServiceViewModel serviceViewModel = this.userService.getUserById(opinionServiceModel.getUser().getId());
@@ -51,22 +51,30 @@ public class OpinionServiceImpl implements OpinionService {
                 });
 
 
-        return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
+        return mapOpinionToOpinionServiceViewModel(opinion);
 
+    }
+
+    public Opinion mapOpinionServiceModelToOpinion(OpinionServiceModel opinionServiceModel) {
+        return this.modelMapper.map(opinionServiceModel, Opinion.class);
     }
 
     @Override
     @Transactional
     public OpinionServiceViewModel updateOpinion(OpinionServiceModel opinionServiceModel) {
 
-        Opinion opinion = this.modelMapper.map(opinionServiceModel, Opinion.class);
+        Opinion opinion = mapOpinionServiceModelToOpinion(opinionServiceModel);
 
         this.opinionRepository.findById(opinionServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Opinion with id '%d' not found .", opinionServiceModel.getId())));
 
 
-        return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
+        return mapOpinionToOpinionServiceViewModel(opinion);
 
+    }
+
+    public OpinionServiceViewModel mapOpinionToOpinionServiceViewModel(Opinion opinion) {
+        return this.modelMapper.map(this.opinionRepository.saveAndFlush(opinion), OpinionServiceViewModel.class);
     }
 
     @Override

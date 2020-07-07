@@ -31,7 +31,7 @@ public class MediaServiceImpl implements MediaService {
     @Override
     public MediaServiceViewModel createMedia(MediaServiceModel mediaServiceModel) {
 
-        Media media = this.modelMapper.map(mediaServiceModel, Media.class);
+        Media media = mapMediaServiceModelToMedia(mediaServiceModel);
 
         this.mediaRepository.findByDocumentPath(mediaServiceModel.getDocumentPath()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Media with document path '%s' already exists.", mediaServiceModel.getDocumentPath()));
@@ -45,20 +45,28 @@ public class MediaServiceImpl implements MediaService {
             throw new InvalidEntityException(String.format("Media with video path '%s' already exists.", mediaServiceModel.getVideoPath()));
         });
 
-        return this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceViewModel.class);
+        return mapMediaToMediaServiceViewModel(media);
 
+    }
+
+    private MediaServiceViewModel mapMediaToMediaServiceViewModel(Media media) {
+        return this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceViewModel.class);
+    }
+
+    private Media mapMediaServiceModelToMedia(MediaServiceModel mediaServiceModel) {
+        return this.modelMapper.map(mediaServiceModel, Media.class);
     }
 
     @Override
     @Transactional
     public MediaServiceViewModel updateMedia(MediaServiceModel mediaServiceModel) {
 
-        Media media = this.modelMapper.map(mediaServiceModel, Media.class);
+        Media media = mapMediaServiceModelToMedia(mediaServiceModel);
 
         this.mediaRepository.findById(mediaServiceModel.getId())
                 .orElseThrow(() -> new InvalidEntityException(String.format("Media with id '%d' not found .", mediaServiceModel.getId())));
 
-        return this.modelMapper.map(this.mediaRepository.saveAndFlush(media), MediaServiceViewModel.class);
+        return mapMediaToMediaServiceViewModel(media);
 
     }
 
