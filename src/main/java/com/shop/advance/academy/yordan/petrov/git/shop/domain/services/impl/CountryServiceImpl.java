@@ -86,6 +86,7 @@ public class CountryServiceImpl implements CountryService {
     private Country mapCountryServiceModelToCountry(CountryServiceModel countryServiceModel) {
         return this.modelMapper.map(countryServiceModel, Country.class);
     }
+
     private CountryServiceViewModel mapCountryToCountryServiceViewModel(Country country) {
         return this.modelMapper.map(country, CountryServiceViewModel.class);
     }

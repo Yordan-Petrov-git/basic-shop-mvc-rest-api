@@ -4,12 +4,14 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPairService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -22,7 +24,9 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -33,23 +37,27 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
+    private final ItemCountPairService itemCountPairService;
 
     @Autowired
     public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ModelMapper modelMapper,
-                                   UserService userService, UserRepository userRepository, ItemRepository itemRepository) {
+                                   UserService userService, UserRepository userRepository, ItemRepository itemRepository,
+                                   ItemCountPairService itemCountPairService) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
+        this.itemCountPairService = itemCountPairService;
     }
 
     @Override
     public ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
         ShoppingCart shoppingCart = mapShoppingCartServiceModelToShoppingCartViewModel(shoppingCartServiceModel);
         setShoppingCartToUser(shoppingCartServiceModel, shoppingCart);
-        Item item = findItemById(getItemCountPairId(shoppingCartServiceModel));
-        shoppingCart.setTotalItemsPrice(calculateTotalPrice(getItemCount(shoppingCartServiceModel), item.getPrice()));
+        shoppingCart.setItemCountPair(createItemCountPair(shoppingCartServiceModel.getItemCountPair()));
+        List<ItemCountPair> itemCountPairs = shoppingCart.getItemCountPair();
+        shoppingCart.setTotalItemsPrice(getTotalForAllItemCountPair(itemCountPairs));
         shoppingCart.setCreated(LocalDateTime.now());
         shoppingCart.setModified(LocalDateTime.now());
         return mapShoppingCartToShoppingCartServiceViewModel(saveShoppingCart(shoppingCart));
@@ -150,13 +158,66 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
     }
 
-    public Item findItemById(Long itemId) {
-        return itemRepository.findById(itemId)
-                .orElseThrow(() -> new InvalidEntityException(String.format("No items with id %s was found ", itemId)));
-    }
-
     public ShoppingCart saveShoppingCart(ShoppingCart shoppingCart) {
         return this.shoppingCartRepository.saveAndFlush(shoppingCart);
     }
 
+
+    public List<Long> getListOfShoppingCrtItemsPairItemId(ShoppingCartServiceModel shoppingCartServiceModel) {
+        return shoppingCartServiceModel.getItemCountPair()
+                .stream()
+                .map(s -> s.getItem().getId())
+                .collect(Collectors.toList());
+    }
+
+    public List<Item> getListOfShoppingCrtItemsPairItem(List<Long> itemIds) {
+        List<Item> itemList = new ArrayList<>();
+        itemIds.forEach(id -> {
+            itemList.add(itemRepository
+                    .findById(id)
+                    .orElseThrow(
+                            () -> new InvalidEntityException("No items with id's found")
+                    ));
+        });
+        return itemList;
+    }
+
+    public BigDecimal getTotalForAllItemCountPair(List<ItemCountPair> itemCountPairList) {
+        BigDecimal totalPerShoppingCart = new BigDecimal(0);
+
+        List<BigDecimal> res = new ArrayList<>();
+
+        itemCountPairList.forEach(icp -> {
+            Integer itemCount = icp.getItemCount();
+            BigDecimal itemPrice = icp.getItem().getPrice();
+            BigDecimal totalSumPerItem = calculateTotalPrice(itemCount, itemPrice);
+            res.add(totalSumPerItem);
+        });
+
+        for (BigDecimal re : res) {
+            totalPerShoppingCart = totalPerShoppingCart.add(re);
+        }
+
+        return totalPerShoppingCart;
+    }
+
+    public List<ItemCountPair> createItemCountPair(
+            List<ItemCountPairServiceModel> itemCountPairServiceModelList) {
+
+        List<ItemCountPair> pairList = new ArrayList<>();
+        for (ItemCountPairServiceModel itemCountPairServiceModel : itemCountPairServiceModelList) {
+            ItemCountPair itemCountPair = new ItemCountPair();
+            Long itemId = itemCountPairServiceModel
+                    .getItem()
+                    .getId();
+            Item item = itemRepository
+                    .findById(itemId)
+                    .orElseThrow();
+            Integer itemCount = itemCountPairServiceModel.getItemCount();
+            itemCountPair.setItem(item);
+            itemCountPair.setItemCount(itemCount);
+            pairList.add(itemCountPair);
+        }
+        return pairList;
+    }
 }
