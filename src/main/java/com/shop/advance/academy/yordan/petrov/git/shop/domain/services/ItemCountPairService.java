@@ -9,15 +9,15 @@ import java.util.List;
 @Service
 public interface ItemCountPairService {
 
-    ItemCountPairServiceViewModel createShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel);
+    ItemCountPairServiceViewModel createItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel);
 
-    ItemCountPairServiceViewModel updateShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel);
+    ItemCountPairServiceViewModel updateItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel);
 
-    ItemCountPairServiceViewModel getShoppingCartItemById(long id);
+    ItemCountPairServiceViewModel getItemCountPairById(long id);
 
-    List<ItemCountPairServiceViewModel> getAllShoppingCartItems();
+    List<ItemCountPairServiceViewModel> getAllItemCountPairs();
 
-    ItemCountPairServiceViewModel deleteShoppingCartItemById(long id);
+    ItemCountPairServiceViewModel deleteItemCountPairById(long id);
 
 
 }

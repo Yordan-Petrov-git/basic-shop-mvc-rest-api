@@ -27,34 +27,34 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
     }
 
     @Override
-    public ItemCountPairServiceViewModel createShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel) {
+    public ItemCountPairServiceViewModel createItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {
         ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
         this.itemCountPairRepository.saveAndFlush(itemCountPair);
         return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
     @Override
-    public ItemCountPairServiceViewModel updateShoppingCartItem(ItemCountPairServiceModel itemCountPairServiceModel) {
+    public ItemCountPairServiceViewModel updateItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {
         ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
         this.itemCountPairRepository.saveAndFlush(itemCountPair);
         return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
     @Override
-    public ItemCountPairServiceViewModel getShoppingCartItemById(long id) {
+    public ItemCountPairServiceViewModel getItemCountPairById(long id) {
         return mapItemCountPairToItemCountPairServiceViewModel(findShoppingCartById(id));
     }
 
     @Override
-    public List<ItemCountPairServiceViewModel> getAllShoppingCartItems() {
+    public List<ItemCountPairServiceViewModel> getAllItemCountPairs() {
         validateIfFoundAny();
         List<ItemCountPair> item = getItemCountPairsList();
         return mapItemCountPairListToItemCountPairServiceViewModelList(item);
     }
 
     @Override
-    public ItemCountPairServiceViewModel deleteShoppingCartItemById(long id) {
-        ItemCountPairServiceViewModel deleteShoppingCartItem = this.getShoppingCartItemById(id);
+    public ItemCountPairServiceViewModel deleteItemCountPairById(long id) {
+        ItemCountPairServiceViewModel deleteShoppingCartItem = this.getItemCountPairById(id);
         this.itemCountPairRepository.deleteById(id);
         return deleteShoppingCartItem;
     }
