@@ -25,15 +25,13 @@ import java.time.Instant;
 @Service
 public class PurchasingServiceImpl implements PurchasingService {
 
-    private final OrderService orderService;
     private final OrderRepository orderRepository;
     private final ModelMapper modelMapper;
     private final TransactionService transactionService;
 
     @Autowired
-    public PurchasingServiceImpl(OrderService orderService, OrderRepository orderRepository
-            , ModelMapper modelMapper, TransactionService transactionService) {
-        this.orderService = orderService;
+    public PurchasingServiceImpl( OrderRepository orderRepository, ModelMapper modelMapper,
+                                  TransactionService transactionService) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.transactionService = transactionService;
@@ -42,10 +40,10 @@ public class PurchasingServiceImpl implements PurchasingService {
     @Override
     public TransactionServiceViewModel payByCard(TransactionServiceModel transactionServiceModel) {
         Order order = findOrderFromTransactionServiceModelById(transactionServiceModel);
-        //Add way to block purchase if order is canceled
         isOrderStatusCanceled(order.getOrderStatus());
         isOrderStatusFinished(order.getOrderStatus());
-//        updateOrderForPurchase(order);//This breaks the payment
+        isOrderStatusProccesing(order.getOrderStatus());
+        updateOrderForPurchase(order);
         transactionServiceModel.setAmount(order.getTotalPrice());
         transactionServiceModel.setFee(BigDecimal.valueOf(5.00));
         transactionServiceModel.setDescription("Item purchase");
@@ -61,14 +59,13 @@ public class PurchasingServiceImpl implements PurchasingService {
     public TransactionServiceViewModel refundCardPurchase(TransactionServiceModel transactionServiceModel) {
         TransactionServiceModel transactionServiceForRefund = getTransactionServiceModelForRefundTransaction(transactionServiceModel);
         refundCardPurchaseValidationAndUpdates(transactionServiceModel, transactionServiceForRefund);
-        // TODO FIX here order price is set to null it should not change
         return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceForRefund);
     }
 
     private void refundCardPurchaseValidationAndUpdates(TransactionServiceModel transactionServiceModel, TransactionServiceModel transactionServiceForRefund) {
         isTransactionStatusRefunded(transactionServiceForRefund.getTransactionStatus());
         isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(transactionServiceForRefund.getDateCompleted());
-        //updateOrderForRefund(findOrderFromTransactionServiceModelById(transactionServiceModel));
+        updateOrderForRefund(findOrderFromTransactionServiceModelById(transactionServiceModel));
         transactionServiceForRefund.setTransactionStatus(TransactionStatus.REFUNDED);
         transactionServiceForRefund.setDescription("Refunded for item");
         transactionServiceForRefund.setDateUpdated(Instant.now());
@@ -118,6 +115,14 @@ public class PurchasingServiceImpl implements PurchasingService {
         }
     }
 
+    public void isOrderStatusProccesing(OrderStatus orderStatus) {
+        boolean isOrderNonCanceled = false;
+        isOrderNonCanceled = orderStatus == OrderStatus.PROCESSING;
+        if (isOrderNonCanceled) {
+            throw new IllegalCardTransactionOperation("The Order is proccesing");
+        }
+    }
+
     public Order findOrderFromTransactionServiceModelById(TransactionServiceModel transaction) {
         return orderRepository.findById(transaction.getOrder().getId())
                 .orElseThrow(() ->
@@ -125,23 +130,13 @@ public class PurchasingServiceImpl implements PurchasingService {
     }
 
     public void updateOrderForRefund(Order order) {
-        //TODO
-        // should be GET SET SAVE AND FLUSH
         order.setOrderStatus(OrderStatus.CANCELED);
-        order.setShipmentType(ShipmentType.NONE);
-        order.setPaymentType(PaymentType.BY_CARD);
-        updateOrder(order);
     }
 
     public void updateOrderForPurchase(Order order) {
-        //TODO
-        // should be GET SET SAVE AND FLUSH
+        order.setShipmentType(ShipmentType.NONE);
+        order.setPaymentType(PaymentType.BY_CARD);
         order.setOrderStatus(OrderStatus.PROCESSING);
-        updateOrder(order);
-    }
-
-    public void updateOrder(Order order) {
-        orderService.updateOrder(mapOrderToOrderServiceModel(order));
     }
 
     public OrderServiceModel mapOrderToOrderServiceModel(Order order) {
