@@ -69,12 +69,10 @@ public class Seller extends BaseEntity {
         return Objects.hash(super.hashCode(), name);
     }
 
-
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Seller{");
         sb.append("name='").append(name).append('\'');
-        sb.append(", id=").append(id);
         sb.append('}');
         return sb.toString();
     }

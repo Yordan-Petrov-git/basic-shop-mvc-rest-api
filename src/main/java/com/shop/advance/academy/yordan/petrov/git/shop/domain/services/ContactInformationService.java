@@ -18,6 +18,4 @@ public interface ContactInformationService {
     List<ContactInformationServiceViewModel> getAllContactInformations();
 
     ContactInformationServiceViewModel deleteContactInformationById(long id);
-
-
 }

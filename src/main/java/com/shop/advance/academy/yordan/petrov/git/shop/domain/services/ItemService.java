@@ -18,6 +18,4 @@ public interface ItemService {
     List<ItemServiceViewModel> getAllItems();
 
     ItemServiceViewModel deleteItemById(long id);
-
-
 }

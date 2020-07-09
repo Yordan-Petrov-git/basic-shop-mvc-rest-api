@@ -20,5 +20,4 @@ public interface CurrencyService {
     CurrencyServiceViewModel deleteCurrencyById(long id);
 
     CurrencyServiceViewModel getCurrencyByName(String name);
-
 }

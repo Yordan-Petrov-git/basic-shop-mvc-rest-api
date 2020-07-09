@@ -18,6 +18,4 @@ public interface OrderService {
     List<OrderServiceViewModel> getAllOrders();
 
     OrderServiceViewModel deleteOrderById(long id);
-
-
 }

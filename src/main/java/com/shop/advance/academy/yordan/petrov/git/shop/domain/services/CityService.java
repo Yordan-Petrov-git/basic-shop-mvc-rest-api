@@ -21,5 +21,4 @@ public interface CityService {
     CityServiceViewModel deleteCityById(long id);
 
     CityServiceViewModel getCityByName(String name);
-
 }

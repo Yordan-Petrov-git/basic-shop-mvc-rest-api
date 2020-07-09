@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
@@ -27,56 +27,37 @@ public class OpinionController {
 
     @PostMapping()
     public ResponseEntity<OpinionServiceViewModel> createOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
-
         OpinionServiceViewModel opinionServiceViewModel = opinionService.createOpinion(opinionServiceModel);
-
         log.info("Opinion  created : {}", opinionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(opinionServiceViewModel);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<OpinionServiceViewModel> updateOpinion(@PathVariable("id") Long id, @RequestBody OpinionServiceModel opinionServiceModel) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.updateOpinion(opinionServiceModel);
-
         log.info("Opinion  updated : {}", opinionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(opinionServiceViewModel);
-
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<OpinionServiceViewModel> getOpinion(@PathVariable("id") final Long id) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.getOpinionById(id);
-
         log.info("Opinion  FOUND : {}", opinionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(opinionServiceViewModel);
-
     }
 
     @GetMapping()
     public ResponseEntity<List<OpinionServiceViewModel>> getOpinions() {
-
         List<OpinionServiceViewModel> opinionServiceViewModelList = opinionService.getAllOpinions();
-
         log.info("Opinions Found: {} ", opinionServiceViewModelList);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(opinionServiceViewModelList);
-
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<OpinionServiceViewModel> deleteOpinion(@PathVariable("id") Long id) {
-
-
         OpinionServiceViewModel opinionServiceViewModel = opinionService.deleteOpinionById(id);
-
         log.info("Opinion  deleted : {}", opinionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(opinionServiceViewModel);
-
-
     }
 }

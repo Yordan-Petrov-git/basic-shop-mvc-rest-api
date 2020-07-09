@@ -18,6 +18,4 @@ public interface ItemCountPairService {
     List<ItemCountPairServiceViewModel> getAllItemCountPairs();
 
     ItemCountPairServiceViewModel deleteItemCountPairById(long id);
-
-
 }

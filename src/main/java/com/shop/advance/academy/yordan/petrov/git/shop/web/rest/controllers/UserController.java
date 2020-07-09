@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;

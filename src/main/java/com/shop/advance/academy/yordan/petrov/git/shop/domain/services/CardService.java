@@ -18,6 +18,4 @@ public interface CardService {
     List<CardServiceViewModel> getAllCards();
 
     CardServiceViewModel deleteCardById(long id);
-
-
 }

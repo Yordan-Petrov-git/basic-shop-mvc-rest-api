@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
@@ -23,22 +23,16 @@ public class PurchasingByCardController {
 
     @PostMapping()
     public ResponseEntity<TransactionServiceViewModel> creatPurchase(@RequestBody TransactionServiceModel transactionServiceModel) {
-
         TransactionServiceViewModel transactionServiceViewModel = purchasingService.payByCard(transactionServiceModel);
-
         log.info("Purchased : {}", transactionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(transactionServiceViewModel);
 
     }
 
     @GetMapping()
     public ResponseEntity<TransactionServiceViewModel> refundPurchase(@RequestBody TransactionServiceModel transactionServiceModel) {
-
         TransactionServiceViewModel transactionServiceViewModel = purchasingService.refundCardPurchase(transactionServiceModel);
-
         log.info("Refunded : {}", transactionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(transactionServiceViewModel);
 
     }

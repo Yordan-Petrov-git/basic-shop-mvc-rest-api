@@ -84,7 +84,6 @@ public class UserServiceImpl implements UserService {
         return mapUserToUserServiceViewModel(this.userRepository.saveAndFlush(user));
     }
 
-
     @Override
     public UserServiceViewModel getUserById(long id) {
         return mapUserToUserServiceViewModel(findUserById(id));
@@ -103,7 +102,6 @@ public class UserServiceImpl implements UserService {
         validateIfUserRoleAdminPresentForDeletion(id);
         return deletedUser;
     }
-
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {

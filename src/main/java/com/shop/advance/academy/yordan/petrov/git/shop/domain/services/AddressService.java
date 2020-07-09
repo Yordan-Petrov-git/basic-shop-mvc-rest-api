@@ -18,6 +18,4 @@ public interface AddressService {
     List<AddressServiceViewModel> getAllAddresses();
 
     AddressServiceViewModel deleteAddressById(long id);
-
-
 }

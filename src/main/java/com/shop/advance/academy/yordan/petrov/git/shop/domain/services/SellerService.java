@@ -18,6 +18,4 @@ public interface SellerService {
     List<SellerServiceViewModel> getAllSellers();
 
     SellerServiceViewModel deleteSellerById(long id);
-
-
 }

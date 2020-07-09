@@ -26,7 +26,6 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -162,25 +161,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return this.shoppingCartRepository.saveAndFlush(shoppingCart);
     }
 
-
-    public List<Long> getListOfShoppingCrtItemsPairItemId(ShoppingCartServiceModel shoppingCartServiceModel) {
-        return shoppingCartServiceModel.getItemCountPair()
-                .stream()
-                .map(s -> s.getItem().getId())
-                .collect(Collectors.toList());
-    }
-
-    public List<Item> getListOfShoppingCrtItemsPairItem(List<Long> itemIds) {
-        List<Item> itemList = new ArrayList<>();
-        itemIds.forEach(id -> {
-            itemList.add(itemRepository
-                    .findById(id)
-                    .orElseThrow(
-                            () -> new InvalidEntityException("No items with id's found")
-                    ));
-        });
-        return itemList;
-    }
 
     public BigDecimal getTotalForAllItemCountPair(List<ItemCountPair> itemCountPairList) {
         BigDecimal totalPerShoppingCart = new BigDecimal(0);

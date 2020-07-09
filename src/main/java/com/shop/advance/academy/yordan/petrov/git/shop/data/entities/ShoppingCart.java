@@ -86,19 +86,24 @@ public class ShoppingCart extends BaseEntity {
         if (!(o instanceof ShoppingCart)) return false;
         if (!super.equals(o)) return false;
         ShoppingCart that = (ShoppingCart) o;
-        return Objects.equals(user, that.user);
+        return Objects.equals(created, that.created) &&
+                Objects.equals(modified, that.modified) &&
+                Objects.equals(totalItemsPrice, that.totalItemsPrice);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), user);
+        return Objects.hash(super.hashCode(), created, modified, totalItemsPrice);
     }
 
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ShoppingCart{");
-        sb.append("id=").append(id);
+        sb.append("created=").append(created);
+        sb.append(", modified=").append(modified);
+        sb.append(", totalItemsPrice=").append(totalItemsPrice);
         sb.append('}');
         return sb.toString();
     }
 }
+
