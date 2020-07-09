@@ -9,6 +9,8 @@ import javax.validation.constraints.Pattern;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -25,6 +27,7 @@ public class Card extends BaseEntity {
     private BigDecimal balance;
     private Currency currency;
     private boolean isActive = true;
+    private List<User> users = new ArrayList<>();
 
 
     public Card() {
@@ -130,6 +133,20 @@ public class Card extends BaseEntity {
 
     public void setActive(boolean active) {
         isActive = active;
+    }
+
+    @OneToMany(targetEntity = User.class,
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH})
+    @JoinTable(name = "cards_user",
+            joinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+    public List<User> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 
     @Override

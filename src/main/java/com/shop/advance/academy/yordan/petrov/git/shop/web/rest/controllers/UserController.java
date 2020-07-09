@@ -66,6 +66,20 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    @GetMapping("/serach/user/username/{username}")
+    public ResponseEntity<UserServiceViewModel> getUserByUsername(@PathVariable String username) {
+        UserServiceViewModel userServiceViewModel = userService.getUserByUsername(username);
+        log.info("User  found : {}", userServiceViewModel);
+        return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
+    }
+
+    @GetMapping("/serach/user/username/like/{username}")
+    public ResponseEntity<List<UserServiceViewModel>> getUserByUsernameLike(@PathVariable String username) {
+        List<UserServiceViewModel> userServiceViewModel = userService.getUserByUsernameLike(username);
+        log.info("User  found : {}", userServiceViewModel);
+        return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
         UserServiceViewModel userServiceViewModel = userService.deleteUserById(id);

@@ -30,10 +30,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/", "/users/register", "/users/login").anonymous()
                 .antMatchers(HttpMethod.POST, "/api/users/register").permitAll();
 //                .antMatchers(HttpMethod.POST, "/**")
-        //               .hasAnyAuthority("USER", "ADMIN")
+        //        .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
 //                .antMatchers(HttpMethod.PUT, "/**")
-//                .hasAnyAuthority("USER", "ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/**").hasAuthority("ADMIN")
+//                .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
+//                .antMatchers(HttpMethod.DELETE, "/**").hasAuthority("ROLE_ADMIN")
 //                .antMatchers("/**").permitAll()
 //                .anyRequest().authenticated();
 //                .and()

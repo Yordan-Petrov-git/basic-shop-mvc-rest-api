@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface UserService extends UserDetailsService {
+public interface UserService extends UserDetailsService, UserSearchService {
 
     UserServiceViewModel createUser(UserServiceModel userServiceModel);
 

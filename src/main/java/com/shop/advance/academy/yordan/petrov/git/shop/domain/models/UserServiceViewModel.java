@@ -19,7 +19,6 @@ public class UserServiceViewModel {
     private LocalDateTime created;
     private String firstName;
     private String lastName;
-    private Set<AddressServiceViewModel> addresses = new HashSet<>();
     private Set<ContactInformationServiceViewModel> contactInformation = new HashSet<>();
 
 
@@ -74,14 +73,6 @@ public class UserServiceViewModel {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-    public Set<AddressServiceViewModel> getAddresses() {
-        return this.addresses;
-    }
-
-    public void setAddresses(Set<AddressServiceViewModel> addresses) {
-        this.addresses = addresses;
     }
 
     public Set<ContactInformationServiceViewModel> getContactInformation() {

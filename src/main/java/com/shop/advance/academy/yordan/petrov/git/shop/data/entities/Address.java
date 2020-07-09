@@ -1,6 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -10,6 +12,7 @@ public class Address extends BaseEntity {
     private String streetNumber;
     private String streetName;
     private City city;
+    private List<User> users = new ArrayList<>();
 
     public Address() {
     }
@@ -45,6 +48,24 @@ public class Address extends BaseEntity {
         this.city = city;
     }
 
+
+    @ManyToMany(targetEntity = User.class,
+            fetch = FetchType.EAGER,
+            cascade = {CascadeType.DETACH})
+    @JoinTable(
+            name = "addres_users",
+            joinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id")
+    )
+    public List<User> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -54,6 +75,7 @@ public class Address extends BaseEntity {
         return Objects.equals(streetNumber, address.streetNumber) &&
                 Objects.equals(streetName, address.streetName);
     }
+
 
     @Override
     public int hashCode() {

@@ -55,8 +55,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         ShoppingCart shoppingCart = mapShoppingCartServiceModelToShoppingCartViewModel(shoppingCartServiceModel);
         setShoppingCartToUser(shoppingCartServiceModel, shoppingCart);
         shoppingCart.setItemCountPair(createItemCountPair(shoppingCartServiceModel.getItemCountPair()));
-        List<ItemCountPair> itemCountPairs = shoppingCart.getItemCountPair();
-        shoppingCart.setTotalItemsPrice(getTotalForAllItemCountPair(itemCountPairs));
+        shoppingCart.setTotalItemsPrice(getTotalForAllItemCountPair(shoppingCart.getItemCountPair()));
         shoppingCart.setCreated(LocalDateTime.now());
         shoppingCart.setModified(LocalDateTime.now());
         return mapShoppingCartToShoppingCartServiceViewModel(saveShoppingCart(shoppingCart));
@@ -109,7 +108,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 new EntityNotFoundException(String.format("Shopping cart with ID %s not found.", id)));
     }
 
-
     public List<ShoppingCart> findAllShoppingCarts() {
         return shoppingCartRepository.findAll();
     }
@@ -124,22 +122,6 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Shopping carts were found"));
-    }
-
-    public Integer getItemCount(ShoppingCartServiceModel shoppingCartServiceModel) {
-        return shoppingCartServiceModel.getItemCountPair()
-                .stream()
-                .map(ItemCountPairServiceModel::getItemCount)
-                .findFirst()
-                .orElseThrow(() -> new InvalidEntityException("No item counts were found "));
-    }
-
-    public Long getItemCountPairId(ShoppingCartServiceModel shoppingCartServiceModel) {
-        return shoppingCartServiceModel.getItemCountPair()
-                .stream()
-                .map(e -> e.getItem().getId())
-                .findFirst()
-                .orElseThrow(() -> new InvalidEntityException("No items were found "));
     }
 
     public void setShoppingCartToUser(ShoppingCartServiceModel shoppingCartServiceModel, ShoppingCart shoppingCart) {
@@ -181,6 +163,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return totalPerShoppingCart;
     }
 
+    @Transactional
     public List<ItemCountPair> createItemCountPair(
             List<ItemCountPairServiceModel> itemCountPairServiceModelList) {
 

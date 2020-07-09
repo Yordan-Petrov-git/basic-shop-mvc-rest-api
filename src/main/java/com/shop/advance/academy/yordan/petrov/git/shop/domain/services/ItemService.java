@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public interface ItemService {
+public interface ItemService extends ItemSearchService {
 
     ItemServiceViewModel createItem(ItemServiceModel Item);
 

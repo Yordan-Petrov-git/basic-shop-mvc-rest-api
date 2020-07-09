@@ -38,14 +38,28 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ItemServiceViewModel> getItem(@PathVariable("id") final Long id) {
+    public ResponseEntity<ItemServiceViewModel> getItemById(@PathVariable("id") final Long id) {
         ItemServiceViewModel itemServiceViewModel = itemService.getItemById(id);
         log.info("Item  found : {}", itemServiceViewModel);
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModel);
     }
 
+    @GetMapping("/serach/item/title/{title}")
+    public ResponseEntity<ItemServiceViewModel> getItemByTitle(@PathVariable String title) {
+        ItemServiceViewModel itemServiceViewModel = itemService.getItemByTitle(title);
+        log.info("Item  found : {}", itemServiceViewModel);
+        return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModel);
+    }
+
+    @GetMapping("/serach/item/title/like/{title}")
+    public ResponseEntity<List<ItemServiceViewModel>> getItemByTitleLike(@PathVariable String title) {
+        List<ItemServiceViewModel> itemServiceViewModels = itemService.getItemByTitleLike(title);
+        log.info("Item Found: {} ", itemServiceViewModels);
+        return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModels);
+    }
+
     @GetMapping()
-    public ResponseEntity<List<ItemServiceViewModel>> getItems() {
+    public ResponseEntity<List<ItemServiceViewModel>> getAllItems() {
         List<ItemServiceViewModel> itemServiceViewModels = itemService.getAllItems();
         log.info("Item Found: {} ", itemServiceViewModels);
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModels);
