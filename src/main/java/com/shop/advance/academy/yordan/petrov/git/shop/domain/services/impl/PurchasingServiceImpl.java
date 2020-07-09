@@ -41,7 +41,7 @@ public class PurchasingServiceImpl implements PurchasingService {
         Order order = findOrderFromTransactionServiceModelById(transactionServiceModel);
         isOrderStatusCanceled(order.getOrderStatus());
         isOrderStatusFinished(order.getOrderStatus());
-        isOrderStatusProccesing(order.getOrderStatus());
+        //isOrderStatusProccesing(order.getOrderStatus());
         updateOrderForPurchase(order);
         transactionServiceModel.setAmount(order.getTotalPrice());
         transactionServiceModel.setFee(BigDecimal.valueOf(5.00));
