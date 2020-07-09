@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
@@ -29,69 +29,48 @@ public class CardTransactionController {
 
     @PostMapping()
     public ResponseEntity<TransactionServiceViewModel> createTransaction(@RequestBody TransactionServiceModel transactionServiceModel) {
-
         TransactionServiceViewModel transactionServiceViewModel = transactionService.createTransaction(transactionServiceModel);
-
         URI location = MvcUriComponentsBuilder.fromMethodName(CardTransactionController.class, "createTransaction", TransactionServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(transactionServiceViewModel.getId()).toUri();
-
         log.info("Transaction created: {}", location);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(transactionServiceViewModel);
     }
 
     @PutMapping("{id}")
     public ResponseEntity<TransactionServiceViewModel> updateTransaction(@PathVariable("id") Long id, @RequestBody TransactionServiceModel transactionServiceModel) {
-
         TransactionServiceViewModel transactionServiceViewModel = transactionService.updateTransaction(transactionServiceModel);
-
         log.info("Transaction updated: {}", transactionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(transactionServiceViewModel);
     }
 
     @PatchMapping("{id}")
     public ResponseEntity<TransactionServiceViewModel> partialUpdateTransaction(@PathVariable("id") Long id, @RequestBody TransactionServiceModel transactionServiceModel) {
-
         TransactionServiceViewModel transactionServiceViewModel = transactionService.updateTransaction(transactionServiceModel);
-
         log.info("Transaction updated: {} , ", transactionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(transactionServiceViewModel);
     }
 
 
     @GetMapping("{id}")
     public ResponseEntity<TransactionServiceViewModel> getTransaction(@PathVariable("id") final Long id) {
-
         TransactionServiceViewModel transactionServiceViewModel = transactionService.getTransactionById(id);
-
         log.info("Transaction Found: {} ", transactionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(transactionServiceViewModel);
-
     }
 
     @GetMapping()
     public ResponseEntity<List<TransactionServiceViewModel>> getTransactions() {
-
         List<TransactionServiceViewModel> transactionServiceViewModel = transactionService.getAllTransactions();
-
         log.info("Transactions Found: {} ", transactionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(transactionServiceViewModel);
     }
 
 
     @DeleteMapping("/{id}")
     public ResponseEntity<TransactionServiceViewModel> deleteTransaction(@PathVariable("id") Long id) {
-
         TransactionServiceViewModel transactionServiceViewModel = transactionService.deleteTransactionById(id);
-
         log.info("Transaction deleted: {} ", transactionServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(transactionServiceViewModel);
-
     }
 
 

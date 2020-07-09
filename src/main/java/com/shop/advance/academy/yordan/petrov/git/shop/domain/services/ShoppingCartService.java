@@ -18,6 +18,4 @@ public interface ShoppingCartService {
     List<ShoppingCartServiceViewModel> getAllShoppingCarts();
 
     ShoppingCartServiceViewModel deleteShoppingCartById(long id);
-
-
 }

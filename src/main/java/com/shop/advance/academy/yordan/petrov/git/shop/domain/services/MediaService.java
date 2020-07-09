@@ -18,6 +18,4 @@ public interface MediaService {
     List<MediaServiceViewModel> getAllMedias();
 
     MediaServiceViewModel deleteMediaById(long id);
-
-
 }

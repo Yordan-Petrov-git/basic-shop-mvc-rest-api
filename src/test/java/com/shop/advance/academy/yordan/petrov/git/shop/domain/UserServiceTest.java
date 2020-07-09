@@ -41,15 +41,18 @@ class UserServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
+
     @Test
     public void testUserServiceReturnsAllUsers() {
         List<User> usersToAdd = new ArrayList<>();
+        usersToAdd.add(new User());
+        usersToAdd.add(new User());
         usersToAdd.add(new User());
 
         Mockito.when(userRepository.findAll()).thenReturn(usersToAdd);
         List<UserServiceViewModel> usersFetchedFromRepo = userService.getAllUsers();
 
-        assertEquals(1, usersFetchedFromRepo.size());
+        assertEquals(3, usersFetchedFromRepo.size());
     }
 
     @Test
@@ -75,6 +78,7 @@ class UserServiceTest {
 
         assertEquals(userServiceModel, userService.getUserById(5L));
     }
+
 
     @Test
     public void testUserServiceFromSpringSecurityLoadUserByUsername() {

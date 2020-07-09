@@ -13,6 +13,4 @@ public interface RoleService {
     Set<RoleServiceModel> findAllRoles();
 
     RoleServiceModel findByAuthority(String role);
-
-
 }

@@ -18,6 +18,4 @@ public interface OpinionService {
     List<OpinionServiceViewModel> getAllOpinions();
 
     OpinionServiceViewModel deleteOpinionById(long id);
-
-
 }

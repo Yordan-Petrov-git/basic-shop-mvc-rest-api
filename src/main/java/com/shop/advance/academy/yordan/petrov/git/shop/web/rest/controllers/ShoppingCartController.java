@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
@@ -29,58 +29,40 @@ public class ShoppingCartController {
 
     @PostMapping()
     public ResponseEntity<ShoppingCartServiceViewModel> createShoppingCart(@RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
-
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
-
         log.info("Shopping Cart created: {}", shoppingCartServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCartServiceViewModel);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ShoppingCartServiceViewModel> updateShoppingCart(@PathVariable("id") Long id, @RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
-
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.updateShoppingCart(shoppingCartServiceModel);
-
-
         URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateShoppingCart", UserServiceViewModel.class)
-
                 .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
-
         log.info("Shopping cart updated: {} {}", shoppingCartServiceViewModel, location);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(shoppingCartServiceViewModel);
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<ShoppingCartServiceViewModel> getShoppingCart(@PathVariable("id") final Long id) {
-
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.getShoppingCartById(id);
-
         log.info("Shopping cart found: {}", shoppingCartServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(shoppingCartServiceViewModel);
     }
 
     @GetMapping()
     public ResponseEntity<List<ShoppingCartServiceViewModel>> getShoppingCarts() {
-
         List<ShoppingCartServiceViewModel> shoppingCartServiceViewModels = shoppingCartService.getAllShoppingCarts();
-
         log.info("Shopping Carts Found: {} ", shoppingCartServiceViewModels);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(shoppingCartServiceViewModels);
 
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ShoppingCartServiceViewModel> deleteShoppingCart(@PathVariable("id") Long id) {
-
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.deleteShoppingCartById(id);
-
         log.info("Shopping Cart deleted: {}", shoppingCartServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(shoppingCartServiceViewModel);
     }
 

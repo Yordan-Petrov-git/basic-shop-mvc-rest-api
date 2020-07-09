@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.MediaServiceModel;
@@ -27,59 +27,37 @@ public class MediaController {
 
     @PostMapping()
     public ResponseEntity<MediaServiceViewModel> createMedia(@RequestBody MediaServiceModel mediaServiceModel) {
-
-
         MediaServiceViewModel mediaServiceViewModel = mediaService.createMedia(mediaServiceModel);
-
         log.info("Media  created : {}", mediaServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(mediaServiceViewModel);
-
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<MediaServiceViewModel> updateMedia(@PathVariable("id") Long id, @RequestBody MediaServiceModel mediaServiceModel) {
-
         MediaServiceViewModel mediaServiceViewModel = mediaService.updateMedia(mediaServiceModel);
-
         log.info("Media  UPDATED : {}", mediaServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(mediaServiceViewModel);
-
-
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<MediaServiceViewModel> getMedia(@PathVariable("id") final Long id) {
-
         MediaServiceViewModel mediaServiceViewModel = mediaService.getMediaById(id);
-
         log.info("Media  FOUND : {}", mediaServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(mediaServiceViewModel);
-
     }
 
     @GetMapping()
     public ResponseEntity<List<MediaServiceViewModel>> getMedias() {
-
         List<MediaServiceViewModel> mediaServiceViewModels = mediaService.getAllMedias();
-
         log.info("Medias Found: {} ", mediaServiceViewModels);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(mediaServiceViewModels);
-
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<MediaServiceViewModel> deleteMedia(@PathVariable("id") Long id) {
-
         MediaServiceViewModel mediaServiceViewModel = mediaService.deleteMediaById(id);
-
         log.info("Media deleted : {}", mediaServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(mediaServiceViewModel);
-
     }
 }

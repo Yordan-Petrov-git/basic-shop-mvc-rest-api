@@ -1,5 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import java.util.Objects;
+
 public class ItemCountPairServiceModel {
 
     private ItemServiceModel item;
@@ -25,5 +27,24 @@ public class ItemCountPairServiceModel {
         this.itemCount = itemCount;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ItemCountPairServiceModel)) return false;
+        ItemCountPairServiceModel that = (ItemCountPairServiceModel) o;
+        return Objects.equals(itemCount, that.itemCount);
+    }
 
+    @Override
+    public int hashCode() {
+        return Objects.hash(itemCount);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ItemCountPairServiceModel{");
+        sb.append("itemCount=").append(itemCount);
+        sb.append('}');
+        return sb.toString();
+    }
 }

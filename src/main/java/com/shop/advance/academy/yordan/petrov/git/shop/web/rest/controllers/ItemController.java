@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
@@ -23,61 +23,39 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-
     @PostMapping()
     public ResponseEntity<ItemServiceViewModel> createItem(@RequestBody ItemServiceModel itemServiceModel) {
-
         ItemServiceViewModel itemServiceViewModel = itemService.createItem(itemServiceModel);
-
         log.info("Item  created : {}", itemServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(itemServiceViewModel);
-
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<ItemServiceViewModel> updateItem(@PathVariable("id") Long id, @RequestBody ItemServiceModel itemServiceModel) {
-
         ItemServiceViewModel itemServiceViewModel = itemService.updateItem(itemServiceModel);
-
         log.info("Item  UPDATED : {}", itemServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(itemServiceViewModel);
-
-
     }
-
 
     @GetMapping("/{id}")
     public ResponseEntity<ItemServiceViewModel> getItem(@PathVariable("id") final Long id) {
-
         ItemServiceViewModel itemServiceViewModel = itemService.getItemById(id);
-
         log.info("Item  found : {}", itemServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModel);
-
     }
 
     @GetMapping()
     public ResponseEntity<List<ItemServiceViewModel>> getItems() {
-
         List<ItemServiceViewModel> itemServiceViewModels = itemService.getAllItems();
-
         log.info("Item Found: {} ", itemServiceViewModels);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModels);
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<ItemServiceViewModel> deleteItem(@PathVariable("id") Long id) {
-
         ItemServiceViewModel itemServiceViewModel = itemService.deleteItemById(id);
-
         log.info("Item  deleted : {}", itemServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(itemServiceViewModel);
-
     }
 
 }

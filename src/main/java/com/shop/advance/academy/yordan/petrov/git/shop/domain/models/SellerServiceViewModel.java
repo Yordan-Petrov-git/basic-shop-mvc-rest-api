@@ -1,7 +1,10 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class SellerServiceViewModel {
 
@@ -46,5 +49,27 @@ public class SellerServiceViewModel {
 
     public void setUser(UserServiceViewModel user) {
         this.user = user;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SellerServiceViewModel)) return false;
+        SellerServiceViewModel that = (SellerServiceViewModel) o;
+        return Objects.equals(name, that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("SellerServiceViewModel{");
+        sb.append("name='").append(name).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

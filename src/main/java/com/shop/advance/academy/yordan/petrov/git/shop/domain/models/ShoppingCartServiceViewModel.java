@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ShoppingCartServiceViewModel {
 
@@ -63,5 +64,30 @@ public class ShoppingCartServiceViewModel {
 
     public void setTotalItemsPrice(BigDecimal totalItemsPrice) {
         this.totalItemsPrice = totalItemsPrice;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof ShoppingCartServiceViewModel)) return false;
+        ShoppingCartServiceViewModel that = (ShoppingCartServiceViewModel) o;
+        return Objects.equals(created, that.created) &&
+                Objects.equals(modified, that.modified) &&
+                Objects.equals(totalItemsPrice, that.totalItemsPrice);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(created, modified, totalItemsPrice);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("ShoppingCartServiceViewModel{");
+        sb.append("created=").append(created);
+        sb.append(", modified=").append(modified);
+        sb.append(", totalItemsPrice=").append(totalItemsPrice);
+        sb.append('}');
+        return sb.toString();
     }
 }

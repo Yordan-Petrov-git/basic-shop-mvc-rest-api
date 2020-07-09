@@ -2,16 +2,27 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -31,9 +42,31 @@ public class ShoppingCartServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    //TODO ADD TEST IF GETS ALL
+    @Test
+    public void testShoppingCartServiceReturnsAllShoppingCarts() {
+        List<ShoppingCart> carts = new ArrayList<>();
+        carts.add(new ShoppingCart());
+        carts.add(new ShoppingCart());
+        carts.add(new ShoppingCart());
 
-    //TODO ADD TEST IF GETS  BY ID
+        Mockito.when(shoppingCartRepository.findAll()).thenReturn(carts);
+        List<ShoppingCartServiceViewModel> transactionToAdd = shoppingCartService.getAllShoppingCarts();
+
+        assertEquals(3, transactionToAdd.size());
+    }
+
+
+    @Test
+    public void testShoppingCartServiceGetShoppingCartById() {
+        ShoppingCart shoppingCart = new ShoppingCart();
+        shoppingCart.setId(15L);
+
+        Mockito.when(shoppingCartRepository.findById(15L))
+                .thenReturn(java.util.Optional.of(shoppingCart));
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel = this.modelMapper.map(shoppingCart,ShoppingCartServiceViewModel.class);
+
+        assertEquals(shoppingCartServiceViewModel, shoppingCartService.getShoppingCartById(15L));
+    }
 
     //TODO ADD TEST IF CREATES
 

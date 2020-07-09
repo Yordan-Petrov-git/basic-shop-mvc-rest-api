@@ -2,16 +2,26 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemCountPairRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPairService;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
@@ -31,9 +41,31 @@ public class ItemCountPairServiceTest {
         MockitoAnnotations.initMocks(this);
     }
 
-    //TODO ADD TEST IF GETS ALL
+    @Test
+    public void testItemCountPairServiceReturnsAllItemCountPairs() {
+        List<ItemCountPair> itemCountPairs= new ArrayList<>();
+        itemCountPairs.add(new ItemCountPair());
+        itemCountPairs.add(new ItemCountPair());
+        itemCountPairs.add(new ItemCountPair());
 
-    //TODO ADD TEST IF GETS  BY ID
+        Mockito.when(itemCountPairRepository.findAll()).thenReturn(itemCountPairs);
+        List<ItemCountPairServiceViewModel> itemCountPairsFetchedFromRepo = itemCountPairService.getAllItemCountPairs();
+
+        assertEquals(3, itemCountPairsFetchedFromRepo.size());
+    }
+
+
+    @Test
+    public void testItemCountPairServiceGetItemCountPairById() {
+        ItemCountPair itemCountPair = new ItemCountPair();
+        itemCountPair.setId(15L);
+
+        Mockito.when(itemCountPairRepository.findById(15L))
+                .thenReturn(java.util.Optional.of(itemCountPair));
+        ItemCountPairServiceViewModel itemCountPairServiceViewModel = this.modelMapper.map(itemCountPair,ItemCountPairServiceViewModel.class);
+
+        assertEquals(itemCountPairServiceViewModel, itemCountPairService.getItemCountPairById(15L));
+    }
 
     //TODO ADD TEST IF CREATES
 

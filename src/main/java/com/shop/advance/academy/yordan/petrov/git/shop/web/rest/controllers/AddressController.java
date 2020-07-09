@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceViewModel;
@@ -25,57 +25,37 @@ public class AddressController {
 
     @PostMapping()
     public ResponseEntity<AddressServiceViewModel> createAddress(@RequestBody AddressServiceModel addressServiceModel) {
-
-
         AddressServiceViewModel addressServiceViewModel = addressService.createAddress(addressServiceModel);
-
         log.info("Address  created : {}", addressServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.CREATED).body(addressServiceViewModel);
-
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<AddressServiceViewModel> updateAddress(@PathVariable("id") Long id, @RequestBody AddressServiceModel addressServiceModel) {
-
-
         AddressServiceViewModel addressServiceViewModel = addressService.updateAddress(addressServiceModel);
-
         log.info("Address  updated : {}", addressServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(addressServiceViewModel);
     }
 
 
     @GetMapping("/{id}")
     public ResponseEntity<AddressServiceViewModel> getAddress(@PathVariable("id") final Long id) {
-
         AddressServiceViewModel addressServiceViewModel = addressService.getAddressById(id);
-
         log.info("Address  found : {}", addressServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(addressServiceViewModel);
     }
 
     @GetMapping()
     public ResponseEntity<List<AddressServiceViewModel>> getAddress() {
-
         List<AddressServiceViewModel> addressServiceViewModel = addressService.getAllAddresses();
-
         log.info("Addresses  found : {}", addressServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.FOUND).body(addressServiceViewModel);
-
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<AddressServiceViewModel> deleteAddress(@PathVariable("id") Long id) {
-
-
         AddressServiceViewModel addressServiceViewModel = addressService.deleteAddressById(id);
-
         log.info("Address deleted : {}", addressServiceViewModel);
-
         return ResponseEntity.status(HttpStatus.OK).body(addressServiceViewModel);
     }
 

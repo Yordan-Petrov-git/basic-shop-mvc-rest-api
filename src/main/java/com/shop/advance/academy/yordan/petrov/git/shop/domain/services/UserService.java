@@ -10,7 +10,6 @@ import java.util.List;
 @Service
 public interface UserService extends UserDetailsService {
 
-
     UserServiceViewModel createUser(UserServiceModel userServiceModel);
 
     UserServiceViewModel updateUser(UserServiceModel userServiceModel);
@@ -20,5 +19,4 @@ public interface UserService extends UserDetailsService {
     List<UserServiceViewModel> getAllUsers();
 
     UserServiceViewModel deleteUserById(long id);
-
 }

@@ -9,7 +9,6 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Trans
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.PurchasingService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.TransactionService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalCardTransactionOperation;
@@ -30,8 +29,8 @@ public class PurchasingServiceImpl implements PurchasingService {
     private final TransactionService transactionService;
 
     @Autowired
-    public PurchasingServiceImpl( OrderRepository orderRepository, ModelMapper modelMapper,
-                                  TransactionService transactionService) {
+    public PurchasingServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper,
+                                 TransactionService transactionService) {
         this.orderRepository = orderRepository;
         this.modelMapper = modelMapper;
         this.transactionService = transactionService;
