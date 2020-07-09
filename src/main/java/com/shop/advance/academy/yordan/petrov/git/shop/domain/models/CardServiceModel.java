@@ -6,6 +6,8 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardT
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class CardServiceModel {
@@ -21,7 +23,7 @@ public class CardServiceModel {
     private BigDecimal balance;
     private CurrencyServiceModel currency;
     private boolean isActive = true;
-
+    private List<UserServiceModel> users = new ArrayList<>();
 
     public CardServiceModel() {
     }
@@ -115,6 +117,13 @@ public class CardServiceModel {
         isActive = active;
     }
 
+    public List<UserServiceModel> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(List<UserServiceModel> users) {
+        this.users = users;
+    }
 
     @Override
     public boolean equals(Object o) {

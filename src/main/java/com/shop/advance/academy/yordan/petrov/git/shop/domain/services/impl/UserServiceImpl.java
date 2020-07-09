@@ -1,9 +1,14 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.RoleServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalDeleteOperation;
@@ -23,7 +28,6 @@ import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -36,31 +40,26 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final AddressRepository addressRepository;
     private final CardRepository cardRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ContactInformationRepository contactInformationRepository,
                            ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService,
-                           BCryptPasswordEncoder bCryptPasswordEncoder, AddressRepository addressRepository1,
-                           CardRepository cardRepository) {
+                           BCryptPasswordEncoder bCryptPasswordEncoder, CardRepository cardRepository) {
         this.userRepository = userRepository;
         this.contactInformationRepository = contactInformationRepository;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
         this.roleService = roleService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.addressRepository = addressRepository1;
         this.cardRepository = cardRepository;
     }
 
     @Override
     public UserServiceViewModel createUser(@Valid UserServiceModel userServiceModel) {
-        User user = mapUserToUserServiceViewModel(userServiceModel);
+        User user = maoUserServiceModelToUser(userServiceModel);
         validateIfUsernameExists(user);
         validateIfContactInfoIsDuplicated(userServiceModel);
-        Long addressId = getUserAddressId(userServiceModel);
-        userSetAddressByAddressId(user, addressId);
         addRolesToUsers(user);
         user.setEnabled(true);
         user.setCredentialsNonExpired(true);
@@ -75,10 +74,8 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public UserServiceViewModel updateUser(@Valid UserServiceModel userServiceModel) {
-        User user = mapUserToUserServiceViewModel(userServiceModel);
+        User user = maoUserServiceModelToUser(userServiceModel);
         validateIfUsernameExists(user);
-        Long cardId = getCardId(userServiceModel);
-        addCardToUserOnUpdater(user, cardId);
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
         user.setModified(LocalDateTime.now());
         return mapUserToUserServiceViewModel(this.userRepository.saveAndFlush(user));
@@ -107,6 +104,65 @@ public class UserServiceImpl implements UserService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username)
                 .orElseThrow((InvalidEntityException::new));
+    }
+
+    @Override
+    public UserServiceViewModel getUserByUsername(String username) throws InvalidEntityException {
+        return mapUserToUserServiceViewModel(this.userRepository.findByUsername(username)
+                .orElseThrow((InvalidEntityException::new)));
+    }
+
+    @Override
+    public List<UserServiceViewModel> getUserByUsernameLike(String username) {
+        //TODO
+        return modelMapper.map(this.userRepository.findByUsernameLike(username)
+                , new TypeToken<List<UserServiceViewModel>>() {
+                }.getType());
+    }
+
+    @Override
+    public UserServiceViewModel getUserByFirstName(String firstName) {
+        //TODO
+        return mapUserToUserServiceViewModel(this.userRepository.findByFirstName(firstName)
+                .orElseThrow((InvalidEntityException::new)));
+    }
+
+    @Override
+    public List<UserServiceViewModel> getUserByFirstNameLike(String firstName) {
+        //TODO
+        return modelMapper.map(this.userRepository.findByLastNameLike(firstName)
+                , new TypeToken<List<UserServiceViewModel>>() {
+                }.getType());
+    }
+
+    @Override
+    public UserServiceViewModel getUserByLastName(String lastName) {
+        //TODO
+        return mapUserToUserServiceViewModel(this.userRepository.findByLastName(lastName)
+                .orElseThrow((InvalidEntityException::new)));
+    }
+
+    @Override
+    public List<UserServiceViewModel> getUserByLastNameLike(String lastName) {
+        //TODO
+        return modelMapper.map(this.userRepository.findByLastNameLike(lastName)
+                , new TypeToken<List<UserServiceViewModel>>() {
+                }.getType());
+    }
+
+    @Override
+    public UserServiceViewModel getUserByFirstNameAndLastName(String firstName, String lastName) {
+        //TODO
+        return mapUserToUserServiceViewModel(this.userRepository.findByFirstNameAndLastName(firstName, lastName)
+                .orElseThrow((InvalidEntityException::new)));
+    }
+
+    @Override
+    public List<UserServiceViewModel> getUserByFirstNameLikeAndLastNameLike(String firstName, String lastName) {
+        //TODO
+        return modelMapper.map(this.userRepository.findByFirstNameLikeAndLastNameLike(firstName, lastName)
+                , new TypeToken<List<UserServiceViewModel>>() {
+                }.getType());
     }
 
     public List<UserServiceViewModel> mapUserListToUserServiceViewModel() {
@@ -169,23 +225,10 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    public User mapUserToUserServiceViewModel(@Valid UserServiceModel userServiceModel) {
+    public User maoUserServiceModelToUser(@Valid UserServiceModel userServiceModel) {
         return this.modelMapper.map(userServiceModel, User.class);
     }
 
-
-    public void userSetAddressByAddressId(User user, Long addressId) {
-        user.setAddresses(Set.of(this.addressRepository.findById(addressId)
-                .orElseThrow(() -> new InvalidEntityException(String.format("No addresses with id %s were found", addressId)))));
-    }
-
-    public Long getUserAddressId(@Valid UserServiceModel userServiceModel) {
-        return userServiceModel.getAddresses()
-                .stream()
-                .map(AddressServiceModel::getId)
-                .findAny()
-                .orElseThrow(() -> new EntityNotFoundException(("Address id not found.")));
-    }
 
     public void addRolesToUsers(User user) {
         if (userRepository.count() == 0) {
@@ -216,16 +259,4 @@ public class UserServiceImpl implements UserService {
         return this.modelMapper.map(r, Role.class);
     }
 
-    public void addCardToUserOnUpdater(User user, Long cardId) {
-        user.setCards(Set.of(cardRepository.findById(cardId)
-                .orElseThrow(() -> new EntityNotFoundException(String.format("Card with %s not found.", cardId)))));
-    }
-
-    public Long getCardId(@Valid UserServiceModel userServiceModel) {
-        return userServiceModel.getCards().
-                stream()
-                .map(CardServiceModel::getId)
-                .findAny()
-                .orElseThrow(() -> new EntityNotFoundException(("Card id not found.")));
-    }
 }

@@ -1,6 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AddressServiceModel {
@@ -9,7 +11,7 @@ public class AddressServiceModel {
     private String streetNumber;
     private String streetName;
     private CityServiceModel city;
-
+    private List<UserServiceModel> users = new ArrayList<>();
 
     public AddressServiceModel() {
     }
@@ -46,6 +48,21 @@ public class AddressServiceModel {
         this.city = city;
     }
 
+    public List<UserServiceModel> getUser() {
+        return this.users;
+    }
+
+    public void setUser(List<UserServiceModel> user) {
+        this.users = user;
+    }
+
+    public List<UserServiceModel> getUsers() {
+        return this.users;
+    }
+
+    public void setUsers(List<UserServiceModel> users) {
+        this.users = users;
+    }
 
     @Override
     public boolean equals(Object o) {
@@ -69,4 +86,6 @@ public class AddressServiceModel {
         sb.append('}');
         return sb.toString();
     }
+
+
 }

@@ -28,8 +28,6 @@ public class User extends BaseEntity implements UserDetails {
     private LocalDateTime modified;
     private String firstName;
     private String lastName;
-    private Set<Address> addresses = new HashSet<>();
-    private Set<Card> cards = new HashSet<>();
     private Set<ContactInformation> contactInformation = new HashSet<>();
     private boolean isEnabled = true;
     private boolean isCredentialsNonExpired = true;
@@ -125,39 +123,6 @@ public class User extends BaseEntity implements UserDetails {
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
-
-
-    @ManyToMany(targetEntity = Address.class,
-            fetch = FetchType.LAZY,
-            cascade = {CascadeType.PERSIST, CascadeType.REMOVE})
-    @JoinTable(
-            name = "users_address",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "address_id", referencedColumnName = "id")
-    )
-    public Set<Address> getAddresses() {
-        return this.addresses;
-    }
-
-    public void setAddresses(Set<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-
-    @OneToMany(targetEntity = Card.class,
-            fetch = FetchType.EAGER,
-            cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
-    @JoinTable(name = "user_cards",
-            joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "card_id", referencedColumnName = "id"))
-    public Set<Card> getCards() {
-        return this.cards;
-    }
-
-    public void setCards(Set<Card> cards) {
-        this.cards = cards;
-    }
-
 
     @OneToMany(targetEntity = ContactInformation.class
             , fetch = FetchType.EAGER,

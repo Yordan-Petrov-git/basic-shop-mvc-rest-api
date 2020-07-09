@@ -1,13 +1,16 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
 
 public class AddressServiceViewModel {
+
     private Long id;
     private String streetNumber;
     private String streetName;
     private CityServiceViewModel city;
-
+    private List<UserServiceViewModel> user = new ArrayList<>();
 
     public AddressServiceViewModel() {
     }
@@ -43,6 +46,14 @@ public class AddressServiceViewModel {
 
     public void setCity(CityServiceViewModel city) {
         this.city = city;
+    }
+
+    public List<UserServiceViewModel> getUser() {
+        return this.user;
+    }
+
+    public void setUser(List<UserServiceViewModel> user) {
+        this.user = user;
     }
 
 

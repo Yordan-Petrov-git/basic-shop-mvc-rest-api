@@ -1,7 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

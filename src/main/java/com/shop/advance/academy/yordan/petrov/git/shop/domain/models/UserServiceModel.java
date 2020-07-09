@@ -20,8 +20,6 @@ public class UserServiceModel {
     private LocalDateTime modified;
     private String firstName;
     private String lastName;
-    private Set<AddressServiceModel> addresses = new HashSet<>();
-    private Set<CardServiceModel> cards = new HashSet<>();
     private Set<ContactInformationServiceModel> contactInformation = new HashSet<>();
     private Set<RoleServiceModel> roles = new HashSet<>();
     private boolean isEnabled = true;
@@ -106,23 +104,6 @@ public class UserServiceModel {
 
     public void setLastName(String lastName) {
         this.lastName = lastName;
-    }
-
-
-    public Set<AddressServiceModel> getAddresses() {
-        return this.addresses;
-    }
-
-    public void setAddresses(Set<AddressServiceModel> addresses) {
-        this.addresses = addresses;
-    }
-
-    public Set<CardServiceModel> getCards() {
-        return this.cards;
-    }
-
-    public void setCards(Set<CardServiceModel> cards) {
-        this.cards = cards;
     }
 
     public Set<ContactInformationServiceModel> getContactInformation() {

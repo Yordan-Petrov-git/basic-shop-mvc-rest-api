@@ -37,7 +37,6 @@ public class ItemServiceImpl implements ItemService {
         return mapItemToItemServiceViewModel(item);
     }
 
-
     @Override
     @Transactional
     public ItemServiceViewModel updateItem(ItemServiceModel itemServiceModel) {
@@ -56,13 +55,25 @@ public class ItemServiceImpl implements ItemService {
     }
 
     @Override
+    public ItemServiceViewModel getItemByTitle(String title) {
+        return this.modelMapper
+                .map(this.itemRepository.findByTitle(title).orElseThrow(() ->
+                        new EntityNotFoundException(String.format("Item  with title %s not found.", title))), ItemServiceViewModel.class);
+    }
+
+    @Override
+    public List<ItemServiceViewModel> getItemByTitleLike(String title) {
+        return modelMapper.map(this.itemRepository.findByTitleLike(title), new TypeToken<List<ItemServiceViewModel>>() {
+        }.getType());
+    }
+
+    @Override
     public List<ItemServiceViewModel> getAllItems() {
         this.itemRepository.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Items were found"));
-        List<Item> items = itemRepository.findAll();
-        return modelMapper.map(items, new TypeToken<List<ItemServiceViewModel>>() {
+        return modelMapper.map(itemRepository.findAll(), new TypeToken<List<ItemServiceViewModel>>() {
         }.getType());
     }
 

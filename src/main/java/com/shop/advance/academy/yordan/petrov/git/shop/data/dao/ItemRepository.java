@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,9 +18,9 @@ public interface ItemRepository extends JpaRepository<Item, Long> {
 
     Optional<Item> findByTitle(String title);
 
-    Optional<Item> findAllByDescriptionContaining(String description);
+    List<Item> findByTitleLike(String title);
 
-    Optional<Item> findAllByTitleContaining(String description);
+    Optional<Item> findAllByDescriptionContaining(String description);
 
     Optional<Item> findAllByPrice(BigDecimal price);
 

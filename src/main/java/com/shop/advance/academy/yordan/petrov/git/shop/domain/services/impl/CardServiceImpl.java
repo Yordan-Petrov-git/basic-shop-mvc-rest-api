@@ -2,8 +2,10 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
@@ -19,6 +21,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -29,16 +32,18 @@ public class CardServiceImpl implements CardService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CurrencyService currencyService;
     private final CurrencyRepository currencyRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public CardServiceImpl(CardRepository cardRepository, ModelMapper modelMapper,
                            BCryptPasswordEncoder bCryptPasswordEncoder, CurrencyService currencyService,
-                           CurrencyRepository currencyRepository) {
+                           CurrencyRepository currencyRepository, UserRepository userRepository) {
         this.cardRepository = cardRepository;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.currencyService = currencyService;
         this.currencyRepository = currencyRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
@@ -47,9 +52,21 @@ public class CardServiceImpl implements CardService {
         findCardByNumber(cardServiceModel);
         setCurrencyByCurrencyName(cardServiceModel, card);
         card.setDateIssued(LocalDateTime.now());
+        card.setUsers(addUsersToCards(cardServiceModel));
         card.setPinCode(this.bCryptPasswordEncoder.encode(cardServiceModel.getPinCode()));
         this.cardRepository.saveAndFlush(card);
         return mapCardToCardServiceViewModel(card);
+    }
+
+    @Transactional
+    public List<User> addUsersToCards(CardServiceModel cardServiceModel) {
+        List<User> userList = new ArrayList<>();
+        cardServiceModel.getUsers().forEach(u -> {
+            User user = userRepository.findById(u.getId())
+                    .orElseThrow(InvalidEntityException::new);
+            userList.add(user);
+        });
+        return userList;
     }
 
     @Override
@@ -57,6 +74,7 @@ public class CardServiceImpl implements CardService {
     public CardServiceViewModel updateCard(CardServiceModel cardServiceModel) {
         Card card = mapCardServiceModelToCard(cardServiceModel);
         getCardById(cardServiceModel.getId());
+        card.setUsers(addUsersToCards(cardServiceModel));
         this.cardRepository.saveAndFlush(card);
         return mapCardToCardServiceViewModel(card);
     }
