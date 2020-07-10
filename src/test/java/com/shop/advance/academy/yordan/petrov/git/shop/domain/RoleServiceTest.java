@@ -1,8 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

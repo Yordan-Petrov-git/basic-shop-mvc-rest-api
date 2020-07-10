@@ -2,6 +2,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers.exe
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.model.utils.error.ErrorResponse;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.EntityNotFoundException;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalCardTransactionOperation;
+import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalDeleteOperation;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,6 +32,19 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
+    @ExceptionHandler(IllegalCardTransactionOperation.class)
+    public ResponseEntity<ErrorResponse> handle(IllegalCardTransactionOperation ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
+    }
+
+    @ExceptionHandler(IllegalDeleteOperation.class)
+    public ResponseEntity<ErrorResponse> handle(IllegalDeleteOperation ex) {
+        log.error(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
+    }
 
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handle(HttpRequestMethodNotSupportedException ex) {

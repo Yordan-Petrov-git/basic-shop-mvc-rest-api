@@ -66,6 +66,14 @@ public class ShoppingCartServiceViewModel {
         this.totalItemsPrice = totalItemsPrice;
     }
 
+    public List<ItemCountPairServiceViewModel> getShoppingCartItem() {
+        return this.shoppingCartItem;
+    }
+
+    public void setShoppingCartItem(List<ItemCountPairServiceViewModel> shoppingCartItem) {
+        this.shoppingCartItem = shoppingCartItem;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

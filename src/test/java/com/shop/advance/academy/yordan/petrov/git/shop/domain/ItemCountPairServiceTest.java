@@ -1,11 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemCountPairRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPairService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -43,7 +40,7 @@ public class ItemCountPairServiceTest {
 
     @Test
     public void testItemCountPairServiceReturnsAllItemCountPairs() {
-        List<ItemCountPair> itemCountPairs= new ArrayList<>();
+        List<ItemCountPair> itemCountPairs = new ArrayList<>();
         itemCountPairs.add(new ItemCountPair());
         itemCountPairs.add(new ItemCountPair());
         itemCountPairs.add(new ItemCountPair());
@@ -62,7 +59,7 @@ public class ItemCountPairServiceTest {
 
         Mockito.when(itemCountPairRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(itemCountPair));
-        ItemCountPairServiceViewModel itemCountPairServiceViewModel = this.modelMapper.map(itemCountPair,ItemCountPairServiceViewModel.class);
+        ItemCountPairServiceViewModel itemCountPairServiceViewModel = this.modelMapper.map(itemCountPair, ItemCountPairServiceViewModel.class);
 
         assertEquals(itemCountPairServiceViewModel, itemCountPairService.getItemCountPairById(15L));
     }

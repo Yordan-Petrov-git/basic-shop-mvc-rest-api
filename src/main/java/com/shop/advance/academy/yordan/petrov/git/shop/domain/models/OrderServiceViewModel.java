@@ -85,6 +85,13 @@ public class OrderServiceViewModel {
         this.paymentType = paymentType;
     }
 
+    public BigDecimal getTotalPrice() {
+        return this.totalPrice;
+    }
+
+    public void setTotalPrice(BigDecimal totalPrice) {
+        this.totalPrice = totalPrice;
+    }
 
     @Override
     public boolean equals(Object o) {

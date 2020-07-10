@@ -2,9 +2,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.SellerRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

@@ -1,12 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -62,7 +59,7 @@ public class CountryServiceTest {
 
         Mockito.when(countryRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(country));
-        CountryServiceViewModel countryServiceViewModel = this.modelMapper.map(country,CountryServiceViewModel.class);
+        CountryServiceViewModel countryServiceViewModel = this.modelMapper.map(country, CountryServiceViewModel.class);
 
         assertEquals(countryServiceViewModel, countryService.getCountryById(15L));
     }

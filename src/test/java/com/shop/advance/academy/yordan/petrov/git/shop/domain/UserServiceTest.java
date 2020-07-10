@@ -1,10 +1,10 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -16,9 +16,9 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
 import java.util.ArrayList;
 import java.util.List;
-
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -62,7 +62,7 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findByUsername(user.getUsername()))
                 .thenReturn(java.util.Optional.of(user));
-        UserServiceModel userServiceModel = this.modelMapper.map(user,UserServiceModel.class);
+        UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
 
         assertThrows(InvalidEntityException.class, () -> userService.createUser(userServiceModel));
     }
@@ -74,7 +74,7 @@ class UserServiceTest {
 
         Mockito.when(userRepository.findById(5L))
                 .thenReturn(java.util.Optional.of(user));
-        UserServiceViewModel userServiceModel = this.modelMapper.map(user,UserServiceViewModel.class);
+        UserServiceViewModel userServiceModel = this.modelMapper.map(user, UserServiceViewModel.class);
 
         assertEquals(userServiceModel, userService.getUserById(5L));
     }

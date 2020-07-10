@@ -61,6 +61,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     @Transactional
     public ShoppingCartServiceViewModel updateShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
         ShoppingCart shoppingCart = mapShoppingCartServiceModelToShoppingCartViewModel(shoppingCartServiceModel);
+        shoppingCart.setModified(LocalDateTime.now());
         findShoppingCardById(shoppingCartServiceModel.getId());
         return mapShoppingCartToShoppingCartServiceViewModel(saveShoppingCart(shoppingCart));
     }

@@ -111,7 +111,7 @@ public class TransactionServiceImpl implements TransactionService {
                             card.getNumber(), card.getBalance(), amount));
         }
         card.setBalance(card.getBalance().subtract(amount));
-        cardServiceUpdate(card);
+       // cardServiceUpdate(card);
     }
 
 
@@ -121,7 +121,7 @@ public class TransactionServiceImpl implements TransactionService {
         Card card = getCardId(id);
         checksIfDepositAmountIsZero(amount);
         card.setBalance(card.getBalance().add(amount));
-        cardServiceUpdate(card);
+       // cardServiceUpdate(card);
     }
 
 

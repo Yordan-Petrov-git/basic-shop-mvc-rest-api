@@ -1,11 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.MediaRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OpinionRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.MediaService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +59,7 @@ public class OpinionServiceTest {
 
         Mockito.when(opinionRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(opinion));
-        OpinionServiceViewModel opinionServiceViewModel = this.modelMapper.map(opinion,OpinionServiceViewModel.class);
+        OpinionServiceViewModel opinionServiceViewModel = this.modelMapper.map(opinion, OpinionServiceViewModel.class);
 
         assertEquals(opinionServiceViewModel, opinionService.getOpinionById(15L));
     }

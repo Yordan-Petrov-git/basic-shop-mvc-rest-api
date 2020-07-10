@@ -1,11 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +59,7 @@ public class CurrencyServiceTest {
 
         Mockito.when(currencyRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(currency));
-        CurrencyServiceViewModel currencyServiceViewModel = this.modelMapper.map(currency,CurrencyServiceViewModel.class);
+        CurrencyServiceViewModel currencyServiceViewModel = this.modelMapper.map(currency, CurrencyServiceViewModel.class);
 
         assertEquals(currencyServiceViewModel, currencyService.getCurrencyById(15L));
     }
