@@ -51,18 +51,23 @@ public class PurchasingServiceImpl implements PurchasingService {
         return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceModel);
     }
 
-    private void createTransactionForPayByCard(TransactionServiceModel transactionServiceModel) {
-        transactionService.createTransaction(transactionServiceModel);
-    }
 
     @Override
     public TransactionServiceViewModel refundCardPurchase(TransactionServiceModel transactionServiceModel) {
+        //TODO GET SENDER AND RECIER FORM TRANSACTION
         TransactionServiceModel transactionServiceForRefund = getTransactionServiceModelForRefundTransaction(transactionServiceModel);
         refundCardPurchaseValidationAndUpdates(transactionServiceModel, transactionServiceForRefund);
         return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceForRefund);
     }
 
-    private void refundCardPurchaseValidationAndUpdates(TransactionServiceModel transactionServiceModel, TransactionServiceModel transactionServiceForRefund) {
+    private void createTransactionForPayByCard(TransactionServiceModel transactionServiceModel) {
+        transactionService.createTransaction(transactionServiceModel);
+    }
+
+
+    private void refundCardPurchaseValidationAndUpdates(TransactionServiceModel transactionServiceModel
+            , TransactionServiceModel transactionServiceForRefund) {
+
         isTransactionStatusRefunded(transactionServiceForRefund.getTransactionStatus());
         isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(transactionServiceForRefund.getDateCompleted());
         updateOrderForRefund(findOrderFromTransactionServiceModelById(transactionServiceModel));
