@@ -41,12 +41,13 @@ public class PurchasingServiceImpl implements PurchasingService {
         Order order = findOrderFromTransactionServiceModelById(transactionServiceModel);
         isOrderStatusCanceled(order.getOrderStatus());
         isOrderStatusFinished(order.getOrderStatus());
-        //isOrderStatusProccesing(order.getOrderStatus());
-        updateOrderForPurchase(order);
+        isOrderStatusProccesing(order.getOrderStatus());
         transactionServiceModel.setAmount(order.getTotalPrice());
         transactionServiceModel.setFee(BigDecimal.valueOf(5.00));
         transactionServiceModel.setDescription("Item purchase");
+        updateOrderForPurchase(order);
         createTransactionForPayByCard(transactionServiceModel);
+        //TODO ADD VIP STATIS TO CUSTOMER ON CERTAIN SPENDING AMMOUNT
         return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceModel);
     }
 

@@ -1,12 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +59,7 @@ public class ContactInformationServiceTest {
 
         Mockito.when(contactInformationRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(contactInformation));
-        ContactInformationServiceViewModel contactInformationServiceViewModel = this.modelMapper.map(contactInformation,ContactInformationServiceViewModel.class);
+        ContactInformationServiceViewModel contactInformationServiceViewModel = this.modelMapper.map(contactInformation, ContactInformationServiceViewModel.class);
 
         assertEquals(contactInformationServiceViewModel, contactInformationService.getContactInformationById(15L));
     }

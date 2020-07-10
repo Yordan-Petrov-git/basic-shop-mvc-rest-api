@@ -1,11 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.MediaRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Media;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Media;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.MediaServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.MediaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,9 +59,9 @@ public class MediaServiceTest {
 
         Mockito.when(mediaRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(media));
-        MediaServiceViewModel mediaServiceViewModel = this.modelMapper.map(media,MediaServiceViewModel.class);
+        MediaServiceViewModel mediaServiceViewModel = this.modelMapper.map(media, MediaServiceViewModel.class);
 
-        assertEquals(mediaServiceViewModel,mediaService.getMediaById(15L));
+        assertEquals(mediaServiceViewModel, mediaService.getMediaById(15L));
     }
 
     //TODO ADD TEST IF CREATES

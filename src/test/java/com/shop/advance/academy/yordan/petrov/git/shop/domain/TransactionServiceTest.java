@@ -2,9 +2,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.TransactionRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +60,7 @@ public class TransactionServiceTest {
 
         Mockito.when(transactionRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(transaction));
-        TransactionServiceViewModel transactionServiceViewModel = this.modelMapper.map(transaction,TransactionServiceViewModel.class);
+        TransactionServiceViewModel transactionServiceViewModel = this.modelMapper.map(transaction, TransactionServiceViewModel.class);
 
         assertEquals(transactionServiceViewModel, transactionService.getTransactionById(15L));
     }

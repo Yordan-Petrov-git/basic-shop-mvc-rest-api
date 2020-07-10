@@ -1,11 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OpinionRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -62,7 +59,7 @@ public class OrderServiceTest {
 
         Mockito.when(orderRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(order));
-        OrderServiceViewModel orderServiceViewModel = this.modelMapper.map(order,OrderServiceViewModel.class);
+        OrderServiceViewModel orderServiceViewModel = this.modelMapper.map(order, OrderServiceViewModel.class);
 
         assertEquals(orderServiceViewModel, orderService.getOrderById(15L));
     }

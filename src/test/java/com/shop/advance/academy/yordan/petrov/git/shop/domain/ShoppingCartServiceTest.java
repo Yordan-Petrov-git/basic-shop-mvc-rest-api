@@ -1,12 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -63,7 +59,7 @@ public class ShoppingCartServiceTest {
 
         Mockito.when(shoppingCartRepository.findById(15L))
                 .thenReturn(java.util.Optional.of(shoppingCart));
-        ShoppingCartServiceViewModel shoppingCartServiceViewModel = this.modelMapper.map(shoppingCart,ShoppingCartServiceViewModel.class);
+        ShoppingCartServiceViewModel shoppingCartServiceViewModel = this.modelMapper.map(shoppingCart, ShoppingCartServiceViewModel.class);
 
         assertEquals(shoppingCartServiceViewModel, shoppingCartService.getShoppingCartById(15L));
     }
