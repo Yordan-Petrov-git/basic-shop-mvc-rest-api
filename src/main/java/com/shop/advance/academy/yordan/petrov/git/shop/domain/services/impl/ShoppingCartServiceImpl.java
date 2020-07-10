@@ -11,7 +11,6 @@ import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPa
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPairService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -36,18 +35,15 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final UserService userService;
     private final UserRepository userRepository;
     private final ItemRepository itemRepository;
-    private final ItemCountPairService itemCountPairService;
 
     @Autowired
     public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ModelMapper modelMapper,
-                                   UserService userService, UserRepository userRepository, ItemRepository itemRepository,
-                                   ItemCountPairService itemCountPairService) {
+                                   UserService userService, UserRepository userRepository, ItemRepository itemRepository) {
         this.shoppingCartRepository = shoppingCartRepository;
         this.modelMapper = modelMapper;
         this.userService = userService;
         this.userRepository = userRepository;
         this.itemRepository = itemRepository;
-        this.itemCountPairService = itemCountPairService;
     }
 
     @Override

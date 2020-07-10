@@ -1,6 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
@@ -40,19 +39,17 @@ public class UserServiceImpl implements UserService {
     private final RoleRepository roleRepository;
     private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final CardRepository cardRepository;
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository, ContactInformationRepository contactInformationRepository,
                            ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService,
-                           BCryptPasswordEncoder bCryptPasswordEncoder, CardRepository cardRepository) {
+                           BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.userRepository = userRepository;
         this.contactInformationRepository = contactInformationRepository;
         this.modelMapper = modelMapper;
         this.roleRepository = roleRepository;
         this.roleService = roleService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.cardRepository = cardRepository;
     }
 
     @Override
