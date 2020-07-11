@@ -121,7 +121,6 @@ public class TransactionServiceImpl implements TransactionService {
         Card card = getCardId(id);
         checksIfDepositAmountIsZero(amount);
         card.setBalance(card.getBalance().add(amount));
-        // cardServiceUpdate(card);
     }
 
 
@@ -189,10 +188,6 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
 
-    private void cardServiceUpdate(Card card) {
-        cardService.updateCard(mapCardToCardServiceModel(card));
-    }
-
     private Transaction getTransactionId(Long id) {
         return this.transactionRepository.findById(id)
                 .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", id)));
@@ -232,9 +227,6 @@ public class TransactionServiceImpl implements TransactionService {
         return this.modelMapper.map(transactionServiceModel, Transaction.class);
     }
 
-    public CardServiceModel mapCardToCardServiceModel(Card card) {
-        return this.modelMapper.map(card, CardServiceModel.class);
-    }
 
     public TransactionServiceViewModel mapTransactionToTransactionServiceViewModel(Transaction transaction) {
         return this.modelMapper.map(transaction, TransactionServiceViewModel.class);
