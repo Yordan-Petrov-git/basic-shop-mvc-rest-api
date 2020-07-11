@@ -16,6 +16,7 @@ import java.util.List;
 
 
 @RestController
+@CrossOrigin
 @RequestMapping("api/user")
 @Slf4j
 public class UserController {
