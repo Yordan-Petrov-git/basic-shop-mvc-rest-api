@@ -36,7 +36,7 @@ public class OpinionController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<OpinionServiceViewModel> updateOpinion(@PathVariable("id") Long id, @RequestBody OpinionServiceModel opinionServiceModel) {
+    public ResponseEntity<OpinionServiceViewModel> updateOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.updateOpinion(opinionServiceModel);
         log.info("Opinion  updated : {}", opinionServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(opinionServiceViewModel);

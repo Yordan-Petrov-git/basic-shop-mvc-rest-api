@@ -36,7 +36,7 @@ public class ContactInformationController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<ContactInformationServiceViewModel> updateContactInformation(@PathVariable("id") Long id, @RequestBody ContactInformationServiceModel contactInformationServiceModel) {
+    public ResponseEntity<ContactInformationServiceViewModel> updateContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
         ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.updateContactInformation(contactInformationServiceModel);
         log.info("Contact Information  updated : {}", contactInformationServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(contactInformationServiceViewModel);

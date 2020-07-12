@@ -40,7 +40,7 @@ public class CardTransactionController {
 
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<TransactionServiceViewModel> updateTransaction(@PathVariable("id") Long id, @RequestBody TransactionServiceModel transactionServiceModel) {
+    public ResponseEntity<TransactionServiceViewModel> updateTransaction(@RequestBody TransactionServiceModel transactionServiceModel) {
         TransactionServiceViewModel transactionServiceViewModel = transactionService.updateTransaction(transactionServiceModel);
         log.info("Transaction updated: {}", transactionServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(transactionServiceViewModel);
@@ -48,7 +48,7 @@ public class CardTransactionController {
 
     @PatchMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<TransactionServiceViewModel> partialUpdateTransaction(@PathVariable("id") Long id, @RequestBody TransactionServiceModel transactionServiceModel) {
+    public ResponseEntity<TransactionServiceViewModel> partialUpdateTransaction(@RequestBody TransactionServiceModel transactionServiceModel) {
         TransactionServiceViewModel transactionServiceViewModel = transactionService.updateTransaction(transactionServiceModel);
         log.info("Transaction updated: {} , ", transactionServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(transactionServiceViewModel);

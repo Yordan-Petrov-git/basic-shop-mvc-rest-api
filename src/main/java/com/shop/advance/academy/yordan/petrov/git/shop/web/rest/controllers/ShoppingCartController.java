@@ -38,7 +38,7 @@ public class ShoppingCartController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<ShoppingCartServiceViewModel> updateShoppingCart(@PathVariable("id") Long id, @RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
+    public ResponseEntity<ShoppingCartServiceViewModel> updateShoppingCart(@RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.updateShoppingCart(shoppingCartServiceModel);
         URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "updateShoppingCart", UserServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();

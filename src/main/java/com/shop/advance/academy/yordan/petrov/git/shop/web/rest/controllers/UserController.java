@@ -40,7 +40,7 @@ public class UserController {
 
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<UserServiceViewModel> updateUser(@PathVariable("id") Long id, @RequestBody UserServiceModel userServiceModel) {
+    public ResponseEntity<UserServiceViewModel> updateUser(@RequestBody UserServiceModel userServiceModel) {
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
         log.info("User updated: {}", userServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
@@ -48,7 +48,7 @@ public class UserController {
 
     @PatchMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<UserServiceViewModel> partialUpdateUser(@PathVariable("id") Long id, @RequestBody UserServiceModel userServiceModel) {
+    public ResponseEntity<UserServiceViewModel> partialUpdateUser(@RequestBody UserServiceModel userServiceModel) {
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
         log.info("User updated: {} , ", userServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);

@@ -35,7 +35,7 @@ public class CountryController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<CountryServiceViewModel> updateCountry(@PathVariable("id") Long id, @RequestBody CountryServiceModel countryServiceModel) {
+    public ResponseEntity<CountryServiceViewModel> updateCountry(@RequestBody CountryServiceModel countryServiceModel) {
         CountryServiceViewModel countryServiceViewModel = countryService.updateCountry(countryServiceModel);
         log.info("Country  Updated : {}", countryServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(countryServiceViewModel);

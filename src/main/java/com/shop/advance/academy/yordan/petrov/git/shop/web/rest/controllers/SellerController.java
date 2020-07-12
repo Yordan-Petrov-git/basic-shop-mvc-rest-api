@@ -34,7 +34,7 @@ public class SellerController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<SellerServiceViewModel> updateSeller(@PathVariable("id") Long id, @RequestBody SellerServiceModel sellerServiceModel) {
+    public ResponseEntity<SellerServiceViewModel> updateSeller(@RequestBody SellerServiceModel sellerServiceModel) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.updateSeller(sellerServiceModel);
         log.info("Seller  found : {}", sellerServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(sellerServiceViewModel);

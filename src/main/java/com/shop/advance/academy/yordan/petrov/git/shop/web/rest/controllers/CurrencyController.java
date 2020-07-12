@@ -36,7 +36,7 @@ public class CurrencyController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
-    public ResponseEntity<CurrencyServiceViewModel> updateCurrency(@PathVariable("id") Long id, @RequestBody CurrencyServiceModel currencyServiceModel) {
+    public ResponseEntity<CurrencyServiceViewModel> updateCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.updateCurrency(currencyServiceModel);
         log.info("Currency  updated : {}", currencyServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(currencyServiceViewModel);

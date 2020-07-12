@@ -36,7 +36,7 @@ public class MediaController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<MediaServiceViewModel> updateMedia(@PathVariable("id") Long id, @RequestBody MediaServiceModel mediaServiceModel) {
+    public ResponseEntity<MediaServiceViewModel> updateMedia(@RequestBody MediaServiceModel mediaServiceModel) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.updateMedia(mediaServiceModel);
         log.info("Media  UPDATED : {}", mediaServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(mediaServiceViewModel);

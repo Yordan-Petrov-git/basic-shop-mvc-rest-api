@@ -34,7 +34,7 @@ public class AddressController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<AddressServiceViewModel> updateAddress(@PathVariable("id") Long id, @RequestBody AddressServiceModel addressServiceModel) {
+    public ResponseEntity<AddressServiceViewModel> updateAddress(@RequestBody AddressServiceModel addressServiceModel) {
         AddressServiceViewModel addressServiceViewModel = addressService.updateAddress(addressServiceModel);
         log.info("Address  updated : {}", addressServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(addressServiceViewModel);

@@ -34,7 +34,7 @@ public class ItemController {
 
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<ItemServiceViewModel> updateItem(@PathVariable("id") Long id, @RequestBody ItemServiceModel itemServiceModel) {
+    public ResponseEntity<ItemServiceViewModel> updateItem(@RequestBody ItemServiceModel itemServiceModel) {
         ItemServiceViewModel itemServiceViewModel = itemService.updateItem(itemServiceModel);
         log.info("Item  UPDATED : {}", itemServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(itemServiceViewModel);
