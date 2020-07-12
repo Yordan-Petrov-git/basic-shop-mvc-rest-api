@@ -74,10 +74,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                //TODO DELETE SWAGGER UI LINK IF NEEDED
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/**/*").denyAll()
                 .antMatchers(HttpMethod.POST, "/api/user", "/api/login").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
                 .antMatchers("/api/user", "/api/login").anonymous()
                 .antMatchers(HttpMethod.DELETE, "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
                 .antMatchers(HttpMethod.POST, "/api/seller", "/api/purchases", "/api/order", "/api/transactions", "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
