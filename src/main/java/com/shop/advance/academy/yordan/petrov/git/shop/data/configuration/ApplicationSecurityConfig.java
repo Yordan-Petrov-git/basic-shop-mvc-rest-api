@@ -59,46 +59,24 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
+
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/users/register",  "/login").permitAll()
-                .antMatchers("/", "/users/register",  "/login").anonymous()
-                .antMatchers("/login").permitAll()
-                .antMatchers(HttpMethod.DELETE, "/api/items").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.DELETE, "/api/items").authenticated()
-                .antMatchers(HttpMethod.DELETE, "/api/user").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
-                .antMatchers(HttpMethod.DELETE, "/api/user").authenticated()
+                .antMatchers(HttpMethod.POST, "/api/user",  "/api/login").permitAll()
+                .antMatchers( "/api/user",  "/api/login").anonymous()
+                .antMatchers(HttpMethod.DELETE, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.DELETE, "/api/user","api/city","api/country","api/card","api/transactions"
+                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .anyRequest().authenticated()
                 .and().
                 exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
-
-
-//                .antMatchers(HttpMethod.POST, "/**")
-        //        .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
-//                .antMatchers(HttpMethod.PUT, "/**")
-//                .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
-//                .antMatchers(HttpMethod.DELETE, "/**")
-//                .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
-//                .antMatchers("/**").permitAll()
-//                .anyRequest().authenticated()
-//                .and()
-//                .formLogin()
-//                .loginPage("/users/login")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .defaultSuccessUrl("/home")
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/");
-
-
     }
 
 
@@ -114,7 +92,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             }
         };
     }
-
 
 }
 

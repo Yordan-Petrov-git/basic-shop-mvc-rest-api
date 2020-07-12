@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class CardController {
 
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CardServiceViewModel> createCard(@RequestBody CardServiceModel cardServiceModel) {
         CardServiceViewModel cardServiceViewModel = cardService.createCard(cardServiceModel);
         log.info("Card  created : {}", cardServiceViewModel);
@@ -33,6 +35,7 @@ public class CardController {
     }
 
     @PutMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CardServiceViewModel> updateCard(@RequestBody CardServiceModel cardServiceModel) {
         CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
         log.info("Card  updated : {}", cardServiceViewModel);
@@ -42,6 +45,7 @@ public class CardController {
 
 
     @PatchMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CardServiceViewModel> partialUpdateCard(@RequestBody CardServiceModel cardServiceModel) {
         CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
         log.info("Card  updated : {}", cardServiceViewModel);
@@ -49,6 +53,7 @@ public class CardController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CardServiceViewModel> getCard(@PathVariable("id") final Long id) {
         CardServiceViewModel cardServiceViewModel = cardService.getCardById(id);
         log.info("Card  found : {}", cardServiceViewModel);
@@ -56,6 +61,7 @@ public class CardController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<CardServiceViewModel>> getCards() {
         List<CardServiceViewModel> cardServiceViewModel = cardService.getAllCards();
         log.info("CardS  found : {}", cardServiceViewModel);
@@ -63,6 +69,7 @@ public class CardController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<CardServiceViewModel> deleteCard(@PathVariable("id") Long id) {
         CardServiceViewModel cardServiceViewModel = cardService.deleteCardById(id);
         log.info("Card deleted : {}", cardServiceViewModel);

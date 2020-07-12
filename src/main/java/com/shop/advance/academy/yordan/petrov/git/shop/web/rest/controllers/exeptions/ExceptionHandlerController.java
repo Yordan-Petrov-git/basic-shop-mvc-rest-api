@@ -20,8 +20,7 @@ import java.util.Arrays;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-@SuppressWarnings("SpellCheckingInspection")
-@ControllerAdvice("com.shop.advance.academy.yordan.petrov.git.shop.rest.controllers")
+@ControllerAdvice("com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers")
 @Slf4j
 public class ExceptionHandlerController {
 
@@ -64,9 +63,7 @@ public class ExceptionHandlerController {
 
     @ExceptionHandler({Exception.class})
     public ResponseEntity<Object> handleGenericException(final Exception ex) {
-
         log.error(String.format("Uncaught error happens. Stack trace is: %s", ex + getFullStackTraceLog(ex)));
-
         ErrorResponse errorResponse = new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage());
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
     }

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,6 +25,7 @@ public class SellerController {
     }
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<SellerServiceViewModel> createSeller(@RequestBody SellerServiceModel sellerServiceModel) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.createSeller(sellerServiceModel);
         log.info("Seller  created : {}", sellerServiceViewModel);
@@ -31,6 +33,7 @@ public class SellerController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<SellerServiceViewModel> updateSeller(@PathVariable("id") Long id, @RequestBody SellerServiceModel sellerServiceModel) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.updateSeller(sellerServiceModel);
         log.info("Seller  found : {}", sellerServiceViewModel);
@@ -39,6 +42,7 @@ public class SellerController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<SellerServiceViewModel> getSeller(@PathVariable("id") final Long id) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.getSellerById(id);
         log.info("Seller  found : {}", sellerServiceViewModel);
@@ -46,6 +50,7 @@ public class SellerController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<SellerServiceViewModel>> getSellers() {
         List<SellerServiceViewModel> sellerServiceViewModels = sellerService.getAllSellers();
         log.info("Seller Found: {} ", sellerServiceViewModels);
@@ -53,6 +58,7 @@ public class SellerController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<SellerServiceViewModel> deleteSeller(@PathVariable("id") Long id) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.deleteSellerById(id);
         log.info("Seller  deleted : {}", sellerServiceViewModel);

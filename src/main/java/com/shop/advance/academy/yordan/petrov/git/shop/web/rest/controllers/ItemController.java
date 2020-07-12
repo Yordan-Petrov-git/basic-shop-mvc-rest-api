@@ -25,6 +25,7 @@ public class ItemController {
     }
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ItemServiceViewModel> createItem(@RequestBody ItemServiceModel itemServiceModel) {
         ItemServiceViewModel itemServiceViewModel = itemService.createItem(itemServiceModel);
         log.info("Item  created : {}", itemServiceViewModel);
@@ -32,6 +33,7 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ItemServiceViewModel> updateItem(@PathVariable("id") Long id, @RequestBody ItemServiceModel itemServiceModel) {
         ItemServiceViewModel itemServiceViewModel = itemService.updateItem(itemServiceModel);
         log.info("Item  UPDATED : {}", itemServiceViewModel);
@@ -39,6 +41,7 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ItemServiceViewModel> getItemById(@PathVariable("id") final Long id) {
         ItemServiceViewModel itemServiceViewModel = itemService.getItemById(id);
         log.info("Item  found : {}", itemServiceViewModel);
@@ -46,6 +49,7 @@ public class ItemController {
     }
 
     @GetMapping("/serach/item/title/{title}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<ItemServiceViewModel> getItemByTitle(@PathVariable String title) {
         ItemServiceViewModel itemServiceViewModel = itemService.getItemByTitle(title);
         log.info("Item  found : {}", itemServiceViewModel);
@@ -53,6 +57,7 @@ public class ItemController {
     }
 
     @GetMapping("/serach/item/title/like/{title}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<ItemServiceViewModel>> getItemByTitleLike(@PathVariable String title) {
         List<ItemServiceViewModel> itemServiceViewModels = itemService.getItemByTitleLike(title);
         log.info("Item Found: {} ", itemServiceViewModels);
@@ -60,6 +65,7 @@ public class ItemController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<ItemServiceViewModel>> getAllItems() {
         List<ItemServiceViewModel> itemServiceViewModels = itemService.getAllItems();
         log.info("Item Found: {} ", itemServiceViewModels);

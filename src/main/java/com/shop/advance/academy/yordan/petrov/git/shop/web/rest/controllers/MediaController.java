@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -33,6 +34,7 @@ public class MediaController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MediaServiceViewModel> updateMedia(@PathVariable("id") Long id, @RequestBody MediaServiceModel mediaServiceModel) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.updateMedia(mediaServiceModel);
         log.info("Media  UPDATED : {}", mediaServiceViewModel);
@@ -41,6 +43,7 @@ public class MediaController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MediaServiceViewModel> getMedia(@PathVariable("id") final Long id) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.getMediaById(id);
         log.info("Media  FOUND : {}", mediaServiceViewModel);
@@ -48,6 +51,7 @@ public class MediaController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<List<MediaServiceViewModel>> getMedias() {
         List<MediaServiceViewModel> mediaServiceViewModels = mediaService.getAllMedias();
         log.info("Medias Found: {} ", mediaServiceViewModels);
@@ -55,6 +59,7 @@ public class MediaController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<MediaServiceViewModel> deleteMedia(@PathVariable("id") Long id) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.deleteMediaById(id);
         log.info("Media deleted : {}", mediaServiceViewModel);
