@@ -74,7 +74,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.GET,"api/user","api/seller","api/purchases","api/order","api/currency","api/country","api/city","api/transactions","api/card","/api/items", "api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
                 .antMatchers(HttpMethod.DELETE, "api/seller","api/order").hasAuthority("ROLE_MODERATOR")
                 .antMatchers(HttpMethod.GET, "api/address").hasAuthority("ROLE_MODERATOR")
-                .antMatchers(HttpMethod.GET, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.GET,"/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.POST, "/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.PUT, "/**").hasAuthority("ROLE_ADMIN")
                 .antMatchers(HttpMethod.PATCH, "/**").hasAuthority("ROLE_ADMIN")

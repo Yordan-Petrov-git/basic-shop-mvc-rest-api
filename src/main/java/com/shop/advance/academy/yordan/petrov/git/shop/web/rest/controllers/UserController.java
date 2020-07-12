@@ -55,14 +55,14 @@ public class UserController {
     }
 
     @GetMapping("{id}")
-    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_USER')")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
         UserServiceViewModel userServiceViewModel = userService.getUserById(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_MODERATOR')")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<UserServiceViewModel>> getUsers() {
         List<UserServiceViewModel> userServiceViewModel = userService.getAllUsers();
         log.info("Users Found: {} ", userServiceViewModel);
