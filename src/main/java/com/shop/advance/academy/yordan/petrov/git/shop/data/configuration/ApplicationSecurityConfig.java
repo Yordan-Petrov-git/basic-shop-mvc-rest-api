@@ -68,7 +68,25 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(HttpMethod.POST, "/api/user",  "/api/login").permitAll()
                 .antMatchers( "/api/user",  "/api/login").anonymous()
                 .antMatchers(HttpMethod.DELETE, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.POST, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.PUT, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.PATCH, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.GET, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
                 .antMatchers(HttpMethod.DELETE, "/api/user","api/city","api/country","api/card","api/transactions"
+                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.POST, "/api/user","api/city","api/country","api/card","api/transactions"
+                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.PUT, "/api/user","api/city","api/country","api/card","api/transactions"
+                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.PATCH, "/api/user","api/city","api/country","api/card","api/transactions"
+                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.GET, "/api/user","api/city","api/country","api/card","api/transactions"
+                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.HEAD, "/api/user","api/city","api/country","api/card","api/transactions"
+                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.OPTIONS, "/api/user","api/city","api/country","api/card","api/transactions"
+                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.TRACE, "/api/user","api/city","api/country","api/card","api/transactions"
                         ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
                 .anyRequest().authenticated()
                 .and().
@@ -78,7 +96,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         // Add a filter to validate the tokens with every request
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
-
 
     @Bean
     public UserDetailsService userDetailsService(UserService userService) {
