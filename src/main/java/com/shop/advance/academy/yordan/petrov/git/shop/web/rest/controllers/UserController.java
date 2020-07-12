@@ -61,7 +61,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
-    @GetMapping()
+    @GetMapping("/all")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<UserServiceViewModel>> getUsers() {
         List<UserServiceViewModel> userServiceViewModel = userService.getAllUsers();

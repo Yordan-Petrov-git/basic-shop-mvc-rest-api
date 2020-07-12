@@ -22,11 +22,21 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Slf4j
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private static final String[] AUTH_WHITELIST = {
+
+            // -- swagger ui
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final UserService userService;
@@ -39,7 +49,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
-
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
@@ -47,6 +56,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         // Use BCryptPasswordEncoder
         auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
     }
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -59,12 +69,14 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return super.authenticationManagerBean();
     }
 
-
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
+                //TODO DELETE SWAGGER UI LINK IF NEEDED
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers("/**/*").denyAll()
                 .antMatchers(HttpMethod.POST, "/api/user", "/api/login").permitAll()
                 .antMatchers("/api/user", "/api/login").anonymous()
                 .antMatchers(HttpMethod.DELETE, "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
