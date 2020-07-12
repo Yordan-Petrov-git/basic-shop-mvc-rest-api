@@ -39,7 +39,7 @@ public class UserController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> updateUser(@PathVariable("id") Long id, @RequestBody UserServiceModel userServiceModel) {
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
         log.info("User updated: {}", userServiceViewModel);
@@ -47,31 +47,29 @@ public class UserController {
     }
 
     @PatchMapping("{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> partialUpdateUser(@PathVariable("id") Long id, @RequestBody UserServiceModel userServiceModel) {
         UserServiceViewModel userServiceViewModel = userService.updateUser(userServiceModel);
         log.info("User updated: {} , ", userServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
-
     @GetMapping("{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
         UserServiceViewModel userServiceViewModel = userService.getUserById(id);
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
-
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_MODERATOR')")
     public ResponseEntity<List<UserServiceViewModel>> getUsers() {
         List<UserServiceViewModel> userServiceViewModel = userService.getAllUsers();
         log.info("Users Found: {} ", userServiceViewModel);
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     @GetMapping("/serach/user/username/{username}")
     public ResponseEntity<UserServiceViewModel> getUserByUsername(@PathVariable String username) {
         UserServiceViewModel userServiceViewModel = userService.getUserByUsername(username);
@@ -79,7 +77,7 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     @GetMapping("/serach/user/username/like/{username}")
     public ResponseEntity<List<UserServiceViewModel>> getUserByUsernameLike(@PathVariable String username) {
         List<UserServiceViewModel> userServiceViewModel = userService.getUserByUsernameLike(username);
@@ -88,12 +86,11 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
         UserServiceViewModel userServiceViewModel = userService.deleteUserById(id);
         log.info("Users deleted: {} ", userServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
-
     }
 
 }

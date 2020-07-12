@@ -25,7 +25,7 @@ public class ItemController {
     }
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> createItem(@RequestBody ItemServiceModel itemServiceModel) {
         ItemServiceViewModel itemServiceViewModel = itemService.createItem(itemServiceModel);
         log.info("Item  created : {}", itemServiceViewModel);
@@ -33,7 +33,7 @@ public class ItemController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> updateItem(@PathVariable("id") Long id, @RequestBody ItemServiceModel itemServiceModel) {
         ItemServiceViewModel itemServiceViewModel = itemService.updateItem(itemServiceModel);
         log.info("Item  UPDATED : {}", itemServiceViewModel);
@@ -41,7 +41,7 @@ public class ItemController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> getItemById(@PathVariable("id") final Long id) {
         ItemServiceViewModel itemServiceViewModel = itemService.getItemById(id);
         log.info("Item  found : {}", itemServiceViewModel);
@@ -49,7 +49,7 @@ public class ItemController {
     }
 
     @GetMapping("/serach/item/title/{title}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> getItemByTitle(@PathVariable String title) {
         ItemServiceViewModel itemServiceViewModel = itemService.getItemByTitle(title);
         log.info("Item  found : {}", itemServiceViewModel);
@@ -57,7 +57,7 @@ public class ItemController {
     }
 
     @GetMapping("/serach/item/title/like/{title}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<ItemServiceViewModel>> getItemByTitleLike(@PathVariable String title) {
         List<ItemServiceViewModel> itemServiceViewModels = itemService.getItemByTitleLike(title);
         log.info("Item Found: {} ", itemServiceViewModels);
@@ -65,7 +65,7 @@ public class ItemController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<ItemServiceViewModel>> getAllItems() {
         List<ItemServiceViewModel> itemServiceViewModels = itemService.getAllItems();
         log.info("Item Found: {} ", itemServiceViewModels);
@@ -73,7 +73,7 @@ public class ItemController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> deleteItem(@PathVariable("id") Long id) {
         ItemServiceViewModel itemServiceViewModel = itemService.deleteItemById(id);
         log.info("Item  deleted : {}", itemServiceViewModel);

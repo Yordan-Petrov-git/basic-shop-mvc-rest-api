@@ -27,7 +27,7 @@ public class CardController {
 
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CardServiceViewModel> createCard(@RequestBody CardServiceModel cardServiceModel) {
         CardServiceViewModel cardServiceViewModel = cardService.createCard(cardServiceModel);
         log.info("Card  created : {}", cardServiceViewModel);
@@ -35,7 +35,7 @@ public class CardController {
     }
 
     @PutMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CardServiceViewModel> updateCard(@RequestBody CardServiceModel cardServiceModel) {
         CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
         log.info("Card  updated : {}", cardServiceViewModel);
@@ -45,7 +45,7 @@ public class CardController {
 
 
     @PatchMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CardServiceViewModel> partialUpdateCard(@RequestBody CardServiceModel cardServiceModel) {
         CardServiceViewModel cardServiceViewModel = cardService.updateCard(cardServiceModel);
         log.info("Card  updated : {}", cardServiceViewModel);
@@ -53,7 +53,7 @@ public class CardController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<CardServiceViewModel> getCard(@PathVariable("id") final Long id) {
         CardServiceViewModel cardServiceViewModel = cardService.getCardById(id);
         log.info("Card  found : {}", cardServiceViewModel);
@@ -61,7 +61,7 @@ public class CardController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_USER')")
     public ResponseEntity<List<CardServiceViewModel>> getCards() {
         List<CardServiceViewModel> cardServiceViewModel = cardService.getAllCards();
         log.info("CardS  found : {}", cardServiceViewModel);
@@ -69,7 +69,7 @@ public class CardController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CardServiceViewModel> deleteCard(@PathVariable("id") Long id) {
         CardServiceViewModel cardServiceViewModel = cardService.deleteCardById(id);
         log.info("Card deleted : {}", cardServiceViewModel);

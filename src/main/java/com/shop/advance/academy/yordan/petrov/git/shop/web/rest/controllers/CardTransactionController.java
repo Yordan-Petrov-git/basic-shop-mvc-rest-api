@@ -29,7 +29,7 @@ public class CardTransactionController {
 
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> createTransaction(@RequestBody TransactionServiceModel transactionServiceModel) {
         TransactionServiceViewModel transactionServiceViewModel = transactionService.createTransaction(transactionServiceModel);
         URI location = MvcUriComponentsBuilder.fromMethodName(CardTransactionController.class, "createTransaction", TransactionServiceViewModel.class)
@@ -39,7 +39,7 @@ public class CardTransactionController {
     }
 
     @PutMapping("{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> updateTransaction(@PathVariable("id") Long id, @RequestBody TransactionServiceModel transactionServiceModel) {
         TransactionServiceViewModel transactionServiceViewModel = transactionService.updateTransaction(transactionServiceModel);
         log.info("Transaction updated: {}", transactionServiceViewModel);
@@ -47,7 +47,7 @@ public class CardTransactionController {
     }
 
     @PatchMapping("{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> partialUpdateTransaction(@PathVariable("id") Long id, @RequestBody TransactionServiceModel transactionServiceModel) {
         TransactionServiceViewModel transactionServiceViewModel = transactionService.updateTransaction(transactionServiceModel);
         log.info("Transaction updated: {} , ", transactionServiceViewModel);
@@ -56,7 +56,7 @@ public class CardTransactionController {
 
 
     @GetMapping("{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> getTransaction(@PathVariable("id") final Long id) {
         TransactionServiceViewModel transactionServiceViewModel = transactionService.getTransactionById(id);
         log.info("Transaction Found: {} ", transactionServiceViewModel);
@@ -64,7 +64,7 @@ public class CardTransactionController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()  and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<TransactionServiceViewModel>> getTransactions() {
         List<TransactionServiceViewModel> transactionServiceViewModel = transactionService.getAllTransactions();
         log.info("Transactions Found: {} ", transactionServiceViewModel);
@@ -73,7 +73,7 @@ public class CardTransactionController {
 
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<TransactionServiceViewModel> deleteTransaction(@PathVariable("id") Long id) {
         TransactionServiceViewModel transactionServiceViewModel = transactionService.deleteTransactionById(id);
         log.info("Transaction deleted: {} ", transactionServiceViewModel);

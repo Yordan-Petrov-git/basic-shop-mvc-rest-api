@@ -27,7 +27,7 @@ public class CityController {
 
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> createCity(@RequestBody CityServiceModel cityServiceModel) {
         CityServiceViewModel cityServiceViewModel = cityService.createCity(cityServiceModel);
         log.info("City  created : {}", cityServiceViewModel);
@@ -35,7 +35,7 @@ public class CityController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> updateCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
         CityServiceViewModel cityServiceViewModel = cityService.updateCity(id);
         log.info("City  UPDATED : {}", cityServiceViewModel);
@@ -44,7 +44,7 @@ public class CityController {
 
 
     @PatchMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> updateSpecificAttributesCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
         CityServiceViewModel cityServiceViewModel = cityService.updateCity(id);
         log.info("City  UPDATED : {}", cityServiceViewModel);
@@ -53,7 +53,7 @@ public class CityController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<CityServiceViewModel> getCity(@PathVariable("id") final Long id) {
         CityServiceViewModel cityServiceViewModel = cityService.getCityById(id);
         log.info("City  FOUND : {}", cityServiceViewModel);
@@ -61,7 +61,7 @@ public class CityController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<CityServiceViewModel>> getCites() {
         List<CityServiceViewModel> cityServiceViewModels = cityService.getAllCities();
         log.info("Cities Found: {} ", cityServiceViewModels);
@@ -69,7 +69,7 @@ public class CityController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> deleteCity(@PathVariable("id") Long id) {
         CityServiceViewModel cityServiceViewModel = cityService.deleteCityById(id);
         log.info("City deleted: {} ", cityServiceViewModel);

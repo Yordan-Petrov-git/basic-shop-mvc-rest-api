@@ -27,7 +27,7 @@ public class CurrencyController {
 
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> createCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.createCurrency(currencyServiceModel);
         log.info("Currency  created : {}", currencyServiceViewModel);
@@ -35,7 +35,7 @@ public class CurrencyController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> updateCurrency(@PathVariable("id") Long id, @RequestBody CurrencyServiceModel currencyServiceModel) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.updateCurrency(currencyServiceModel);
         log.info("Currency  updated : {}", currencyServiceViewModel);
@@ -44,7 +44,7 @@ public class CurrencyController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<CurrencyServiceViewModel> getCurrency(@PathVariable("id") final Long id) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.getCurrencyById(id);
         log.info("Currency  found : {}", currencyServiceViewModel);
@@ -52,7 +52,7 @@ public class CurrencyController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<CurrencyServiceViewModel>> getCurrencies() {
         List<CurrencyServiceViewModel> currencyServiceViewModels = currencyService.getAllCurrencies();
         log.info("Currency Found: {} ", currencyServiceViewModels);
@@ -60,7 +60,7 @@ public class CurrencyController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> deleteCurrency(@PathVariable("id") Long id) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.deleteCurrencyById(id);
         log.info("Currency  deleted : {}", currencyServiceViewModel);

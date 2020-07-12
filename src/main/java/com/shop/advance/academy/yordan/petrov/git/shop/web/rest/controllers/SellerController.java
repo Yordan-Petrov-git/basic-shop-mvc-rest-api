@@ -25,7 +25,7 @@ public class SellerController {
     }
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<SellerServiceViewModel> createSeller(@RequestBody SellerServiceModel sellerServiceModel) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.createSeller(sellerServiceModel);
         log.info("Seller  created : {}", sellerServiceViewModel);
@@ -33,7 +33,7 @@ public class SellerController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<SellerServiceViewModel> updateSeller(@PathVariable("id") Long id, @RequestBody SellerServiceModel sellerServiceModel) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.updateSeller(sellerServiceModel);
         log.info("Seller  found : {}", sellerServiceViewModel);
@@ -42,7 +42,7 @@ public class SellerController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<SellerServiceViewModel> getSeller(@PathVariable("id") final Long id) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.getSellerById(id);
         log.info("Seller  found : {}", sellerServiceViewModel);
@@ -50,7 +50,7 @@ public class SellerController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<SellerServiceViewModel>> getSellers() {
         List<SellerServiceViewModel> sellerServiceViewModels = sellerService.getAllSellers();
         log.info("Seller Found: {} ", sellerServiceViewModels);
@@ -58,7 +58,7 @@ public class SellerController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_MODERATOR')")
     public ResponseEntity<SellerServiceViewModel> deleteSeller(@PathVariable("id") Long id) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.deleteSellerById(id);
         log.info("Seller  deleted : {}", sellerServiceViewModel);

@@ -25,7 +25,7 @@ public class AddressController {
     }
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> createAddress(@RequestBody AddressServiceModel addressServiceModel) {
         AddressServiceViewModel addressServiceViewModel = addressService.createAddress(addressServiceModel);
         log.info("Address  created : {}", addressServiceViewModel);
@@ -33,7 +33,7 @@ public class AddressController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> updateAddress(@PathVariable("id") Long id, @RequestBody AddressServiceModel addressServiceModel) {
         AddressServiceViewModel addressServiceViewModel = addressService.updateAddress(addressServiceModel);
         log.info("Address  updated : {}", addressServiceViewModel);
@@ -42,7 +42,7 @@ public class AddressController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> getAddress(@PathVariable("id") final Long id) {
         AddressServiceViewModel addressServiceViewModel = addressService.getAddressById(id);
         log.info("Address  found : {}", addressServiceViewModel);
@@ -50,7 +50,7 @@ public class AddressController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_MODERATOR')")
     public ResponseEntity<List<AddressServiceViewModel>> getAddress() {
         List<AddressServiceViewModel> addressServiceViewModel = addressService.getAllAddresses();
         log.info("Addresses  found : {}", addressServiceViewModel);
@@ -58,12 +58,11 @@ public class AddressController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> deleteAddress(@PathVariable("id") Long id) {
         AddressServiceViewModel addressServiceViewModel = addressService.deleteAddressById(id);
         log.info("Address deleted : {}", addressServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(addressServiceViewModel);
     }
-
 
 }

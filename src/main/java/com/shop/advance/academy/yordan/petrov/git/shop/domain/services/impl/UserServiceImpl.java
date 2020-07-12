@@ -100,13 +100,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userRepository.findByUsername(username)
-                .orElseThrow(()->new InvalidEntityException(String.format("No user with username %s",username)));
+                .orElseThrow(() -> new InvalidEntityException(String.format("No user with username %s", username)));
     }
 
     @Override
     public UserServiceViewModel getUserByUsername(String username) throws InvalidEntityException {
         return mapUserToUserServiceViewModel(this.userRepository.findByUsername(username)
-                .orElseThrow(()->new InvalidEntityException(String.format("No user with username %s",username))));
+                .orElseThrow(() -> new InvalidEntityException(String.format("No user with username %s", username))));
     }
 
     @Override
@@ -121,7 +121,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceViewModel getUserByFirstName(String firstName) {
         //TODO
         return mapUserToUserServiceViewModel(this.userRepository.findByFirstName(firstName)
-                .orElseThrow(()->new InvalidEntityException(String.format("No user with first name %s",firstName))));
+                .orElseThrow(() -> new InvalidEntityException(String.format("No user with first name %s", firstName))));
     }
 
     @Override
@@ -136,7 +136,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceViewModel getUserByLastName(String lastName) {
         //TODO
         return mapUserToUserServiceViewModel(this.userRepository.findByLastName(lastName)
-                .orElseThrow(()->new InvalidEntityException(String.format("No user with last name %s",lastName))));
+                .orElseThrow(() -> new InvalidEntityException(String.format("No user with last name %s", lastName))));
     }
 
     @Override
@@ -151,7 +151,7 @@ public class UserServiceImpl implements UserService {
     public UserServiceViewModel getUserByFirstNameAndLastName(String firstName, String lastName) {
         //TODO
         return mapUserToUserServiceViewModel(this.userRepository.findByFirstNameAndLastName(firstName, lastName)
-                .orElseThrow(()->new InvalidEntityException(String.format("No user with last name and last name %s %s",firstName,lastName))));
+                .orElseThrow(() -> new InvalidEntityException(String.format("No user with last name and last name %s %s", firstName, lastName))));
     }
 
     @Override

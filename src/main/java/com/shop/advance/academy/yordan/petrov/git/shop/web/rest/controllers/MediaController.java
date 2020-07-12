@@ -27,6 +27,7 @@ public class MediaController {
 
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> createMedia(@RequestBody MediaServiceModel mediaServiceModel) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.createMedia(mediaServiceModel);
         log.info("Media  created : {}", mediaServiceViewModel);
@@ -34,7 +35,7 @@ public class MediaController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> updateMedia(@PathVariable("id") Long id, @RequestBody MediaServiceModel mediaServiceModel) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.updateMedia(mediaServiceModel);
         log.info("Media  UPDATED : {}", mediaServiceViewModel);
@@ -43,7 +44,7 @@ public class MediaController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> getMedia(@PathVariable("id") final Long id) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.getMediaById(id);
         log.info("Media  FOUND : {}", mediaServiceViewModel);
@@ -51,7 +52,7 @@ public class MediaController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<MediaServiceViewModel>> getMedias() {
         List<MediaServiceViewModel> mediaServiceViewModels = mediaService.getAllMedias();
         log.info("Medias Found: {} ", mediaServiceViewModels);
@@ -59,7 +60,7 @@ public class MediaController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> deleteMedia(@PathVariable("id") Long id) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.deleteMediaById(id);
         log.info("Media deleted : {}", mediaServiceViewModel);

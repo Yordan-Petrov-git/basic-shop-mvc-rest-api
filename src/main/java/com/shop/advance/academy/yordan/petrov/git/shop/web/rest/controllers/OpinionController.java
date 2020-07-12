@@ -27,7 +27,7 @@ public class OpinionController {
 
 
     @PostMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> createOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.createOpinion(opinionServiceModel);
         log.info("Opinion  created : {}", opinionServiceViewModel);
@@ -35,7 +35,7 @@ public class OpinionController {
     }
 
     @PutMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> updateOpinion(@PathVariable("id") Long id, @RequestBody OpinionServiceModel opinionServiceModel) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.updateOpinion(opinionServiceModel);
         log.info("Opinion  updated : {}", opinionServiceViewModel);
@@ -44,7 +44,7 @@ public class OpinionController {
 
 
     @GetMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> getOpinion(@PathVariable("id") final Long id) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.getOpinionById(id);
         log.info("Opinion  FOUND : {}", opinionServiceViewModel);
@@ -52,7 +52,7 @@ public class OpinionController {
     }
 
     @GetMapping()
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<OpinionServiceViewModel>> getOpinions() {
         List<OpinionServiceViewModel> opinionServiceViewModelList = opinionService.getAllOpinions();
         log.info("Opinions Found: {} ", opinionServiceViewModelList);
@@ -60,7 +60,7 @@ public class OpinionController {
     }
 
     @DeleteMapping("/{id}")
-    @PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> deleteOpinion(@PathVariable("id") Long id) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.deleteOpinionById(id);
         log.info("Opinion  deleted : {}", opinionServiceViewModel);

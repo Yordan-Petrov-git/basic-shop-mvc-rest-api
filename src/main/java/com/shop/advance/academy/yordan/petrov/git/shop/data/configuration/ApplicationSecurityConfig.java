@@ -65,29 +65,22 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/user",  "/api/login").permitAll()
-                .antMatchers( "/api/user",  "/api/login").anonymous()
-                .antMatchers(HttpMethod.DELETE, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.POST, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.PUT, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.PATCH, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.GET, "/api/items","/api/address","/api/contactinformation","/api/media","/api/opinion","/api/order").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.DELETE, "/api/user","api/city","api/country","api/card","api/transactions"
-                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
-                .antMatchers(HttpMethod.POST, "/api/user","api/city","api/country","api/card","api/transactions"
-                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
-                .antMatchers(HttpMethod.PUT, "/api/user","api/city","api/country","api/card","api/transactions"
-                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
-                .antMatchers(HttpMethod.PATCH, "/api/user","api/city","api/country","api/card","api/transactions"
-                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
-                .antMatchers(HttpMethod.GET, "/api/user","api/city","api/country","api/card","api/transactions"
-                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
-                .antMatchers(HttpMethod.HEAD, "/api/user","api/city","api/country","api/card","api/transactions"
-                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
-                .antMatchers(HttpMethod.OPTIONS, "/api/user","api/city","api/country","api/card","api/transactions"
-                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
-                .antMatchers(HttpMethod.TRACE, "/api/user","api/city","api/country","api/card","api/transactions"
-                        ,"/api/address","/api/currency","/api/contactinformation","/api/items","/api/media","/api/purchases","/api/seller","/api/cart").hasAnyAuthority( "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.POST, "/api/user", "/api/login").permitAll()
+                .antMatchers("/api/user", "/api/login").anonymous()
+                .antMatchers(HttpMethod.DELETE, "/api/items", "api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.POST, "api/seller","api/purchases","api/order","api/transactions", "/api/items", "api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.PUT,"api/user","api/seller","api/purchases","api/order","api/transactions","/api/items", "api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.PATCH,"api/user","api/seller","api/purchases","api/order","api/transactions","/api/items", "api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.GET,"api/user","api/seller","api/purchases","api/order","api/currency","api/country","api/city","api/transactions","api/card","/api/items", "api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.DELETE, "api/seller","api/order").hasAuthority("ROLE_MODERATOR")
+                .antMatchers(HttpMethod.GET, "api/address").hasAuthority("ROLE_MODERATOR")
+                .antMatchers(HttpMethod.GET, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.PUT, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.TRACE, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.OPTIONS, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**").hasAuthority("ROLE_ADMIN")
                 .anyRequest().authenticated()
                 .and().
                 exceptionHandling()
