@@ -54,7 +54,6 @@ public class PurchasingServiceImpl implements PurchasingService {
 
     @Override
     public TransactionServiceViewModel refundCardPurchase(TransactionServiceModel transactionServiceModel) {
-        //TODO GET SENDER AND RECIER FORM TRANSACTION
         TransactionServiceModel transactionServiceForRefund = getTransactionServiceModelForRefundTransaction(transactionServiceModel);
         refundCardPurchaseValidationAndUpdates(transactionServiceModel, transactionServiceForRefund);
         return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceForRefund);
@@ -86,7 +85,7 @@ public class PurchasingServiceImpl implements PurchasingService {
     public void isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(Instant dateTransactionCompleted) {
         boolean isNonRefundable;
         //14 days in seconds
-       final int daysInSecondsBetweenPurchaseAndTransaction = 1209600;
+        final int daysInSecondsBetweenPurchaseAndTransaction = 1209600;
         int minutes = Duration
                 .between(dateTransactionCompleted, Instant.now())
                 .toSecondsPart();

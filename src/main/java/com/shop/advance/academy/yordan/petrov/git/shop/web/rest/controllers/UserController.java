@@ -82,6 +82,7 @@ public class UserController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated()")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {
         UserServiceViewModel userServiceViewModel = userService.deleteUserById(id);
         log.info("Users deleted: {} ", userServiceViewModel);

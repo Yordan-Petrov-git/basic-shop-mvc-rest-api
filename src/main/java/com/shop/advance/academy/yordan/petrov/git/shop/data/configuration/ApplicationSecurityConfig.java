@@ -64,11 +64,15 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/users/register", "/authenticate", "/register").permitAll()
-                .antMatchers("/", "/users/register", "/users/login", "/authenticate", "/register").anonymous()
-                .antMatchers("/authenticate", "/register").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/users/register",  "/login").permitAll()
+                .antMatchers("/", "/users/register",  "/login").anonymous()
+                .antMatchers("/login").permitAll()
+                .antMatchers(HttpMethod.DELETE, "/api/items").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.DELETE, "/api/items").authenticated()
+                .antMatchers(HttpMethod.DELETE, "/api/user").hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
+                .antMatchers(HttpMethod.DELETE, "/api/user").authenticated()
                 .and().
-                 exceptionHandling()
+                exceptionHandling()
                 .authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
@@ -81,7 +85,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 //                .antMatchers(HttpMethod.PUT, "/**")
 //                .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
 //                .antMatchers(HttpMethod.DELETE, "/**")
-//                .hasAuthority("ROLE_ADMIN")
+//                .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
 //                .antMatchers("/**").permitAll()
 //                .anyRequest().authenticated()
 //                .and()
