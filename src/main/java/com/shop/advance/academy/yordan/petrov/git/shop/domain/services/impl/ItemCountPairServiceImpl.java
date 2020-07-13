@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemCountPairRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ItemCountPairRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceViewModel;

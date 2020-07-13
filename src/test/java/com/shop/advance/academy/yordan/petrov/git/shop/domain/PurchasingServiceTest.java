@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.OrderRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.PurchasingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

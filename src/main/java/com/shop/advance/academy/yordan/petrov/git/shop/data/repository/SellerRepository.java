@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.dao;
+package com.shop.advance.academy.yordan.petrov.git.shop.data.repository;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;

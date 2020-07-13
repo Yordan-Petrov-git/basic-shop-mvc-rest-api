@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.SellerRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.SellerRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceModel;

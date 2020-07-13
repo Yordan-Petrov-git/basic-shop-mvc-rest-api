@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.AddressRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CityRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;

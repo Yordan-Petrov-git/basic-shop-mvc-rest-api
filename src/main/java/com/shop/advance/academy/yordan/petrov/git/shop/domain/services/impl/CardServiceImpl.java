@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CardRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CurrencyRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
