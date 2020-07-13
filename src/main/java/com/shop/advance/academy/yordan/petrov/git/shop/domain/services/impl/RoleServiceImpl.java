@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.RoleServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;

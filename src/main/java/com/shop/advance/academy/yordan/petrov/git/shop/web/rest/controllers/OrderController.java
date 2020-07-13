@@ -37,7 +37,7 @@ public class OrderController {
 
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<OrderServiceViewModel> updateOrder( @RequestBody OrderServiceModel orderServiceModel) {
+    public ResponseEntity<OrderServiceViewModel> updateOrder(@RequestBody OrderServiceModel orderServiceModel) {
         OrderServiceViewModel contactInformationServiceViewModel = orderService.updateOrder(orderServiceModel);
         log.info("Order  UPDATED : {}", contactInformationServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(contactInformationServiceViewModel);

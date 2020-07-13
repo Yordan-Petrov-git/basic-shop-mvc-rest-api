@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CountryRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;

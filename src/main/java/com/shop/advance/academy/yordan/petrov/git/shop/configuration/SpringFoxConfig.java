@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.configuration;
+package com.shop.advance.academy.yordan.petrov.git.shop.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -20,8 +20,6 @@ public class SpringFoxConfig {
                 .paths(PathSelectors.any())
                 .build();
     }
-
-
 
 
 }

@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.RoleRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;

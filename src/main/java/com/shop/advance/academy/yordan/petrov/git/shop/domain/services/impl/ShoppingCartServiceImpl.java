@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ItemRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ShoppingCartRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;

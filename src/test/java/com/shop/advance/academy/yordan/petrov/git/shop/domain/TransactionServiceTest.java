@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.TransactionRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.TransactionRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.TransactionService;

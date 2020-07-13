@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.MediaRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.MediaRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Media;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.MediaServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.MediaService;

@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ContactInformationRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;

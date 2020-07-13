@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.configuration;
+package com.shop.advance.academy.yordan.petrov.git.shop.configuration;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;

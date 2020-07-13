@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CurrencyRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;

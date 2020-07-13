@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CardRepository;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
