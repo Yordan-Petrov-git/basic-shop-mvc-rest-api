@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class CountryController {
 
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CountryServiceViewModel> createCountry(@RequestBody CountryServiceModel countryServiceModel) {
         CountryServiceViewModel countryServiceViewModel = countryService.createCountry(countryServiceModel);
         log.info("Country  created : {}", countryServiceViewModel);
@@ -32,7 +34,8 @@ public class CountryController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CountryServiceViewModel> updateCountry(@PathVariable("id") Long id, @RequestBody CountryServiceModel countryServiceModel) {
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<CountryServiceViewModel> updateCountry(@RequestBody CountryServiceModel countryServiceModel) {
         CountryServiceViewModel countryServiceViewModel = countryService.updateCountry(countryServiceModel);
         log.info("Country  Updated : {}", countryServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(countryServiceViewModel);
@@ -40,6 +43,7 @@ public class CountryController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<CountryServiceViewModel> getCountry(@PathVariable("id") final Long id) {
         CountryServiceViewModel countryServiceViewModel = countryService.getCountryById(id);
         log.info("Country  found : {}", countryServiceViewModel);
@@ -47,6 +51,7 @@ public class CountryController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<CountryServiceViewModel>> getCountries() {
         List<CountryServiceViewModel> countryServiceViewModels = countryService.getAllCountries();
         log.info("Country Found: {} ", countryServiceViewModels);
@@ -54,6 +59,7 @@ public class CountryController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CountryServiceViewModel> deleteCountry(@PathVariable("id") Long id) {
         CountryServiceViewModel countryServiceViewModel = countryService.deleteCountryById(id);
         log.info("Country  deleted : {}", countryServiceViewModel);

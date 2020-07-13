@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class ContactInformationController {
 
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ContactInformationServiceViewModel> createContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
         ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.createContactInformation(contactInformationServiceModel);
         log.info("Contact Information  created : {}", contactInformationServiceViewModel);
@@ -33,7 +35,8 @@ public class ContactInformationController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ContactInformationServiceViewModel> updateContactInformation(@PathVariable("id") Long id, @RequestBody ContactInformationServiceModel contactInformationServiceModel) {
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
+    public ResponseEntity<ContactInformationServiceViewModel> updateContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
         ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.updateContactInformation(contactInformationServiceModel);
         log.info("Contact Information  updated : {}", contactInformationServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(contactInformationServiceViewModel);
@@ -41,6 +44,7 @@ public class ContactInformationController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ContactInformationServiceViewModel> getContactInformation(@PathVariable("id") final Long id) {
         ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.getContactInformationById(id);
         log.info("Contact Information  found : {}", contactInformationServiceViewModel);
@@ -48,6 +52,7 @@ public class ContactInformationController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<ContactInformationServiceViewModel>> getContactInformation() {
         List<ContactInformationServiceViewModel> contactInformationServiceViewModels = contactInformationService.getAllContactInformations();
         log.info("Contact Information Found: {} ", contactInformationServiceViewModels);
@@ -55,6 +60,7 @@ public class ContactInformationController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ContactInformationServiceViewModel> deleteContactInformation(@PathVariable("id") Long id) {
         ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.deleteContactInformationById(id);
         log.info("Contact Information deleted : {}", contactInformationServiceViewModel);

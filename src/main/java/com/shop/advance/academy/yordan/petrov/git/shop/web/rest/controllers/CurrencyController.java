@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class CurrencyController {
 
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> createCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.createCurrency(currencyServiceModel);
         log.info("Currency  created : {}", currencyServiceViewModel);
@@ -33,7 +35,8 @@ public class CurrencyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CurrencyServiceViewModel> updateCurrency(@PathVariable("id") Long id, @RequestBody CurrencyServiceModel currencyServiceModel) {
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
+    public ResponseEntity<CurrencyServiceViewModel> updateCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.updateCurrency(currencyServiceModel);
         log.info("Currency  updated : {}", currencyServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(currencyServiceViewModel);
@@ -41,6 +44,7 @@ public class CurrencyController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<CurrencyServiceViewModel> getCurrency(@PathVariable("id") final Long id) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.getCurrencyById(id);
         log.info("Currency  found : {}", currencyServiceViewModel);
@@ -48,6 +52,7 @@ public class CurrencyController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<CurrencyServiceViewModel>> getCurrencies() {
         List<CurrencyServiceViewModel> currencyServiceViewModels = currencyService.getAllCurrencies();
         log.info("Currency Found: {} ", currencyServiceViewModels);
@@ -55,6 +60,7 @@ public class CurrencyController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> deleteCurrency(@PathVariable("id") Long id) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.deleteCurrencyById(id);
         log.info("Currency  deleted : {}", currencyServiceViewModel);

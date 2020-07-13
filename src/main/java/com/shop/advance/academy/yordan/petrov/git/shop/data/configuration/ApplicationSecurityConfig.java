@@ -4,16 +4,24 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.configuration;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
 
 @Configuration
 @EnableWebSecurity
@@ -21,33 +29,76 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 @Slf4j
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors().disable()
-                .csrf().disable()
-                .authorizeRequests()
-                .antMatchers("/", "/users/register", "/users/login").anonymous()
-                .antMatchers(HttpMethod.POST, "/api/users/register").permitAll();
-//                .antMatchers(HttpMethod.POST, "/**")
-        //        .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN" ,"ROLE_MODERATOR")
-//                .antMatchers(HttpMethod.PUT, "/**")
-//                .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN")
-//                .antMatchers(HttpMethod.DELETE, "/**").hasAuthority("ROLE_ADMIN")
-//                .antMatchers("/**").permitAll()
-//                .anyRequest().authenticated();
-//                .and()
-//                .formLogin()
-//                .loginPage("/users/login")
-//                .usernameParameter("username")
-//                .passwordParameter("password")
-//                .defaultSuccessUrl("/home")
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/");
+    private static final String[] AUTH_WHITELIST = {
 
+            // -- swagger ui
+            "/swagger-resources/**",
+            "/swagger-ui.html",
+            "/v2/api-docs",
+            "/webjars/**"
+    };
+
+    private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+    private final UserService userService;
+    private final JwtRequestFilter jwtRequestFilter;
+
+    @Autowired
+    public ApplicationSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, UserService userService, JwtRequestFilter jwtRequestFilter) {
+        this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
+        this.userService = userService;
+        this.jwtRequestFilter = jwtRequestFilter;
     }
 
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        // configure AuthenticationManager so that it knows from where to load
+        // user for matching credentials
+        // Use BCryptPasswordEncoder
+        auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+    }
+
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
+
+    @Bean
+    @Override
+    public AuthenticationManager authenticationManagerBean() throws Exception {
+        return super.authenticationManagerBean();
+    }
+
+    @Override
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+        httpSecurity
+                .csrf().disable()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/user", "/api/login").permitAll()
+                .antMatchers(AUTH_WHITELIST).permitAll()
+                .antMatchers("/api/user", "/api/login").anonymous()
+                .antMatchers(HttpMethod.DELETE, "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.POST, "/api/seller", "/api/purchases", "/api/order", "/api/transactions", "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.PUT, "/api/user", "/api/seller", "/api/purchases", "/api/order", "/api/transactions", "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.PATCH, "/api/user", "/api/seller", "/api/purchases", "/api/order", "/api/transactions", "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.GET, "/api/user/**", "/api/seller/**", "/api/purchases", "/api/order/**", "/api/currency/**", "/api/country/**", "/api/city/**", "/api/transactions/**", "/api/card/**", "/api/items/**", "/api/cart/**", "/api/address/**", "/api/contactinformation/**", "/api/media/**", "/api/opinion/**", "/api/user/serach/user/username/**", " /api/user/serach/user/username/like/**", "api/items/serach/item/title/**", "api/items/serach/item/title/like/**").hasAnyAuthority("ROLE_USER")
+                .antMatchers(HttpMethod.DELETE, "/api/seller", "/api/order").hasAuthority("ROLE_MODERATOR")
+                .antMatchers(HttpMethod.GET, "/api/address").hasAuthority("ROLE_MODERATOR")
+                .antMatchers(HttpMethod.GET, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.PUT, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.PATCH, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.TRACE, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.OPTIONS, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.DELETE, "/**").hasAuthority("ROLE_ADMIN")
+                .anyRequest().authenticated()
+                .and().
+                exceptionHandling()
+                .authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        // Add a filter to validate the tokens with every request
+        httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
+    }
 
     @Bean
     public UserDetailsService userDetailsService(UserService userService) {
@@ -61,12 +112,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             }
         };
     }
-
-//    @Bean
-//    @Override
-//    public AuthenticationManager authenticationManagerBean() throws Exception {
-//        return super.authenticationManagerBean();
-//    }
 
 }
 

@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -25,6 +26,7 @@ public class OrderController {
 
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OrderServiceViewModel> createOrder(@RequestBody OrderServiceModel orderServiceModel) {
         OrderServiceViewModel contactInformationServiceViewModel = orderService.createOrder(orderServiceModel);
         log.info("Order  created : {}", contactInformationServiceViewModel);
@@ -34,7 +36,8 @@ public class OrderController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<OrderServiceViewModel> updateOrder(@PathVariable("id") Long id, @RequestBody OrderServiceModel orderServiceModel) {
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
+    public ResponseEntity<OrderServiceViewModel> updateOrder( @RequestBody OrderServiceModel orderServiceModel) {
         OrderServiceViewModel contactInformationServiceViewModel = orderService.updateOrder(orderServiceModel);
         log.info("Order  UPDATED : {}", contactInformationServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(contactInformationServiceViewModel);
@@ -42,6 +45,7 @@ public class OrderController {
 
 
     @GetMapping("{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OrderServiceViewModel> getOrder(@PathVariable("id") final Long id) {
         OrderServiceViewModel contactInformationServiceViewModel = orderService.getOrderById(id);
         log.info("Order  found : {}", contactInformationServiceViewModel);
@@ -49,6 +53,7 @@ public class OrderController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<OrderServiceViewModel>> getOrders() {
         List<OrderServiceViewModel> orderServiceViewModels = orderService.getAllOrders();
         log.info("Sellers Found: {} ", orderServiceViewModels);
@@ -56,6 +61,7 @@ public class OrderController {
     }
 
     @DeleteMapping("{id}")
+    @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_MODERATOR')")
     public ResponseEntity<OrderServiceViewModel> deleteOrder(@PathVariable("id") Long id) {
         OrderServiceViewModel contactInformationServiceViewModel = orderService.deleteOrderById(id);
         log.info("Order  deleted : {}", contactInformationServiceViewModel);

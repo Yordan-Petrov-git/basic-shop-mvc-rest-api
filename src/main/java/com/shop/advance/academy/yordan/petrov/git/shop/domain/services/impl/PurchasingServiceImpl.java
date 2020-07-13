@@ -51,9 +51,6 @@ public class PurchasingServiceImpl implements PurchasingService {
         return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceModel);
     }
 
-    private void createTransactionForPayByCard(TransactionServiceModel transactionServiceModel) {
-        transactionService.createTransaction(transactionServiceModel);
-    }
 
     @Override
     public TransactionServiceViewModel refundCardPurchase(TransactionServiceModel transactionServiceModel) {
@@ -62,7 +59,14 @@ public class PurchasingServiceImpl implements PurchasingService {
         return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceForRefund);
     }
 
-    private void refundCardPurchaseValidationAndUpdates(TransactionServiceModel transactionServiceModel, TransactionServiceModel transactionServiceForRefund) {
+    private void createTransactionForPayByCard(TransactionServiceModel transactionServiceModel) {
+        transactionService.createTransaction(transactionServiceModel);
+    }
+
+
+    private void refundCardPurchaseValidationAndUpdates(TransactionServiceModel transactionServiceModel
+            , TransactionServiceModel transactionServiceForRefund) {
+
         isTransactionStatusRefunded(transactionServiceForRefund.getTransactionStatus());
         isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(transactionServiceForRefund.getDateCompleted());
         updateOrderForRefund(findOrderFromTransactionServiceModelById(transactionServiceModel));
@@ -81,7 +85,7 @@ public class PurchasingServiceImpl implements PurchasingService {
     public void isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(Instant dateTransactionCompleted) {
         boolean isNonRefundable;
         //14 days in seconds
-        int daysInSecondsBetweenPurchaseAndTransaction = 1209600;
+        final int daysInSecondsBetweenPurchaseAndTransaction = 1209600;
         int minutes = Duration
                 .between(dateTransactionCompleted, Instant.now())
                 .toSecondsPart();

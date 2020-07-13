@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -22,19 +23,19 @@ public class PurchasingByCardController {
     }
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> creatPurchase(@RequestBody TransactionServiceModel transactionServiceModel) {
         TransactionServiceViewModel transactionServiceViewModel = purchasingService.payByCard(transactionServiceModel);
         log.info("Purchased : {}", transactionServiceViewModel);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(transactionServiceViewModel);
-
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> refundPurchase(@RequestBody TransactionServiceModel transactionServiceModel) {
         TransactionServiceViewModel transactionServiceViewModel = purchasingService.refundCardPurchase(transactionServiceModel);
         log.info("Refunded : {}", transactionServiceViewModel);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(transactionServiceViewModel);
-
     }
 
 }

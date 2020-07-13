@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,6 +27,7 @@ public class OpinionController {
 
 
     @PostMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> createOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.createOpinion(opinionServiceModel);
         log.info("Opinion  created : {}", opinionServiceViewModel);
@@ -33,7 +35,8 @@ public class OpinionController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<OpinionServiceViewModel> updateOpinion(@PathVariable("id") Long id, @RequestBody OpinionServiceModel opinionServiceModel) {
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
+    public ResponseEntity<OpinionServiceViewModel> updateOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.updateOpinion(opinionServiceModel);
         log.info("Opinion  updated : {}", opinionServiceViewModel);
         return ResponseEntity.status(HttpStatus.OK).body(opinionServiceViewModel);
@@ -41,6 +44,7 @@ public class OpinionController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> getOpinion(@PathVariable("id") final Long id) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.getOpinionById(id);
         log.info("Opinion  FOUND : {}", opinionServiceViewModel);
@@ -48,6 +52,7 @@ public class OpinionController {
     }
 
     @GetMapping()
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<OpinionServiceViewModel>> getOpinions() {
         List<OpinionServiceViewModel> opinionServiceViewModelList = opinionService.getAllOpinions();
         log.info("Opinions Found: {} ", opinionServiceViewModelList);
@@ -55,6 +60,7 @@ public class OpinionController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> deleteOpinion(@PathVariable("id") Long id) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.deleteOpinionById(id);
         log.info("Opinion  deleted : {}", opinionServiceViewModel);
