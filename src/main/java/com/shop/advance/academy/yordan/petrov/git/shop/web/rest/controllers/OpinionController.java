@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

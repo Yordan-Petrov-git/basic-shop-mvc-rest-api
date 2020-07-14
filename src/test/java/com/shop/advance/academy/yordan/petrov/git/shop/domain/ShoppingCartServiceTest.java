@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ShoppingCartRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ShoppingCartServiceTest {
 
     @MockBean
-    ShoppingCartRepository shoppingCartRepository;
+    ShoppingCartDao shoppingCartDao;
 
     @Autowired
     ShoppingCartService shoppingCartService;
@@ -45,7 +45,7 @@ public class ShoppingCartServiceTest {
         carts.add(new ShoppingCart());
         carts.add(new ShoppingCart());
 
-        Mockito.when(shoppingCartRepository.findAll()).thenReturn(carts);
+        Mockito.when(shoppingCartDao.findAll()).thenReturn(carts);
         List<ShoppingCartServiceViewModel> transactionToAdd = shoppingCartService.getAllShoppingCarts();
 
         assertEquals(3, transactionToAdd.size());
@@ -57,7 +57,7 @@ public class ShoppingCartServiceTest {
         ShoppingCart shoppingCart = new ShoppingCart();
         shoppingCart.setId(15L);
 
-        Mockito.when(shoppingCartRepository.findById(15L))
+        Mockito.when(shoppingCartDao.findById(15L))
                 .thenReturn(java.util.Optional.of(shoppingCart));
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = this.modelMapper.map(shoppingCart, ShoppingCartServiceViewModel.class);
 

@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.MediaRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.MediaDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Media;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.MediaServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.MediaServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.MediaService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class MediaServiceTest {
 
     @MockBean
-    MediaRepository mediaRepository;
+    MediaDao mediaDao;
 
     @Autowired
     MediaService mediaService;
@@ -45,7 +45,7 @@ public class MediaServiceTest {
         media.add(new Media());
         media.add(new Media());
 
-        Mockito.when(mediaRepository.findAll()).thenReturn(media);
+        Mockito.when(mediaDao.findAll()).thenReturn(media);
         List<MediaServiceViewModel> mediasFetchedFromRepo = mediaService.getAllMedias();
 
         assertEquals(3, mediasFetchedFromRepo.size());
@@ -57,7 +57,7 @@ public class MediaServiceTest {
         Media media = new Media();
         media.setId(15L);
 
-        Mockito.when(mediaRepository.findById(15L))
+        Mockito.when(mediaDao.findById(15L))
                 .thenReturn(java.util.Optional.of(media));
         MediaServiceViewModel mediaServiceViewModel = this.modelMapper.map(media, MediaServiceViewModel.class);
 

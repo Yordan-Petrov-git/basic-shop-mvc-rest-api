@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CardRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CardServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CardServiceTest {
 
     @MockBean
-    CardRepository cardRepository;
+    CardDao cardDao;
 
     @Autowired
     CardService cardService;
@@ -45,7 +45,7 @@ public class CardServiceTest {
         cards.add(new Card());
         cards.add(new Card());
 
-        Mockito.when(cardRepository.findAll()).thenReturn(cards);
+        Mockito.when(cardDao.findAll()).thenReturn(cards);
         List<CardServiceViewModel> cardServiceViewModels = cardService.getAllCards();
 
         assertEquals(3, cardServiceViewModels.size());
@@ -57,7 +57,7 @@ public class CardServiceTest {
         Card card = new Card();
         card.setId(15L);
 
-        Mockito.when(cardRepository.findById(15L))
+        Mockito.when(cardDao.findById(15L))
                 .thenReturn(java.util.Optional.of(card));
         CardServiceViewModel cardServiceViewModel = this.modelMapper.map(card, CardServiceViewModel.class);
 

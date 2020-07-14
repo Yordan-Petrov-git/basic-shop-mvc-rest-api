@@ -1,9 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CountryRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
@@ -18,12 +18,12 @@ import java.util.List;
 @Service
 public class CountryServiceImpl implements CountryService {
 
-    private final CountryRepository countryRepository;
+    private final CountryDao countryDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public CountryServiceImpl(CountryRepository countryRepository, ModelMapper modelMapper) {
-        this.countryRepository = countryRepository;
+    public CountryServiceImpl(CountryDao countryDao, ModelMapper modelMapper) {
+        this.countryDao = countryDao;
         this.modelMapper = modelMapper;
     }
 
@@ -31,7 +31,7 @@ public class CountryServiceImpl implements CountryService {
     public CountryServiceViewModel createCountry(CountryServiceModel countryServiceModel) {
         Country country = mapCountryServiceModelToCountry(countryServiceModel);
         findByNme(countryServiceModel);
-        this.countryRepository.saveAndFlush(country);
+        this.countryDao.saveAndFlush(country);
         return mapCountryToCountryServiceViewModel(country);
     }
 
@@ -41,31 +41,31 @@ public class CountryServiceImpl implements CountryService {
     public CountryServiceViewModel updateCountry(CountryServiceModel countryServiceModel) {
         Country country = mapCountryServiceModelToCountry(countryServiceModel);
         getCountryById(countryServiceModel.getId());
-        this.countryRepository.saveAndFlush(country);
+        this.countryDao.saveAndFlush(country);
         return mapCountryToCountryServiceViewModel(country);
     }
 
     @Override
     public CountryServiceViewModel getCountryById(long id) {
         return this.modelMapper
-                .map(this.countryRepository.findById(id).orElseThrow(() ->
+                .map(this.countryDao.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Country  with ID %s not found.", id))), CountryServiceViewModel.class);
     }
 
     @Override
     public CountryServiceViewModel getCountryName(String name) {
         return this.modelMapper
-                .map(this.countryRepository.findByName(name).orElseThrow(() ->
+                .map(this.countryDao.findByName(name).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Country  with name %s not found.", name))), CountryServiceViewModel.class);
     }
 
     @Override
     public List<CountryServiceViewModel> getAllCountries() {
-        this.countryRepository.findAll()
+        this.countryDao.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Countries were found"));
-        List<Country> countries = countryRepository.findAll();
+        List<Country> countries = countryDao.findAll();
         return modelMapper.map(countries, new TypeToken<List<CountryServiceViewModel>>() {
         }.getType());
     }
@@ -73,12 +73,12 @@ public class CountryServiceImpl implements CountryService {
     @Override
     public CountryServiceViewModel deleteCountryById(long id) {
         CountryServiceViewModel countryServiceViewModel = this.getCountryById(id);
-        this.countryRepository.deleteById(id);
+        this.countryDao.deleteById(id);
         return countryServiceViewModel;
     }
 
     private void findByNme(CountryServiceModel countryServiceModel) {
-        this.countryRepository.findByName(countryServiceModel.getName()).ifPresent(c -> {
+        this.countryDao.findByName(countryServiceModel.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Country '%s' already exists.", countryServiceModel.getName()));
         });
     }

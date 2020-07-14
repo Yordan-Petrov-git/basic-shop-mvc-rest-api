@@ -1,13 +1,13 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ContactInformationRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.RoleRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.RoleServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.RoleServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalDeleteOperation;
@@ -33,21 +33,21 @@ import java.util.stream.Collectors;
 @Slf4j
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-    private final ContactInformationRepository contactInformationRepository;
+    private final UserDao userDao;
+    private final ContactInformationDao contactInformationDao;
     private final ModelMapper modelMapper;
-    private final RoleRepository roleRepository;
+    private final RoleDao roleDao;
     private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public UserServiceImpl(UserRepository userRepository, ContactInformationRepository contactInformationRepository,
-                           ModelMapper modelMapper, RoleRepository roleRepository, RoleService roleService,
+    public UserServiceImpl(UserDao userDao, ContactInformationDao contactInformationDao,
+                           ModelMapper modelMapper, RoleDao roleDao, RoleService roleService,
                            BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.userRepository = userRepository;
-        this.contactInformationRepository = contactInformationRepository;
+        this.userDao = userDao;
+        this.contactInformationDao = contactInformationDao;
         this.modelMapper = modelMapper;
-        this.roleRepository = roleRepository;
+        this.roleDao = roleDao;
         this.roleService = roleService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
@@ -65,7 +65,7 @@ public class UserServiceImpl implements UserService {
         user.setCreated(LocalDateTime.now());
         user.setModified(LocalDateTime.now());
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
-        return mapUserToUserServiceViewModel(this.userRepository.saveAndFlush(user));
+        return mapUserToUserServiceViewModel(this.userDao.saveAndFlush(user));
     }
 
     @Override
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService {
         validateIfUsernameExists(user);
         user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
         user.setModified(LocalDateTime.now());
-        return mapUserToUserServiceViewModel(this.userRepository.saveAndFlush(user));
+        return mapUserToUserServiceViewModel(this.userDao.saveAndFlush(user));
     }
 
     @Override
@@ -99,20 +99,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return this.userRepository.findByUsername(username)
+        return this.userDao.findByUsername(username)
                 .orElseThrow(() -> new InvalidEntityException(String.format("No user with username %s", username)));
     }
 
     @Override
     public UserServiceViewModel getUserByUsername(String username) throws InvalidEntityException {
-        return mapUserToUserServiceViewModel(this.userRepository.findByUsername(username)
+        return mapUserToUserServiceViewModel(this.userDao.findByUsername(username)
                 .orElseThrow(() -> new InvalidEntityException(String.format("No user with username %s", username))));
     }
 
     @Override
     public List<UserServiceViewModel> getUserByUsernameLike(String username) {
         //TODO
-        return modelMapper.map(this.userRepository.findByUsernameLike(username)
+        return modelMapper.map(this.userDao.findByUsernameLike(username)
                 , new TypeToken<List<UserServiceViewModel>>() {
                 }.getType());
     }
@@ -120,14 +120,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceViewModel getUserByFirstName(String firstName) {
         //TODO
-        return mapUserToUserServiceViewModel(this.userRepository.findByFirstName(firstName)
+        return mapUserToUserServiceViewModel(this.userDao.findByFirstName(firstName)
                 .orElseThrow(() -> new InvalidEntityException(String.format("No user with first name %s", firstName))));
     }
 
     @Override
     public List<UserServiceViewModel> getUserByFirstNameLike(String firstName) {
         //TODO
-        return modelMapper.map(this.userRepository.findByLastNameLike(firstName)
+        return modelMapper.map(this.userDao.findByLastNameLike(firstName)
                 , new TypeToken<List<UserServiceViewModel>>() {
                 }.getType());
     }
@@ -135,14 +135,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceViewModel getUserByLastName(String lastName) {
         //TODO
-        return mapUserToUserServiceViewModel(this.userRepository.findByLastName(lastName)
+        return mapUserToUserServiceViewModel(this.userDao.findByLastName(lastName)
                 .orElseThrow(() -> new InvalidEntityException(String.format("No user with last name %s", lastName))));
     }
 
     @Override
     public List<UserServiceViewModel> getUserByLastNameLike(String lastName) {
         //TODO
-        return modelMapper.map(this.userRepository.findByLastNameLike(lastName)
+        return modelMapper.map(this.userDao.findByLastNameLike(lastName)
                 , new TypeToken<List<UserServiceViewModel>>() {
                 }.getType());
     }
@@ -150,14 +150,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceViewModel getUserByFirstNameAndLastName(String firstName, String lastName) {
         //TODO
-        return mapUserToUserServiceViewModel(this.userRepository.findByFirstNameAndLastName(firstName, lastName)
+        return mapUserToUserServiceViewModel(this.userDao.findByFirstNameAndLastName(firstName, lastName)
                 .orElseThrow(() -> new InvalidEntityException(String.format("No user with last name and last name %s %s", firstName, lastName))));
     }
 
     @Override
     public List<UserServiceViewModel> getUserByFirstNameLikeAndLastNameLike(String firstName, String lastName) {
         //TODO
-        return modelMapper.map(this.userRepository.findByFirstNameLikeAndLastNameLike(firstName, lastName)
+        return modelMapper.map(this.userDao.findByFirstNameLikeAndLastNameLike(firstName, lastName)
                 , new TypeToken<List<UserServiceViewModel>>() {
                 }.getType());
     }
@@ -175,14 +175,14 @@ public class UserServiceImpl implements UserService {
     }
 
     public List<User> findAllUsersFromRepository() {
-        return this.userRepository.findAll();
+        return this.userDao.findAll();
     }
 
     public void validateIfUserRoleAdminPresentForDeletion(long id) {
-        if (userRepository.findById(1L).isPresent() && id == 1) {
+        if (userDao.findById(1L).isPresent() && id == 1) {
             throw new IllegalDeleteOperation("Admin user cannot be deleted");
         } else {
-            this.userRepository.deleteById(id);
+            this.userDao.deleteById(id);
         }
     }
 
@@ -195,25 +195,25 @@ public class UserServiceImpl implements UserService {
     }
 
     public User findUserById(long id) {
-        return this.userRepository.findById(id).orElseThrow(() ->
-                new EntityNotFoundException(String.format("User with ID %s not found.", id)));
+        return this.userDao.findById(id).orElseThrow(() ->
+                new EntityNotFoundException(String.format("User with ID %s not found.", id) ));
     }
 
     public void validateIfUsernameExists(User user) {
-        this.userRepository.findByUsername(user.getUsername()).ifPresent(u -> {
+        this.userDao.findByUsername(user.getUsername()).ifPresent(u -> {
             throw new InvalidEntityException(String.format("User with username '%s' already exists.", user.getUsername()));
         });
     }
 
     public void validateIfContactInfoIsDuplicated(@Valid UserServiceModel userServiceModel) {
-        if (contactInformationRepository.count() != 0) {
-            this.contactInformationRepository.findByEmail(userServiceModel.getContactInformation()
+        if (contactInformationDao.count() != 0) {
+            this.contactInformationDao.findByEmail(userServiceModel.getContactInformation()
                     .stream()
                     .findAny()
                     .get().getEmail()).ifPresent(e -> {
                 throw new InvalidEntityException(String.format("Email '%s' is  already registered.", e.getEmail()));
             });
-            this.contactInformationRepository.findByPhoneNumber(userServiceModel.getContactInformation()
+            this.contactInformationDao.findByPhoneNumber(userServiceModel.getContactInformation()
                     .stream()
                     .findAny()
                     .get().getPhoneNumber()).ifPresent(p -> {
@@ -228,7 +228,7 @@ public class UserServiceImpl implements UserService {
 
 
     public void addRolesToUsers(User user) {
-        if (userRepository.count() == 0) {
+        if (userDao.count() == 0) {
             //Sets 1 st registered user as admin role
             this.roleService.seedRolesInDatabase();
 
@@ -237,7 +237,7 @@ public class UserServiceImpl implements UserService {
                     .map(this::mapRoleModelServiceToRole)
                     .collect(Collectors.toSet()));
 
-        } else if (userRepository.count() > 0) {
+        } else if (userDao.count() > 0) {
             //Sets 2 and so on user  as user role
             user.setAuthorities(new LinkedHashSet<>());
             user.getAuthorities().add(authorityToRole());
@@ -249,7 +249,7 @@ public class UserServiceImpl implements UserService {
     }
 
     public Role findRoleByAuthority(String authority) {
-        return this.roleRepository.findByAuthority(authority);
+        return this.roleDao.findByAuthority(authority);
     }
 
     public Role mapRoleModelServiceToRole(RoleServiceModel r) {

@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CardServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CardServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CountryRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CountryServiceTest {
 
     @MockBean
-    CountryRepository countryRepository;
+    CountryDao countryDao;
 
     @Autowired
     CountryService countryService;
@@ -45,7 +45,7 @@ public class CountryServiceTest {
         countries.add(new Country());
         countries.add(new Country());
 
-        Mockito.when(countryRepository.findAll()).thenReturn(countries);
+        Mockito.when(countryDao.findAll()).thenReturn(countries);
         List<CountryServiceViewModel> countrysFetchedFromRepo = countryService.getAllCountries();
 
         assertEquals(3, countrysFetchedFromRepo.size());
@@ -57,7 +57,7 @@ public class CountryServiceTest {
         Country country = new Country();
         country.setId(15L);
 
-        Mockito.when(countryRepository.findById(15L))
+        Mockito.when(countryDao.findById(15L))
                 .thenReturn(java.util.Optional.of(country));
         CountryServiceViewModel countryServiceViewModel = this.modelMapper.map(country, CountryServiceViewModel.class);
 

@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.TransactionRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.TransactionDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.TransactionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.TransactionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class TransactionServiceTest {
 
     @MockBean
-    TransactionRepository transactionRepository;
+    TransactionDao transactionDao;
 
     @Autowired
     TransactionService transactionService;
@@ -46,7 +46,7 @@ public class TransactionServiceTest {
         transactionToAdd.add(new Transaction());
         transactionToAdd.add(new Transaction());
 
-        Mockito.when(transactionRepository.findAll()).thenReturn(transactionToAdd);
+        Mockito.when(transactionDao.findAll()).thenReturn(transactionToAdd);
         List<TransactionServiceViewModel> transactionsFetchedFromRepo = transactionService.getAllTransactions();
 
         assertEquals(3, transactionsFetchedFromRepo.size());
@@ -58,7 +58,7 @@ public class TransactionServiceTest {
         Transaction transaction = new Transaction();
         transaction.setId(15L);
 
-        Mockito.when(transactionRepository.findById(15L))
+        Mockito.when(transactionDao.findById(15L))
                 .thenReturn(java.util.Optional.of(transaction));
         TransactionServiceViewModel transactionServiceViewModel = this.modelMapper.map(transaction, TransactionServiceViewModel.class);
 

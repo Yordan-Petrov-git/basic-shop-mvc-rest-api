@@ -1,14 +1,14 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.AddressRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CityRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.AddressServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.AddressServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -25,27 +25,27 @@ import java.util.List;
 @Service
 public class AddressServiceImpl implements AddressService {
 
-    private final AddressRepository addressRepository;
-    private final CityRepository cityRepository;
+    private final AddressDao addressDao;
+    private final CityDao cityDao;
     private final CityService cityService;
     private final ModelMapper modelMapper;
-    private final UserRepository userRepository;
+    private final UserDao userDao;
 
 
     @Autowired
-    public AddressServiceImpl(AddressRepository addressRepository, CityRepository cityRepository,
-                              CityService cityService, ModelMapper modelMapper, UserRepository userRepository) {
-        this.addressRepository = addressRepository;
-        this.cityRepository = cityRepository;
+    public AddressServiceImpl(AddressDao addressDao, CityDao cityDao,
+                              CityService cityService, ModelMapper modelMapper, UserDao userDao) {
+        this.addressDao = addressDao;
+        this.cityDao = cityDao;
         this.cityService = cityService;
         this.modelMapper = modelMapper;
-        this.userRepository = userRepository;
+        this.userDao = userDao;
     }
 
     @Override
     public AddressServiceViewModel createAddress(AddressServiceModel addressServiceModel) {
         Address address = mapAddressServiceModelToAddress(addressServiceModel);
-        this.addressRepository.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName())
+        this.addressDao.findByStreetNumberAndStreetName(addressServiceModel.getStreetNumber(), addressServiceModel.getStreetName())
                 .ifPresent(c -> {
                     throw new InvalidEntityException(
                             String.format("Address with number '%s' and street '%s' in city '%s' already exists.",
@@ -55,7 +55,7 @@ public class AddressServiceImpl implements AddressService {
                 });
         addressSetCity(addressServiceModel, address);
         address.setUsers(addUsersToAddress(addressServiceModel));
-        this.addressRepository.saveAndFlush(address);
+        this.addressDao.saveAndFlush(address);
         return mapAddressToAddressServiceViewModel(address);
     }
 
@@ -63,7 +63,7 @@ public class AddressServiceImpl implements AddressService {
     public List<User> addUsersToAddress(AddressServiceModel addressServiceModel) {
         List<User> userList = new ArrayList<>();
         addressServiceModel.getUser().forEach(u -> {
-            User user = userRepository.findById(u.getId())
+            User user = userDao.findById(u.getId())
                     .orElseThrow(InvalidEntityException::new);
             userList.add(user);
         });
@@ -76,7 +76,7 @@ public class AddressServiceImpl implements AddressService {
         Address address = mapAddressServiceModelToAddress(addressServiceModel);
         getAddressById(addressServiceModel.getId());
         address.setUsers(addUsersToAddress(addressServiceModel));
-        this.addressRepository.saveAndFlush(address);
+        this.addressDao.saveAndFlush(address);
         return mapAddressToAddressServiceViewModel(address);
     }
 
@@ -94,7 +94,7 @@ public class AddressServiceImpl implements AddressService {
     @Override
     public AddressServiceViewModel deleteAddressById(long id) {
         AddressServiceViewModel addressServiceViewModel = this.getAddressById(id);
-        this.addressRepository.deleteAddressById(id);
+        this.addressDao.deleteAddressById(id);
         return addressServiceViewModel;
     }
 
@@ -118,7 +118,7 @@ public class AddressServiceImpl implements AddressService {
     }
 
     private List<Address> findAllAddresses() {
-        return this.addressRepository.findAll();
+        return this.addressDao.findAll();
     }
 
     public List<AddressServiceViewModel> mapAddressListToAddressServiceViewModelList(List<Address> addresses) {
@@ -127,12 +127,12 @@ public class AddressServiceImpl implements AddressService {
     }
 
     public Address findAddressByIdFromRepository(long id) {
-        return this.addressRepository.findById(id)
+        return this.addressDao.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Address with ID %s not found.", id)));
     }
 
     public void addressSetCity(AddressServiceModel addressServiceModel, Address address) {
-        cityRepository.findCityByName(addressServiceModel.getCity().getName())
+        cityDao.findCityByName(addressServiceModel.getCity().getName())
                 .ifPresent(c -> {
                     address.setCity(this.modelMapper.map(findCityByName(addressServiceModel), City.class));
                 });

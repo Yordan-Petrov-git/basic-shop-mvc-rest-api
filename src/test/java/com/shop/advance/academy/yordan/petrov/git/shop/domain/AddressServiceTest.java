@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.AddressRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.AddressServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class AddressServiceTest {
 
     @MockBean
-    AddressRepository addressRepository;
+    AddressDao addressDao;
 
     @Autowired
     AddressService addressService;
@@ -45,7 +45,7 @@ public class AddressServiceTest {
         addresses.add(new Address());
         addresses.add(new Address());
 
-        Mockito.when(addressRepository.findAll()).thenReturn(addresses);
+        Mockito.when(addressDao.findAll()).thenReturn(addresses);
         List<AddressServiceViewModel> addressServiceViewModels = addressService.getAllAddresses();
 
         assertEquals(3, addressServiceViewModels.size());
@@ -57,7 +57,7 @@ public class AddressServiceTest {
         Address address = new Address();
         address.setId(15L);
 
-        Mockito.when(addressRepository.findById(15L))
+        Mockito.when(addressDao.findById(15L))
                 .thenReturn(java.util.Optional.of(address));
         AddressServiceViewModel addressServiceViewModel = this.modelMapper.map(address, AddressServiceViewModel.class);
 

@@ -1,9 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ItemCountPairRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemCountPairDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemCountPairServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemCountPairServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPairService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
@@ -17,26 +17,26 @@ import java.util.List;
 @Service
 public class ItemCountPairServiceImpl implements ItemCountPairService {
 
-    private final ItemCountPairRepository itemCountPairRepository;
+    private final ItemCountPairDao itemCountPairDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ItemCountPairServiceImpl(ItemCountPairRepository itemCountPairRepository, ModelMapper modelMapper) {
-        this.itemCountPairRepository = itemCountPairRepository;
+    public ItemCountPairServiceImpl(ItemCountPairDao itemCountPairDao, ModelMapper modelMapper) {
+        this.itemCountPairDao = itemCountPairDao;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public ItemCountPairServiceViewModel createItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {
         ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
-        this.itemCountPairRepository.saveAndFlush(itemCountPair);
+        this.itemCountPairDao.saveAndFlush(itemCountPair);
         return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
     @Override
     public ItemCountPairServiceViewModel updateItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {
         ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
-        this.itemCountPairRepository.saveAndFlush(itemCountPair);
+        this.itemCountPairDao.saveAndFlush(itemCountPair);
         return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
@@ -55,7 +55,7 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
     @Override
     public ItemCountPairServiceViewModel deleteItemCountPairById(long id) {
         ItemCountPairServiceViewModel deleteShoppingCartItem = this.getItemCountPairById(id);
-        this.itemCountPairRepository.deleteById(id);
+        this.itemCountPairDao.deleteById(id);
         return deleteShoppingCartItem;
     }
 
@@ -68,7 +68,7 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
     }
 
     private ItemCountPair findShoppingCartById(long id) {
-        return this.itemCountPairRepository.findById(id).orElseThrow(() ->
+        return this.itemCountPairDao.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Item  with ID %s not found.", id)));
     }
 
@@ -78,11 +78,11 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
     }
 
     private List<ItemCountPair> getItemCountPairsList() {
-        return this.itemCountPairRepository.findAll();
+        return this.itemCountPairDao.findAll();
     }
 
     private void validateIfFoundAny() {
-        this.itemCountPairRepository.findAll()
+        this.itemCountPairDao.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Items were found"));

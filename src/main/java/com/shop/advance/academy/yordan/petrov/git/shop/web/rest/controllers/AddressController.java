@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.AddressServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.AddressServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.AddressServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

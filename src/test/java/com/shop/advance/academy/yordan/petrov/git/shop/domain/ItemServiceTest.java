@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ItemRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ItemServiceTest {
 
     @MockBean
-    ItemRepository itemRepository;
+    ItemDao itemDao;
 
     @Autowired
     ItemService itemService;
@@ -45,7 +45,7 @@ public class ItemServiceTest {
         items.add(new Item());
         items.add(new Item());
 
-        Mockito.when(itemRepository.findAll()).thenReturn(items);
+        Mockito.when(itemDao.findAll()).thenReturn(items);
         List<ItemServiceViewModel> itemsFetchedFromRepo = itemService.getAllItems();
 
         assertEquals(3, itemsFetchedFromRepo.size());
@@ -57,7 +57,7 @@ public class ItemServiceTest {
         Item item = new Item();
         item.setId(15L);
 
-        Mockito.when(itemRepository.findById(15L))
+        Mockito.when(itemDao.findById(15L))
                 .thenReturn(java.util.Optional.of(item));
         ItemServiceViewModel itemServiceViewModel = this.modelMapper.map(item, ItemServiceViewModel.class);
 

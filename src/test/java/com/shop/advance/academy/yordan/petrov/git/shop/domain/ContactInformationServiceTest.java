@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ContactInformationRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ContactInformationServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ContactInformationServiceTest {
 
     @MockBean
-    ContactInformationRepository contactInformationRepository;
+    ContactInformationDao contactInformationDao;
 
     @Autowired
     ContactInformationService contactInformationService;
@@ -45,7 +45,7 @@ public class ContactInformationServiceTest {
         contactInformations.add(new ContactInformation());
         contactInformations.add(new ContactInformation());
 
-        Mockito.when(contactInformationRepository.findAll()).thenReturn(contactInformations);
+        Mockito.when(contactInformationDao.findAll()).thenReturn(contactInformations);
         List<ContactInformationServiceViewModel> contactInformationServiceViewModels = contactInformationService.getAllContactInformations();
 
         assertEquals(3, contactInformationServiceViewModels.size());
@@ -57,7 +57,7 @@ public class ContactInformationServiceTest {
         ContactInformation contactInformation = new ContactInformation();
         contactInformation.setId(15L);
 
-        Mockito.when(contactInformationRepository.findById(15L))
+        Mockito.when(contactInformationDao.findById(15L))
                 .thenReturn(java.util.Optional.of(contactInformation));
         ContactInformationServiceViewModel contactInformationServiceViewModel = this.modelMapper.map(contactInformation, ContactInformationServiceViewModel.class);
 

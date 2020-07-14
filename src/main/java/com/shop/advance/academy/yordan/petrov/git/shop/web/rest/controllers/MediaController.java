@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.MediaServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.MediaServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.MediaServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.MediaServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.MediaService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

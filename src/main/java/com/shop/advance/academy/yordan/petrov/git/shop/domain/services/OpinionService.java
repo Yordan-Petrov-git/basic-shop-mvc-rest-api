@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceViewModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

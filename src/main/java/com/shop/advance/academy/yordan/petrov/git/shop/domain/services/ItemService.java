@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemServiceViewModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
