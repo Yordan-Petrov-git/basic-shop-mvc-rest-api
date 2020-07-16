@@ -6,7 +6,6 @@ import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalCardTrans
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalDeleteOperation;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.web.servlet.error.ErrorController;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageConversionException;
@@ -21,7 +20,7 @@ import java.nio.file.AccessDeniedException;
 
 @ControllerAdvice("com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers")
 @Slf4j
-public class ExceptionHandlerController implements ErrorController {
+public class ExceptionHandlerController {
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(EntityNotFoundException ex) {
@@ -52,19 +51,22 @@ public class ExceptionHandlerController implements ErrorController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
+
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<String> handle(AccessDeniedException ex) {
+    public ResponseEntity<ErrorResponse> handle(AccessDeniedException ex) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
+
     @ExceptionHandler(UsernameNotFoundException.class)
-    public ResponseEntity<String> handle(UsernameNotFoundException ex) {
+    public ResponseEntity<ErrorResponse> handle(UsernameNotFoundException ex) {
         log.error(ex.getMessage());
-        return ResponseEntity.status(HttpStatus.FORBIDDEN)
-                .body(ex.getMessage());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
+
 
     @ExceptionHandler({InvalidEntityException.class,
             ConstraintViolationException.class,
@@ -77,8 +79,5 @@ public class ExceptionHandlerController implements ErrorController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
-    @Override
-    public String getErrorPath() {
-        return null;
-    }
+
 }
