@@ -2,8 +2,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.City;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Country;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceViewModel;

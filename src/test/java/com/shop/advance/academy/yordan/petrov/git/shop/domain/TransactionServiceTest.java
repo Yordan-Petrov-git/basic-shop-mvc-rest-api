@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.TransactionDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Transaction;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.TransactionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.TransactionService;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,8 +1,8 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
+package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardProviders;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.CardProviders;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.CardType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;

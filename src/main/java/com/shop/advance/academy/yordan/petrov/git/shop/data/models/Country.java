@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
+package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;

@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.OrderStatus;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.PaymentType;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ShipmentType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.OrderStatus;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.PaymentType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.ShipmentType;
 
 import java.math.BigDecimal;
 import java.util.Objects;

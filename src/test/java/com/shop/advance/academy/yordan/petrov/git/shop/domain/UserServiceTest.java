@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.User;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;

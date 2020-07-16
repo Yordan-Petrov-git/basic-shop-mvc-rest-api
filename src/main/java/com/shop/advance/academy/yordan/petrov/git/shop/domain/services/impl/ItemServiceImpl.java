@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Item;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;

@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Card;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CardServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import org.junit.jupiter.api.BeforeEach;

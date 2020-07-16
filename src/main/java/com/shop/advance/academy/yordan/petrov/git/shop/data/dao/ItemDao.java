@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.dao;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ItemCategory;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Item;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.ItemCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

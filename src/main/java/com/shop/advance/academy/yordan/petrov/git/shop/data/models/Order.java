@@ -1,8 +1,8 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
+package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.OrderStatus;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.PaymentType;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ShipmentType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.OrderStatus;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.PaymentType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.ShipmentType;
 
 import javax.persistence.*;
 import javax.validation.constraints.DecimalMax;

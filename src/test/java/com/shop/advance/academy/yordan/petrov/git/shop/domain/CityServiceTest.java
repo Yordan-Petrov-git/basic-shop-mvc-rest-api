@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.City;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import org.junit.jupiter.api.BeforeEach;

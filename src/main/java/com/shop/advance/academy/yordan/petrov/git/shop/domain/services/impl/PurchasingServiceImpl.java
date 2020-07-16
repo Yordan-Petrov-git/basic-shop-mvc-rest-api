@@ -1,11 +1,11 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.OrderStatus;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.PaymentType;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ShipmentType;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.TransactionStatus;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Order;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.OrderStatus;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.PaymentType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.ShipmentType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.TransactionStatus;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OrderServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.TransactionServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.TransactionServiceViewModel;

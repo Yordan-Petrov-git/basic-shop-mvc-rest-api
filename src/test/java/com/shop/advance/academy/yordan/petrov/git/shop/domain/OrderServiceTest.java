@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Order;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OrderServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import org.junit.jupiter.api.BeforeEach;

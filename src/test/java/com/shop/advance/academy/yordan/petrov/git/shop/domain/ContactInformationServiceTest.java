@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.ContactInformation;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ContactInformationServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
 import org.junit.jupiter.api.BeforeEach;

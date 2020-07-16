@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ItemCategory;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.ItemCategory;
 
 import java.math.BigDecimal;
 import java.util.HashSet;

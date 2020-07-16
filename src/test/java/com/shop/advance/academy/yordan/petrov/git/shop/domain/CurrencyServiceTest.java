@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Currency;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CurrencyServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemCountPairDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.ItemCountPair;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemCountPairServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPairService;
 import org.junit.jupiter.api.BeforeEach;

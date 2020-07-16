@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.AddressDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Address;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Address;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.AddressServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.AddressService;
 import org.junit.jupiter.api.BeforeEach;

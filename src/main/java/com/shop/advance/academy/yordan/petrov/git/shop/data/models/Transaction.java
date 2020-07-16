@@ -1,7 +1,7 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
+package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.TransactionStatus;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.TransactionStatus;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

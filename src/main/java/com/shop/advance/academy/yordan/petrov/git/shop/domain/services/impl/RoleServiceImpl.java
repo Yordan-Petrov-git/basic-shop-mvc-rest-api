@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Role;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.RoleServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import org.modelmapper.ModelMapper;

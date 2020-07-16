@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.UserType;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

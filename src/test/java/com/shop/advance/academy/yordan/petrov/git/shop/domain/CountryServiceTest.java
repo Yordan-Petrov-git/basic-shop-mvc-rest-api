@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
 import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryDao;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Country;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import org.junit.jupiter.api.BeforeEach;

@@ -1,8 +1,8 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
+package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.UserType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.UserType;
 import io.micrometer.core.lang.NonNull;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.userdetails.UserDetails;

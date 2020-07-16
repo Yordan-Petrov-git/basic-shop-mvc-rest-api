@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardProviders;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.CardType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.CardProviders;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.CardType;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;

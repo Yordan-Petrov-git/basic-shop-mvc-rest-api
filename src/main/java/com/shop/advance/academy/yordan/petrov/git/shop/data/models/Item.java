@@ -1,6 +1,6 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.data.entities;
+package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ItemCategory;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.ItemCategory;
 
 import javax.persistence.*;
 import java.math.BigDecimal;

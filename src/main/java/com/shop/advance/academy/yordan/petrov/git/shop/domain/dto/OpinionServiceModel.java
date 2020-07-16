@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.Rating;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.Rating;
 
 import java.util.Objects;
 import java.util.Set;
