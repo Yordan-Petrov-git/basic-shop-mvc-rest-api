@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,8 +30,10 @@ public class ItemController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> createItem(@RequestBody ItemServiceModel itemServiceModel) {
         ItemServiceViewModel itemServiceViewModel = itemService.createItem(itemServiceModel);
-        log.info("Item  created : {}", itemServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(itemServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(ItemController.class, "createItem", ItemServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(itemServiceViewModel.getId()).toUri();
+        log.info("Item  created : {} {}", itemServiceViewModel, location);
+        return ResponseEntity.created(location).body(itemServiceViewModel);
     }
 
     @PutMapping("/{id}")

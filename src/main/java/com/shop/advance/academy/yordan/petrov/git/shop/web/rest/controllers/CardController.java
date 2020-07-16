@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,8 +32,10 @@ public class CardController {
     @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CardServiceViewModel> createCard(@RequestBody CardServiceModel cardServiceModel) {
         CardServiceViewModel cardServiceViewModel = cardService.createCard(cardServiceModel);
-        log.info("Card  created : {}", cardServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cardServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(CardController.class, "createCard", CardServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(cardServiceViewModel.getId()).toUri();
+        log.info("Card  created : {} {}", cardServiceViewModel, location);
+        return ResponseEntity.created(location).body(cardServiceViewModel);
     }
 
     @PutMapping()

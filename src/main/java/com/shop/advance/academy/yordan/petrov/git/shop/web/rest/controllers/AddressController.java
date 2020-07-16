@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,8 +30,10 @@ public class AddressController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> createAddress(@RequestBody AddressServiceModel addressServiceModel) {
         AddressServiceViewModel addressServiceViewModel = addressService.createAddress(addressServiceModel);
-        log.info("Address  created : {}", addressServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(addressServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(AddressController.class, "createAddress", AddressServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(addressServiceViewModel.getId()).toUri();
+        log.info("Address  created : {} {}", addressServiceViewModel, location);
+        return ResponseEntity.created(location).body(addressServiceViewModel);
     }
 
     @PutMapping("/{id}")

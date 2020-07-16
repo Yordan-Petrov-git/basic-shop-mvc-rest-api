@@ -9,6 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
+
+import java.net.URI;
 
 @RestController
 @RequestMapping("api/purchases")
@@ -26,8 +29,10 @@ public class PurchasingByCardController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> creatPurchase(@RequestBody TransactionServiceModel transactionServiceModel) {
         TransactionServiceViewModel transactionServiceViewModel = purchasingService.payByCard(transactionServiceModel);
-        log.info("Purchased : {}", transactionServiceViewModel);
-        return ResponseEntity.status(HttpStatus.ACCEPTED).body(transactionServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(PurchasingByCardController.class, "creatPurchase", TransactionServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(transactionServiceViewModel.getId()).toUri();
+        log.info("Purchased : {} {}", transactionServiceViewModel, location);
+        return ResponseEntity.created(location).body(transactionServiceViewModel);
     }
 
     @GetMapping()

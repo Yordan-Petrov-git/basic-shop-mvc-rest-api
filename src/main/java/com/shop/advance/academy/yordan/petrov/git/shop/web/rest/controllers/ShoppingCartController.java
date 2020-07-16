@@ -32,8 +32,10 @@ public class ShoppingCartController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ShoppingCartServiceViewModel> createShoppingCart(@RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
-        log.info("Shopping Cart created: {}", shoppingCartServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCartServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(ShoppingCartController.class, "createShoppingCart", ShoppingCartServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
+        log.info("Shopping Cart created: {} {}", shoppingCartServiceViewModel, location);
+        return ResponseEntity.created(location).body(shoppingCartServiceViewModel);
     }
 
     @PutMapping("/{id}")

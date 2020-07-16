@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,8 +31,10 @@ public class OrderController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OrderServiceViewModel> createOrder(@RequestBody OrderServiceModel orderServiceModel) {
         OrderServiceViewModel contactInformationServiceViewModel = orderService.createOrder(orderServiceModel);
-        log.info("Order  created : {}", contactInformationServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(contactInformationServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(OrderController.class, "createOrder", OrderServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(contactInformationServiceViewModel.getId()).toUri();
+        log.info("Order  created : {} {}", contactInformationServiceViewModel, location);
+        return ResponseEntity.created(location).body(contactInformationServiceViewModel);
 
 
     }

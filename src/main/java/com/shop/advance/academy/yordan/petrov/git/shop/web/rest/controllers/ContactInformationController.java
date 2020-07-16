@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,8 +32,10 @@ public class ContactInformationController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ContactInformationServiceViewModel> createContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
         ContactInformationServiceViewModel contactInformationServiceViewModel = contactInformationService.createContactInformation(contactInformationServiceModel);
-        log.info("Contact Information  created : {}", contactInformationServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(contactInformationServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(ContactInformationController.class, "createContactInformation", ContactInformationServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(contactInformationServiceViewModel.getId()).toUri();
+        log.info("Contact Information  created : {} {}", contactInformationServiceViewModel, location);
+        return ResponseEntity.created(location).body(contactInformationServiceViewModel);
     }
 
     @PutMapping("/{id}")

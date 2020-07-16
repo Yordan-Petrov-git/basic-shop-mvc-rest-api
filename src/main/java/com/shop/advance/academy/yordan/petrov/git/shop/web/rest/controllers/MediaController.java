@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,8 +32,10 @@ public class MediaController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> createMedia(@RequestBody MediaServiceModel mediaServiceModel) {
         MediaServiceViewModel mediaServiceViewModel = mediaService.createMedia(mediaServiceModel);
-        log.info("Media  created : {}", mediaServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(mediaServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(MediaController.class, "createMedia", MediaServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(mediaServiceViewModel.getId()).toUri();
+        log.info("Media  created : {} {}", mediaServiceViewModel, location);
+        return ResponseEntity.created(location).body(mediaServiceViewModel);
     }
 
     @PutMapping("/{id}")

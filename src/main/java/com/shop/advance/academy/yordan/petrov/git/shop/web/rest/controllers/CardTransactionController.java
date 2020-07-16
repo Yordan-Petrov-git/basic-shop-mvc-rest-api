@@ -34,8 +34,8 @@ public class CardTransactionController {
         TransactionServiceViewModel transactionServiceViewModel = transactionService.createTransaction(transactionServiceModel);
         URI location = MvcUriComponentsBuilder.fromMethodName(CardTransactionController.class, "createTransaction", TransactionServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(transactionServiceViewModel.getId()).toUri();
-        log.info("Transaction created: {}", location);
-        return ResponseEntity.status(HttpStatus.CREATED).body(transactionServiceViewModel);
+        log.info("Transaction created: {} {}", transactionServiceViewModel, location);
+        return ResponseEntity.created(location).body(transactionServiceViewModel);
     }
 
     @PutMapping("{id}")

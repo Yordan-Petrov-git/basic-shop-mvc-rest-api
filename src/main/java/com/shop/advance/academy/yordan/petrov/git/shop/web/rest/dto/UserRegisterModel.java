@@ -1,4 +1,4 @@
-package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.models;
+package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.dto;
 
 public class UserRegisterModel {
 

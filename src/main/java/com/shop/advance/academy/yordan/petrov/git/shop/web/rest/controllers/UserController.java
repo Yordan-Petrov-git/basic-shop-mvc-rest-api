@@ -34,8 +34,8 @@ public class UserController {
         UserServiceViewModel userServiceViewModel = userService.createUser(userServiceModel);
         URI location = MvcUriComponentsBuilder.fromMethodName(UserController.class, "createUser", UserServiceViewModel.class)
                 .pathSegment("{id}").buildAndExpand(userServiceViewModel.getId()).toUri();
-        log.info("User created: {}", location);
-        return ResponseEntity.status(HttpStatus.CREATED).body(userServiceViewModel);
+        log.info("User created: {} {}", userServiceViewModel, location);
+        return ResponseEntity.created(location).body(userServiceViewModel);
     }
 
     @PutMapping("{id}")
