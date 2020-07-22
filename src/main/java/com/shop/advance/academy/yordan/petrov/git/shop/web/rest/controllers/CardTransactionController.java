@@ -9,9 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
-import java.net.URI;
 import java.util.List;
 
 
@@ -25,17 +23,6 @@ public class CardTransactionController {
     @Autowired
     public CardTransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
-    }
-
-
-    @PostMapping()
-    @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
-    public ResponseEntity<TransactionServiceViewModel> createTransaction(@RequestBody TransactionServiceModel transactionServiceModel) {
-        TransactionServiceViewModel transactionServiceViewModel = transactionService.createTransaction(transactionServiceModel);
-        URI location = MvcUriComponentsBuilder.fromMethodName(CardTransactionController.class, "createTransaction", TransactionServiceViewModel.class)
-                .pathSegment("{id}").buildAndExpand(transactionServiceViewModel.getId()).toUri();
-        log.info("Transaction created: {} {}", transactionServiceViewModel, location);
-        return ResponseEntity.created(location).body(transactionServiceViewModel);
     }
 
     @PutMapping("{id}")

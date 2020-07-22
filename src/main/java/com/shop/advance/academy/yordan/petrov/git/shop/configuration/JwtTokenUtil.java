@@ -3,10 +3,8 @@ package com.shop.advance.academy.yordan.petrov.git.shop.configuration;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
@@ -18,18 +16,11 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil implements Serializable {
 
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    @Autowired
-    public JwtTokenUtil(BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-    }
-
+    //JWT Token is valid for 2 hours afther creation 2 * 60(min) 60(sec)
     public static final long JWT_TOKEN_VALIDITY = 2 * 60 * 60;
 
     @Value("${jwt.secret}")
     private String secret;
-
-
 
     //retrieve username from jwt token
     public String getUsernameFromToken(String token) {
@@ -74,7 +65,6 @@ public class JwtTokenUtil implements Serializable {
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
-
     //validate token
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);

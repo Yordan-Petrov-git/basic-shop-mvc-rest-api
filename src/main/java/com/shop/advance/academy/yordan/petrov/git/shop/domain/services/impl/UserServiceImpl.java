@@ -100,13 +100,13 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userDao.findByUsername(username)
-                .orElseThrow(() -> new InvalidEntityException(String.format("No user with username %s", username)));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("No user with username %s", username)));
     }
 
     @Override
     public UserServiceViewModel getUserByUsername(String username) throws InvalidEntityException {
         return mapUserToUserServiceViewModel(this.userDao.findByUsername(username)
-                .orElseThrow(() -> new InvalidEntityException(String.format("No user with username %s", username))));
+                .orElseThrow(() -> new UsernameNotFoundException(String.format("No user with username %s", username))));
     }
 
     @Override

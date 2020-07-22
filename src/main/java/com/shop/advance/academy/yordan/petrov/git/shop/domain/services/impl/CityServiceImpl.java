@@ -40,7 +40,7 @@ public class CityServiceImpl implements CityService {
     public CityServiceViewModel createCity(CityServiceModel cityServiceModel) {
         City city = mapCityServiceModelToCity(cityServiceModel);
         getCityByName(city);
-        setCountryByName(cityServiceModel, city);
+        setCountryToCityByName(cityServiceModel, city);
         this.cityDao.saveAndFlush(city);
         return mapCityToCityServiceViewModel(city);
     }
@@ -95,15 +95,28 @@ public class CityServiceImpl implements CityService {
         });
     }
 
-    private void setCountryByName(CityServiceModel cityServiceModel, City city) {
-        countryDao.findByName(cityServiceModel.getCountry().getName())
+    private void setCountryToCityByName(CityServiceModel cityServiceModel, City city) {
+
+        countryDao.findByName(getCityName(cityServiceModel))
                 .ifPresent(c -> {
-                    city.setCountry(this.modelMapper.map(getCountryServiceViewModel(cityServiceModel), Country.class));
+                    setCountryToCity(cityServiceModel, city);
                 });
     }
 
+    private void setCountryToCity(CityServiceModel cityServiceModel, City city) {
+        city.setCountry(mapToCountry(cityServiceModel));
+    }
+
+    private Country mapToCountry(CityServiceModel cityServiceModel) {
+        return this.modelMapper.map(getCountryServiceViewModel(cityServiceModel), Country.class);
+    }
+
+    private String getCityName(CityServiceModel cityServiceModel) {
+        return cityServiceModel.getCountry().getName();
+    }
+
     private CountryServiceViewModel getCountryServiceViewModel(CityServiceModel cityServiceModel) {
-        return this.countryService.getCountryName(cityServiceModel.getCountry().getName());
+        return this.countryService.getCountryName(getCityName(cityServiceModel));
     }
 
     private CityServiceViewModel mapCityToCityServiceViewModel(City city) {
