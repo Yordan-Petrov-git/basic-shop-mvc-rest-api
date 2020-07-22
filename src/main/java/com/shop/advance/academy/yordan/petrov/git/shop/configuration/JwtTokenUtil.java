@@ -16,6 +16,7 @@ import java.util.function.Function;
 @Component
 public class JwtTokenUtil implements Serializable {
 
+    //JWT Token is valid for 2 hours afther creation 2 * 60(min) 60(sec)
     public static final long JWT_TOKEN_VALIDITY = 2 * 60 * 60;
 
     @Value("${jwt.secret}")
@@ -64,7 +65,6 @@ public class JwtTokenUtil implements Serializable {
                 .setExpiration(new Date(System.currentTimeMillis() + JWT_TOKEN_VALIDITY * 1000))
                 .signWith(SignatureAlgorithm.HS512, secret).compact();
     }
-
     //validate token
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);

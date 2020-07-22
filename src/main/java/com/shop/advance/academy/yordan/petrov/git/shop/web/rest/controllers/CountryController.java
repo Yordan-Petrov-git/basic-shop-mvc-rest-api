@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -29,8 +31,10 @@ public class CountryController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CountryServiceViewModel> createCountry(@RequestBody CountryServiceModel countryServiceModel) {
         CountryServiceViewModel countryServiceViewModel = countryService.createCountry(countryServiceModel);
-        log.info("Country  created : {}", countryServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(countryServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(CountryController.class, "createCountry", CountryServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(countryServiceViewModel.getId()).toUri();
+        log.info("Country  created : {} {}", countryServiceViewModel, location);
+        return ResponseEntity.created(location).body(countryServiceViewModel);
     }
 
     @PutMapping("/{id}")

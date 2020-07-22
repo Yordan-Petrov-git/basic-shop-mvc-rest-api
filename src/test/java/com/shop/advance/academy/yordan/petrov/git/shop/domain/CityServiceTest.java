@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CityRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.City;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CityServiceTest {
 
     @MockBean
-    CityRepository cityRepository;
+    CityDao cityDao;
 
     @Autowired
     CityService cityService;
@@ -45,7 +45,7 @@ public class CityServiceTest {
         cities.add(new City());
         cities.add(new City());
 
-        Mockito.when(cityRepository.findAll()).thenReturn(cities);
+        Mockito.when(cityDao.findAll()).thenReturn(cities);
         List<CityServiceViewModel> cityServiceViewModels = cityService.getAllCities();
 
         assertEquals(3, cityServiceViewModels.size());
@@ -57,7 +57,7 @@ public class CityServiceTest {
         City city = new City();
         city.setId(15L);
 
-        Mockito.when(cityRepository.findById(15L))
+        Mockito.when(cityDao.findById(15L))
                 .thenReturn(java.util.Optional.of(city));
         CityServiceViewModel cityServiceViewModel = this.modelMapper.map(city, CityServiceViewModel.class);
 

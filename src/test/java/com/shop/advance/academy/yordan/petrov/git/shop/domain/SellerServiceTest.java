@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.SellerRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Seller;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.SellerDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Seller;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.SellerServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class SellerServiceTest {
 
     @MockBean
-    SellerRepository sellerRepository;
+    SellerDao sellerDao;
 
     @Autowired
     SellerService sellerService;
@@ -48,7 +48,7 @@ public class SellerServiceTest {
         sellers.add(new Seller());
         sellers.add(new Seller());
 
-        Mockito.when(sellerRepository.findAll()).thenReturn(sellers);
+        Mockito.when(sellerDao.findAll()).thenReturn(sellers);
         List<SellerServiceViewModel> sellerServiceViewModels = sellerService.getAllSellers();
 
         assertEquals(3, sellerServiceViewModels.size());
@@ -60,7 +60,7 @@ public class SellerServiceTest {
         Seller seller = new Seller();
         seller.setId(15L);
 
-        Mockito.when(sellerRepository.findById(15L))
+        Mockito.when(sellerDao.findById(15L))
                 .thenReturn(java.util.Optional.of(seller));
         SellerServiceViewModel sellerServiceViewModel = this.modelMapper.map(seller, SellerServiceViewModel.class);
 

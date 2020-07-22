@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CurrencyRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Currency;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CurrencyServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CurrencyServiceTest {
 
     @MockBean
-    CurrencyRepository currencyRepository;
+    CurrencyDao currencyDao;
 
     @Autowired
     CurrencyService currencyService;
@@ -45,7 +45,7 @@ public class CurrencyServiceTest {
         currencies.add(new Currency());
         currencies.add(new Currency());
 
-        Mockito.when(currencyRepository.findAll()).thenReturn(currencies);
+        Mockito.when(currencyDao.findAll()).thenReturn(currencies);
         List<CurrencyServiceViewModel> currencysFetchedFromRepo = currencyService.getAllCurrencies();
 
         assertEquals(3, currencysFetchedFromRepo.size());
@@ -57,7 +57,7 @@ public class CurrencyServiceTest {
         Currency currency = new Currency();
         currency.setId(15L);
 
-        Mockito.when(currencyRepository.findById(15L))
+        Mockito.when(currencyDao.findById(15L))
                 .thenReturn(java.util.Optional.of(currency));
         CurrencyServiceViewModel currencyServiceViewModel = this.modelMapper.map(currency, CurrencyServiceViewModel.class);
 

@@ -1,12 +1,12 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.OrderRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ShoppingCartRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Order;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.ShoppingCart;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OrderServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OrderServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ShoppingCartServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -24,18 +24,18 @@ import java.util.List;
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    private final OrderRepository orderRepository;
+    private final OrderDao orderDao;
     private final ModelMapper modelMapper;
     private final ShoppingCartService shoppingCartService;
-    private final ShoppingCartRepository shoppingCartRepository;
+    private final ShoppingCartDao shoppingCartDao;
 
     @Autowired
-    public OrderServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper, ShoppingCartService shoppingCartService,
-                            ShoppingCartRepository shoppingCartRepository) {
-        this.orderRepository = orderRepository;
+    public OrderServiceImpl(OrderDao orderDao, ModelMapper modelMapper, ShoppingCartService shoppingCartService,
+                            ShoppingCartDao shoppingCartDao) {
+        this.orderDao = orderDao;
         this.modelMapper = modelMapper;
         this.shoppingCartService = shoppingCartService;
-        this.shoppingCartRepository = shoppingCartRepository;
+        this.shoppingCartDao = shoppingCartDao;
     }
 
     @Override
@@ -63,7 +63,7 @@ public class OrderServiceImpl implements OrderService {
         BigDecimal totalItemsPrice = this.shoppingCartService.getShoppingCartById(itemId).getTotalItemsPrice();
         BigDecimal taxInPercentage = calculateTaxPercentage(tax);
         order.setTotalPrice(calculateItemAfterTax(taxInPercentage, totalItemsPrice));
-        this.orderRepository.saveAndFlush(order);
+        this.orderDao.saveAndFlush(order);
         return mapOrderToOrderServiceModel(order);
     }
 
@@ -72,7 +72,7 @@ public class OrderServiceImpl implements OrderService {
     public OrderServiceViewModel updateOrder(OrderServiceModel orderServiceModel) {
         Order order = mapOrderServiceModelToOrder(orderServiceModel);
         getOrderById(orderServiceModel.getId());
-        this.orderRepository.saveAndFlush(order);
+        this.orderDao.saveAndFlush(order);
         return mapOrderToOrderServiceModel(order);
     }
 
@@ -91,7 +91,7 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public OrderServiceViewModel deleteOrderById(long id) {
         OrderServiceViewModel orderServiceViewModel = this.getOrderById(id);
-        this.orderRepository.deleteById(id);
+        this.orderDao.deleteById(id);
         return orderServiceViewModel;
     }
 
@@ -105,7 +105,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void setShoppingCartOrder(OrderServiceModel orderServiceModel, Order order) {
-        shoppingCartRepository.findById(orderServiceModel.getShoppingCart().getId())
+        shoppingCartDao.findById(orderServiceModel.getShoppingCart().getId())
                 .ifPresent(c -> {
                     order.setShoppingCart(mapOrderServiceModelToShoppingCart(orderServiceModel));
                 });
@@ -120,7 +120,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public void findOrderByNumber(OrderServiceModel orderServiceModel) {
-        this.orderRepository.findByNumber(orderServiceModel.getNumber()).ifPresent(c -> {
+        this.orderDao.findByNumber(orderServiceModel.getNumber()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Order with number '%s' already exists.", orderServiceModel.getNumber()));
         });
     }
@@ -134,7 +134,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     public Order findOrderById(long id) {
-        return this.orderRepository.findById(id).orElseThrow(() ->
+        return this.orderDao.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Order  with ID %s not found.", id)));
     }
 
@@ -151,7 +151,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     private List<Order> findOrders() {
-        return this.orderRepository.findAll();
+        return this.orderDao.findAll();
     }
 
     public List<Order> findAllOrders() {

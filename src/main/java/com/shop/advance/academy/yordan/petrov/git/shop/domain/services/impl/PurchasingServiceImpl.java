@@ -1,14 +1,14 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.OrderRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Order;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.OrderStatus;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.PaymentType;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.ShipmentType;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.TransactionStatus;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OrderServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.TransactionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Order;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.OrderStatus;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.PaymentType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.ShipmentType;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.TransactionStatus;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OrderServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.TransactionServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.TransactionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.PurchasingService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.TransactionService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.IllegalCardTransactionOperation;
@@ -24,14 +24,14 @@ import java.time.Instant;
 @Service
 public class PurchasingServiceImpl implements PurchasingService {
 
-    private final OrderRepository orderRepository;
+    private final OrderDao orderDao;
     private final ModelMapper modelMapper;
     private final TransactionService transactionService;
 
     @Autowired
-    public PurchasingServiceImpl(OrderRepository orderRepository, ModelMapper modelMapper,
+    public PurchasingServiceImpl(OrderDao orderDao, ModelMapper modelMapper,
                                  TransactionService transactionService) {
-        this.orderRepository = orderRepository;
+        this.orderDao = orderDao;
         this.modelMapper = modelMapper;
         this.transactionService = transactionService;
     }
@@ -128,7 +128,7 @@ public class PurchasingServiceImpl implements PurchasingService {
     }
 
     public Order findOrderFromTransactionServiceModelById(TransactionServiceModel transaction) {
-        return orderRepository.findById(transaction.getOrder().getId())
+        return orderDao.findById(transaction.getOrder().getId())
                 .orElseThrow(() ->
                         new EntityNotFoundException("No Order have been found"));
     }

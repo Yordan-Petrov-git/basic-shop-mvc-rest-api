@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,8 +32,10 @@ public class CityController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> createCity(@RequestBody CityServiceModel cityServiceModel) {
         CityServiceViewModel cityServiceViewModel = cityService.createCity(cityServiceModel);
-        log.info("City  created : {}", cityServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(cityServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(CityController.class, "createCity", CityServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(cityServiceViewModel.getId()).toUri();
+        log.info("City  created : {} {}", cityServiceViewModel, location);
+        return ResponseEntity.created(location).body(cityServiceViewModel);
     }
 
     @PutMapping("/{id}")

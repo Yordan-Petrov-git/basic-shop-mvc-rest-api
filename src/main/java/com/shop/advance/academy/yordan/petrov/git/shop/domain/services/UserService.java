@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceViewModel;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Service;
 

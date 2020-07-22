@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.OpinionRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OpinionDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Opinion;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class OpinionServiceTest {
 
     @MockBean
-    OpinionRepository opinionRepository;
+    OpinionDao opinionDao;
 
     @Autowired
     OpinionService opinionService;
@@ -45,7 +45,7 @@ public class OpinionServiceTest {
         opinions.add(new Opinion());
         opinions.add(new Opinion());
 
-        Mockito.when(opinionRepository.findAll()).thenReturn(opinions);
+        Mockito.when(opinionDao.findAll()).thenReturn(opinions);
         List<OpinionServiceViewModel> opinionsFetchedFromRepo = opinionService.getAllOpinions();
 
         assertEquals(3, opinionsFetchedFromRepo.size());
@@ -57,7 +57,7 @@ public class OpinionServiceTest {
         Opinion opinion = new Opinion();
         opinion.setId(15L);
 
-        Mockito.when(opinionRepository.findById(15L))
+        Mockito.when(opinionDao.findById(15L))
                 .thenReturn(java.util.Optional.of(opinion));
         OpinionServiceViewModel opinionServiceViewModel = this.modelMapper.map(opinion, OpinionServiceViewModel.class);
 

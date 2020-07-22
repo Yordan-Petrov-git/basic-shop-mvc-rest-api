@@ -1,13 +1,13 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CardRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CurrencyRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.OrderRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.TransactionRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Transaction;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.enums.TransactionStatus;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.*;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.TransactionDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Card;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Transaction;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.TransactionStatus;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.*;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OrderService;
@@ -26,26 +26,26 @@ import java.util.List;
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
-    private final TransactionRepository transactionRepository;
-    private final CardRepository cardRepository;
+    private final TransactionDao transactionDao;
+    private final CardDao cardDao;
     private final CardService cardService;
     private final CurrencyService currencyService;
-    private final CurrencyRepository currencyRepository;
+    private final CurrencyDao currencyDao;
     private final ModelMapper modelMapper;
     private final OrderService orderService;
-    private final OrderRepository orderRepository;
+    private final OrderDao orderDao;
 
-    public TransactionServiceImpl(TransactionRepository transactionRepository, CardRepository cardRepository,
-                                  CardService cardService, CurrencyService currencyService, CurrencyRepository currencyRepository,
-                                  ModelMapper modelMapper, OrderService orderService, OrderRepository orderRepository) {
-        this.transactionRepository = transactionRepository;
-        this.cardRepository = cardRepository;
+    public TransactionServiceImpl(TransactionDao transactionDao, CardDao cardDao,
+                                  CardService cardService, CurrencyService currencyService, CurrencyDao currencyDao,
+                                  ModelMapper modelMapper, OrderService orderService, OrderDao orderDao) {
+        this.transactionDao = transactionDao;
+        this.cardDao = cardDao;
         this.cardService = cardService;
         this.currencyService = currencyService;
-        this.currencyRepository = currencyRepository;
+        this.currencyDao = currencyDao;
         this.modelMapper = modelMapper;
         this.orderService = orderService;
-        this.orderRepository = orderRepository;
+        this.orderDao = orderDao;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class TransactionServiceImpl implements TransactionService {
         transaction.setDateCompleted(Instant.now());
         transaction.setDateUpdated(Instant.now());
         transaction.setTransactionStatus(TransactionStatus.CONFIRMED);
-        return mapTransactionToTransactionServiceViewModel(this.transactionRepository.saveAndFlush(transaction));
+        return mapTransactionToTransactionServiceViewModel(this.transactionDao.saveAndFlush(transaction));
     }
 
     @Override
@@ -68,7 +68,7 @@ public class TransactionServiceImpl implements TransactionService {
     public TransactionServiceViewModel updateTransaction(TransactionServiceModel transactionServiceModel) {
         Transaction transaction = mapTransactionServiceModelToTransaction(transactionServiceModel);
         getTransactionId(transactionServiceModel.getId());
-        return mapTransactionToTransactionServiceViewModel(this.transactionRepository.saveAndFlush(transaction));
+        return mapTransactionToTransactionServiceViewModel(this.transactionDao.saveAndFlush(transaction));
     }
 
     @Override
@@ -78,7 +78,7 @@ public class TransactionServiceImpl implements TransactionService {
 
     @Override
     public List<TransactionServiceViewModel> getAllTransactions() {
-        List<Transaction> transactions = transactionRepository.findAll();
+        List<Transaction> transactions = transactionDao.findAll();
         return modelMapper.map(transactions, new TypeToken<List<TransactionServiceViewModel>>() {
         }.getType());
     }
@@ -87,7 +87,7 @@ public class TransactionServiceImpl implements TransactionService {
     @Transactional
     public TransactionServiceViewModel deleteTransactionById(Long id) {
         Transaction transaction = getTransactionId(id);
-        this.transactionRepository.deleteById(id);
+        this.transactionDao.deleteById(id);
         return mapTransactionToTransactionServiceViewModel(transaction);
     }
 
@@ -148,28 +148,28 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
     public void setOrder(TransactionServiceModel transactionServiceModel) {
-        orderRepository.findById(transactionServiceModel.getOrder().getId())
+        orderDao.findById(transactionServiceModel.getOrder().getId())
                 .ifPresent(c -> {
                     transactionServiceModel.setOrder(this.modelMapper.map(getOrderForTransaction(transactionServiceModel), OrderServiceModel.class));
                 });
     }
 
     public void setCurrency(TransactionServiceModel transactionServiceModel) {
-        currencyRepository.findById(transactionServiceModel.getCurrency().getId())
+        currencyDao.findById(transactionServiceModel.getCurrency().getId())
                 .ifPresent(c -> {
                     transactionServiceModel.setCurrency(this.modelMapper.map(getCurrencyForTransaction(transactionServiceModel), CurrencyServiceModel.class));
                 });
     }
 
     public void setRecipient(TransactionServiceModel transactionServiceModel) {
-        cardRepository.findById(transactionServiceModel.getRecipient().getId())
+        cardDao.findById(transactionServiceModel.getRecipient().getId())
                 .ifPresent(c -> {
                     transactionServiceModel.setRecipient(mapCardServiceViewModelToCardServiceModel(getRecipientCard(transactionServiceModel)));
                 });
     }
 
     public void setSender(TransactionServiceModel transactionServiceModel) {
-        cardRepository.findById(transactionServiceModel.getSender().getId())
+        cardDao.findById(transactionServiceModel.getSender().getId())
                 .ifPresent(c -> {
                     transactionServiceModel.setSender(mapCardServiceViewModelToCardServiceModel(getSenderCard(transactionServiceModel)));
                 });
@@ -189,12 +189,12 @@ public class TransactionServiceImpl implements TransactionService {
 
 
     private Transaction getTransactionId(Long id) {
-        return this.transactionRepository.findById(id)
+        return this.transactionDao.findById(id)
                 .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", id)));
     }
 
     private Card getCardId(Long id) {
-        return cardRepository.findById(id)
+        return cardDao.findById(id)
                 .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", id)));
     }
 

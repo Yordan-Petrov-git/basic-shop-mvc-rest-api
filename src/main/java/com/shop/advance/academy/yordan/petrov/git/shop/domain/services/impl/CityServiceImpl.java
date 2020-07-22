@@ -1,12 +1,12 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CityRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CountryRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.City;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Country;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CityServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CityDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CountryDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.City;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Country;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CityServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CityService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CountryService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -22,26 +22,26 @@ import java.util.List;
 @Service
 public class CityServiceImpl implements CityService {
 
-    private final CityRepository cityRepository;
+    private final CityDao cityDao;
     private final ModelMapper modelMapper;
     private final CountryService countryService;
-    private final CountryRepository countryRepository;
+    private final CountryDao countryDao;
 
     @Autowired
-    public CityServiceImpl(CityRepository cityRepository, ModelMapper modelMapper,
-                           CountryService countryService, CountryRepository countryRepository) {
-        this.cityRepository = cityRepository;
+    public CityServiceImpl(CityDao cityDao, ModelMapper modelMapper,
+                           CountryService countryService, CountryDao countryDao) {
+        this.cityDao = cityDao;
         this.modelMapper = modelMapper;
         this.countryService = countryService;
-        this.countryRepository = countryRepository;
+        this.countryDao = countryDao;
     }
 
     @Override
     public CityServiceViewModel createCity(CityServiceModel cityServiceModel) {
         City city = mapCityServiceModelToCity(cityServiceModel);
         getCityByName(city);
-        setCountryByName(cityServiceModel, city);
-        this.cityRepository.saveAndFlush(city);
+        setCountryToCityByName(cityServiceModel, city);
+        this.cityDao.saveAndFlush(city);
         return mapCityToCityServiceViewModel(city);
     }
 
@@ -51,7 +51,7 @@ public class CityServiceImpl implements CityService {
     public CityServiceViewModel updateCity(long id) {
         City city = this.modelMapper.map(this.getCityById(id), City.class);
         CityServiceViewModel cityServiceViewModel = this.getCityById(id);
-        this.cityRepository.saveAndFlush(city);
+        this.cityDao.saveAndFlush(city);
         return cityServiceViewModel;
     }
 
@@ -59,25 +59,25 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityServiceViewModel getCityByName(String name) {
         return this.modelMapper
-                .map(this.cityRepository.findCityByName(name).orElseThrow(() ->
+                .map(this.cityDao.findCityByName(name).orElseThrow(() ->
                         new EntityNotFoundException(String.format("City  with Name  %s not found.", name))), CityServiceViewModel.class);
     }
 
     @Override
     public CityServiceViewModel getCityById(long id) {
         return this.modelMapper
-                .map(this.cityRepository.findById(id).orElseThrow(() ->
+                .map(this.cityDao.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("City  with ID %s not found.", id))), CityServiceViewModel.class);
     }
 
     @Override
     public List<CityServiceViewModel> getAllCities() {
-        this.cityRepository.findAll()
+        this.cityDao.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No cities were found"));
 
-        List<City> cities = this.cityRepository.findAll();
+        List<City> cities = this.cityDao.findAll();
         return this.modelMapper.map(cities, new TypeToken<List<CityServiceViewModel>>() {
         }.getType());
     }
@@ -85,25 +85,38 @@ public class CityServiceImpl implements CityService {
     @Override
     public CityServiceViewModel deleteCityById(long id) {
         CityServiceViewModel cityServiceViewModel = this.getCityById(id);
-        this.cityRepository.deleteById(id);
+        this.cityDao.deleteById(id);
         return cityServiceViewModel;
     }
 
     private void getCityByName(City city) {
-        this.cityRepository.findCityByName(city.getName()).ifPresent(c -> {
+        this.cityDao.findCityByName(city.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("City '%s' already exists.", city.getName()));
         });
     }
 
-    private void setCountryByName(CityServiceModel cityServiceModel, City city) {
-        countryRepository.findByName(cityServiceModel.getCountry().getName())
+    private void setCountryToCityByName(CityServiceModel cityServiceModel, City city) {
+
+        countryDao.findByName(getCityName(cityServiceModel))
                 .ifPresent(c -> {
-                    city.setCountry(this.modelMapper.map(getCountryServiceViewModel(cityServiceModel), Country.class));
+                    setCountryToCity(cityServiceModel, city);
                 });
     }
 
+    private void setCountryToCity(CityServiceModel cityServiceModel, City city) {
+        city.setCountry(mapToCountry(cityServiceModel));
+    }
+
+    private Country mapToCountry(CityServiceModel cityServiceModel) {
+        return this.modelMapper.map(getCountryServiceViewModel(cityServiceModel), Country.class);
+    }
+
+    private String getCityName(CityServiceModel cityServiceModel) {
+        return cityServiceModel.getCountry().getName();
+    }
+
     private CountryServiceViewModel getCountryServiceViewModel(CityServiceModel cityServiceModel) {
-        return this.countryService.getCountryName(cityServiceModel.getCountry().getName());
+        return this.countryService.getCountryName(getCityName(cityServiceModel));
     }
 
     private CityServiceViewModel mapCityToCityServiceViewModel(City city) {

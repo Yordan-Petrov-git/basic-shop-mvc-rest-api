@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.SellerServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.SellerServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.SellerServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.SellerService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,7 +9,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -28,8 +30,10 @@ public class SellerController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<SellerServiceViewModel> createSeller(@RequestBody SellerServiceModel sellerServiceModel) {
         SellerServiceViewModel sellerServiceViewModel = sellerService.createSeller(sellerServiceModel);
-        log.info("Seller  created : {}", sellerServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(sellerServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(SellerController.class, "createSeller", SellerServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(sellerServiceViewModel.getId()).toUri();
+        log.info("Seller  created : {} {}", sellerServiceViewModel, location);
+        return ResponseEntity.created(location).body(sellerServiceViewModel);
     }
 
     @PutMapping("/{id}")

@@ -1,9 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.junit.jupiter.api.BeforeEach;
@@ -28,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 class UserServiceTest {
 
     @MockBean
-    UserRepository userRepository;
+    UserDao userDao;
 
     @Autowired
     UserService userService;
@@ -49,7 +49,7 @@ class UserServiceTest {
         usersToAdd.add(new User());
         usersToAdd.add(new User());
 
-        Mockito.when(userRepository.findAll()).thenReturn(usersToAdd);
+        Mockito.when(userDao.findAll()).thenReturn(usersToAdd);
         List<UserServiceViewModel> usersFetchedFromRepo = userService.getAllUsers();
 
         assertEquals(3, usersFetchedFromRepo.size());
@@ -60,7 +60,7 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("UserNameOfTheUserToTestIfItThrowsException");
 
-        Mockito.when(userRepository.findByUsername(user.getUsername()))
+        Mockito.when(userDao.findByUsername(user.getUsername()))
                 .thenReturn(java.util.Optional.of(user));
         UserServiceModel userServiceModel = this.modelMapper.map(user, UserServiceModel.class);
 
@@ -72,7 +72,7 @@ class UserServiceTest {
         User user = new User();
         user.setId(5L);
 
-        Mockito.when(userRepository.findById(5L))
+        Mockito.when(userDao.findById(5L))
                 .thenReturn(java.util.Optional.of(user));
         UserServiceViewModel userServiceModel = this.modelMapper.map(user, UserServiceViewModel.class);
 
@@ -85,7 +85,7 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("UsernameForTesting");
 
-        Mockito.when(userRepository.findByUsername("UsernameForTesting"))
+        Mockito.when(userDao.findByUsername("UsernameForTesting"))
                 .thenReturn(java.util.Optional.of(user));
 
         assertEquals(user, userService.loadUserByUsername("UsernameForTesting"));
@@ -96,7 +96,7 @@ class UserServiceTest {
         User user = new User();
         user.setUsername("UsernameForTesting");
 
-        Mockito.when(userRepository.findByUsername("UsernameForTesting"))
+        Mockito.when(userDao.findByUsername("UsernameForTesting"))
                 .thenReturn(java.util.Optional.of(user));
 
         assertThrows(InvalidEntityException.class, () -> userService.loadUserByUsername("Username"));

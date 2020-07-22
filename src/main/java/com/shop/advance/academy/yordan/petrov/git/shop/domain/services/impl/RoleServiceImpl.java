@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.RoleRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Role;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.RoleServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Role;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.RoleServiceModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,12 +14,12 @@ import java.util.stream.Collectors;
 @Service
 public class RoleServiceImpl implements RoleService {
 
-    private final RoleRepository roleRepository;
+    private final RoleDao roleDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public RoleServiceImpl(RoleRepository roleRepository, ModelMapper modelMapper) {
-        this.roleRepository = roleRepository;
+    public RoleServiceImpl(RoleDao roleDao, ModelMapper modelMapper) {
+        this.roleDao = roleDao;
         this.modelMapper = modelMapper;
     }
 
@@ -28,14 +28,14 @@ public class RoleServiceImpl implements RoleService {
         Role admin = new Role("ROLE_ADMIN");
         Role moderator = new Role("ROLE_MODERATOR");
         Role user = new Role("ROLE_USER");
-        this.roleRepository.saveAndFlush(admin);
-        this.roleRepository.saveAndFlush(moderator);
-        this.roleRepository.saveAndFlush(user);
+        this.roleDao.saveAndFlush(admin);
+        this.roleDao.saveAndFlush(moderator);
+        this.roleDao.saveAndFlush(user);
     }
 
     @Override
     public Set<RoleServiceModel> findAllRoles() {
-        return this.roleRepository.findAll()
+        return this.roleDao.findAll()
                 .stream()
                 .map(r -> this.modelMapper.map(r, RoleServiceModel.class))
                 .collect(Collectors.toSet());
@@ -43,6 +43,6 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleServiceModel findByAuthority(String role) {
-        return this.modelMapper.map(this.roleRepository.findByAuthority(role), RoleServiceModel.class);
+        return this.modelMapper.map(this.roleDao.findByAuthority(role), RoleServiceModel.class);
     }
 }

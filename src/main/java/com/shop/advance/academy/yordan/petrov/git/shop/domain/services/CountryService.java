@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CountryServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CountryServiceViewModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

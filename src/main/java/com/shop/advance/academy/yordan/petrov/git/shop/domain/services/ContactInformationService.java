@@ -1,7 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ContactInformationServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ContactInformationServiceViewModel;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

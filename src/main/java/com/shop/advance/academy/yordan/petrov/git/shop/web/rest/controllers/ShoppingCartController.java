@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ShoppingCartServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +32,10 @@ public class ShoppingCartController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ShoppingCartServiceViewModel> createShoppingCart(@RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
         ShoppingCartServiceViewModel shoppingCartServiceViewModel = shoppingCartService.createShoppingCart(shoppingCartServiceModel);
-        log.info("Shopping Cart created: {}", shoppingCartServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(shoppingCartServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(ShoppingCartController.class, "createShoppingCart", ShoppingCartServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(shoppingCartServiceViewModel.getId()).toUri();
+        log.info("Shopping Cart created: {} {}", shoppingCartServiceViewModel, location);
+        return ResponseEntity.created(location).body(shoppingCartServiceViewModel);
     }
 
     @PutMapping("/{id}")

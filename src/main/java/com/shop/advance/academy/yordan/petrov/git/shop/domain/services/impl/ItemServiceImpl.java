@@ -1,9 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ItemRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Item;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
@@ -18,22 +18,22 @@ import java.util.List;
 @Service
 public class ItemServiceImpl implements ItemService {
 
-    private final ItemRepository itemRepository;
+    private final ItemDao itemDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ItemServiceImpl(ItemRepository itemRepository, ModelMapper modelMapper) {
-        this.itemRepository = itemRepository;
+    public ItemServiceImpl(ItemDao itemDao, ModelMapper modelMapper) {
+        this.itemDao = itemDao;
         this.modelMapper = modelMapper;
     }
 
     @Override
     public ItemServiceViewModel createItem(ItemServiceModel itemServiceModel) {
         Item item = mapItemServiceModelToItem(itemServiceModel);
-        this.itemRepository.findByTitleAndDescription(itemServiceModel.getTitle(), itemServiceModel.getDescription()).ifPresent(c -> {
+        this.itemDao.findByTitleAndDescription(itemServiceModel.getTitle(), itemServiceModel.getDescription()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Item with title '%s' and description '%s' already exists.", itemServiceModel.getTitle(), itemServiceModel.getDescription()));
         });
-        this.itemRepository.saveAndFlush(item);
+        this.itemDao.saveAndFlush(item);
         return mapItemToItemServiceViewModel(item);
     }
 
@@ -42,7 +42,7 @@ public class ItemServiceImpl implements ItemService {
     public ItemServiceViewModel updateItem(ItemServiceModel itemServiceModel) {
         Item item = mapItemServiceModelToItem(itemServiceModel);
         getItemById(itemServiceModel.getId());
-        this.itemRepository.saveAndFlush(item);
+        this.itemDao.saveAndFlush(item);
         return mapItemToItemServiceViewModel(item);
 
     }
@@ -50,37 +50,37 @@ public class ItemServiceImpl implements ItemService {
     @Override
     public ItemServiceViewModel getItemById(long id) {
         return this.modelMapper
-                .map(this.itemRepository.findById(id).orElseThrow(() ->
+                .map(this.itemDao.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Item  with ID %s not found.", id))), ItemServiceViewModel.class);
     }
 
     @Override
     public ItemServiceViewModel getItemByTitle(String title) {
         return this.modelMapper
-                .map(this.itemRepository.findByTitle(title).orElseThrow(() ->
+                .map(this.itemDao.findByTitle(title).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Item  with title %s not found.", title))), ItemServiceViewModel.class);
     }
 
     @Override
     public List<ItemServiceViewModel> getItemByTitleLike(String title) {
-        return modelMapper.map(this.itemRepository.findByTitleLike(title), new TypeToken<List<ItemServiceViewModel>>() {
+        return modelMapper.map(this.itemDao.findByTitleLike(title), new TypeToken<List<ItemServiceViewModel>>() {
         }.getType());
     }
 
     @Override
     public List<ItemServiceViewModel> getAllItems() {
-        this.itemRepository.findAll()
+        this.itemDao.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Items were found"));
-        return modelMapper.map(itemRepository.findAll(), new TypeToken<List<ItemServiceViewModel>>() {
+        return modelMapper.map(itemDao.findAll(), new TypeToken<List<ItemServiceViewModel>>() {
         }.getType());
     }
 
     @Override
     public ItemServiceViewModel deleteItemById(long id) {
         ItemServiceViewModel itemServiceViewModel = this.getItemById(id);
-        this.itemRepository.deleteById(id);
+        this.itemDao.deleteById(id);
         return itemServiceViewModel;
     }
 

@@ -1,9 +1,9 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ContactInformationRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ContactInformation;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ContactInformationServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ContactInformationDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.ContactInformation;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ContactInformationServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ContactInformationServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ContactInformationService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
 import org.modelmapper.ModelMapper;
@@ -18,12 +18,12 @@ import java.util.List;
 @Service
 public class ContactInformationServiceImpl implements ContactInformationService {
 
-    private final ContactInformationRepository contactInformationRepository;
+    private final ContactInformationDao contactInformationDao;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public ContactInformationServiceImpl(ContactInformationRepository contactInformationRepository, ModelMapper modelMapper) {
-        this.contactInformationRepository = contactInformationRepository;
+    public ContactInformationServiceImpl(ContactInformationDao contactInformationDao, ModelMapper modelMapper) {
+        this.contactInformationDao = contactInformationDao;
         this.modelMapper = modelMapper;
     }
 
@@ -31,10 +31,10 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     public ContactInformationServiceViewModel createContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
         ContactInformation contactInformation = mapContactInformationServiceModelToContactInformation(contactInformationServiceModel);
         findByEmail(contactInformationServiceModel);
-        this.contactInformationRepository.findByCountryCodeAndPhoneNumber(contactInformationServiceModel.getCountryCode(), contactInformationServiceModel.getPhoneNumber()).ifPresent(c -> {
+        this.contactInformationDao.findByCountryCodeAndPhoneNumber(contactInformationServiceModel.getCountryCode(), contactInformationServiceModel.getPhoneNumber()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Contact information with phone number '%s','%s' already exists.", contactInformation.getCountryCode(), contactInformationServiceModel.getPhoneNumber()));
         });
-        this.contactInformationRepository.saveAndFlush(contactInformation);
+        this.contactInformationDao.saveAndFlush(contactInformation);
         return mapContactInformationToContactInformationServiceViewModel(contactInformation);
     }
 
@@ -44,7 +44,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     public ContactInformationServiceViewModel updateContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
         ContactInformation contactInformation = mapContactInformationServiceModelToContactInformation(contactInformationServiceModel);
         getContactInformationById(contactInformationServiceModel.getId());
-        this.contactInformationRepository.saveAndFlush(contactInformation);
+        this.contactInformationDao.saveAndFlush(contactInformation);
         return mapContactInformationToContactInformationServiceViewModel(contactInformation);
     }
 
@@ -56,7 +56,7 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     public ContactInformationServiceViewModel getContactInformationById(long id) {
 
         return this.modelMapper
-                .map(this.contactInformationRepository.findById(id).orElseThrow(() ->
+                .map(this.contactInformationDao.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Contact Information  with ID %s not found.", id))), ContactInformationServiceViewModel.class);
 
     }
@@ -64,12 +64,12 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     @Override
     public List<ContactInformationServiceViewModel> getAllContactInformations() {
 
-        this.contactInformationRepository.findAll()
+        this.contactInformationDao.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Contact information was found"));
 
-        List<ContactInformation> contactInformation = contactInformationRepository.findAll();
+        List<ContactInformation> contactInformation = contactInformationDao.findAll();
 
         return modelMapper.map(contactInformation, new TypeToken<List<ContactInformationServiceViewModel>>() {
         }.getType());
@@ -79,13 +79,13 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     @Override
     public ContactInformationServiceViewModel deleteContactInformationById(long id) {
         ContactInformationServiceViewModel contactInformationServiceViewModel = this.getContactInformationById(id);
-        this.contactInformationRepository.deleteById(id);
+        this.contactInformationDao.deleteById(id);
         return contactInformationServiceViewModel;
     }
 
 
     private void findByEmail(ContactInformationServiceModel contactInformationServiceModel) {
-        this.contactInformationRepository.findByEmail(contactInformationServiceModel.getEmail()).ifPresent(c -> {
+        this.contactInformationDao.findByEmail(contactInformationServiceModel.getEmail()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Contact information with email '%s' already exists.", contactInformationServiceModel.getEmail()));
         });
     }

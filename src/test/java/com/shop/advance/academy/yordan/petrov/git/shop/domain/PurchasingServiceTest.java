@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.OrderRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OrderDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.PurchasingService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class PurchasingServiceTest {
 
     @MockBean
-    OrderRepository orderRepository;
+    OrderDao orderDao;
 
     @Autowired
     PurchasingService purchasingService;

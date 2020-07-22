@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CurrencyServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CurrencyServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,8 +32,10 @@ public class CurrencyController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> createCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
         CurrencyServiceViewModel currencyServiceViewModel = currencyService.createCurrency(currencyServiceModel);
-        log.info("Currency  created : {}", currencyServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(currencyServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(CurrencyController.class, "createCurrency", CurrencyServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(currencyServiceViewModel.getId()).toUri();
+        log.info("Currency  created : {} {}", currencyServiceViewModel, location);
+        return ResponseEntity.created(location).body(currencyServiceViewModel);
     }
 
     @PutMapping("/{id}")

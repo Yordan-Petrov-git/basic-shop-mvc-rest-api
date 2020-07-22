@@ -1,12 +1,12 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.OpinionRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Opinion;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.OpinionDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Opinion;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -22,25 +22,25 @@ import java.util.List;
 @Service
 public class OpinionServiceImpl implements OpinionService {
 
-    private final OpinionRepository opinionRepository;
+    private final OpinionDao opinionDao;
     private final ModelMapper modelMapper;
     private final UserService userService;
-    private final UserRepository userRepository;
+    private final UserDao userDao;
 
     @Autowired
-    public OpinionServiceImpl(OpinionRepository opinionRepository, ModelMapper modelMapper, UserService userService,
-                              UserRepository userRepository) {
-        this.opinionRepository = opinionRepository;
+    public OpinionServiceImpl(OpinionDao opinionDao, ModelMapper modelMapper, UserService userService,
+                              UserDao userDao) {
+        this.opinionDao = opinionDao;
         this.modelMapper = modelMapper;
         this.userService = userService;
-        this.userRepository = userRepository;
+        this.userDao = userDao;
     }
 
     @Override
     public OpinionServiceViewModel createOpinion(OpinionServiceModel opinionServiceModel) {
         Opinion opinion = mapOpinionServiceModelToOpinion(opinionServiceModel);
         setOpinionToUser(opinionServiceModel);
-        this.opinionRepository.saveAndFlush(opinion);
+        this.opinionDao.saveAndFlush(opinion);
         return mapOpinionToOpinionServiceViewModel(opinion);
     }
 
@@ -50,7 +50,7 @@ public class OpinionServiceImpl implements OpinionService {
     public OpinionServiceViewModel updateOpinion(OpinionServiceModel opinionServiceModel) {
         Opinion opinion = mapOpinionServiceModelToOpinion(opinionServiceModel);
         getOpinionById(opinionServiceModel.getId());
-        this.opinionRepository.saveAndFlush(opinion);
+        this.opinionDao.saveAndFlush(opinion);
         return mapOpinionToOpinionServiceViewModel(opinion);
     }
 
@@ -61,17 +61,17 @@ public class OpinionServiceImpl implements OpinionService {
     @Override
     public OpinionServiceViewModel getOpinionById(long id) {
         return this.modelMapper
-                .map(this.opinionRepository.findById(id).orElseThrow(() ->
+                .map(this.opinionDao.findById(id).orElseThrow(() ->
                         new EntityNotFoundException(String.format("Opinion  with ID %s not found.", id))), OpinionServiceViewModel.class);
     }
 
     @Override
     public List<OpinionServiceViewModel> getAllOpinions() {
-        this.opinionRepository.findAll()
+        this.opinionDao.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Opinions were found"));
-        List<Opinion> opinions = opinionRepository.findAll();
+        List<Opinion> opinions = opinionDao.findAll();
         return modelMapper.map(opinions, new TypeToken<List<OpinionServiceViewModel>>() {
         }.getType());
     }
@@ -79,12 +79,12 @@ public class OpinionServiceImpl implements OpinionService {
     @Override
     public OpinionServiceViewModel deleteOpinionById(long id) {
         OpinionServiceViewModel opinionServiceViewModel = this.getOpinionById(id);
-        this.opinionRepository.deleteById(id);
+        this.opinionDao.deleteById(id);
         return opinionServiceViewModel;
     }
 
     private void setOpinionToUser(OpinionServiceModel opinionServiceModel) {
-        userRepository.findById(opinionServiceModel.getUser().getId())
+        userDao.findById(opinionServiceModel.getUser().getId())
                 .ifPresent(c -> {
                     opinionServiceModel.setUser(this.modelMapper.map(getUserServiceViewModel(opinionServiceModel), UserServiceModel.class));
                 });

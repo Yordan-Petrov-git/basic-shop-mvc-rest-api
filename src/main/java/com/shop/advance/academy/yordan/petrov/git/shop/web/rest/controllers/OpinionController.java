@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers;
 
 
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.OpinionServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.OpinionServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.OpinionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -30,8 +32,10 @@ public class OpinionController {
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> createOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
         OpinionServiceViewModel opinionServiceViewModel = opinionService.createOpinion(opinionServiceModel);
-        log.info("Opinion  created : {}", opinionServiceViewModel);
-        return ResponseEntity.status(HttpStatus.CREATED).body(opinionServiceViewModel);
+        URI location = MvcUriComponentsBuilder.fromMethodName(OpinionController.class, "createOpinion", OpinionServiceViewModel.class)
+                .pathSegment("{id}").buildAndExpand(opinionServiceViewModel.getId()).toUri();
+        log.info("Opinion  created : {} {}", opinionServiceViewModel, location);
+        return ResponseEntity.created(location).body(opinionServiceViewModel);
     }
 
     @PutMapping("/{id}")

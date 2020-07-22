@@ -1,14 +1,14 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CardRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.CurrencyRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Card;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Currency;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CardServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.CurrencyServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CardDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.CurrencyDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Card;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Currency;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CardServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CardServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.CurrencyServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CardService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.CurrencyService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -27,23 +27,23 @@ import java.util.List;
 @Service
 public class CardServiceImpl implements CardService {
 
-    private final CardRepository cardRepository;
+    private final CardDao cardDao;
     private final ModelMapper modelMapper;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final CurrencyService currencyService;
-    private final CurrencyRepository currencyRepository;
-    private final UserRepository userRepository;
+    private final CurrencyDao currencyDao;
+    private final UserDao userDao;
 
     @Autowired
-    public CardServiceImpl(CardRepository cardRepository, ModelMapper modelMapper,
+    public CardServiceImpl(CardDao cardDao, ModelMapper modelMapper,
                            BCryptPasswordEncoder bCryptPasswordEncoder, CurrencyService currencyService,
-                           CurrencyRepository currencyRepository, UserRepository userRepository) {
-        this.cardRepository = cardRepository;
+                           CurrencyDao currencyDao, UserDao userDao) {
+        this.cardDao = cardDao;
         this.modelMapper = modelMapper;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.currencyService = currencyService;
-        this.currencyRepository = currencyRepository;
-        this.userRepository = userRepository;
+        this.currencyDao = currencyDao;
+        this.userDao = userDao;
     }
 
     @Override
@@ -54,7 +54,7 @@ public class CardServiceImpl implements CardService {
         card.setDateIssued(LocalDateTime.now());
         card.setUsers(addUsersToCards(cardServiceModel));
         card.setPinCode(this.bCryptPasswordEncoder.encode(cardServiceModel.getPinCode()));
-        this.cardRepository.saveAndFlush(card);
+        this.cardDao.saveAndFlush(card);
         return mapCardToCardServiceViewModel(card);
     }
 
@@ -62,7 +62,7 @@ public class CardServiceImpl implements CardService {
     public List<User> addUsersToCards(CardServiceModel cardServiceModel) {
         List<User> userList = new ArrayList<>();
         cardServiceModel.getUsers().forEach(u -> {
-            User user = userRepository.findById(u.getId())
+            User user = userDao.findById(u.getId())
                     .orElseThrow(InvalidEntityException::new);
             userList.add(user);
         });
@@ -75,7 +75,7 @@ public class CardServiceImpl implements CardService {
         Card card = mapCardServiceModelToCard(cardServiceModel);
         getCardById(cardServiceModel.getId());
         card.setUsers(addUsersToCards(cardServiceModel));
-        this.cardRepository.saveAndFlush(card);
+        this.cardDao.saveAndFlush(card);
         return mapCardToCardServiceViewModel(card);
     }
 
@@ -87,20 +87,20 @@ public class CardServiceImpl implements CardService {
     @Override
     public List<CardServiceViewModel> getAllCards() {
         validateIfCardsExists();
-        List<Card> cards = cardRepository.findAll();
+        List<Card> cards = cardDao.findAll();
         return mapCardListToCardServiceViewModelList(cards);
     }
 
     @Override
     public CardServiceViewModel deleteCardById(long id) {
         CardServiceViewModel cardServiceViewModel = this.getCardById(id);
-        this.cardRepository.deleteById(id);
+        this.cardDao.deleteById(id);
         return cardServiceViewModel;
 
     }
 
     private void validateIfCardsExists() {
-        this.cardRepository.findAll()
+        this.cardDao.findAll()
                 .stream()
                 .findAny()
                 .orElseThrow(() -> new InvalidEntityException("No Cards were found"));
@@ -113,7 +113,7 @@ public class CardServiceImpl implements CardService {
 
     private Card getCardByIdFromRepository(long id) {
 
-        return this.cardRepository.findById(id).orElseThrow(() ->
+        return this.cardDao.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Card  with ID %s not found.", id)));
     }
 
@@ -126,13 +126,13 @@ public class CardServiceImpl implements CardService {
     }
 
     private void findCardByNumber(CardServiceModel cardServiceModel) {
-        this.cardRepository.findByNumber(cardServiceModel.getNumber()).ifPresent(c -> {
+        this.cardDao.findByNumber(cardServiceModel.getNumber()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Card with number '%s' already exists.", cardServiceModel.getNumber()));
         });
     }
 
     private void setCurrencyByCurrencyName(CardServiceModel cardServiceModel, Card card) {
-        currencyRepository.findByName(cardServiceModel.getCurrency().getName())
+        currencyDao.findByName(cardServiceModel.getCurrency().getName())
                 .ifPresent(c -> {
                     card.setCurrency(this.modelMapper.map(getCurrencyServiceViewModel(cardServiceModel), Currency.class));
                 });

@@ -1,8 +1,8 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ItemCountPairRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemCountPairDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.ItemCountPair;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemCountPairServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ItemCountPairService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -25,7 +25,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ItemCountPairServiceTest {
 
     @MockBean
-    ItemCountPairRepository itemCountPairRepository;
+    ItemCountPairDao itemCountPairDao;
 
     @Autowired
     ItemCountPairService itemCountPairService;
@@ -45,7 +45,7 @@ public class ItemCountPairServiceTest {
         itemCountPairs.add(new ItemCountPair());
         itemCountPairs.add(new ItemCountPair());
 
-        Mockito.when(itemCountPairRepository.findAll()).thenReturn(itemCountPairs);
+        Mockito.when(itemCountPairDao.findAll()).thenReturn(itemCountPairs);
         List<ItemCountPairServiceViewModel> itemCountPairsFetchedFromRepo = itemCountPairService.getAllItemCountPairs();
 
         assertEquals(3, itemCountPairsFetchedFromRepo.size());
@@ -57,7 +57,7 @@ public class ItemCountPairServiceTest {
         ItemCountPair itemCountPair = new ItemCountPair();
         itemCountPair.setId(15L);
 
-        Mockito.when(itemCountPairRepository.findById(15L))
+        Mockito.when(itemCountPairDao.findById(15L))
                 .thenReturn(java.util.Optional.of(itemCountPair));
         ItemCountPairServiceViewModel itemCountPairServiceViewModel = this.modelMapper.map(itemCountPair, ItemCountPairServiceViewModel.class);
 

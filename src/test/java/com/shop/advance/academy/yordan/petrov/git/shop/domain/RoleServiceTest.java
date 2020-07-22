@@ -1,6 +1,6 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.RoleRepository;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.RoleDao;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.RoleService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,7 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 public class RoleServiceTest {
 
     @MockBean
-    RoleRepository roleRepository;
+    RoleDao roleDao;
 
     @Autowired
     RoleService roleService;

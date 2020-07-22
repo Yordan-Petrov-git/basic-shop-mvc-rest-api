@@ -1,16 +1,16 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.services.impl;
 
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ItemRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.ShoppingCartRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.repository.UserRepository;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.Item;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ItemCountPair;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.ShoppingCart;
-import com.shop.advance.academy.yordan.petrov.git.shop.data.entities.User;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ItemCountPairServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.ShoppingCartServiceViewModel;
-import com.shop.advance.academy.yordan.petrov.git.shop.domain.models.UserServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ItemDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.ShoppingCartDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.dao.UserDao;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.Item;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.ItemCountPair;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.ShoppingCart;
+import com.shop.advance.academy.yordan.petrov.git.shop.data.models.User;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ItemCountPairServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ShoppingCartServiceModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.ShoppingCartServiceViewModel;
+import com.shop.advance.academy.yordan.petrov.git.shop.domain.dto.UserServiceViewModel;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.ShoppingCartService;
 import com.shop.advance.academy.yordan.petrov.git.shop.domain.services.UserService;
 import com.shop.advance.academy.yordan.petrov.git.shop.exeption.InvalidEntityException;
@@ -30,20 +30,20 @@ import java.util.List;
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
 
-    private final ShoppingCartRepository shoppingCartRepository;
+    private final ShoppingCartDao shoppingCartDao;
     private final ModelMapper modelMapper;
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final ItemRepository itemRepository;
+    private final UserDao userDao;
+    private final ItemDao itemDao;
 
     @Autowired
-    public ShoppingCartServiceImpl(ShoppingCartRepository shoppingCartRepository, ModelMapper modelMapper,
-                                   UserService userService, UserRepository userRepository, ItemRepository itemRepository) {
-        this.shoppingCartRepository = shoppingCartRepository;
+    public ShoppingCartServiceImpl(ShoppingCartDao shoppingCartDao, ModelMapper modelMapper,
+                                   UserService userService, UserDao userDao, ItemDao itemDao) {
+        this.shoppingCartDao = shoppingCartDao;
         this.modelMapper = modelMapper;
         this.userService = userService;
-        this.userRepository = userRepository;
-        this.itemRepository = itemRepository;
+        this.userDao = userDao;
+        this.itemDao = itemDao;
     }
 
     @Override
@@ -83,7 +83,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     public ShoppingCartServiceViewModel deleteShoppingCartById(long id) {
         findShoppingCardById(id);
         ShoppingCartServiceViewModel deletedShoppingCart = this.getShoppingCartById(id);
-        this.shoppingCartRepository.deleteById(id);
+        this.shoppingCartDao.deleteById(id);
         return deletedShoppingCart;
     }
 
@@ -101,12 +101,12 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     public ShoppingCart findShoppingCardById(long id) {
-        return this.shoppingCartRepository.findById(id).orElseThrow(() ->
+        return this.shoppingCartDao.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Shopping cart with ID %s not found.", id)));
     }
 
     public List<ShoppingCart> findAllShoppingCarts() {
-        return shoppingCartRepository.findAll();
+        return shoppingCartDao.findAll();
     }
 
     public List<ShoppingCartServiceViewModel> mapListShoppingCartToShoppingCartViewModel(List<ShoppingCart> shoppingCarts) {
@@ -122,7 +122,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     public void setShoppingCartToUser(ShoppingCartServiceModel shoppingCartServiceModel, ShoppingCart shoppingCart) {
-        userRepository.findById(shoppingCartServiceModel.getUser().getId())
+        userDao.findById(shoppingCartServiceModel.getUser().getId())
                 .ifPresent(c -> {
                     shoppingCart.setUser(mapUserServiceViewModelToUser(getUserById(shoppingCartServiceModel)));
                 });
@@ -137,7 +137,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
     public ShoppingCart saveShoppingCart(ShoppingCart shoppingCart) {
-        return this.shoppingCartRepository.saveAndFlush(shoppingCart);
+        return this.shoppingCartDao.saveAndFlush(shoppingCart);
     }
 
 
@@ -170,7 +170,7 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
             Long itemId = itemCountPairServiceModel
                     .getItem()
                     .getId();
-            Item item = itemRepository
+            Item item = itemDao
                     .findById(itemId)
                     .orElseThrow();
             Integer itemCount = itemCountPairServiceModel.getItemCount();
