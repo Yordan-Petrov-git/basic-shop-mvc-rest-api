@@ -15,19 +15,32 @@ import java.net.URI;
 import java.util.List;
 
 
+/**
+ *
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("api/user")
 @Slf4j
 public class UserController {
 
+    /**
+     *
+     */
     private final UserService userService;
 
+    /**
+     * @param userService
+     */
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * @param userServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAnonymous()")
     public ResponseEntity<UserServiceViewModel> createUser(@RequestBody UserServiceModel userServiceModel) {
@@ -38,6 +51,10 @@ public class UserController {
         return ResponseEntity.created(location).body(userServiceViewModel);
     }
 
+    /**
+     * @param userServiceModel
+     * @return
+     */
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> updateUser(@RequestBody UserServiceModel userServiceModel) {
@@ -46,6 +63,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
+    /**
+     * @param userServiceModel
+     * @return
+     */
     @PatchMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> partialUpdateUser(@RequestBody UserServiceModel userServiceModel) {
@@ -54,6 +75,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @GetMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
@@ -61,6 +86,9 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    /**
+     * @return
+     */
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<UserServiceViewModel>> getUsers() {
@@ -69,6 +97,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    /**
+     * @param username
+     * @return
+     */
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     @GetMapping("/serach/user/username/{username}")
     public ResponseEntity<UserServiceViewModel> getUserByUsername(@PathVariable String username) {
@@ -77,6 +109,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    /**
+     * @param username
+     * @return
+     */
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     @GetMapping("/serach/user/username/like/{username}")
     public ResponseEntity<List<UserServiceViewModel>> getUserByUsernameLike(@PathVariable String username) {
@@ -85,6 +121,10 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {

@@ -64,16 +64,17 @@ public class UserServiceImpl implements UserService {
         user.setAccountNonExpired(true);
         user.setCreated(LocalDateTime.now());
         user.setModified(LocalDateTime.now());
-        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
+        user.setPassword(encodePassword(userServiceModel));
         return mapUserToUserServiceViewModel(this.userDao.saveAndFlush(user));
     }
+
 
     @Override
     @Transactional
     public UserServiceViewModel updateUser(@Valid UserServiceModel userServiceModel) {
         User user = maoUserServiceModelToUser(userServiceModel);
         validateIfUsernameExists(user);
-        user.setPassword(this.bCryptPasswordEncoder.encode(userServiceModel.getPassword()));
+        user.setPassword(encodePassword(userServiceModel));
         user.setModified(LocalDateTime.now());
         return mapUserToUserServiceViewModel(this.userDao.saveAndFlush(user));
     }
@@ -254,6 +255,10 @@ public class UserServiceImpl implements UserService {
 
     public Role mapRoleModelServiceToRole(RoleServiceModel r) {
         return this.modelMapper.map(r, Role.class);
+    }
+
+    private String encodePassword(@Valid UserServiceModel userServiceModel) {
+        return this.bCryptPasswordEncoder.encode(userServiceModel.getPassword());
     }
 
 }
