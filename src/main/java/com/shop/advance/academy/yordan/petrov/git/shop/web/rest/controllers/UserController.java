@@ -36,7 +36,7 @@ public class UserController {
     /**
      * Constructor
      *
-     * @param
+     * @param userService .
      */
     @Autowired
     public UserController(UserService userService) {
@@ -44,10 +44,10 @@ public class UserController {
     }
 
     /**
-     * Method for
+     * Method for creating new user.
      *
-     * @param userServiceModel
-     * @return
+     * @param userServiceModel user dto for user creation.
+     * @return response entity wiht location uri and created user dto body.
      */
     @PostMapping()
     @PreAuthorize("isAnonymous()")
@@ -60,10 +60,10 @@ public class UserController {
     }
 
     /**
-     * Method for
+     * Method for updating the user at selected id.
      *
-     * @param userServiceModel
-     * @return
+     * @param userServiceModel .
+     * @return response entity  with http status and updated user body.
      */
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
@@ -74,10 +74,10 @@ public class UserController {
     }
 
     /**
-     * Method for
+     * Method for  .
      *
-     * @param userServiceModel
-     * @return
+     * @param userServiceModel .
+     * @return .
      */
     @PatchMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")

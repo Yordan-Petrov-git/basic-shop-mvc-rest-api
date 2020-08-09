@@ -1,4 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.dto;
+
 /**
  * Class dto for sign up.
  *
@@ -14,62 +15,78 @@ public class UserRegisterModel {
     private String email;
 
     /**
-     *
+     * Instantiates a new User register model.
      */
     public UserRegisterModel() {
     }
 
     /**
-     * @return
+     * Gets username.
+     *
+     * @return username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * @param username
+     * Sets username.
+     *
+     * @param username the username
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * @return
+     * Gets password.
+     *
+     * @return password
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * @param password
+     * Sets password.
+     *
+     * @param password the password
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     * @return
+     * Gets confirm password.
+     *
+     * @return confirm password
      */
     public String getConfirmPassword() {
         return confirmPassword;
     }
 
     /**
-     * @param confirmPassword
+     * Sets confirm password.
+     *
+     * @param confirmPassword the confirm password
      */
     public void setConfirmPassword(String confirmPassword) {
         this.confirmPassword = confirmPassword;
     }
 
     /**
-     * @return
+     * Gets email.
+     *
+     * @return email
      */
     public String getEmail() {
         return email;
     }
 
     /**
-     * @param email
+     * Sets email.
+     *
+     * @param email the email
      */
     public void setEmail(String email) {
         this.email = email;

@@ -1,4 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.web.rest.dto;
+
 /**
  * Class dto for log in.
  *
@@ -12,34 +13,42 @@ public class UserLoginModel {
     private String password;
 
     /**
-     *
+     * Instantiates a new User login model.
      */
     public UserLoginModel() {
     }
 
     /**
-     * @return
+     * Gets username.
+     *
+     * @return username
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * @param username
+     * Sets username.
+     *
+     * @param username the username
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * @return
+     * Gets password.
+     *
+     * @return password
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * @param password
+     * Sets password.
+     *
+     * @param password the password
      */
     public void setPassword(String password) {
         this.password = password;
