@@ -25,7 +25,13 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 
 @Service
 public class ShoppingCartServiceImpl implements ShoppingCartService {
@@ -36,6 +42,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     private final UserDao userDao;
     private final ItemDao itemDao;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public ShoppingCartServiceImpl(ShoppingCartDao shoppingCartDao, ModelMapper modelMapper,
                                    UserService userService, UserDao userDao, ItemDao itemDao) {

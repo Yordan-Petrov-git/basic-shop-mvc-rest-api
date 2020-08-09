@@ -1,13 +1,22 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
 import java.util.Objects;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class MediaServiceViewModel {
     private Long id;
     private String picturePath;
     private String videoPath;
     private String documentPath;
 
+    /**
+     * Constructor
+     */
 
     public MediaServiceViewModel() {
     }

@@ -4,7 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "currencies")
 public class Currency extends BaseEntity {
@@ -14,7 +20,9 @@ public class Currency extends BaseEntity {
     private String iso3;
     private Integer multiplierForCurrency;
 
-
+    /**
+     * Constructor
+     */
     public Currency() {
     }
 

@@ -6,7 +6,13 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class ItemServiceViewModel {
 
     private Long id;
@@ -18,6 +24,9 @@ public class ItemServiceViewModel {
     private Double weight;
     private ItemCategory itemCategory = ItemCategory.NONE;
 
+    /**
+     * Constructor
+     */
     public ItemServiceViewModel() {
     }
 

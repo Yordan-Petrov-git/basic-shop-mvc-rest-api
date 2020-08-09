@@ -19,9 +19,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+/**
+ * Class test  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @SpringBootTest
 @ExtendWith(MockitoExtension.class)
+
 public class MessageServiceTest {
 
     @MockBean

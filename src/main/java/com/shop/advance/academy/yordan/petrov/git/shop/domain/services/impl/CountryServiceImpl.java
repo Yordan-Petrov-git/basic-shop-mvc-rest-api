@@ -14,13 +14,22 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class CountryServiceImpl implements CountryService {
 
     private final CountryDao countryDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CountryServiceImpl(CountryDao countryDao, ModelMapper modelMapper) {
         this.countryDao = countryDao;

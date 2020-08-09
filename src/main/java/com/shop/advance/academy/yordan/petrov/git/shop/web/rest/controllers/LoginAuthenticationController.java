@@ -13,7 +13,13 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
-
+/**
+ * Class controller for the login.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("api/")
@@ -24,6 +30,9 @@ public class LoginAuthenticationController {
     private final JwtTokenUtil jwtTokenUtil;
     private final UserService userService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public LoginAuthenticationController(AuthenticationManager authenticationManager, JwtTokenUtil jwtTokenUtil, UserService userService) {
         this.authenticationManager = authenticationManager;

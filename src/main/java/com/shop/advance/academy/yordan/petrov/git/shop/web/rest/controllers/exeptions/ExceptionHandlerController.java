@@ -19,7 +19,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
-
+/**
+ * Class handling the exceptions.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @ControllerAdvice("com.shop.advance.academy.yordan.petrov.git.shop.web.rest.controllers")
 @Slf4j
 public class ExceptionHandlerController {

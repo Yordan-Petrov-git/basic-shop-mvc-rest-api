@@ -14,13 +14,22 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class ContactInformationServiceImpl implements ContactInformationService {
 
     private final ContactInformationDao contactInformationDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public ContactInformationServiceImpl(ContactInformationDao contactInformationDao, ModelMapper modelMapper) {
         this.contactInformationDao = contactInformationDao;

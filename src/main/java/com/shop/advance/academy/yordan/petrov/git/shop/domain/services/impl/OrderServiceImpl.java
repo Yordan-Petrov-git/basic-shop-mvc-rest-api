@@ -20,7 +20,13 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -29,6 +35,9 @@ public class OrderServiceImpl implements OrderService {
     private final ShoppingCartService shoppingCartService;
     private final ShoppingCartDao shoppingCartDao;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, ModelMapper modelMapper, ShoppingCartService shoppingCartService,
                             ShoppingCartDao shoppingCartDao) {

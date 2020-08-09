@@ -9,7 +9,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "shopping_carts")
 public class ShoppingCart extends BaseEntity {
@@ -20,6 +26,9 @@ public class ShoppingCart extends BaseEntity {
     private User user;
     private BigDecimal totalItemsPrice;
 
+    /**
+     * Constructor
+     */
     public ShoppingCart() {
     }
 

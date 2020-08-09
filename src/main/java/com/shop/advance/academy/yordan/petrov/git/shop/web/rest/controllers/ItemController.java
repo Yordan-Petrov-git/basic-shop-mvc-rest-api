@@ -13,7 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the items.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/items")
 @Slf4j
@@ -21,6 +27,9 @@ public class ItemController {
 
     private final ItemService itemService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public ItemController(ItemService itemService) {
         this.itemService = itemService;

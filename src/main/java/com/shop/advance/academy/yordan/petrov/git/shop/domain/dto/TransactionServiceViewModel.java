@@ -5,7 +5,13 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.Transac
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class TransactionServiceViewModel {
 
     Long id;
@@ -22,6 +28,9 @@ public class TransactionServiceViewModel {
     private CurrencyServiceViewModel currency;
     private OrderServiceViewModel order;
 
+    /**
+     * Constructor
+     */
     public TransactionServiceViewModel() {
     }
 

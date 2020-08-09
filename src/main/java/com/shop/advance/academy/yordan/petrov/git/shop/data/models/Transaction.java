@@ -6,7 +6,13 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.Transac
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.Instant;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "transactions")
 public class Transaction extends BaseEntity {
@@ -24,6 +30,9 @@ public class Transaction extends BaseEntity {
     private Currency currency;
     private Order order;
 
+    /**
+     * Constructor
+     */
     public Transaction() {
     }
 

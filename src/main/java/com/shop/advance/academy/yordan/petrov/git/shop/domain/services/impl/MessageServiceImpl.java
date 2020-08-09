@@ -8,13 +8,22 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class MessageServiceImpl implements MessageService {
 
     private final MessageDao messageDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     public MessageServiceImpl(MessageDao messageDao, ModelMapper modelMapper) {
         this.messageDao = messageDao;
         this.modelMapper = modelMapper;

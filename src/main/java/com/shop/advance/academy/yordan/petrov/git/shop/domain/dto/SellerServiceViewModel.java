@@ -3,7 +3,13 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class SellerServiceViewModel {
 
 
@@ -12,7 +18,9 @@ public class SellerServiceViewModel {
     private List<ItemCountPairServiceViewModel> stock = new ArrayList<>();
     private UserServiceViewModel user;
 
-
+    /**
+     * Constructor
+     */
     public SellerServiceViewModel() {
     }
 

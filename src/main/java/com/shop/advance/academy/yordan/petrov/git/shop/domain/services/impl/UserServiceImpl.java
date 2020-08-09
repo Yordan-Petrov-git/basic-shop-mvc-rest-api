@@ -28,7 +28,13 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 @Slf4j
 public class UserServiceImpl implements UserService {
@@ -40,6 +46,9 @@ public class UserServiceImpl implements UserService {
     private final RoleService roleService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public UserServiceImpl(UserDao userDao, ContactInformationDao contactInformationDao,
                            ModelMapper modelMapper, RoleDao roleDao, RoleService roleService,

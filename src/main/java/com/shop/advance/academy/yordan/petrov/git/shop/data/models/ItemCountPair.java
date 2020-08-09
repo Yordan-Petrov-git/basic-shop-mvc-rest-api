@@ -2,7 +2,13 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
 import javax.persistence.*;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "item_item_count_pairs")
 public class ItemCountPair extends BaseEntity {
@@ -16,6 +22,9 @@ public class ItemCountPair extends BaseEntity {
         this.itemCount = itemCount;
     }
 
+    /**
+     * Constructor
+     */
     public ItemCountPair() {
     }
 

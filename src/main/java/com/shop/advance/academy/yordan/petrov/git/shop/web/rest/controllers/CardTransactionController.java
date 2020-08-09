@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * Class controller for the transaction.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/transactions")
 @Slf4j
@@ -20,6 +26,9 @@ public class CardTransactionController {
 
     private final TransactionService transactionService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CardTransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;

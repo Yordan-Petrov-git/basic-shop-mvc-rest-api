@@ -6,7 +6,13 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.Shipmen
 
 import java.math.BigDecimal;
 import java.util.Objects;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class OrderServiceModel {
 
     private Long id;
@@ -18,6 +24,9 @@ public class OrderServiceModel {
     private ShipmentType shipmentType = ShipmentType.NONE;
     private PaymentType paymentType = PaymentType.NONE;
 
+    /**
+     * Constructor
+     */
     public OrderServiceModel() {
     }
 

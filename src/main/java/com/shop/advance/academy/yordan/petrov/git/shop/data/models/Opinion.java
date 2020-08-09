@@ -6,7 +6,13 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "opinions")
 public class Opinion extends BaseEntity {
@@ -17,6 +23,9 @@ public class Opinion extends BaseEntity {
     private Set<Media> media = new HashSet<>();
     private User user;
 
+    /**
+     * Constructor
+     */
     public Opinion() {
     }
 

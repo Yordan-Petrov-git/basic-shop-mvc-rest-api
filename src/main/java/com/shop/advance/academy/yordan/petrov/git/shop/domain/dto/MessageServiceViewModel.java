@@ -3,7 +3,13 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 import com.shop.advance.academy.yordan.petrov.git.shop.data.models.User;
 
 import java.time.Instant;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class MessageServiceViewModel {
     private Long id;
     private User senderId;
@@ -14,6 +20,9 @@ public class MessageServiceViewModel {
     private Instant recivedOnDateTim;
     private Instant readOnDateTime;
 
+    /**
+     * Constructor
+     */
     public MessageServiceViewModel() {
     }
 

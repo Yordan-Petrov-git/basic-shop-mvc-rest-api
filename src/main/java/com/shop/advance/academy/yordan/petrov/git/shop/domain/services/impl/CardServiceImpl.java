@@ -23,7 +23,13 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class CardServiceImpl implements CardService {
 
@@ -34,6 +40,9 @@ public class CardServiceImpl implements CardService {
     private final CurrencyDao currencyDao;
     private final UserDao userDao;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CardServiceImpl(CardDao cardDao, ModelMapper modelMapper,
                            BCryptPasswordEncoder bCryptPasswordEncoder, CurrencyService currencyService,

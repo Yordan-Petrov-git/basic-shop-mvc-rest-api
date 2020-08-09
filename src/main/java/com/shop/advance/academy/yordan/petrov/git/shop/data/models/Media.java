@@ -4,7 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "medias")
 public class Media extends BaseEntity {
@@ -13,6 +19,9 @@ public class Media extends BaseEntity {
     private String videoPath;
     private String documentPath;
 
+    /**
+     * Constructor
+     */
     public Media() {
     }
 

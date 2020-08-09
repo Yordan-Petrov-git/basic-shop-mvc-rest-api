@@ -8,7 +8,13 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.Optional;
-
+/**
+ * Interface dao for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Repository
 public interface TransactionDao extends JpaRepository<Transaction, Long> {
 

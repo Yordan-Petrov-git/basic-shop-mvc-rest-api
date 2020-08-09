@@ -2,7 +2,13 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
 import javax.persistence.*;
 import java.time.Instant;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "messages")
 public class Message extends BaseEntity {
@@ -15,6 +21,9 @@ public class Message extends BaseEntity {
     private Instant recivedOnDateTime;
     private Instant readOnDateTime;
 
+    /**
+     * Constructor
+     */
     public Message() {
     }
 

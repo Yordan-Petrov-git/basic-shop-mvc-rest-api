@@ -18,7 +18,13 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class OpinionServiceImpl implements OpinionService {
 
@@ -27,6 +33,9 @@ public class OpinionServiceImpl implements OpinionService {
     private final UserService userService;
     private final UserDao userDao;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public OpinionServiceImpl(OpinionDao opinionDao, ModelMapper modelMapper, UserService userService,
                               UserDao userDao) {

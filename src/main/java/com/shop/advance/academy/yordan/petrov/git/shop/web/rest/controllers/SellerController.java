@@ -13,7 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the seller.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/seller")
 @Slf4j
@@ -21,6 +27,9 @@ public class SellerController {
 
     private final SellerService sellerService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public SellerController(SellerService sellerService) {
         this.sellerService = sellerService;

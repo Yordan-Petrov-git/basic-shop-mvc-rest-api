@@ -8,7 +8,13 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class UserServiceViewModel {
 
 
@@ -21,7 +27,9 @@ public class UserServiceViewModel {
     private String lastName;
     private Set<ContactInformationServiceViewModel> contactInformation = new HashSet<>();
 
-
+    /**
+     * Constructor
+     */
     public UserServiceViewModel() {
     }
 

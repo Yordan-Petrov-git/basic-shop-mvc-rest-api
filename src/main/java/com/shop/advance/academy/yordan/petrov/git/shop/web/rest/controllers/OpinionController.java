@@ -14,7 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the opinion.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/opinion")
 @Slf4j
@@ -22,6 +28,9 @@ public class OpinionController {
 
     private final OpinionService opinionService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public OpinionController(OpinionService opinionService) {
         this.opinionService = opinionService;

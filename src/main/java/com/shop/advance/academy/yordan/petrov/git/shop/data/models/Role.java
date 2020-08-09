@@ -6,7 +6,13 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "roles")
 public class Role extends BaseEntity implements GrantedAuthority {
@@ -14,7 +20,9 @@ public class Role extends BaseEntity implements GrantedAuthority {
     private String authority;
     private Set<User> users = new HashSet<>();
 
-
+    /**
+     * Constructor
+     */
     public Role() {
     }
 

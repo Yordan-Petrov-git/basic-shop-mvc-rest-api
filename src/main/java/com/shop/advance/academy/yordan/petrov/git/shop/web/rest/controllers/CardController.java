@@ -14,7 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the card.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/card")
 @Slf4j
@@ -22,6 +28,9 @@ public class CardController {
 
     private final CardService cardService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CardController(CardService cardService) {
         this.cardService = cardService;

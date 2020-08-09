@@ -20,7 +20,13 @@ import javax.persistence.EntityNotFoundException;
 import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.Instant;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class PurchasingServiceImpl implements PurchasingService {
 
@@ -28,6 +34,9 @@ public class PurchasingServiceImpl implements PurchasingService {
     private final ModelMapper modelMapper;
     private final TransactionService transactionService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public PurchasingServiceImpl(OrderDao orderDao, ModelMapper modelMapper,
                                  TransactionService transactionService) {

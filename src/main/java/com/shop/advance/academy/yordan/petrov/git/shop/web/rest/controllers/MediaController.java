@@ -14,7 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the media.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/media")
 @Slf4j
@@ -22,6 +28,9 @@ public class MediaController {
 
     private final MediaService mediaService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public MediaController(MediaService mediaService) {
         this.mediaService = mediaService;

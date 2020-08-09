@@ -9,7 +9,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class CardServiceViewModel {
 
     private Long id;
@@ -24,6 +30,9 @@ public class CardServiceViewModel {
     private boolean isActive = true;
     private List<UserServiceModel> users = new ArrayList<>();
 
+    /**
+     * Constructor
+     */
     public CardServiceViewModel() {
     }
 

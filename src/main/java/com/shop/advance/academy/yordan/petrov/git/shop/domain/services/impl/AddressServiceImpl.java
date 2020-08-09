@@ -21,7 +21,13 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class AddressServiceImpl implements AddressService {
 
@@ -31,7 +37,9 @@ public class AddressServiceImpl implements AddressService {
     private final ModelMapper modelMapper;
     private final UserDao userDao;
 
-
+    /**
+     * Constructor
+     */
     @Autowired
     public AddressServiceImpl(AddressDao addressDao, CityDao cityDao,
                               CityService cityService, ModelMapper modelMapper, UserDao userDao) {

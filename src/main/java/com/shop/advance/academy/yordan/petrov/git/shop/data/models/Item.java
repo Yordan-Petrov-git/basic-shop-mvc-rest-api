@@ -7,7 +7,13 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "items")
 public class Item extends BaseEntity {
@@ -20,6 +26,9 @@ public class Item extends BaseEntity {
     private Set<Opinion> opinions = new HashSet<>();
     private ItemCategory itemCategory = ItemCategory.NONE;
 
+    /**
+     * Constructor
+     */
     public Item() {
     }
 

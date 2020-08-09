@@ -4,7 +4,13 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class AddressServiceModel {
 
     private Long id;
@@ -13,6 +19,9 @@ public class AddressServiceModel {
     private CityServiceModel city;
     private List<UserServiceModel> users = new ArrayList<>();
 
+    /**
+     * Constructor
+     */
     public AddressServiceModel() {
     }
 

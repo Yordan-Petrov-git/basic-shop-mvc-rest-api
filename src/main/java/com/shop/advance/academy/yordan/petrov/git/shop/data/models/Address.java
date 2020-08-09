@@ -4,7 +4,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "addresses")
 public class Address extends BaseEntity {
@@ -14,6 +20,9 @@ public class Address extends BaseEntity {
     private City city;
     private List<User> users = new ArrayList<>();
 
+    /**
+     * Constructor
+     */
     public Address() {
     }
 

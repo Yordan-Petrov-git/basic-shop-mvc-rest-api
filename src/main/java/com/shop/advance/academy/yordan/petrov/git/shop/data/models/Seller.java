@@ -4,7 +4,13 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "sellers")
 public class Seller extends BaseEntity {
@@ -14,6 +20,9 @@ public class Seller extends BaseEntity {
     private List<ItemCountPair> stock = new ArrayList<>();
     private User user;
 
+    /**
+     * Constructor
+     */
     public Seller() {
     }
 

@@ -14,6 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class controller for the address.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/address")
 @Slf4j
@@ -21,6 +28,9 @@ public class AddressController {
 
     private final AddressService addressService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public AddressController(AddressService addressService) {
         this.addressService = addressService;

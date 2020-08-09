@@ -14,7 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the city.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/city")
 @Slf4j
@@ -22,6 +28,9 @@ public class CityController {
 
     private final CityService cityService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CityController(CityService cityService) {
         this.cityService = cityService;

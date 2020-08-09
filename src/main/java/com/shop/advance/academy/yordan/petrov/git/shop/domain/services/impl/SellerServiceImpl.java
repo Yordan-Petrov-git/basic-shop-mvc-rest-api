@@ -16,7 +16,13 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class SellerServiceImpl implements SellerService {
 
@@ -24,7 +30,9 @@ public class SellerServiceImpl implements SellerService {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-
+    /**
+     * Constructor
+     */
     @Autowired
     public SellerServiceImpl(SellerDao sellerDao, ModelMapper modelMapper, UserService userService) {
         this.sellerDao = sellerDao;

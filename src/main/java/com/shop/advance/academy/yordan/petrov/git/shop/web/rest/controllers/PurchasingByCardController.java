@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 
 import java.net.URI;
-
+/**
+ * Class controller for the purchase.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/purchases")
 @Slf4j
@@ -20,6 +26,9 @@ public class PurchasingByCardController {
 
     private final PurchasingService purchasingService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public PurchasingByCardController(PurchasingService purchasingService) {
         this.purchasingService = purchasingService;

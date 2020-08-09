@@ -14,7 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the currency.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/currency")
 @Slf4j
@@ -22,6 +28,9 @@ public class CurrencyController {
 
     private final CurrencyService currencyService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CurrencyController(CurrencyService currencyService) {
         this.currencyService = currencyService;

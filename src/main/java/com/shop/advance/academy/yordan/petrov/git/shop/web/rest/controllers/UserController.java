@@ -16,7 +16,11 @@ import java.util.List;
 
 
 /**
+ * Class controller for the User.
  *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
  */
 @RestController
 @CrossOrigin
@@ -30,7 +34,8 @@ public class UserController {
     private final UserService userService;
 
     /**
-     * @param userService
+     * Constructor
+     * @param
      */
     @Autowired
     public UserController(UserService userService) {
@@ -38,6 +43,7 @@ public class UserController {
     }
 
     /**
+     *
      * @param userServiceModel
      * @return
      */

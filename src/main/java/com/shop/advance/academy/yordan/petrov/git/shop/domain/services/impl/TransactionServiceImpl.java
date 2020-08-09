@@ -22,7 +22,13 @@ import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class TransactionServiceImpl implements TransactionService {
 
@@ -35,6 +41,9 @@ public class TransactionServiceImpl implements TransactionService {
     private final OrderService orderService;
     private final OrderDao orderDao;
 
+    /**
+     * Constructor
+     */
     public TransactionServiceImpl(TransactionDao transactionDao, CardDao cardDao,
                                   CardService cardService, CurrencyService currencyService, CurrencyDao currencyDao,
                                   ModelMapper modelMapper, OrderService orderService, OrderDao orderDao) {

@@ -4,7 +4,13 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "countries")
 public class Country extends BaseEntity {
@@ -12,7 +18,9 @@ public class Country extends BaseEntity {
     private String name;
     private String coordinates;
 
-
+    /**
+     * Constructor
+     */
     public Country() {
     }
 

@@ -13,7 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the order.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/order")
 @Slf4j
@@ -21,6 +27,9 @@ public class OrderController {
 
     private final OrderService orderService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public OrderController(OrderService orderService) {
         this.orderService = orderService;

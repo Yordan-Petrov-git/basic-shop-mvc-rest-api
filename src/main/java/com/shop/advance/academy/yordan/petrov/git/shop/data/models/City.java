@@ -2,7 +2,13 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.models;
 
 import javax.persistence.*;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "cities")
 public class City extends BaseEntity {
@@ -12,6 +18,9 @@ public class City extends BaseEntity {
     private String province;
     private Country country;
 
+    /**
+     * Constructor
+     */
     public City() {
     }
 

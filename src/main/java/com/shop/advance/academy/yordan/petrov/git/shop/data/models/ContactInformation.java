@@ -6,7 +6,13 @@ import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Pattern;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "contact_informations")
 public class ContactInformation extends BaseEntity {
@@ -15,7 +21,9 @@ public class ContactInformation extends BaseEntity {
     private String phoneNumber;
     private String countryCode;
 
-
+    /**
+     * Constructor
+     */
     public ContactInformation() {
     }
 

@@ -14,13 +14,22 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
-
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class MediaServiceImpl implements MediaService {
 
     private final MediaDao mediaDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public MediaServiceImpl(MediaDao mediaDao, ModelMapper modelMapper) {
         this.mediaDao = mediaDao;

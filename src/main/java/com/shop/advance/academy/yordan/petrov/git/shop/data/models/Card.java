@@ -12,7 +12,13 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "cards")
 public class Card extends BaseEntity {
@@ -29,7 +35,9 @@ public class Card extends BaseEntity {
     private boolean isActive = true;
     private List<User> users = new ArrayList<>();
 
-
+    /**
+     * Constructor
+     */
     public Card() {
     }
 

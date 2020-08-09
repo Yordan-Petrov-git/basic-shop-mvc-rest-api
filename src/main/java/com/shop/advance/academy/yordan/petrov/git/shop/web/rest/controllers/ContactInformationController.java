@@ -14,7 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
-
+/**
+ * Class controller for the contact information .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/contactinformation")
 @Slf4j
@@ -22,6 +28,9 @@ public class ContactInformationController {
 
     private final ContactInformationService contactInformationService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public ContactInformationController(ContactInformationService contactInformationService) {
         this.contactInformationService = contactInformationService;

@@ -9,7 +9,13 @@ import javax.validation.constraints.DecimalMax;
 import javax.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
 import java.util.Objects;
-
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
@@ -22,6 +28,9 @@ public class Order extends BaseEntity {
     private ShipmentType shipmentType = ShipmentType.NONE;
     private PaymentType paymentType = PaymentType.NONE;
 
+    /**
+     * Constructor
+     */
     public Order() {
     }
 
