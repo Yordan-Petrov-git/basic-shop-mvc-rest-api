@@ -19,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
+
 /**
  * Class handling the exceptions.
  *
@@ -30,6 +31,12 @@ import java.nio.file.AccessDeniedException;
 @Slf4j
 public class ExceptionHandlerController {
 
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(EntityNotFoundException ex) {
         log.error(ex.getMessage());
@@ -37,6 +44,12 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(IllegalCardTransactionOperation.class)
     public ResponseEntity<ErrorResponse> handle(IllegalCardTransactionOperation ex) {
         log.error(ex.getMessage());
@@ -44,7 +57,12 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
-
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(IllegalDeleteOperation.class)
     public ResponseEntity<ErrorResponse> handle(IllegalDeleteOperation ex) {
         log.error(ex.getMessage());
@@ -52,6 +70,12 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public ResponseEntity<ErrorResponse> handle(HttpRequestMethodNotSupportedException ex) {
         log.error(ex.getMessage());
@@ -59,7 +83,12 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
-
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<ErrorResponse> handle(AccessDeniedException ex) {
         log.error(ex.getMessage());
@@ -67,7 +96,12 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
-
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(UsernameNotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(UsernameNotFoundException ex) {
         log.error(ex.getMessage());
@@ -75,7 +109,12 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
-
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler({InvalidEntityException.class,
             ConstraintViolationException.class,
             HttpMessageConversionException.class,
@@ -87,6 +126,12 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
     public ResponseEntity<ErrorResponse> handle(javax.persistence.EntityNotFoundException ex) {
         log.error(ex.getMessage());
@@ -94,6 +139,12 @@ public class ExceptionHandlerController {
                 .body(new ErrorResponse(ex.getClass().getSimpleName(), ex.getMessage()));
     }
 
+    /**
+     * Method for
+     *
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handle(Exception ex,
                                                 HttpServletRequest request, HttpServletResponse response) {

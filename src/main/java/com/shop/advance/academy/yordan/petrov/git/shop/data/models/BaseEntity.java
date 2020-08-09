@@ -21,6 +21,9 @@ public abstract class BaseEntity {
     public BaseEntity() {
     }
 
+    /**
+     * @return
+     */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id",
@@ -32,10 +35,17 @@ public abstract class BaseEntity {
         return this.id;
     }
 
+    /**
+     * @param id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -44,11 +54,17 @@ public abstract class BaseEntity {
         return Objects.equals(id, that.id);
     }
 
+    /**
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(id);
     }
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("BaseEntity{");

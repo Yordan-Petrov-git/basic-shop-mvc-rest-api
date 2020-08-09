@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface OrderService {
 
+    /**
+     * @param Order
+     * @return
+     */
     OrderServiceViewModel createOrder(OrderServiceModel Order);
 
+    /**
+     * @param Order
+     * @return
+     */
     OrderServiceViewModel updateOrder(OrderServiceModel Order);
 
+    /**
+     * @param id
+     * @return
+     */
     OrderServiceViewModel getOrderById(long id);
 
+    /**
+     * @return
+     */
     List<OrderServiceViewModel> getAllOrders();
 
+    /**
+     * @param id
+     * @return
+     */
     OrderServiceViewModel deleteOrderById(long id);
 }

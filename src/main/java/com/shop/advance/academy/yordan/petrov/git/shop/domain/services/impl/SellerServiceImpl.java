@@ -41,6 +41,10 @@ public class SellerServiceImpl implements SellerService {
     }
 
 
+    /**
+     * @param sellerServiceModel
+     * @return
+     */
     @Override
     public SellerServiceViewModel createSeller(SellerServiceModel sellerServiceModel) {
 
@@ -64,6 +68,10 @@ public class SellerServiceImpl implements SellerService {
 
     }
 
+    /**
+     * @param sellerServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public SellerServiceViewModel updateSeller(SellerServiceModel sellerServiceModel) {
@@ -77,6 +85,10 @@ public class SellerServiceImpl implements SellerService {
 
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public SellerServiceViewModel getSellerById(long id) {
         return this.modelMapper
@@ -85,6 +97,9 @@ public class SellerServiceImpl implements SellerService {
 
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<SellerServiceViewModel> getAllSellers() {
 
@@ -99,6 +114,10 @@ public class SellerServiceImpl implements SellerService {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public SellerServiceViewModel deleteSellerById(long id) {
 

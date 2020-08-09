@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface OpinionService {
 
+    /**
+     * @param opinionServiceModel
+     * @return
+     */
     OpinionServiceViewModel createOpinion(OpinionServiceModel opinionServiceModel);
 
+    /**
+     * @param opinionServiceModel
+     * @return
+     */
     OpinionServiceViewModel updateOpinion(OpinionServiceModel opinionServiceModel);
 
+    /**
+     * @param id
+     * @return
+     */
     OpinionServiceViewModel getOpinionById(long id);
 
+    /**
+     * @return
+     */
     List<OpinionServiceViewModel> getAllOpinions();
 
+    /**
+     * @param id
+     * @return
+     */
     OpinionServiceViewModel deleteOpinionById(long id);
 }

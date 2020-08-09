@@ -13,7 +13,15 @@ import org.springframework.stereotype.Service;
 @Service
 public interface PurchasingService {
 
+    /**
+     * @param transaction
+     * @return
+     */
     TransactionServiceViewModel payByCard(TransactionServiceModel transaction);
 
+    /**
+     * @param transaction
+     * @return
+     */
     TransactionServiceViewModel refundCardPurchase(TransactionServiceModel transaction);
 }

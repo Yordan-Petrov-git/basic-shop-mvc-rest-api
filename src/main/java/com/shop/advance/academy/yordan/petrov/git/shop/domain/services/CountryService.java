@@ -15,15 +15,38 @@ import java.util.List;
 @Service
 public interface CountryService {
 
+    /**
+     * @param Country
+     * @return
+     */
     CountryServiceViewModel createCountry(CountryServiceModel Country);
 
+    /**
+     * @param Country
+     * @return
+     */
     CountryServiceViewModel updateCountry(CountryServiceModel Country);
 
+    /**
+     * @param id
+     * @return
+     */
     CountryServiceViewModel getCountryById(long id);
 
+    /**
+     * @param name
+     * @return
+     */
     CountryServiceViewModel getCountryName(String name);
 
+    /**
+     * @return
+     */
     List<CountryServiceViewModel> getAllCountries();
 
+    /**
+     * @param id
+     * @return
+     */
     CountryServiceViewModel deleteCountryById(long id);
 }

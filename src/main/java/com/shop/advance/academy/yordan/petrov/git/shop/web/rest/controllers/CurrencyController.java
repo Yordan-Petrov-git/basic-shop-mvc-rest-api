@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
+
 /**
  * Class controller for the currency.
  *
@@ -37,6 +38,12 @@ public class CurrencyController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param currencyServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> createCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
@@ -47,6 +54,12 @@ public class CurrencyController {
         return ResponseEntity.created(location).body(currencyServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param currencyServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> updateCurrency(@RequestBody CurrencyServiceModel currencyServiceModel) {
@@ -56,6 +69,12 @@ public class CurrencyController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<CurrencyServiceViewModel> getCurrency(@PathVariable("id") final Long id) {
@@ -64,6 +83,11 @@ public class CurrencyController {
         return ResponseEntity.status(HttpStatus.FOUND).body(currencyServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<CurrencyServiceViewModel>> getCurrencies() {
@@ -72,6 +96,12 @@ public class CurrencyController {
         return ResponseEntity.status(HttpStatus.FOUND).body(currencyServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CurrencyServiceViewModel> deleteCurrency(@PathVariable("id") Long id) {

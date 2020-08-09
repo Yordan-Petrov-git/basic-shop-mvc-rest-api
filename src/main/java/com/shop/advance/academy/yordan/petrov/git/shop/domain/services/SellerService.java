@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface SellerService {
 
+    /**
+     * @param sellerServiceModel
+     * @return
+     */
     SellerServiceViewModel createSeller(SellerServiceModel sellerServiceModel);
 
+    /**
+     * @param sellerServiceModel
+     * @return
+     */
     SellerServiceViewModel updateSeller(SellerServiceModel sellerServiceModel);
 
+    /**
+     * @param id
+     * @return
+     */
     SellerServiceViewModel getSellerById(long id);
 
+    /**
+     * @return
+     */
     List<SellerServiceViewModel> getAllSellers();
 
+    /**
+     * @param id
+     * @return
+     */
     SellerServiceViewModel deleteSellerById(long id);
 }

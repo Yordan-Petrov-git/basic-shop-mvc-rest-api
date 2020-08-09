@@ -57,6 +57,10 @@ public class TransactionServiceImpl implements TransactionService {
         this.orderDao = orderDao;
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     @Override
     public TransactionServiceViewModel createTransaction(TransactionServiceModel transactionServiceModel) {
         //TODO ADD EXCHANGE RATE EVENTUALLY IF THE RECEIVER CARD IS IN DIFFERENT CURRENCY
@@ -72,6 +76,10 @@ public class TransactionServiceImpl implements TransactionService {
         return mapTransactionToTransactionServiceViewModel(this.transactionDao.saveAndFlush(transaction));
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public TransactionServiceViewModel updateTransaction(TransactionServiceModel transactionServiceModel) {
@@ -80,11 +88,18 @@ public class TransactionServiceImpl implements TransactionService {
         return mapTransactionToTransactionServiceViewModel(this.transactionDao.saveAndFlush(transaction));
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public TransactionServiceViewModel getTransactionById(Long id) {
         return mapTransactionToTransactionServiceViewModel(this.getTransactionId(id));
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<TransactionServiceViewModel> getAllTransactions() {
         List<Transaction> transactions = transactionDao.findAll();
@@ -92,6 +107,10 @@ public class TransactionServiceImpl implements TransactionService {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     @Transactional
     public TransactionServiceViewModel deleteTransactionById(Long id) {
@@ -100,6 +119,10 @@ public class TransactionServiceImpl implements TransactionService {
         return mapTransactionToTransactionServiceViewModel(transaction);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     @Transactional
     public TransactionServiceViewModel refundTransactionById(Long id) {
@@ -110,6 +133,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
 
+    /**
+     * @param id
+     * @param amount
+     */
     @Override
     @Transactional
     public void withdrawMoney(Long id, BigDecimal amount) {
@@ -124,6 +151,10 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
 
+    /**
+     * @param id
+     * @param amount
+     */
     @Override
     @Transactional
     public void depositMoney(Long id, BigDecimal amount) {
@@ -133,6 +164,11 @@ public class TransactionServiceImpl implements TransactionService {
     }
 
 
+    /**
+     * @param toId
+     * @param fromId
+     * @param amount
+     */
     @Override
     @Transactional
     public void transferMoney(Long toId, Long fromId, BigDecimal amount) {
@@ -141,6 +177,11 @@ public class TransactionServiceImpl implements TransactionService {
         checksIfTransferAmountIsZero(amount);
     }
 
+    /**
+     * @param toId
+     * @param fromId
+     * @param amount
+     */
     @Override
     @Transactional
     public void refund(Long toId, Long fromId, BigDecimal amount) {
@@ -149,6 +190,9 @@ public class TransactionServiceImpl implements TransactionService {
         checksIfTransferAmountIsZero(amount);
     }
 
+    /**
+     * @param transactionServiceModel
+     */
     public void setUpTransactionRouts(TransactionServiceModel transactionServiceModel) {
         setSender(transactionServiceModel);
         setRecipient(transactionServiceModel);
@@ -156,6 +200,9 @@ public class TransactionServiceImpl implements TransactionService {
         setOrder(transactionServiceModel);
     }
 
+    /**
+     * @param transactionServiceModel
+     */
     public void setOrder(TransactionServiceModel transactionServiceModel) {
         orderDao.findById(transactionServiceModel.getOrder().getId())
                 .ifPresent(c -> {
@@ -163,6 +210,9 @@ public class TransactionServiceImpl implements TransactionService {
                 });
     }
 
+    /**
+     * @param transactionServiceModel
+     */
     public void setCurrency(TransactionServiceModel transactionServiceModel) {
         currencyDao.findById(transactionServiceModel.getCurrency().getId())
                 .ifPresent(c -> {
@@ -170,6 +220,9 @@ public class TransactionServiceImpl implements TransactionService {
                 });
     }
 
+    /**
+     * @param transactionServiceModel
+     */
     public void setRecipient(TransactionServiceModel transactionServiceModel) {
         cardDao.findById(transactionServiceModel.getRecipient().getId())
                 .ifPresent(c -> {
@@ -177,6 +230,9 @@ public class TransactionServiceImpl implements TransactionService {
                 });
     }
 
+    /**
+     * @param transactionServiceModel
+     */
     public void setSender(TransactionServiceModel transactionServiceModel) {
         cardDao.findById(transactionServiceModel.getSender().getId())
                 .ifPresent(c -> {
@@ -184,29 +240,52 @@ public class TransactionServiceImpl implements TransactionService {
                 });
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     private OrderServiceViewModel getOrderForTransaction(TransactionServiceModel transactionServiceModel) {
         return this.orderService.getOrderById(transactionServiceModel.getOrder().getId());
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     private CurrencyServiceViewModel getCurrencyForTransaction(TransactionServiceModel transactionServiceModel) {
         return this.currencyService.getCurrencyById(transactionServiceModel.getCurrency().getId());
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     private CardServiceViewModel getRecipientCard(TransactionServiceModel transactionServiceModel) {
         return this.cardService.getCardById(transactionServiceModel.getRecipient().getId());
     }
 
 
+    /**
+     * @param id
+     * @return
+     */
     private Transaction getTransactionId(Long id) {
         return this.transactionDao.findById(id)
                 .orElseThrow(() -> new InvalidEntityException(String.format("Transaction with id '%d' not found .", id)));
     }
 
+    /**
+     * @param id
+     * @return
+     */
     private Card getCardId(Long id) {
         return cardDao.findById(id)
                 .orElseThrow(() -> new InvalidEntityException(String.format("Card with id '%d' not found .", id)));
     }
 
+    /**
+     * @param amount
+     */
     private void checksIfDepositAmountIsZero(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalCardTransactionOperation(String.
@@ -215,6 +294,9 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
+    /**
+     * @param amount
+     */
     private void checksIfTransferAmountIsZero(BigDecimal amount) {
         if (amount.compareTo(BigDecimal.ZERO) < 0) {
             throw new IllegalCardTransactionOperation(String.
@@ -223,24 +305,44 @@ public class TransactionServiceImpl implements TransactionService {
         }
     }
 
+    /**
+     * @param senderCard
+     * @return
+     */
     private CardServiceModel mapCardServiceViewModelToCardServiceModel(CardServiceViewModel senderCard) {
         return this.modelMapper.map(senderCard, CardServiceModel.class);
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     private CardServiceViewModel getSenderCard(TransactionServiceModel transactionServiceModel) {
         return this.cardService.getCardById(transactionServiceModel.getSender().getId());
     }
 
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     public Transaction mapTransactionServiceModelToTransaction(TransactionServiceModel transactionServiceModel) {
         return this.modelMapper.map(transactionServiceModel, Transaction.class);
     }
 
 
+    /**
+     * @param transaction
+     * @return
+     */
     public TransactionServiceViewModel mapTransactionToTransactionServiceViewModel(Transaction transaction) {
         return this.modelMapper.map(transaction, TransactionServiceViewModel.class);
     }
 
+    /**
+     * @param transaction
+     * @return
+     */
     public TransactionServiceModel mapTransactionToTransactionServiceModel(Transaction transaction) {
         return this.modelMapper.map(transaction, TransactionServiceModel.class);
     }

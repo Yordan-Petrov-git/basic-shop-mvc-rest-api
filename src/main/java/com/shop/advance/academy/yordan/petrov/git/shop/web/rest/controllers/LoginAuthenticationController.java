@@ -13,6 +13,7 @@ import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
 /**
  * Class controller for the login.
  *
@@ -40,6 +41,13 @@ public class LoginAuthenticationController {
         this.userService = userService;
     }
 
+    /**
+     * Method for
+     *
+     * @param authenticationRequest
+     * @return
+     * @throws Exception
+     */
     @PreAuthorize("isAnonymous()")
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
@@ -50,6 +58,13 @@ public class LoginAuthenticationController {
         return ResponseEntity.ok(new JwtResponse(token));
     }
 
+    /**
+     * Method for
+     *
+     * @param username
+     * @param password
+     * @throws Exception
+     */
     private void authenticate(String username, String password) throws Exception {
         try {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));

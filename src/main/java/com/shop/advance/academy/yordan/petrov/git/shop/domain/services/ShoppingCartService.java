@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface ShoppingCartService {
 
+    /**
+     * @param shoppingCartServiceModel
+     * @return
+     */
     ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel);
 
+    /**
+     * @param shoppingCartServiceModel
+     * @return
+     */
     ShoppingCartServiceViewModel updateShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel);
 
+    /**
+     * @param id
+     * @return
+     */
     ShoppingCartServiceViewModel getShoppingCartById(long id);
 
+    /**
+     * @return
+     */
     List<ShoppingCartServiceViewModel> getAllShoppingCarts();
 
+    /**
+     * @param id
+     * @return
+     */
     ShoppingCartServiceViewModel deleteShoppingCartById(long id);
 }

@@ -28,6 +28,9 @@ public class ItemCountPair extends BaseEntity {
     public ItemCountPair() {
     }
 
+    /**
+     * @return
+     */
     @ManyToOne(fetch = FetchType.LAZY
             , cascade = {CascadeType.DETACH})
     @JoinColumn(name = "item_id", referencedColumnName = "id")
@@ -35,19 +38,32 @@ public class ItemCountPair extends BaseEntity {
         return this.item;
     }
 
+    /**
+     * @param item
+     */
     @Column(name = "item_count")
     public void setItem(Item item) {
         this.item = item;
     }
 
+    /**
+     * @return
+     */
     public Integer getItemCount() {
         return this.itemCount;
     }
 
+    /**
+     * @param itemCount
+     */
     public void setItemCount(Integer itemCount) {
         this.itemCount = itemCount;
     }
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -57,11 +73,17 @@ public class ItemCountPair extends BaseEntity {
         return Objects.equals(itemCount, that.itemCount);
     }
 
+    /**
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), itemCount);
     }
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ItemCountPair{");

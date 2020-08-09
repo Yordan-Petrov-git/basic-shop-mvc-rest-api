@@ -15,6 +15,10 @@ import java.util.Optional;
 @Repository
 public interface ShoppingCartDao extends JpaRepository<ShoppingCart, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<ShoppingCart> findById(Long id);
 
 }

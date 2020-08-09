@@ -7,6 +7,7 @@ import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 /**
  * Class model for .
  *
@@ -32,6 +33,9 @@ public class Item extends BaseEntity {
     public Item() {
     }
 
+    /**
+     * @return
+     */
     @OneToMany(targetEntity = Media.class,
             fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}, orphanRemoval = true)
@@ -42,10 +46,16 @@ public class Item extends BaseEntity {
         return this.media;
     }
 
+    /**
+     * @param media
+     */
     public void setMedia(Set<Media> media) {
         this.media = media;
     }
 
+    /**
+     * @return
+     */
     @OneToMany(targetEntity = Opinion.class,
             fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH, CascadeType.REMOVE}, orphanRemoval = true)
@@ -56,57 +66,94 @@ public class Item extends BaseEntity {
         return this.opinions;
     }
 
+    /**
+     * @param opinions
+     */
     public void setOpinions(Set<Opinion> opinions) {
         this.opinions = opinions;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "title")
     public String getTitle() {
         return this.title;
     }
 
+    /**
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "description")
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "price")
     public BigDecimal getPrice() {
         return this.price;
     }
 
+    /**
+     * @param price
+     */
     public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "weight")
     public Double getWeight() {
         return this.weight;
     }
 
+    /**
+     * @param weight
+     */
     public void setWeight(Double weight) {
         this.weight = weight;
     }
 
 
+    /**
+     * @return
+     */
     @Column(name = "item_category")
     @Enumerated(EnumType.STRING)
     public ItemCategory getItemCategory() {
         return this.itemCategory;
     }
 
+    /**
+     * @param itemCategory
+     */
     public void setItemCategory(ItemCategory itemCategory) {
         this.itemCategory = itemCategory;
     }
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -120,11 +167,17 @@ public class Item extends BaseEntity {
                 itemCategory == item.itemCategory;
     }
 
+    /**
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), title, description, price, weight, itemCategory);
     }
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Item{");

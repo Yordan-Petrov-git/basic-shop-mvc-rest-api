@@ -45,6 +45,10 @@ public class PurchasingServiceImpl implements PurchasingService {
         this.transactionService = transactionService;
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     @Override
     public TransactionServiceViewModel payByCard(TransactionServiceModel transactionServiceModel) {
         Order order = findOrderFromTransactionServiceModelById(transactionServiceModel);
@@ -61,6 +65,10 @@ public class PurchasingServiceImpl implements PurchasingService {
     }
 
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     @Override
     public TransactionServiceViewModel refundCardPurchase(TransactionServiceModel transactionServiceModel) {
         TransactionServiceModel transactionServiceForRefund = getTransactionServiceModelForRefundTransaction(transactionServiceModel);
@@ -68,11 +76,18 @@ public class PurchasingServiceImpl implements PurchasingService {
         return mapTransactionServiceModelToTransactionServiceViewModel(transactionServiceForRefund);
     }
 
+    /**
+     * @param transactionServiceModel
+     */
     private void createTransactionForPayByCard(TransactionServiceModel transactionServiceModel) {
         transactionService.createTransaction(transactionServiceModel);
     }
 
 
+    /**
+     * @param transactionServiceModel
+     * @param transactionServiceForRefund
+     */
     private void refundCardPurchaseValidationAndUpdates(TransactionServiceModel transactionServiceModel
             , TransactionServiceModel transactionServiceForRefund) {
 
@@ -87,10 +102,16 @@ public class PurchasingServiceImpl implements PurchasingService {
     }
 
 
+    /**
+     * @param transactionServiceModel
+     */
     private void refundTransactionById(TransactionServiceModel transactionServiceModel) {
         this.transactionService.refundTransactionById(transactionServiceModel.getId());
     }
 
+    /**
+     * @param dateTransactionCompleted
+     */
     public void isTimeBetweenTwoDatesGreaterOrEqualToSetDaysInSeconds(Instant dateTransactionCompleted) {
         boolean isNonRefundable;
         //14 days in seconds
@@ -104,6 +125,9 @@ public class PurchasingServiceImpl implements PurchasingService {
         }
     }
 
+    /**
+     * @param transactionStatus
+     */
     public void isTransactionStatusRefunded(TransactionStatus transactionStatus) {
         boolean isNonRefundable = false;
         isNonRefundable = transactionStatus == TransactionStatus.REFUNDED;
@@ -112,6 +136,9 @@ public class PurchasingServiceImpl implements PurchasingService {
         }
     }
 
+    /**
+     * @param orderStatus
+     */
     public void isOrderStatusCanceled(OrderStatus orderStatus) {
         boolean isOrderNonCanceled = false;
         isOrderNonCanceled = orderStatus == OrderStatus.CANCELED;
@@ -120,6 +147,9 @@ public class PurchasingServiceImpl implements PurchasingService {
         }
     }
 
+    /**
+     * @param orderStatus
+     */
     public void isOrderStatusFinished(OrderStatus orderStatus) {
         boolean isOrderNonCanceled = false;
         isOrderNonCanceled = orderStatus == OrderStatus.PICKED_UP_BY;
@@ -128,6 +158,9 @@ public class PurchasingServiceImpl implements PurchasingService {
         }
     }
 
+    /**
+     * @param orderStatus
+     */
     public void isOrderStatusProccesing(OrderStatus orderStatus) {
         boolean isOrderNonCanceled = false;
         isOrderNonCanceled = orderStatus == OrderStatus.PROCESSING;
@@ -136,38 +169,67 @@ public class PurchasingServiceImpl implements PurchasingService {
         }
     }
 
+    /**
+     * @param transaction
+     * @return
+     */
     public Order findOrderFromTransactionServiceModelById(TransactionServiceModel transaction) {
         return orderDao.findById(transaction.getOrder().getId())
                 .orElseThrow(() ->
                         new EntityNotFoundException("No Order have been found"));
     }
 
+    /**
+     * @param order
+     */
     public void updateOrderForRefund(Order order) {
         order.setOrderStatus(OrderStatus.CANCELED);
     }
 
+    /**
+     * @param order
+     */
     public void updateOrderForPurchase(Order order) {
         order.setShipmentType(ShipmentType.NONE);
         order.setPaymentType(PaymentType.BY_CARD);
         order.setOrderStatus(OrderStatus.PROCESSING);
     }
 
+    /**
+     * @param order
+     * @return
+     */
     public OrderServiceModel mapOrderToOrderServiceModel(Order order) {
         return this.modelMapper.map(order, OrderServiceModel.class);
     }
 
+    /**
+     * @param transactionServiceModel
+     */
     public void updateTransactionService(TransactionServiceModel transactionServiceModel) {
         transactionService.updateTransaction(transactionServiceModel);
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     public TransactionServiceModel getTransactionServiceModelForRefundTransaction(TransactionServiceModel transactionServiceModel) {
         return mapTransactionServiceViewModelToTransactionServiceModel(this.transactionService.getTransactionById(transactionServiceModel.getId()));
     }
 
+    /**
+     * @param transactionServiceViewModel
+     * @return
+     */
     public TransactionServiceModel mapTransactionServiceViewModelToTransactionServiceModel(TransactionServiceViewModel transactionServiceViewModel) {
         return this.modelMapper.map(transactionServiceViewModel, TransactionServiceModel.class);
     }
 
+    /**
+     * @param transactionServiceModel
+     * @return
+     */
     public TransactionServiceViewModel mapTransactionServiceModelToTransactionServiceViewModel(TransactionServiceModel transactionServiceModel) {
         return this.modelMapper.map(transactionServiceModel, TransactionServiceViewModel.class);
     }

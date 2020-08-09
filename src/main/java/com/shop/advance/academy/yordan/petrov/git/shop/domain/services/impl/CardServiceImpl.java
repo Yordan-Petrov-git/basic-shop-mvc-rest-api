@@ -23,6 +23,7 @@ import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
 /**
  * Class interface service implementation  for .
  *
@@ -55,6 +56,10 @@ public class CardServiceImpl implements CardService {
         this.userDao = userDao;
     }
 
+    /**
+     * @param cardServiceModel
+     * @return
+     */
     @Override
     public CardServiceViewModel createCard(CardServiceModel cardServiceModel) {
         Card card = mapCardServiceModelToCard(cardServiceModel);
@@ -67,6 +72,10 @@ public class CardServiceImpl implements CardService {
         return mapCardToCardServiceViewModel(card);
     }
 
+    /**
+     * @param cardServiceModel
+     * @return
+     */
     @Transactional
     public List<User> addUsersToCards(CardServiceModel cardServiceModel) {
         List<User> userList = new ArrayList<>();
@@ -78,6 +87,10 @@ public class CardServiceImpl implements CardService {
         return userList;
     }
 
+    /**
+     * @param cardServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public CardServiceViewModel updateCard(CardServiceModel cardServiceModel) {
@@ -88,11 +101,18 @@ public class CardServiceImpl implements CardService {
         return mapCardToCardServiceViewModel(card);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public CardServiceViewModel getCardById(long id) {
         return mapCardToCardServiceViewModel(getCardByIdFromRepository(id));
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<CardServiceViewModel> getAllCards() {
         validateIfCardsExists();
@@ -100,6 +120,10 @@ public class CardServiceImpl implements CardService {
         return mapCardListToCardServiceViewModelList(cards);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public CardServiceViewModel deleteCardById(long id) {
         CardServiceViewModel cardServiceViewModel = this.getCardById(id);
@@ -108,6 +132,9 @@ public class CardServiceImpl implements CardService {
 
     }
 
+    /**
+     *
+     */
     private void validateIfCardsExists() {
         this.cardDao.findAll()
                 .stream()
@@ -115,31 +142,54 @@ public class CardServiceImpl implements CardService {
                 .orElseThrow(() -> new InvalidEntityException("No Cards were found"));
     }
 
+    /**
+     * @param cards
+     * @return
+     */
     private List<CardServiceViewModel> mapCardListToCardServiceViewModelList(List<Card> cards) {
         return modelMapper.map(cards, new TypeToken<List<CardServiceViewModel>>() {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     private Card getCardByIdFromRepository(long id) {
 
         return this.cardDao.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Card  with ID %s not found.", id)));
     }
 
+    /**
+     * @param card
+     * @return
+     */
     private CardServiceViewModel mapCardToCardServiceViewModel(Card card) {
         return this.modelMapper.map(card, CardServiceViewModel.class);
     }
 
+    /**
+     * @param cardServiceModel
+     * @return
+     */
     private Card mapCardServiceModelToCard(CardServiceModel cardServiceModel) {
         return this.modelMapper.map(cardServiceModel, Card.class);
     }
 
+    /**
+     * @param cardServiceModel
+     */
     private void findCardByNumber(CardServiceModel cardServiceModel) {
         this.cardDao.findByNumber(cardServiceModel.getNumber()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Card with number '%s' already exists.", cardServiceModel.getNumber()));
         });
     }
 
+    /**
+     * @param cardServiceModel
+     * @param card
+     */
     private void setCurrencyByCurrencyName(CardServiceModel cardServiceModel, Card card) {
         currencyDao.findByName(cardServiceModel.getCurrency().getName())
                 .ifPresent(c -> {
@@ -147,6 +197,10 @@ public class CardServiceImpl implements CardService {
                 });
     }
 
+    /**
+     * @param cardServiceModel
+     * @return
+     */
     private CurrencyServiceViewModel getCurrencyServiceViewModel(CardServiceModel cardServiceModel) {
         return this.currencyService.getCurrencyByName(cardServiceModel.getCurrency().getName());
     }

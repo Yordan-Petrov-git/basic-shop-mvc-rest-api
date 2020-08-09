@@ -15,12 +15,29 @@ import java.util.Optional;
 @Repository
 public interface ContactInformationDao extends JpaRepository<ContactInformation, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<ContactInformation> findById(Long id);
 
+    /**
+     * @param phoneNumber
+     * @return
+     */
     Optional<ContactInformation> findByPhoneNumber(String phoneNumber);
 
+    /**
+     * @param countryCode
+     * @param phoneNumber
+     * @return
+     */
     Optional<ContactInformation> findByCountryCodeAndPhoneNumber(String countryCode, String phoneNumber);
 
+    /**
+     * @param email
+     * @return
+     */
     Optional<ContactInformation> findByEmail(String email);
 
 

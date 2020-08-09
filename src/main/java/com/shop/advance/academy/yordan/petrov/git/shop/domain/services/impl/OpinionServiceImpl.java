@@ -45,6 +45,10 @@ public class OpinionServiceImpl implements OpinionService {
         this.userDao = userDao;
     }
 
+    /**
+     * @param opinionServiceModel
+     * @return
+     */
     @Override
     public OpinionServiceViewModel createOpinion(OpinionServiceModel opinionServiceModel) {
         Opinion opinion = mapOpinionServiceModelToOpinion(opinionServiceModel);
@@ -54,6 +58,10 @@ public class OpinionServiceImpl implements OpinionService {
     }
 
 
+    /**
+     * @param opinionServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public OpinionServiceViewModel updateOpinion(OpinionServiceModel opinionServiceModel) {
@@ -63,10 +71,18 @@ public class OpinionServiceImpl implements OpinionService {
         return mapOpinionToOpinionServiceViewModel(opinion);
     }
 
+    /**
+     * @param opinion
+     * @return
+     */
     public OpinionServiceViewModel mapOpinionToOpinionServiceViewModel(Opinion opinion) {
         return this.modelMapper.map(opinion, OpinionServiceViewModel.class);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public OpinionServiceViewModel getOpinionById(long id) {
         return this.modelMapper
@@ -74,6 +90,9 @@ public class OpinionServiceImpl implements OpinionService {
                         new EntityNotFoundException(String.format("Opinion  with ID %s not found.", id))), OpinionServiceViewModel.class);
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<OpinionServiceViewModel> getAllOpinions() {
         this.opinionDao.findAll()
@@ -85,6 +104,10 @@ public class OpinionServiceImpl implements OpinionService {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public OpinionServiceViewModel deleteOpinionById(long id) {
         OpinionServiceViewModel opinionServiceViewModel = this.getOpinionById(id);
@@ -92,6 +115,9 @@ public class OpinionServiceImpl implements OpinionService {
         return opinionServiceViewModel;
     }
 
+    /**
+     * @param opinionServiceModel
+     */
     private void setOpinionToUser(OpinionServiceModel opinionServiceModel) {
         userDao.findById(opinionServiceModel.getUser().getId())
                 .ifPresent(c -> {
@@ -99,10 +125,18 @@ public class OpinionServiceImpl implements OpinionService {
                 });
     }
 
+    /**
+     * @param opinionServiceModel
+     * @return
+     */
     private UserServiceViewModel getUserServiceViewModel(OpinionServiceModel opinionServiceModel) {
         return this.userService.getUserById(opinionServiceModel.getUser().getId());
     }
 
+    /**
+     * @param opinionServiceModel
+     * @return
+     */
     public Opinion mapOpinionServiceModelToOpinion(OpinionServiceModel opinionServiceModel) {
         return this.modelMapper.map(opinionServiceModel, Opinion.class);
     }

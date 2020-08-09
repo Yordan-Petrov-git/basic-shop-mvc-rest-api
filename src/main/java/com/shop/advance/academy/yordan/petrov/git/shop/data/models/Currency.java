@@ -26,43 +26,71 @@ public class Currency extends BaseEntity {
     public Currency() {
     }
 
+    /**
+     * @return
+     */
     @Column(name = "currency_name")
     public String getName() {
         return this.name;
     }
 
+    /**
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "iso_2")
     public String getIso2() {
         return this.iso2;
     }
 
+    /**
+     * @param iso2
+     */
     public void setIso2(String iso2) {
         this.iso2 = iso2;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "iso_3")
     public String getIso3() {
         return this.iso3;
     }
 
+    /**
+     * @param iso3
+     */
     public void setIso3(String iso3) {
         this.iso3 = iso3;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "multiplier")
     public Integer getMultiplierForCurrency() {
         return this.multiplierForCurrency;
     }
 
+    /**
+     * @param multiplierForCurrency
+     */
     public void setMultiplierForCurrency(Integer multiplierForCurrency) {
         this.multiplierForCurrency = multiplierForCurrency;
     }
 
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -75,12 +103,18 @@ public class Currency extends BaseEntity {
                 Objects.equals(multiplierForCurrency, currency.multiplierForCurrency);
     }
 
+    /**
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), name, iso2, iso3, multiplierForCurrency);
     }
 
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Currency{");

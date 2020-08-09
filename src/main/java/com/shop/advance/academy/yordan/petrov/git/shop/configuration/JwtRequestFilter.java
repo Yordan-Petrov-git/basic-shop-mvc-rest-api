@@ -31,12 +31,23 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     private final UserService userService;
     private final JwtTokenUtil jwtTokenUtil;
 
+    /**
+     * @param userService
+     * @param jwtTokenUtil
+     */
     @Autowired
     public JwtRequestFilter(UserService userService, JwtTokenUtil jwtTokenUtil) {
         this.userService = userService;
         this.jwtTokenUtil = jwtTokenUtil;
     }
 
+    /**
+     * @param request
+     * @param response
+     * @param chain
+     * @throws ServletException
+     * @throws IOException
+     */
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {

@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface ItemCountPairService {
 
+    /**
+     * @param itemCountPairServiceModel
+     * @return
+     */
     ItemCountPairServiceViewModel createItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel);
 
+    /**
+     * @param itemCountPairServiceModel
+     * @return
+     */
     ItemCountPairServiceViewModel updateItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel);
 
+    /**
+     * @param id
+     * @return
+     */
     ItemCountPairServiceViewModel getItemCountPairById(long id);
 
+    /**
+     * @return
+     */
     List<ItemCountPairServiceViewModel> getAllItemCountPairs();
 
+    /**
+     * @param id
+     * @return
+     */
     ItemCountPairServiceViewModel deleteItemCountPairById(long id);
 }

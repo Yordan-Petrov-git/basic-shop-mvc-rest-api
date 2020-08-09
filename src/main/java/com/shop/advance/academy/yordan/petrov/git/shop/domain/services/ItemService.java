@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface ItemService extends ItemSearchService {
 
+    /**
+     * @param Item
+     * @return
+     */
     ItemServiceViewModel createItem(ItemServiceModel Item);
 
+    /**
+     * @param Item
+     * @return
+     */
     ItemServiceViewModel updateItem(ItemServiceModel Item);
 
+    /**
+     * @param id
+     * @return
+     */
     ItemServiceViewModel getItemById(long id);
 
+    /**
+     * @return
+     */
     List<ItemServiceViewModel> getAllItems();
 
+    /**
+     * @param id
+     * @return
+     */
     ItemServiceViewModel deleteItemById(long id);
 }

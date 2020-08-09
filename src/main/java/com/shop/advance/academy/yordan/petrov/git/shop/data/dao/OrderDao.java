@@ -15,8 +15,16 @@ import java.util.Optional;
 @Repository
 public interface OrderDao extends JpaRepository<Order, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Order> findById(Long id);
 
+    /**
+     * @param orderNumber
+     * @return
+     */
     Optional<Order> findByNumber(String orderNumber);
 
 }

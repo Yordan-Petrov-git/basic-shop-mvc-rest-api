@@ -18,24 +18,64 @@ import java.util.Optional;
 @Repository
 public interface TransactionDao extends JpaRepository<Transaction, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Transaction> findById(Long id);
 
+    /**
+     * @param number
+     * @return
+     */
     Optional<Transaction> findByNumber(String number);
 
+    /**
+     * @param card
+     * @return
+     */
     Optional<Transaction> findByRecipient(Card card);
 
+    /**
+     * @param card
+     * @return
+     */
     Optional<Transaction> findBySender(Card card);
 
+    /**
+     * @param card
+     * @return
+     */
     Optional<Transaction> findAllByRecipient(Card card);
 
+    /**
+     * @param card
+     * @return
+     */
     Optional<Transaction> findAllBySender(Card card);
 
+    /**
+     * @param dateCreated
+     * @return
+     */
     Optional<Transaction> findAllByDateCreated(Instant dateCreated);
 
+    /**
+     * @param dateComplected
+     * @return
+     */
     Optional<Transaction> findAllByDateCompleted(Instant dateComplected);
 
+    /**
+     * @param dateUpdated
+     * @return
+     */
     Optional<Transaction> findAllByDateUpdated(Instant dateUpdated);
 
+    /**
+     * @param status
+     * @return
+     */
     Optional<Transaction> findAllByTransactionStatus(TransactionStatus status);
 
 }

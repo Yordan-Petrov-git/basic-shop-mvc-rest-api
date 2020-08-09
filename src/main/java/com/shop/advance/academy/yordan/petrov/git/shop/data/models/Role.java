@@ -6,6 +6,7 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 /**
  * Class model for .
  *
@@ -26,10 +27,18 @@ public class Role extends BaseEntity implements GrantedAuthority {
     public Role() {
     }
 
+    /**
+     * Constructor
+     */
     public Role(String authority) {
         this.authority = authority;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     @Column(name = "authority",
             unique = true,
@@ -39,10 +48,20 @@ public class Role extends BaseEntity implements GrantedAuthority {
         return this.authority;
     }
 
+    /**
+     * Method for
+     *
+     * @param authority
+     */
     public void setAuthority(String authority) {
         this.authority = authority;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @ManyToMany(targetEntity = User.class,
             mappedBy = "authorities",
             fetch = FetchType.EAGER
@@ -52,10 +71,21 @@ public class Role extends BaseEntity implements GrantedAuthority {
         return this.users;
     }
 
+    /**
+     * Method for
+     *
+     * @param users
+     */
     public void setUsers(Set<User> users) {
         this.users = users;
     }
 
+    /**
+     * Method for
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -65,11 +95,21 @@ public class Role extends BaseEntity implements GrantedAuthority {
         return Objects.equals(authority, role.authority);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), authority);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Role{");

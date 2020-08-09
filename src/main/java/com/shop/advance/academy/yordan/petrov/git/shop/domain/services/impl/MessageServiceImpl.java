@@ -29,31 +29,53 @@ public class MessageServiceImpl implements MessageService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * @param messageServiceModel
+     * @return
+     */
     @Override
     public MessageServiceModel createMessage(MessageServiceModel messageServiceModel) {
         return null;
     }
 
+    /**
+     * @param messageServiceModel
+     * @return
+     */
     @Override
     public MessageServiceViewModel updateMessage(MessageServiceModel messageServiceModel) {
         return null;
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public MessageServiceViewModel getMessageById(long id) {
         return null;
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<MessageServiceViewModel> getAllMessages() {
         return null;
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public MessageServiceViewModel deleteMessageById(long id) {
         return null;
     }
 
+    /**
+     * @param messageToSend
+     */
     @Override
     public void sendMessageToSingleUser(String messageToSend) {
         //TODO SEND MESSAGE

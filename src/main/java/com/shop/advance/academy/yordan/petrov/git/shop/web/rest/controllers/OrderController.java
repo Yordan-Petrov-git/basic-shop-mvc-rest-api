@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
+
 /**
  * Class controller for the order.
  *
@@ -36,6 +37,12 @@ public class OrderController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param orderServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OrderServiceViewModel> createOrder(@RequestBody OrderServiceModel orderServiceModel) {
@@ -48,6 +55,12 @@ public class OrderController {
 
     }
 
+    /**
+     * Method for
+     *
+     * @param orderServiceModel
+     * @return
+     */
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OrderServiceViewModel> updateOrder(@RequestBody OrderServiceModel orderServiceModel) {
@@ -57,6 +70,12 @@ public class OrderController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OrderServiceViewModel> getOrder(@PathVariable("id") final Long id) {
@@ -65,6 +84,11 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.FOUND).body(contactInformationServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<OrderServiceViewModel>> getOrders() {
@@ -73,6 +97,12 @@ public class OrderController {
         return ResponseEntity.status(HttpStatus.FOUND).body(orderServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_MODERATOR')")
     public ResponseEntity<OrderServiceViewModel> deleteOrder(@PathVariable("id") Long id) {

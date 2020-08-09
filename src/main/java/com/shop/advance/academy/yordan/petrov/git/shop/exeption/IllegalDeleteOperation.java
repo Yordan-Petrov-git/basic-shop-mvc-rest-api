@@ -8,17 +8,30 @@ package com.shop.advance.academy.yordan.petrov.git.shop.exeption;
  */
 public class IllegalDeleteOperation extends RuntimeException {
 
+    /**
+     *
+     */
     public IllegalDeleteOperation() {
     }
 
+    /**
+     * @param message
+     */
     public IllegalDeleteOperation(String message) {
         super(message);
     }
 
+    /**
+     * @param message
+     * @param cause
+     */
     public IllegalDeleteOperation(String message, Throwable cause) {
         super(message, cause);
     }
 
+    /**
+     * @param cause
+     */
     public IllegalDeleteOperation(Throwable cause) {
         super(cause);
     }

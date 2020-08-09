@@ -14,20 +14,54 @@ import java.util.List;
 @Service
 public interface UserSearchService {
 
+    /**
+     * @param username
+     * @return
+     */
     UserServiceViewModel getUserByUsername(String username);
 
+    /**
+     * @param username
+     * @return
+     */
     List<UserServiceViewModel> getUserByUsernameLike(String username);
 
+    /**
+     * @param firstName
+     * @return
+     */
     UserServiceViewModel getUserByFirstName(String firstName);
 
+    /**
+     * @param firstName
+     * @return
+     */
     List<UserServiceViewModel> getUserByFirstNameLike(String firstName);
 
+    /**
+     * @param lastName
+     * @return
+     */
     UserServiceViewModel getUserByLastName(String lastName);
 
+    /**
+     * @param lastName
+     * @return
+     */
     List<UserServiceViewModel> getUserByLastNameLike(String lastName);
 
+    /**
+     * @param firstName
+     * @param lastName
+     * @return
+     */
     UserServiceViewModel getUserByFirstNameAndLastName(String firstName, String lastName);
 
+    /**
+     * @param firstName
+     * @param lastName
+     * @return
+     */
     List<UserServiceViewModel> getUserByFirstNameLikeAndLastNameLike(String firstName, String lastName);
 
 }

@@ -15,6 +15,10 @@ import java.util.Optional;
 @Repository
 public interface OpinionDao extends JpaRepository<Opinion, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Opinion> findById(Long id);
 
 }

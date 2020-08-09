@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface MediaService {
 
+    /**
+     * @param Media
+     * @return
+     */
     MediaServiceViewModel createMedia(MediaServiceModel Media);
 
+    /**
+     * @param Media
+     * @return
+     */
     MediaServiceViewModel updateMedia(MediaServiceModel Media);
 
+    /**
+     * @param id
+     * @return
+     */
     MediaServiceViewModel getMediaById(long id);
 
+    /**
+     * @return
+     */
     List<MediaServiceViewModel> getAllMedias();
 
+    /**
+     * @param id
+     * @return
+     */
     MediaServiceViewModel deleteMediaById(long id);
 }

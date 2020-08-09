@@ -16,17 +16,38 @@ import java.util.List;
 public interface MessageService {
 
 
+    /**
+     * @param messageServiceModel
+     * @return
+     */
     MessageServiceModel createMessage(MessageServiceModel messageServiceModel);
 
+    /**
+     * @param messageServiceModel
+     * @return
+     */
     MessageServiceViewModel updateMessage(MessageServiceModel messageServiceModel);
 
+    /**
+     * @param id
+     * @return
+     */
     MessageServiceViewModel getMessageById(long id);
 
+    /**
+     * @return
+     */
     List<MessageServiceViewModel> getAllMessages();
 
+    /**
+     * @param id
+     * @return
+     */
     MessageServiceViewModel deleteMessageById(long id);
 
-
+    /**
+     * @param messageToSend
+     */
     public void sendMessageToSingleUser(String messageToSend);
 
 }

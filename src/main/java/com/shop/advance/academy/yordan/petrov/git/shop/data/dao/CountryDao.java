@@ -16,8 +16,16 @@ import java.util.Optional;
 @Repository
 public interface CountryDao extends JpaRepository<Country, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Country> findById(Long id);
 
+    /**
+     * @param name
+     * @return
+     */
     Optional<Country> findByName(String name);
 }
 

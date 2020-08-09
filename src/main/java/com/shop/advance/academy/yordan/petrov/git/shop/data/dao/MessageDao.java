@@ -16,8 +16,16 @@ import java.util.Optional;
 @Repository
 public interface MessageDao extends JpaRepository<Message, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Message> findBySenderId(User id);
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Message> findByReciverId(User id);
 
 

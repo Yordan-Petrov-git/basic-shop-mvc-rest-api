@@ -15,8 +15,16 @@ import java.util.Optional;
 @Repository
 public interface CurrencyDao extends JpaRepository<Currency, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Currency> findById(Long id);
 
+    /**
+     * @param name
+     * @return
+     */
     Optional<Currency> findByName(String name);
 
 }

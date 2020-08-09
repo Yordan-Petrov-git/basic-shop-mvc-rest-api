@@ -15,6 +15,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 /**
  * Class model for the User entity.
  *
@@ -49,6 +50,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override
@@ -65,6 +68,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override
@@ -78,6 +83,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param password
      */
     public void setPassword(String password) {
@@ -85,6 +92,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Column(name = "user_type")
@@ -94,6 +103,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param userType
      */
     public void setUserType(UserType userType) {
@@ -101,6 +112,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Column(name = "date_of_birth")
@@ -114,6 +127,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Column(name = "created")
@@ -123,6 +138,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param created
      */
     public void setCreated(LocalDateTime created) {
@@ -130,6 +147,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Column(name = "modified")
@@ -139,6 +158,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param modified
      */
     public void setModified(LocalDateTime modified) {
@@ -146,6 +167,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Column(name = "first_name")
@@ -154,6 +177,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param firstName
      */
     public void setFirstName(String firstName) {
@@ -161,6 +186,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Column(name = "last_name")
@@ -169,6 +196,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param lastName
      */
     public void setLastName(String lastName) {
@@ -176,6 +205,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @OneToMany(targetEntity = ContactInformation.class
@@ -190,6 +221,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param contactInformation
      */
     public void setContactInformation(Set<ContactInformation> contactInformation) {
@@ -197,6 +230,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override
@@ -205,6 +240,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param enabled
      */
     public void setEnabled(boolean enabled) {
@@ -212,6 +249,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override
@@ -220,6 +259,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param credentialsNonExpired
      */
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
@@ -227,6 +268,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override
@@ -235,6 +278,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param accountNonLocked
      */
     public void setAccountNonLocked(boolean accountNonLocked) {
@@ -242,6 +287,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override
@@ -250,6 +297,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param accountNonExpired
      */
     public void setAccountNonExpired(boolean accountNonExpired) {
@@ -257,6 +306,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override
@@ -270,6 +321,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param authorities
      */
     public void setAuthorities(Set<Role> authorities) {
@@ -277,6 +330,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @OneToMany(fetch = FetchType.LAZY,
@@ -287,6 +342,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @param shoppingCart
      */
     public void setShoppingCart(Collection<ShoppingCart> shoppingCart) {
@@ -295,6 +352,8 @@ public class User extends BaseEntity implements UserDetails {
 
 
     /**
+     * Method for
+     *
      * @param o
      * @return
      */
@@ -319,6 +378,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override
@@ -328,6 +389,8 @@ public class User extends BaseEntity implements UserDetails {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @Override

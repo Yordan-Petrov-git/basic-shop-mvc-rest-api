@@ -38,6 +38,8 @@ public class ShoppingCartController {
     }
 
     /**
+     * Method for
+     *
      * @param shoppingCartServiceModel
      * @return
      */
@@ -52,6 +54,8 @@ public class ShoppingCartController {
     }
 
     /**
+     * Method for
+     *
      * @param shoppingCartServiceModel
      * @return
      */
@@ -67,6 +71,8 @@ public class ShoppingCartController {
 
 
     /**
+     * Method for
+     *
      * @param id
      * @return
      */
@@ -79,6 +85,8 @@ public class ShoppingCartController {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @GetMapping()
@@ -91,6 +99,8 @@ public class ShoppingCartController {
     }
 
     /**
+     * Method for
+     *
      * @param id
      * @return
      */

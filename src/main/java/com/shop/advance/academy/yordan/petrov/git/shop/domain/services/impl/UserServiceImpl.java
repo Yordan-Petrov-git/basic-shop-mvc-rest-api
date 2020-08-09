@@ -28,6 +28,7 @@ import java.time.LocalDateTime;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
 /**
  * Class interface service implementation  for .
  *
@@ -61,6 +62,12 @@ public class UserServiceImpl implements UserService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
+    /**
+     * Method for
+     *
+     * @param userServiceModel
+     * @return
+     */
     @Override
     public UserServiceViewModel createUser(@Valid UserServiceModel userServiceModel) {
         User user = maoUserServiceModelToUser(userServiceModel);
@@ -78,6 +85,12 @@ public class UserServiceImpl implements UserService {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param userServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public UserServiceViewModel updateUser(@Valid UserServiceModel userServiceModel) {
@@ -88,17 +101,34 @@ public class UserServiceImpl implements UserService {
         return mapUserToUserServiceViewModel(this.userDao.saveAndFlush(user));
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @Override
     public UserServiceViewModel getUserById(long id) {
         return mapUserToUserServiceViewModel(findUserById(id));
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public List<UserServiceViewModel> getAllUsers() {
         validateIfAnyUsersArePresent();
         return mapUserListToUserServiceViewModel();
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @Override
     @Transactional
     public UserServiceViewModel deleteUserById(long id) {
@@ -107,18 +137,38 @@ public class UserServiceImpl implements UserService {
         return deletedUser;
     }
 
+    /**
+     * Method for
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userDao.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("No user with username %s", username)));
     }
 
+    /**
+     * Method for
+     *
+     * @param username
+     * @return
+     * @throws InvalidEntityException
+     */
     @Override
     public UserServiceViewModel getUserByUsername(String username) throws InvalidEntityException {
         return mapUserToUserServiceViewModel(this.userDao.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException(String.format("No user with username %s", username))));
     }
 
+    /**
+     * Method for
+     *
+     * @param username
+     * @return
+     */
     @Override
     public List<UserServiceViewModel> getUserByUsernameLike(String username) {
         //TODO
@@ -127,6 +177,12 @@ public class UserServiceImpl implements UserService {
                 }.getType());
     }
 
+    /**
+     * Method for
+     *
+     * @param firstName
+     * @return
+     */
     @Override
     public UserServiceViewModel getUserByFirstName(String firstName) {
         //TODO
@@ -134,6 +190,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("No user with first name %s", firstName))));
     }
 
+    /**
+     * Method for
+     *
+     * @param firstName
+     * @return
+     */
     @Override
     public List<UserServiceViewModel> getUserByFirstNameLike(String firstName) {
         //TODO
@@ -142,6 +204,12 @@ public class UserServiceImpl implements UserService {
                 }.getType());
     }
 
+    /**
+     * Method for
+     *
+     * @param lastName
+     * @return
+     */
     @Override
     public UserServiceViewModel getUserByLastName(String lastName) {
         //TODO
@@ -149,6 +217,12 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("No user with last name %s", lastName))));
     }
 
+    /**
+     * Method for
+     *
+     * @param lastName
+     * @return
+     */
     @Override
     public List<UserServiceViewModel> getUserByLastNameLike(String lastName) {
         //TODO
@@ -157,6 +231,13 @@ public class UserServiceImpl implements UserService {
                 }.getType());
     }
 
+    /**
+     * Method for
+     *
+     * @param firstName
+     * @param lastName
+     * @return
+     */
     @Override
     public UserServiceViewModel getUserByFirstNameAndLastName(String firstName, String lastName) {
         //TODO
@@ -164,6 +245,13 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new InvalidEntityException(String.format("No user with last name and last name %s %s", firstName, lastName))));
     }
 
+    /**
+     * Method for
+     *
+     * @param firstName
+     * @param lastName
+     * @return
+     */
     @Override
     public List<UserServiceViewModel> getUserByFirstNameLikeAndLastNameLike(String firstName, String lastName) {
         //TODO
@@ -172,11 +260,19 @@ public class UserServiceImpl implements UserService {
                 }.getType());
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     public List<UserServiceViewModel> mapUserListToUserServiceViewModel() {
         return this.modelMapper.map(findAllUsersFromRepository(), new TypeToken<List<UserServiceViewModel>>() {
         }.getType());
     }
 
+    /**
+     * Method for
+     */
     public void validateIfAnyUsersArePresent() {
         findAllUsersFromRepository()
                 .stream()
@@ -184,10 +280,20 @@ public class UserServiceImpl implements UserService {
                 .orElseThrow(() -> new InvalidEntityException("No Users were found"));
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     public List<User> findAllUsersFromRepository() {
         return this.userDao.findAll();
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     */
     public void validateIfUserRoleAdminPresentForDeletion(long id) {
         if (userDao.findById(1L).isPresent() && id == 1) {
             throw new IllegalDeleteOperation("Admin user cannot be deleted");
@@ -196,25 +302,53 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     public UserServiceViewModel getUserServiceViewModelById(long id) {
         return this.getUserById(id);
     }
 
+    /**
+     * Method for
+     *
+     * @param user
+     * @return
+     */
     private UserServiceViewModel mapUserToUserServiceViewModel(User user) {
         return this.modelMapper.map(user, UserServiceViewModel.class);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     public User findUserById(long id) {
         return this.userDao.findById(id).orElseThrow(() ->
-                new EntityNotFoundException(String.format("User with ID %s not found.", id) ));
+                new EntityNotFoundException(String.format("User with ID %s not found.", id)));
     }
 
+    /**
+     * Method for
+     *
+     * @param user
+     */
     public void validateIfUsernameExists(User user) {
         this.userDao.findByUsername(user.getUsername()).ifPresent(u -> {
             throw new InvalidEntityException(String.format("User with username '%s' already exists.", user.getUsername()));
         });
     }
 
+    /**
+     * Method for
+     *
+     * @param userServiceModel
+     */
     public void validateIfContactInfoIsDuplicated(@Valid UserServiceModel userServiceModel) {
         if (contactInformationDao.count() != 0) {
             this.contactInformationDao.findByEmail(userServiceModel.getContactInformation()
@@ -232,11 +366,22 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Method for
+     *
+     * @param userServiceModel
+     * @return
+     */
     public User maoUserServiceModelToUser(@Valid UserServiceModel userServiceModel) {
         return this.modelMapper.map(userServiceModel, User.class);
     }
 
 
+    /**
+     * Method for
+     *
+     * @param user
+     */
     public void addRolesToUsers(User user) {
         if (userDao.count() == 0) {
             //Sets 1 st registered user as admin role
@@ -254,18 +399,41 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     public Role authorityToRole() {
         return findRoleByAuthority("ROLE_USER");
     }
 
+    /**
+     * Method for
+     *
+     * @param authority
+     * @return
+     */
     public Role findRoleByAuthority(String authority) {
         return this.roleDao.findByAuthority(authority);
     }
 
+    /**
+     * Method for
+     *
+     * @param r
+     * @return
+     */
     public Role mapRoleModelServiceToRole(RoleServiceModel r) {
         return this.modelMapper.map(r, Role.class);
     }
 
+    /**
+     * Method for
+     *
+     * @param userServiceModel
+     * @return
+     */
     private String encodePassword(@Valid UserServiceModel userServiceModel) {
         return this.bCryptPasswordEncoder.encode(userServiceModel.getPassword());
     }

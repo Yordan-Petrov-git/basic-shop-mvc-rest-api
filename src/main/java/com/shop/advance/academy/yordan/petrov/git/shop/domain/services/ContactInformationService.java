@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface ContactInformationService {
 
+    /**
+     * @param ContactInformation
+     * @return
+     */
     ContactInformationServiceViewModel createContactInformation(ContactInformationServiceModel ContactInformation);
 
+    /**
+     * @param ContactInformation
+     * @return
+     */
     ContactInformationServiceViewModel updateContactInformation(ContactInformationServiceModel ContactInformation);
 
+    /**
+     * @param id
+     * @return
+     */
     ContactInformationServiceViewModel getContactInformationById(long id);
 
+    /**
+     * @return
+     */
     List<ContactInformationServiceViewModel> getAllContactInformations();
 
+    /**
+     * @param id
+     * @return
+     */
     ContactInformationServiceViewModel deleteContactInformationById(long id);
 }

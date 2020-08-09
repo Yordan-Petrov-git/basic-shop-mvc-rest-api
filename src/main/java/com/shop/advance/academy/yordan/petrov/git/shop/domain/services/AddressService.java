@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface AddressService {
 
+    /**
+     * @param addressServiceModel
+     * @return
+     */
     AddressServiceViewModel createAddress(AddressServiceModel addressServiceModel);
 
+    /**
+     * @param addressServiceModel
+     * @return
+     */
     AddressServiceViewModel updateAddress(AddressServiceModel addressServiceModel);
 
+    /**
+     * @param id
+     * @return
+     */
     AddressServiceViewModel getAddressById(long id);
 
+    /**
+     * @return
+     */
     List<AddressServiceViewModel> getAllAddresses();
 
+    /**
+     * @param id
+     * @return
+     */
     AddressServiceViewModel deleteAddressById(long id);
 }

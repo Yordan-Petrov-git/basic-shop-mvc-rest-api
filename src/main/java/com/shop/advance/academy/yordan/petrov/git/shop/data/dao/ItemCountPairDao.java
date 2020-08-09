@@ -15,6 +15,10 @@ import java.util.Optional;
 @Repository
 public interface ItemCountPairDao extends JpaRepository<ItemCountPair, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<ItemCountPair> findById(Long id);
 
 }

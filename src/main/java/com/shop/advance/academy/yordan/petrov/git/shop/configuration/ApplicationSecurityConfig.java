@@ -48,6 +48,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     private final UserService userService;
     private final JwtRequestFilter jwtRequestFilter;
 
+    /**
+     * @param jwtAuthenticationEntryPoint
+     * @param userService
+     * @param jwtRequestFilter
+     */
     @Autowired
     public ApplicationSecurityConfig(JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint, UserService userService, JwtRequestFilter jwtRequestFilter) {
         this.jwtAuthenticationEntryPoint = jwtAuthenticationEntryPoint;
@@ -55,6 +60,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         this.jwtRequestFilter = jwtRequestFilter;
     }
 
+    /**
+     * @param auth
+     * @throws Exception
+     */
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         // configure AuthenticationManager so that it knows from where to load
@@ -64,17 +73,28 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
+    /**
+     * @return
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
 
+    /**
+     * @return
+     * @throws Exception
+     */
     @Bean
     @Override
     public AuthenticationManager authenticationManagerBean() throws Exception {
         return super.authenticationManagerBean();
     }
 
+    /**
+     * @param httpSecurity
+     * @throws Exception
+     */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
@@ -106,6 +126,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
     }
 
+    /**
+     * @param userService
+     * @return
+     */
     @Bean
     public UserDetailsService userDetailsService(UserService userService) {
         return username -> {

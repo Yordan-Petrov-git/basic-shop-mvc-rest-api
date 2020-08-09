@@ -35,6 +35,7 @@ public class UserController {
 
     /**
      * Constructor
+     *
      * @param
      */
     @Autowired
@@ -43,6 +44,7 @@ public class UserController {
     }
 
     /**
+     * Method for
      *
      * @param userServiceModel
      * @return
@@ -58,6 +60,8 @@ public class UserController {
     }
 
     /**
+     * Method for
+     *
      * @param userServiceModel
      * @return
      */
@@ -70,6 +74,8 @@ public class UserController {
     }
 
     /**
+     * Method for
+     *
      * @param userServiceModel
      * @return
      */
@@ -82,6 +88,8 @@ public class UserController {
     }
 
     /**
+     * Method for
+     *
      * @param id
      * @return
      */
@@ -93,6 +101,8 @@ public class UserController {
     }
 
     /**
+     * Method for
+     *
      * @return
      */
     @GetMapping("/all")
@@ -104,6 +114,8 @@ public class UserController {
     }
 
     /**
+     * Method for
+     *
      * @param username
      * @return
      */
@@ -116,6 +128,8 @@ public class UserController {
     }
 
     /**
+     * Method for
+     *
      * @param username
      * @return
      */
@@ -128,6 +142,8 @@ public class UserController {
     }
 
     /**
+     * Method for
+     *
      * @param id
      * @return
      */

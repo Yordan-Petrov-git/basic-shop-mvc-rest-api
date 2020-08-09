@@ -15,8 +15,16 @@ import java.util.Optional;
 @Repository
 public interface CardDao extends JpaRepository<Card, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Card> findById(Long id);
 
+    /**
+     * @param number
+     * @return
+     */
     Optional<Card> findByNumber(String number);
 
 }

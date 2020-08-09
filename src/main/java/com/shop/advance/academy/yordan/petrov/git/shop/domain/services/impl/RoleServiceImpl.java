@@ -32,6 +32,9 @@ public class RoleServiceImpl implements RoleService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     *
+     */
     @Override
     public void seedRolesInDatabase() {
         Role admin = new Role("ROLE_ADMIN");
@@ -42,6 +45,9 @@ public class RoleServiceImpl implements RoleService {
         this.roleDao.saveAndFlush(user);
     }
 
+    /**
+     * @return
+     */
     @Override
     public Set<RoleServiceModel> findAllRoles() {
         return this.roleDao.findAll()
@@ -50,6 +56,10 @@ public class RoleServiceImpl implements RoleService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * @param role
+     * @return
+     */
     @Override
     public RoleServiceModel findByAuthority(String role) {
         return this.modelMapper.map(this.roleDao.findByAuthority(role), RoleServiceModel.class);

@@ -55,6 +55,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         this.itemDao = itemDao;
     }
 
+    /**
+     * @param shoppingCartServiceModel
+     * @return
+     */
     @Override
     public ShoppingCartServiceViewModel createShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
         ShoppingCart shoppingCart = mapShoppingCartServiceModelToShoppingCartViewModel(shoppingCartServiceModel);
@@ -66,6 +70,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return mapShoppingCartToShoppingCartServiceViewModel(saveShoppingCart(shoppingCart));
     }
 
+    /**
+     * @param shoppingCartServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public ShoppingCartServiceViewModel updateShoppingCart(ShoppingCartServiceModel shoppingCartServiceModel) {
@@ -76,11 +84,18 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
     }
 
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ShoppingCartServiceViewModel getShoppingCartById(long id) {
         return mapShoppingCartToShoppingCartServiceViewModel(findShoppingCardById(id));
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<ShoppingCartServiceViewModel> getAllShoppingCarts() {
         validateIfAnyShoppingCarsArePresent();
@@ -88,6 +103,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return mapListShoppingCartToShoppingCartViewModel(shoppingCarts);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ShoppingCartServiceViewModel deleteShoppingCartById(long id) {
         findShoppingCardById(id);
@@ -96,24 +115,44 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return deletedShoppingCart;
     }
 
+    /**
+     * @param itemCount
+     * @param itemPrice
+     * @return
+     */
     public BigDecimal calculateTotalPrice(Integer itemCount, BigDecimal itemPrice) {
 
         return itemPrice.multiply(BigDecimal.valueOf(itemCount));
     }
 
+    /**
+     * @param shoppingCart
+     * @return
+     */
     private ShoppingCartServiceViewModel mapShoppingCartToShoppingCartServiceViewModel(ShoppingCart shoppingCart) {
         return this.modelMapper.map(shoppingCart, ShoppingCartServiceViewModel.class);
     }
 
+    /**
+     * @param userServiceViewModel
+     * @return
+     */
     public User mapUserServiceViewModelToUser(UserServiceViewModel userServiceViewModel) {
         return this.modelMapper.map(userServiceViewModel, User.class);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public ShoppingCart findShoppingCardById(long id) {
         return this.shoppingCartDao.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Shopping cart with ID %s not found.", id)));
     }
 
+    /**
+     * @return
+     */
     public List<ShoppingCart> findAllShoppingCarts() {
         return shoppingCartDao.findAll();
     }
@@ -123,6 +162,9 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         }.getType());
     }
 
+    /**
+     *
+     */
     public void validateIfAnyShoppingCarsArePresent() {
         findAllShoppingCarts()
                 .stream()
@@ -130,6 +172,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 .orElseThrow(() -> new InvalidEntityException("No Shopping carts were found"));
     }
 
+    /**
+     * @param shoppingCartServiceModel
+     * @param shoppingCart
+     */
     public void setShoppingCartToUser(ShoppingCartServiceModel shoppingCartServiceModel, ShoppingCart shoppingCart) {
         userDao.findById(shoppingCartServiceModel.getUser().getId())
                 .ifPresent(c -> {
@@ -137,19 +183,35 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
                 });
     }
 
+    /**
+     * @param shoppingCartServiceModel
+     * @return
+     */
     public UserServiceViewModel getUserById(ShoppingCartServiceModel shoppingCartServiceModel) {
         return this.userService.getUserById(shoppingCartServiceModel.getUser().getId());
     }
 
+    /**
+     * @param shoppingCartServiceModel
+     * @return
+     */
     public ShoppingCart mapShoppingCartServiceModelToShoppingCartViewModel(ShoppingCartServiceModel shoppingCartServiceModel) {
         return this.modelMapper.map(shoppingCartServiceModel, ShoppingCart.class);
     }
 
+    /**
+     * @param shoppingCart
+     * @return
+     */
     public ShoppingCart saveShoppingCart(ShoppingCart shoppingCart) {
         return this.shoppingCartDao.saveAndFlush(shoppingCart);
     }
 
 
+    /**
+     * @param itemCountPairList
+     * @return
+     */
     public BigDecimal getTotalForAllItemCountPair(List<ItemCountPair> itemCountPairList) {
         BigDecimal totalPerShoppingCart = new BigDecimal(0);
 
@@ -169,6 +231,10 @@ public class ShoppingCartServiceImpl implements ShoppingCartService {
         return totalPerShoppingCart;
     }
 
+    /**
+     * @param itemCountPairServiceModelList
+     * @return
+     */
     @Transactional
     public List<ItemCountPair> createItemCountPair(
             List<ItemCountPairServiceModel> itemCountPairServiceModelList) {

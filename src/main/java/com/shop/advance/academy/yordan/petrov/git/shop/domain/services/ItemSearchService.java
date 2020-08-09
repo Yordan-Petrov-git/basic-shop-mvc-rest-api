@@ -14,7 +14,15 @@ import java.util.List;
 @Service
 public interface ItemSearchService {
 
+    /**
+     * @param title
+     * @return
+     */
     ItemServiceViewModel getItemByTitle(String title);
 
+    /**
+     * @param title
+     * @return
+     */
     List<ItemServiceViewModel> getItemByTitleLike(String title);
 }

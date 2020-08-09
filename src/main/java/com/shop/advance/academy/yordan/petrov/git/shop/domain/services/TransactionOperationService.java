@@ -13,11 +13,29 @@ import java.math.BigDecimal;
 @Service
 public interface TransactionOperationService {
 
+    /**
+     * @param id
+     * @param amount
+     */
     void withdrawMoney(Long id, BigDecimal amount);
 
+    /**
+     * @param id
+     * @param amount
+     */
     void depositMoney(Long id, BigDecimal amount);
 
+    /**
+     * @param RecipientId
+     * @param SenderId
+     * @param amount
+     */
     void transferMoney(Long RecipientId, Long SenderId, BigDecimal amount);
 
+    /**
+     * @param toId
+     * @param fromId
+     * @param amount
+     */
     void refund(Long toId, Long fromId, BigDecimal amount);
 }

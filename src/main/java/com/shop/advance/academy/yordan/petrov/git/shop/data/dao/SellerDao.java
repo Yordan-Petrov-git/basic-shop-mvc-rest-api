@@ -16,10 +16,22 @@ import java.util.Optional;
 @Repository
 public interface SellerDao extends JpaRepository<Seller, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Seller> findById(Long id);
 
+    /**
+     * @param name
+     * @return
+     */
     Optional<Seller> findByName(String name);
 
+    /**
+     * @param user
+     * @return
+     */
     Optional<Seller> findByUser(User user);
 
 }

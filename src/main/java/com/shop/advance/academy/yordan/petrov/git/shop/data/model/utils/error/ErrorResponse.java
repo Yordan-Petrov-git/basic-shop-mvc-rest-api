@@ -21,41 +21,72 @@ public class ErrorResponse {
     public ErrorResponse() {
     }
 
+    /**
+     * @param timestamp
+     * @param error
+     * @param message
+     */
     public ErrorResponse(LocalDateTime timestamp, String error, String message) {
         this.timestamp = timestamp;
         this.error = error;
         this.message = message;
     }
 
+    /**
+     * @param error
+     * @param message
+     */
     public ErrorResponse(String error, String message) {
         this.error = error;
         this.message = message;
     }
 
+    /**
+     * @return
+     */
     public LocalDateTime getTimestamp() {
         return this.timestamp;
     }
 
+    /**
+     * @param timestamp
+     */
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
     }
 
+    /**
+     * @return
+     */
     public String getError() {
         return this.error;
     }
 
+    /**
+     * @param error
+     */
     public void setError(String error) {
         this.error = error;
     }
 
+    /**
+     * @return
+     */
     public String getMessage() {
         return this.message;
     }
 
+    /**
+     * @param message
+     */
     public void setMessage(String message) {
         this.message = message;
     }
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -66,11 +97,17 @@ public class ErrorResponse {
                 Objects.equals(message, that.message);
     }
 
+    /**
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(timestamp, error, message);
     }
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ErrorResponse{");

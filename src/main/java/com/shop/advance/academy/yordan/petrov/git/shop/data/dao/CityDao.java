@@ -15,8 +15,16 @@ import java.util.Optional;
 @Repository
 public interface CityDao extends JpaRepository<City, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<City> findById(Long id);
 
+    /**
+     * @param name
+     * @return
+     */
     Optional<City> findCityByName(String name);
 
 }

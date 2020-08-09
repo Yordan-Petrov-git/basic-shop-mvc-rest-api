@@ -15,12 +15,28 @@ import java.util.Optional;
 @Repository
 public interface MediaDao extends JpaRepository<Media, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Media> findById(Long id);
 
+    /**
+     * @param path
+     * @return
+     */
     Optional<Media> findByPicturePath(String path);
 
+    /**
+     * @param path
+     * @return
+     */
     Optional<Media> findByVideoPath(String path);
 
+    /**
+     * @param path
+     * @return
+     */
     Optional<Media> findByDocumentPath(String path);
 
 }

@@ -35,6 +35,10 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * @param itemCountPairServiceModel
+     * @return
+     */
     @Override
     public ItemCountPairServiceViewModel createItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {
         ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
@@ -42,6 +46,10 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
         return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
+    /**
+     * @param itemCountPairServiceModel
+     * @return
+     */
     @Override
     public ItemCountPairServiceViewModel updateItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {
         ItemCountPair itemCountPair = mapItemCountPairServiceModelToItemCountPair(itemCountPairServiceModel);
@@ -49,11 +57,18 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
         return mapItemCountPairToItemCountPairServiceViewModel(itemCountPair);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ItemCountPairServiceViewModel getItemCountPairById(long id) {
         return mapItemCountPairToItemCountPairServiceViewModel(findShoppingCartById(id));
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<ItemCountPairServiceViewModel> getAllItemCountPairs() {
         validateIfFoundAny();
@@ -61,6 +76,10 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
         return mapItemCountPairListToItemCountPairServiceViewModelList(item);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ItemCountPairServiceViewModel deleteItemCountPairById(long id) {
         ItemCountPairServiceViewModel deleteShoppingCartItem = this.getItemCountPairById(id);
@@ -68,28 +87,50 @@ public class ItemCountPairServiceImpl implements ItemCountPairService {
         return deleteShoppingCartItem;
     }
 
+    /**
+     * @param itemCountPair
+     * @return
+     */
     private ItemCountPairServiceViewModel mapItemCountPairToItemCountPairServiceViewModel(ItemCountPair itemCountPair) {
         return this.modelMapper.map(itemCountPair, ItemCountPairServiceViewModel.class);
     }
 
+    /**
+     * @param itemCountPairServiceModel
+     * @return
+     */
     private ItemCountPair mapItemCountPairServiceModelToItemCountPair(ItemCountPairServiceModel itemCountPairServiceModel) {
         return this.modelMapper.map(itemCountPairServiceModel, ItemCountPair.class);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     private ItemCountPair findShoppingCartById(long id) {
         return this.itemCountPairDao.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Item  with ID %s not found.", id)));
     }
 
+    /**
+     * @param item
+     * @return
+     */
     private List<ItemCountPairServiceViewModel> mapItemCountPairListToItemCountPairServiceViewModelList(List<ItemCountPair> item) {
         return this.modelMapper.map(item, new TypeToken<List<ItemCountPairServiceViewModel>>() {
         }.getType());
     }
 
+    /**
+     * @return
+     */
     private List<ItemCountPair> getItemCountPairsList() {
         return this.itemCountPairDao.findAll();
     }
 
+    /**
+     *
+     */
     private void validateIfFoundAny() {
         this.itemCountPairDao.findAll()
                 .stream()

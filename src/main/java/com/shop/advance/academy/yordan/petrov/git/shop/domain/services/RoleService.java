@@ -14,9 +14,19 @@ import java.util.Set;
 @Service
 public interface RoleService {
 
+    /**
+     *
+     */
     void seedRolesInDatabase();
 
+    /**
+     * @return
+     */
     Set<RoleServiceModel> findAllRoles();
 
+    /**
+     * @param role
+     * @return
+     */
     RoleServiceModel findByAuthority(String role);
 }

@@ -45,6 +45,10 @@ public class CityServiceImpl implements CityService {
         this.countryDao = countryDao;
     }
 
+    /**
+     * @param cityServiceModel
+     * @return
+     */
     @Override
     public CityServiceViewModel createCity(CityServiceModel cityServiceModel) {
         City city = mapCityServiceModelToCity(cityServiceModel);
@@ -55,6 +59,10 @@ public class CityServiceImpl implements CityService {
     }
 
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     @Transactional
     public CityServiceViewModel updateCity(long id) {
@@ -65,6 +73,10 @@ public class CityServiceImpl implements CityService {
     }
 
 
+    /**
+     * @param name
+     * @return
+     */
     @Override
     public CityServiceViewModel getCityByName(String name) {
         return this.modelMapper
@@ -72,6 +84,10 @@ public class CityServiceImpl implements CityService {
                         new EntityNotFoundException(String.format("City  with Name  %s not found.", name))), CityServiceViewModel.class);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public CityServiceViewModel getCityById(long id) {
         return this.modelMapper
@@ -79,6 +95,9 @@ public class CityServiceImpl implements CityService {
                         new EntityNotFoundException(String.format("City  with ID %s not found.", id))), CityServiceViewModel.class);
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<CityServiceViewModel> getAllCities() {
         this.cityDao.findAll()
@@ -91,6 +110,10 @@ public class CityServiceImpl implements CityService {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public CityServiceViewModel deleteCityById(long id) {
         CityServiceViewModel cityServiceViewModel = this.getCityById(id);
@@ -98,12 +121,19 @@ public class CityServiceImpl implements CityService {
         return cityServiceViewModel;
     }
 
+    /**
+     * @param city
+     */
     private void getCityByName(City city) {
         this.cityDao.findCityByName(city.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("City '%s' already exists.", city.getName()));
         });
     }
 
+    /**
+     * @param cityServiceModel
+     * @param city
+     */
     private void setCountryToCityByName(CityServiceModel cityServiceModel, City city) {
 
         countryDao.findByName(getCityName(cityServiceModel))
@@ -112,26 +142,50 @@ public class CityServiceImpl implements CityService {
                 });
     }
 
+    /**
+     * @param cityServiceModel
+     * @param city
+     */
     private void setCountryToCity(CityServiceModel cityServiceModel, City city) {
         city.setCountry(mapToCountry(cityServiceModel));
     }
 
+    /**
+     * @param cityServiceModel
+     * @return
+     */
     private Country mapToCountry(CityServiceModel cityServiceModel) {
         return this.modelMapper.map(getCountryServiceViewModel(cityServiceModel), Country.class);
     }
 
+    /**
+     * @param cityServiceModel
+     * @return
+     */
     private String getCityName(CityServiceModel cityServiceModel) {
         return cityServiceModel.getCountry().getName();
     }
 
+    /**
+     * @param cityServiceModel
+     * @return
+     */
     private CountryServiceViewModel getCountryServiceViewModel(CityServiceModel cityServiceModel) {
         return this.countryService.getCountryName(getCityName(cityServiceModel));
     }
 
+    /**
+     * @param city
+     * @return
+     */
     private CityServiceViewModel mapCityToCityServiceViewModel(City city) {
         return this.modelMapper.map(city, CityServiceViewModel.class);
     }
 
+    /**
+     * @param cityServiceModel
+     * @return
+     */
     private City mapCityServiceModelToCity(CityServiceModel cityServiceModel) {
         return this.modelMapper.map(cityServiceModel, City.class);
     }

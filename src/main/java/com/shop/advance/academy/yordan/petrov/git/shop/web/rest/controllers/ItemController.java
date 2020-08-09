@@ -13,6 +13,7 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 import java.util.List;
+
 /**
  * Class controller for the items.
  *
@@ -35,6 +36,12 @@ public class ItemController {
         this.itemService = itemService;
     }
 
+    /**
+     * Method for
+     *
+     * @param itemServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> createItem(@RequestBody ItemServiceModel itemServiceModel) {
@@ -45,6 +52,12 @@ public class ItemController {
         return ResponseEntity.created(location).body(itemServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param itemServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> updateItem(@RequestBody ItemServiceModel itemServiceModel) {
@@ -53,6 +66,12 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.OK).body(itemServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> getItemById(@PathVariable("id") final Long id) {
@@ -61,6 +80,12 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param title
+     * @return
+     */
     @GetMapping("/serach/item/title/{title}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> getItemByTitle(@PathVariable String title) {
@@ -69,6 +94,12 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param title
+     * @return
+     */
     @GetMapping("/serach/item/title/like/{title}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<ItemServiceViewModel>> getItemByTitleLike(@PathVariable String title) {
@@ -77,6 +108,11 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<ItemServiceViewModel>> getAllItems() {
@@ -85,6 +121,12 @@ public class ItemController {
         return ResponseEntity.status(HttpStatus.FOUND).body(itemServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ItemServiceViewModel> deleteItem(@PathVariable("id") Long id) {

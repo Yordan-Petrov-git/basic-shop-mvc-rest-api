@@ -15,13 +15,32 @@ import java.util.List;
 @Service
 public interface CardService {
 
+    /**
+     * @param cardServiceModel
+     * @return
+     */
     CardServiceViewModel createCard(CardServiceModel cardServiceModel);
 
+    /**
+     * @param cardServiceModel
+     * @return
+     */
     CardServiceViewModel updateCard(CardServiceModel cardServiceModel);
 
+    /**
+     * @param id
+     * @return
+     */
     CardServiceViewModel getCardById(long id);
 
+    /**
+     * @return
+     */
     List<CardServiceViewModel> getAllCards();
 
+    /**
+     * @param id
+     * @return
+     */
     CardServiceViewModel deleteCardById(long id);
 }
