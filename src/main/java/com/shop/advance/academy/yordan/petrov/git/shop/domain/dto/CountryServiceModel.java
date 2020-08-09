@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
 import java.util.Objects;
+
 /**
  * Class dto for .
  *
@@ -21,26 +22,56 @@ public class CountryServiceModel {
     }
 
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return this.id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets coordinates.
+     *
+     * @return the coordinates
+     */
     public String getCoordinates() {
         return this.coordinates;
     }
 
+    /**
+     * Sets coordinates.
+     *
+     * @param coordinates the coordinates
+     */
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
     }

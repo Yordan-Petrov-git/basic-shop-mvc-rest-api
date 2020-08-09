@@ -3,6 +3,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
 /**
  * Class dto for .
  *
@@ -24,35 +25,75 @@ public class SellerServiceViewModel {
     public SellerServiceViewModel() {
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return this.id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets stock.
+     *
+     * @return the stock
+     */
     public List<ItemCountPairServiceViewModel> getStock() {
         return this.stock;
     }
 
+    /**
+     * Sets stock.
+     *
+     * @param shoppingCartItem the shopping cart item
+     */
     public void setStock(List<ItemCountPairServiceViewModel> shoppingCartItem) {
         this.stock = shoppingCartItem;
     }
 
 
+    /**
+     * Gets user.
+     *
+     * @return the user
+     */
     public UserServiceViewModel getUser() {
         return this.user;
     }
 
+    /**
+     * Sets user.
+     *
+     * @param user the user
+     */
     public void setUser(UserServiceViewModel user) {
         this.user = user;
     }

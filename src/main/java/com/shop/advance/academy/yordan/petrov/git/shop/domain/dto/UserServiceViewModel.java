@@ -8,6 +8,7 @@ import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
+
 /**
  * Class dto for .
  *
@@ -34,67 +35,147 @@ public class UserServiceViewModel {
     }
 
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return this.id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets username.
+     *
+     * @return the username
+     */
     public String getUsername() {
         return this.username;
     }
 
+    /**
+     * Sets username.
+     *
+     * @param username the username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Gets user type.
+     *
+     * @return the user type
+     */
     public UserType getUserType() {
         return this.userType;
     }
 
+    /**
+     * Sets user type.
+     *
+     * @param userType the user type
+     */
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
 
+    /**
+     * Gets date of birth.
+     *
+     * @return the date of birth
+     */
     public LocalDate getDateOfBirth() {
         return this.dateOfBirth;
     }
 
+    /**
+     * Sets date of birth.
+     *
+     * @param dateOfBirth the date of birth
+     */
     public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
+    /**
+     * Gets first name.
+     *
+     * @return the first name
+     */
     public String getFirstName() {
         return this.firstName;
     }
 
+    /**
+     * Sets first name.
+     *
+     * @param firstName the first name
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Gets last name.
+     *
+     * @return the last name
+     */
     public String getLastName() {
         return this.lastName;
     }
 
+    /**
+     * Sets last name.
+     *
+     * @param lastName the last name
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Gets contact information.
+     *
+     * @return the contact information
+     */
     public Set<ContactInformationServiceViewModel> getContactInformation() {
         return this.contactInformation;
     }
 
+    /**
+     * Sets contact information.
+     *
+     * @param contactInformation the contact information
+     */
     public void setContactInformation(Set<ContactInformationServiceViewModel> contactInformation) {
         this.contactInformation = contactInformation;
     }
 
+    /**
+     * Gets created.
+     *
+     * @return the created
+     */
     public LocalDateTime getCreated() {
         return this.created;
     }
 
+    /**
+     * Sets created.
+     *
+     * @param created the created
+     */
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }

@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
 import java.util.Objects;
+
 /**
  * Class dto for .
  *
@@ -19,18 +20,38 @@ public class ItemCountPairServiceViewModel {
     public ItemCountPairServiceViewModel() {
     }
 
+    /**
+     * Gets item.
+     *
+     * @return the item
+     */
     public ItemServiceViewModel getItem() {
         return this.item;
     }
 
+    /**
+     * Sets item.
+     *
+     * @param item the item
+     */
     public void setItem(ItemServiceViewModel item) {
         this.item = item;
     }
 
+    /**
+     * Gets item count.
+     *
+     * @return the item count
+     */
     public Integer getItemCount() {
         return this.itemCount;
     }
 
+    /**
+     * Sets item count.
+     *
+     * @param itemCount the item count
+     */
     public void setItemCount(Integer itemCount) {
         this.itemCount = itemCount;
     }

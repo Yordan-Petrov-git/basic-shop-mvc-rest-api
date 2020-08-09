@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
 import java.util.Objects;
+
 /**
  * Class dto for .
  *
@@ -19,18 +20,38 @@ public class RoleServiceModel {
     public RoleServiceModel() {
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return this.id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets authority.
+     *
+     * @return the authority
+     */
     public String getAuthority() {
         return this.authority;
     }
 
+    /**
+     * Sets authority.
+     *
+     * @param authority the authority
+     */
     public void setAuthority(String authority) {
         this.authority = authority;
     }

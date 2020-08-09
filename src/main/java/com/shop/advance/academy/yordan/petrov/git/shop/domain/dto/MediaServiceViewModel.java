@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
 import java.util.Objects;
+
 /**
  * Class dto for .
  *
@@ -17,39 +18,78 @@ public class MediaServiceViewModel {
     /**
      * Constructor
      */
-
     public MediaServiceViewModel() {
     }
 
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return this.id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets picture path.
+     *
+     * @return the picture path
+     */
     public String getPicturePath() {
         return this.picturePath;
     }
 
+    /**
+     * Sets picture path.
+     *
+     * @param picturePath the picture path
+     */
     public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
 
+    /**
+     * Gets video path.
+     *
+     * @return the video path
+     */
     public String getVideoPath() {
         return this.videoPath;
     }
 
+    /**
+     * Sets video path.
+     *
+     * @param videoPath the video path
+     */
     public void setVideoPath(String videoPath) {
         this.videoPath = videoPath;
     }
 
+    /**
+     * Gets document path.
+     *
+     * @return the document path
+     */
     public String getDocumentPath() {
         return this.documentPath;
     }
 
+    /**
+     * Sets document path.
+     *
+     * @param documentPath the document path
+     */
     public void setDocumentPath(String documentPath) {
         this.documentPath = documentPath;
     }

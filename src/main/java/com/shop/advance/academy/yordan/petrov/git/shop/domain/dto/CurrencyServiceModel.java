@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.domain.dto;
 
 import java.util.Objects;
+
 /**
  * Class dto for .
  *
@@ -19,47 +20,96 @@ public class CurrencyServiceModel {
     /**
      * Constructor
      */
-
     public CurrencyServiceModel() {
     }
 
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return this.id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets name.
+     *
+     * @return the name
+     */
     public String getName() {
         return this.name;
     }
 
+    /**
+     * Sets name.
+     *
+     * @param name the name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * Gets iso 2.
+     *
+     * @return the iso 2
+     */
     public String getIso2() {
         return this.iso2;
     }
 
+    /**
+     * Sets iso 2.
+     *
+     * @param iso2 the iso 2
+     */
     public void setIso2(String iso2) {
         this.iso2 = iso2;
     }
 
+    /**
+     * Gets iso 3.
+     *
+     * @return the iso 3
+     */
     public String getIso3() {
         return this.iso3;
     }
 
+    /**
+     * Sets iso 3.
+     *
+     * @param iso3 the iso 3
+     */
     public void setIso3(String iso3) {
         this.iso3 = iso3;
     }
 
+    /**
+     * Gets multiplier for currency.
+     *
+     * @return the multiplier for currency
+     */
     public Integer getMultiplierForCurrency() {
         return this.multiplierForCurrency;
     }
 
+    /**
+     * Sets multiplier for currency.
+     *
+     * @param multiplierForCurrency the multiplier for currency
+     */
     public void setMultiplierForCurrency(Integer multiplierForCurrency) {
         this.multiplierForCurrency = multiplierForCurrency;
     }

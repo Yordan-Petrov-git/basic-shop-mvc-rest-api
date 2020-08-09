@@ -6,6 +6,7 @@ import com.shop.advance.academy.yordan.petrov.git.shop.data.models.enums.Shipmen
 
 import java.math.BigDecimal;
 import java.util.Objects;
+
 /**
  * Class dto for .
  *
@@ -30,74 +31,164 @@ public class OrderServiceViewModel {
     public OrderServiceViewModel() {
     }
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return this.id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets number.
+     *
+     * @return the number
+     */
     public String getNumber() {
         return this.number;
     }
 
+    /**
+     * Sets number.
+     *
+     * @param number the number
+     */
     public void setNumber(String number) {
         this.number = number;
     }
 
+    /**
+     * Gets tax.
+     *
+     * @return the tax
+     */
     public BigDecimal getTax() {
         return this.tax;
     }
 
+    /**
+     * Sets tax.
+     *
+     * @param tax the tax
+     */
     public void setTax(BigDecimal tax) {
         this.tax = tax;
     }
 
+    /**
+     * Gets price.
+     *
+     * @return the price
+     */
     public BigDecimal getPrice() {
         return this.totalPrice;
     }
 
+    /**
+     * Sets price.
+     *
+     * @param price the price
+     */
     public void setPrice(BigDecimal price) {
         this.totalPrice = price;
     }
 
+    /**
+     * Gets shopping cart.
+     *
+     * @return the shopping cart
+     */
     public ShoppingCartServiceViewModel getShoppingCart() {
         return this.shoppingCart;
     }
 
+    /**
+     * Sets shopping cart.
+     *
+     * @param shoppingCart the shopping cart
+     */
     public void setShoppingCart(ShoppingCartServiceViewModel shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
 
+    /**
+     * Gets order status.
+     *
+     * @return the order status
+     */
     public OrderStatus getOrderStatus() {
         return this.orderStatus;
     }
 
+    /**
+     * Sets order status.
+     *
+     * @param orderStatus the order status
+     */
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
+    /**
+     * Gets shipment type.
+     *
+     * @return the shipment type
+     */
     public ShipmentType getShipmentType() {
         return this.shipmentType;
     }
 
+    /**
+     * Sets shipment type.
+     *
+     * @param shipmentType the shipment type
+     */
     public void setShipmentType(ShipmentType shipmentType) {
         this.shipmentType = shipmentType;
     }
 
+    /**
+     * Gets payment type.
+     *
+     * @return the payment type
+     */
     public PaymentType getPaymentType() {
         return this.paymentType;
     }
 
+    /**
+     * Sets payment type.
+     *
+     * @param paymentType the payment type
+     */
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
 
+    /**
+     * Gets total price.
+     *
+     * @return the total price
+     */
     public BigDecimal getTotalPrice() {
         return this.totalPrice;
     }
 
+    /**
+     * Sets total price.
+     *
+     * @param totalPrice the total price
+     */
     public void setTotalPrice(BigDecimal totalPrice) {
         this.totalPrice = totalPrice;
     }
