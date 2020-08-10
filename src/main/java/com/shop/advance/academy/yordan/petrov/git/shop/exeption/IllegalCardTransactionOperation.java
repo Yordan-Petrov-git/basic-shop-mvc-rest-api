@@ -1,4 +1,5 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.exeption;
+
 /**
  * Class handling the exceptions on invalid card transaction.
  *

@@ -2,6 +2,7 @@ package com.shop.advance.academy.yordan.petrov.git.shop.data.model.utils.error;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
+
 /**
  * Class  for .
  *

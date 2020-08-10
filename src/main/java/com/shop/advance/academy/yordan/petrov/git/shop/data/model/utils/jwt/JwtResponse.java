@@ -1,6 +1,7 @@
 package com.shop.advance.academy.yordan.petrov.git.shop.data.model.utils.jwt;
 
 import java.io.Serializable;
+
 /**
  * Class  for .
  *

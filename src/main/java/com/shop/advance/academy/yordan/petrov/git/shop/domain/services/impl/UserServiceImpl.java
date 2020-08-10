@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     /**
-     * Constructor
+     * Constructor for user service implementation.
      */
     @Autowired
     public UserServiceImpl(UserDao userDao, ContactInformationDao contactInformationDao,
@@ -63,7 +63,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Method for
+     * Method for creating new user.
      *
      * @param userServiceModel
      * @return
@@ -86,7 +86,7 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * Method for
+     * Method for updating user.
      *
      * @param userServiceModel
      * @return
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Method for
+     * Method for getting user at specific identification number.
      *
      * @param id
      * @return
@@ -113,7 +113,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Method for
+     * Method for getting all users from the database.
      *
      * @return
      */
@@ -124,7 +124,7 @@ public class UserServiceImpl implements UserService {
     }
 
     /**
-     * Method for
+     * Method for deleting user with specific identification number.
      *
      * @param id
      * @return
@@ -147,7 +147,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return this.userDao.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("No user with username %s", username)));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(String.format("No user with username %s", username)));
     }
 
     /**
@@ -160,7 +161,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserServiceViewModel getUserByUsername(String username) throws InvalidEntityException {
         return mapUserToUserServiceViewModel(this.userDao.findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException(String.format("No user with username %s", username))));
+                .orElseThrow(() ->
+                        new UsernameNotFoundException(String.format("No user with username %s", username))));
     }
 
     /**
@@ -378,13 +380,15 @@ public class UserServiceImpl implements UserService {
 
 
     /**
-     * Method for
+     * Method for adding roles to users.
+     * First account will be always admin account.
+     * Every other ccount is standard user accout.
      *
      * @param user
      */
     public void addRolesToUsers(User user) {
         if (userDao.count() == 0) {
-            //Sets 1 st registered user as admin role
+            //Sets 1 st registered user as admin role(have all the roles that are peresent)
             this.roleService.seedRolesInDatabase();
 
             user.setAuthorities(this.roleService.findAllRoles()
@@ -393,7 +397,7 @@ public class UserServiceImpl implements UserService {
                     .collect(Collectors.toSet()));
 
         } else if (userDao.count() > 0) {
-            //Sets 2 and so on user  as user role
+            //Sets 2 and so on user  as user role(standard)
             user.setAuthorities(new LinkedHashSet<>());
             user.getAuthorities().add(authorityToRole());
         }
@@ -421,15 +425,15 @@ public class UserServiceImpl implements UserService {
     /**
      * Method for
      *
-     * @param r
+     * @param roleServiceModel
      * @return
      */
-    public Role mapRoleModelServiceToRole(RoleServiceModel r) {
-        return this.modelMapper.map(r, Role.class);
+    public Role mapRoleModelServiceToRole(RoleServiceModel roleServiceModel) {
+        return this.modelMapper.map(roleServiceModel, Role.class);
     }
 
     /**
-     * Method for
+     * Method for encode users password with bcrypt algorithm.
      *
      * @param userServiceModel
      * @return
