@@ -15,13 +15,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.validation.ConstraintViolationException;
 import java.nio.file.AccessDeniedException;
 
 /**
- * Class handling the exceptions.
+ * Class handling globall exceptions.
  *
  * @author Yordan Petrov
  * @version 1.0.0.0
@@ -32,9 +30,9 @@ import java.nio.file.AccessDeniedException;
 public class ExceptionHandlerController {
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler(EntityNotFoundException.class)
@@ -45,9 +43,9 @@ public class ExceptionHandlerController {
     }
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler(IllegalCardTransactionOperation.class)
@@ -58,9 +56,9 @@ public class ExceptionHandlerController {
     }
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler(IllegalDeleteOperation.class)
@@ -71,9 +69,9 @@ public class ExceptionHandlerController {
     }
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
@@ -84,9 +82,9 @@ public class ExceptionHandlerController {
     }
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler(AccessDeniedException.class)
@@ -97,9 +95,9 @@ public class ExceptionHandlerController {
     }
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler(UsernameNotFoundException.class)
@@ -110,9 +108,9 @@ public class ExceptionHandlerController {
     }
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler({InvalidEntityException.class,
@@ -127,9 +125,9 @@ public class ExceptionHandlerController {
     }
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler(javax.persistence.EntityNotFoundException.class)
@@ -140,14 +138,13 @@ public class ExceptionHandlerController {
     }
 
     /**
-     * Method for
+     * Method for exception handling.
      *
-     * @param ex
+     * @param ex exception.
      * @return
      */
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> handle(Exception ex,
-                                                HttpServletRequest request, HttpServletResponse response) {
+    public ResponseEntity<ErrorResponse> handleGloballyInternalServerError(Exception ex) {
         if (ex instanceof NullPointerException) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
