@@ -36,13 +36,136 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @Slf4j
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String[] AUTH_WHITELIST = {
+    /**
+     * Constants for standart user role
+     */
+    private static final String ROLE_STANDARD_USER = "ROLE_USER";
 
-            // -- swagger ui
-            "/swagger-resources/**",
-            "/swagger-ui.html",
-            "/v2/api-docs",
-            "/webjars/**"
+    /**
+     * Constants for moderator user role
+     */
+    private static final String ROLE_MODERATOR = "ROLE_MODERATOR";
+
+    /**
+     * Constants for administrator user role
+     */
+    private static final String ROLE_ADMIN = "ROLE_ADMIN";
+
+
+    /**
+     * Constants for ADMIN user
+     */
+    private static final String[] AUTHORISATION_ADMIN_USER = {
+            "/**"
+    };
+
+    /**
+     * Constants for SWAGGER USER INTERFACE
+     */
+    private static final String[] AUTHORISATION_WHITELIST_SWAGGER = {
+            "/swagger-resources/**"
+            , "/swagger-ui.html"
+            , "/v2/api-docs"
+            , "/webjars/**"
+    };
+
+    /**
+     * Constants for anonimus user
+     */
+    private static final String[] AUTHORISATION_ANONIMUS_USER = {
+            "/api/user"
+            , "/api/login"
+    };
+
+    /**
+     * Constants for anonimus user
+     */
+    private static final String[] AUTHORISATION_ANONIMUS_USER_POST_HTTP = {
+            "/api/user"
+            , "/api/login"
+    };
+
+    /**
+     * Constants for moderator DELETE HTTP METHOD
+     */
+    private static final String[] AUTHORISATION_MODERATOR_DELETE_HTTP = {
+            "/api/seller", "/api/order"
+    };
+
+    /**
+     * Constants for moderator GET HTTP METHOD
+     */
+    private static final String[] AUTHORISATION_MODERATOR_GET_HTTP = {
+            "/api/address"
+    };
+
+    /**
+     * Constants for user DELETE HTTP METHOD
+     */
+    private static final String[] AUTHORISATION_USER_DELETE_HTTP = {
+            "/api/items"
+            , "/api/cart"
+            , "/api/address"
+            , "/api/contactinformation"
+            , "/api/media"
+            , "/api/opinion"
+    };
+
+    /**
+     * Constants for user POST HTTP METHOD
+     */
+    private static final String[] AUTHORISATION_USER_POST_HTTP = {
+            "/api/seller"
+            , "/api/purchases"
+            , "/api/order"
+            , "/api/transactions"
+            , "/api/items"
+            , "/api/cart"
+            , "/api/address"
+            , "/api/contactinformation"
+            , "/api/media"
+            , "/api/opinion"
+    };
+
+    /**
+     * Constants for user POST HTTP METHOD
+     */
+    private static final String[] AUTHORISATION_USER_PUT_HTTP = {
+            "/api/user"
+            , "/api/seller"
+            , "/api/purchases"
+            , "/api/order"
+            , "/api/transactions"
+            , "/api/items"
+            , "/api/cart"
+            , "/api/address"
+            , "/api/contactinformation"
+            , "/api/media"
+            , "/api/opinion"
+    };
+
+    /**
+     * Constants for user PATCH HTTP METHOD
+     */
+    private static final String[] AUTHORISATION_USER_PATCH_HTTP = {
+            "/api/user", "/api/seller", "/api/purchases"
+            , "/api/order", "/api/transactions", "/api/items"
+            , "/api/cart", "/api/address", "/api/contactinformation"
+            , "/api/media", "/api/opinion"
+    };
+
+    /**
+     * Constants for user GET HTTP METHOD
+     */
+    private static final String[] AUTHORISATION_USER_GET_HTTP = {
+            "/api/user/**", "/api/seller/**", "/api/purchases", "/api/order/**"
+            , "/api/currency/**", "/api/country/**", "/api/city/**", "/api/transactions/**"
+            , "/api/card/**", "/api/items/**", "/api/cart/**", "/api/address/**"
+            , "/api/contactinformation/**", "/api/media/**", "/api/opinion/**"
+            , "/api/user/serach/user/username/**"
+            , " /api/user/serach/user/username/like/**"
+            , "api/items/serach/item/title/**"
+            , "api/items/serach/item/title/like/**"
     };
 
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
@@ -93,31 +216,33 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
-     * @param httpSecurity
-     * @throws Exception
+     * Method for HTTP security configuration.
+     *
+     * @param httpSecurity HTTP security filter chain configuration.
+     * @throws Exception exception to pass.
      */
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
                 .csrf().disable()
                 .authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/api/user", "/api/login").permitAll()
-                .antMatchers(AUTH_WHITELIST).permitAll()
-                .antMatchers("/api/user", "/api/login").anonymous()
-                .antMatchers(HttpMethod.DELETE, "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.POST, "/api/seller", "/api/purchases", "/api/order", "/api/transactions", "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.PUT, "/api/user", "/api/seller", "/api/purchases", "/api/order", "/api/transactions", "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.PATCH, "/api/user", "/api/seller", "/api/purchases", "/api/order", "/api/transactions", "/api/items", "/api/cart", "/api/address", "/api/contactinformation", "/api/media", "/api/opinion").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.GET, "/api/user/**", "/api/seller/**", "/api/purchases", "/api/order/**", "/api/currency/**", "/api/country/**", "/api/city/**", "/api/transactions/**", "/api/card/**", "/api/items/**", "/api/cart/**", "/api/address/**", "/api/contactinformation/**", "/api/media/**", "/api/opinion/**", "/api/user/serach/user/username/**", " /api/user/serach/user/username/like/**", "api/items/serach/item/title/**", "api/items/serach/item/title/like/**").hasAnyAuthority("ROLE_USER")
-                .antMatchers(HttpMethod.DELETE, "/api/seller", "/api/order").hasAuthority("ROLE_MODERATOR")
-                .antMatchers(HttpMethod.GET, "/api/address").hasAuthority("ROLE_MODERATOR")
-                .antMatchers(HttpMethod.GET, "/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.POST, "/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.PUT, "/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.PATCH, "/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.TRACE, "/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.OPTIONS, "/**").hasAuthority("ROLE_ADMIN")
-                .antMatchers(HttpMethod.DELETE, "/**").hasAuthority("ROLE_ADMIN")
+                .antMatchers(HttpMethod.POST, AUTHORISATION_ANONIMUS_USER_POST_HTTP).permitAll()
+                .antMatchers(AUTHORISATION_WHITELIST_SWAGGER).permitAll()
+                .antMatchers(AUTHORISATION_ANONIMUS_USER).anonymous()
+                .antMatchers(HttpMethod.DELETE, AUTHORISATION_USER_DELETE_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
+                .antMatchers(HttpMethod.POST, AUTHORISATION_USER_POST_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
+                .antMatchers(HttpMethod.PUT, AUTHORISATION_USER_PUT_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
+                .antMatchers(HttpMethod.PATCH, AUTHORISATION_USER_PATCH_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
+                .antMatchers(HttpMethod.GET, AUTHORISATION_USER_GET_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
+                .antMatchers(HttpMethod.DELETE, AUTHORISATION_MODERATOR_DELETE_HTTP).hasAuthority(ROLE_MODERATOR)
+                .antMatchers(HttpMethod.GET, AUTHORISATION_MODERATOR_GET_HTTP).hasAuthority(ROLE_MODERATOR)
+                .antMatchers(HttpMethod.GET, AUTHORISATION_ADMIN_USER).hasAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.POST, AUTHORISATION_ADMIN_USER).hasAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.PUT, AUTHORISATION_ADMIN_USER).hasAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.PATCH, AUTHORISATION_ADMIN_USER).hasAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.TRACE, AUTHORISATION_ADMIN_USER).hasAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.OPTIONS, AUTHORISATION_ADMIN_USER).hasAuthority(ROLE_ADMIN)
+                .antMatchers(HttpMethod.DELETE, AUTHORISATION_ADMIN_USER).hasAuthority(ROLE_ADMIN)
                 .anyRequest().authenticated()
                 .and().
                 exceptionHandling()

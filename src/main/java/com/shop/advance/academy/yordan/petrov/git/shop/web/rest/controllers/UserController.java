@@ -29,12 +29,12 @@ import java.util.List;
 public class UserController {
 
     /**
-     *
+     * User service to inject in the constructor.
      */
     private final UserService userService;
 
     /**
-     * Constructor
+     * Constructor.
      *
      * @param userService .
      */
@@ -101,7 +101,7 @@ public class UserController {
     }
 
     /**
-     * Method for
+     * Method for showing all users.
      *
      * @return
      */
@@ -128,7 +128,7 @@ public class UserController {
     }
 
     /**
-     * Method for
+     * Method for finding user by username containing
      *
      * @param username
      * @return
@@ -142,10 +142,10 @@ public class UserController {
     }
 
     /**
-     * Method for
+     * Method for deleting user at selected identification number.
      *
-     * @param id
-     * @return
+     * @param id the identification number of the user to be deleted.
+     * @return response with http status  and  user body.
      */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
