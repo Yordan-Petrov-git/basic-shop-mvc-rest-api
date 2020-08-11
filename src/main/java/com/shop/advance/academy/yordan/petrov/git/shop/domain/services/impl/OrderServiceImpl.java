@@ -21,6 +21,13 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.List;
 
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class OrderServiceImpl implements OrderService {
 
@@ -29,6 +36,9 @@ public class OrderServiceImpl implements OrderService {
     private final ShoppingCartService shoppingCartService;
     private final ShoppingCartDao shoppingCartDao;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public OrderServiceImpl(OrderDao orderDao, ModelMapper modelMapper, ShoppingCartService shoppingCartService,
                             ShoppingCartDao shoppingCartDao) {
@@ -38,6 +48,10 @@ public class OrderServiceImpl implements OrderService {
         this.shoppingCartDao = shoppingCartDao;
     }
 
+    /**
+     * @param orderServiceModel
+     * @return
+     */
     @Override
     public OrderServiceViewModel createOrder(OrderServiceModel orderServiceModel) {
 
@@ -67,6 +81,10 @@ public class OrderServiceImpl implements OrderService {
         return mapOrderToOrderServiceModel(order);
     }
 
+    /**
+     * @param orderServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public OrderServiceViewModel updateOrder(OrderServiceModel orderServiceModel) {
@@ -76,11 +94,18 @@ public class OrderServiceImpl implements OrderService {
         return mapOrderToOrderServiceModel(order);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public OrderServiceViewModel getOrderById(long id) {
         return mapOrderToOrderServiceModel(findOrderById(id));
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<OrderServiceViewModel> getAllOrders() {
         validateIfFoundAnyOrders();
@@ -88,6 +113,10 @@ public class OrderServiceImpl implements OrderService {
         return mapListOrderToListOrderServiceViewModel(orders);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public OrderServiceViewModel deleteOrderById(long id) {
         OrderServiceViewModel orderServiceViewModel = this.getOrderById(id);
@@ -95,15 +124,28 @@ public class OrderServiceImpl implements OrderService {
         return orderServiceViewModel;
     }
 
+    /**
+     * @param tax
+     * @return
+     */
     public BigDecimal calculateTaxPercentage(BigDecimal tax) {
         return tax.divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN).add(BigDecimal.valueOf(1));
     }
 
+    /**
+     * @param taxPercentage
+     * @param itemTotalPrice
+     * @return
+     */
     public BigDecimal calculateItemAfterTax(BigDecimal taxPercentage, BigDecimal itemTotalPrice) {
         return taxPercentage.multiply(itemTotalPrice);
 
     }
 
+    /**
+     * @param orderServiceModel
+     * @param order
+     */
     public void setShoppingCartOrder(OrderServiceModel orderServiceModel, Order order) {
         shoppingCartDao.findById(orderServiceModel.getShoppingCart().getId())
                 .ifPresent(c -> {
@@ -111,38 +153,68 @@ public class OrderServiceImpl implements OrderService {
                 });
     }
 
+    /**
+     * @param orderServiceModel
+     * @return
+     */
     public ShoppingCart mapOrderServiceModelToShoppingCart(OrderServiceModel orderServiceModel) {
         return this.modelMapper.map(getShoppingCartServiceViewModel(orderServiceModel), ShoppingCart.class);
     }
 
+    /**
+     * @param orderServiceModel
+     * @return
+     */
     public ShoppingCartServiceViewModel getShoppingCartServiceViewModel(OrderServiceModel orderServiceModel) {
         return this.shoppingCartService.getShoppingCartById(orderServiceModel.getShoppingCart().getId());
     }
 
+    /**
+     * @param orderServiceModel
+     */
     public void findOrderByNumber(OrderServiceModel orderServiceModel) {
         this.orderDao.findByNumber(orderServiceModel.getNumber()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Order with number '%s' already exists.", orderServiceModel.getNumber()));
         });
     }
 
+    /**
+     * @param orderServiceModel
+     * @return
+     */
     public Order mapOrderServiceModelToOrder(OrderServiceModel orderServiceModel) {
         return this.modelMapper.map(orderServiceModel, Order.class);
     }
 
+    /**
+     * @param order
+     * @return
+     */
     public OrderServiceViewModel mapOrderToOrderServiceModel(Order order) {
         return this.modelMapper.map(order, OrderServiceViewModel.class);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     public Order findOrderById(long id) {
         return this.orderDao.findById(id).orElseThrow(() ->
                 new EntityNotFoundException(String.format("Order  with ID %s not found.", id)));
     }
 
+    /**
+     * @param orders
+     * @return
+     */
     public List<OrderServiceViewModel> mapListOrderToListOrderServiceViewModel(List<Order> orders) {
         return modelMapper.map(orders, new TypeToken<List<OrderServiceViewModel>>() {
         }.getType());
     }
 
+    /**
+     *
+     */
     public void validateIfFoundAnyOrders() {
         findOrders()
                 .stream()
@@ -150,10 +222,16 @@ public class OrderServiceImpl implements OrderService {
                 .orElseThrow(() -> new InvalidEntityException("No Orders were found"));
     }
 
+    /**
+     * @return
+     */
     private List<Order> findOrders() {
         return this.orderDao.findAll();
     }
 
+    /**
+     * @return
+     */
     public List<Order> findAllOrders() {
         return findOrders();
     }

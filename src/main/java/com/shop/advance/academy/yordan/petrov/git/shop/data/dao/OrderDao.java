@@ -6,11 +6,26 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Interface dao for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Repository
 public interface OrderDao extends JpaRepository<Order, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Order> findById(Long id);
 
+    /**
+     * @param orderNumber
+     * @return
+     */
     Optional<Order> findByNumber(String orderNumber);
 
 }

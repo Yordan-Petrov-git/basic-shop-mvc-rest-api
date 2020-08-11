@@ -13,6 +13,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 
 import java.net.URI;
 
+/**
+ * Class controller for the purchase.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/purchases")
 @Slf4j
@@ -20,11 +27,20 @@ public class PurchasingByCardController {
 
     private final PurchasingService purchasingService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public PurchasingByCardController(PurchasingService purchasingService) {
         this.purchasingService = purchasingService;
     }
 
+    /**
+     * Method for
+     *
+     * @param transactionServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> creatPurchase(@RequestBody TransactionServiceModel transactionServiceModel) {
@@ -35,6 +51,12 @@ public class PurchasingByCardController {
         return ResponseEntity.created(location).body(transactionServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param transactionServiceModel
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> refundPurchase(@RequestBody TransactionServiceModel transactionServiceModel) {

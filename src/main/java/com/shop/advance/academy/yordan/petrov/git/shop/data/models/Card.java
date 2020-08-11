@@ -13,6 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "cards")
 public class Card extends BaseEntity {
@@ -29,60 +36,95 @@ public class Card extends BaseEntity {
     private boolean isActive = true;
     private List<User> users = new ArrayList<>();
 
-
+    /**
+     * Constructor
+     */
     public Card() {
     }
 
+    /**
+     * @return
+     */
     @Column(name = "card_type")
     @Enumerated(EnumType.STRING)
     public CardType getCardType() {
         return this.cardType;
     }
 
+    /**
+     * @param cardType
+     */
     public void setCardType(CardType cardType) {
         this.cardType = cardType;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "card_provider")
     @Enumerated(EnumType.STRING)
     public CardProviders getCardProviders() {
         return this.cardProviders;
     }
 
+    /**
+     * @param cardProviders
+     */
     public void setCardProviders(CardProviders cardProviders) {
         this.cardProviders = cardProviders;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "expiration_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDate getExpirationDate() {
         return this.expirationDate;
     }
 
+    /**
+     * @param expirationDate
+     */
     public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "issued_date")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getDateIssued() {
         return this.dateIssued;
     }
 
+    /**
+     * @param dateIssued
+     */
     public void setDateIssued(LocalDateTime dateIssued) {
         this.dateIssued = dateIssued;
     }
 
+    /**
+     * @return
+     */
     @Pattern(regexp = "^\\d{3}$", message = "cvv code is only 3 numbers")
     @Column(name = "cvv_code")
     public String getCvvCode() {
         return this.cvvCode;
     }
 
+    /**
+     * @param cvvCode
+     */
     public void setCvvCode(String cvvCode) {
         this.cvvCode = cvvCode;
     }
 
+    /**
+     * @return
+     */
     //TODO ADD PIN VALIDATION BEFORE B CRYPT Hash SOMEHOW
     @Column(name = "pin")
     //@Pattern(regexp = "^\\d{4}$|^\\d{8}$",message = "pin number must be either 4 or 8 numbers long")
@@ -90,29 +132,47 @@ public class Card extends BaseEntity {
         return this.pinCode;
     }
 
+    /**
+     * @param pinCode
+     */
     public void setPinCode(String pinCode) {
         this.pinCode = pinCode;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "number")
     public String getNumber() {
         return this.number;
     }
 
+    /**
+     * @param number
+     */
     public void setNumber(String number) {
         this.number = number;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "balance")
     public BigDecimal getBalance() {
         return this.balance;
     }
 
+    /**
+     * @param balance
+     */
     public void setBalance(BigDecimal balance) {
         this.balance = balance;
     }
 
 
+    /**
+     * @return
+     */
     @ManyToOne(targetEntity = Currency.class
             , fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH})
@@ -122,19 +182,31 @@ public class Card extends BaseEntity {
         return this.currency;
     }
 
+    /**
+     * @param currency
+     */
     public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "is_active")
     public boolean isActive() {
         return this.isActive;
     }
 
+    /**
+     * @param active
+     */
     public void setActive(boolean active) {
         isActive = active;
     }
 
+    /**
+     * @return
+     */
     @OneToMany(targetEntity = User.class,
             fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH})
@@ -145,10 +217,17 @@ public class Card extends BaseEntity {
         return this.users;
     }
 
+    /**
+     * @param users
+     */
     public void setUsers(List<User> users) {
         this.users = users;
     }
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -165,11 +244,17 @@ public class Card extends BaseEntity {
                 Objects.equals(balance, card.balance);
     }
 
+    /**
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), cardType, cardProviders, expirationDate, cvvCode, pinCode, number, balance, isActive);
     }
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Card{");

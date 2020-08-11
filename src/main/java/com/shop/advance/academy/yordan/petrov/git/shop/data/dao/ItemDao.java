@@ -9,23 +9,63 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * Interface dao for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Repository
 public interface ItemDao extends JpaRepository<Item, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Item> findById(Long id);
 
+    /**
+     * @param title
+     * @param description
+     * @return
+     */
     Optional<Item> findByTitleAndDescription(String title, String description);
 
+    /**
+     * @param title
+     * @return
+     */
     Optional<Item> findByTitle(String title);
 
+    /**
+     * @param title
+     * @return
+     */
     List<Item> findByTitleLike(String title);
 
+    /**
+     * @param description
+     * @return
+     */
     Optional<Item> findAllByDescriptionContaining(String description);
 
+    /**
+     * @param price
+     * @return
+     */
     Optional<Item> findAllByPrice(BigDecimal price);
 
+    /**
+     * @param weight
+     * @return
+     */
     Optional<Item> findAllByWeight(Double weight);
 
+    /**
+     * @param itemCategory
+     * @return
+     */
     Optional<Item> findAllByItemCategory(ItemCategory itemCategory);
 
 }

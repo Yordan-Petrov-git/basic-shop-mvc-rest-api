@@ -15,18 +15,32 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class CurrencyServiceImpl implements CurrencyService {
 
     private final CurrencyDao currencyDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CurrencyServiceImpl(CurrencyDao currencyDao, ModelMapper modelMapper) {
         this.currencyDao = currencyDao;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * @param currencyServiceModel
+     * @return
+     */
     @Override
     public CurrencyServiceViewModel createCurrency(CurrencyServiceModel currencyServiceModel) {
         Currency currency = mapCurrencyServiceModelToCurrency(currencyServiceModel);
@@ -36,10 +50,18 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
 
+    /**
+     * @param currencyServiceModel
+     * @return
+     */
     private Currency mapCurrencyServiceModelToCurrency(CurrencyServiceModel currencyServiceModel) {
         return this.modelMapper.map(currencyServiceModel, Currency.class);
     }
 
+    /**
+     * @param currencyServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public CurrencyServiceViewModel updateCurrency(CurrencyServiceModel currencyServiceModel) {
@@ -51,6 +73,10 @@ public class CurrencyServiceImpl implements CurrencyService {
     }
 
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public CurrencyServiceViewModel getCurrencyById(long id) {
         return this.modelMapper
@@ -58,6 +84,10 @@ public class CurrencyServiceImpl implements CurrencyService {
                         new EntityNotFoundException(String.format("Currency  with ID %s not found.", id))), CurrencyServiceViewModel.class);
     }
 
+    /**
+     * @param name
+     * @return
+     */
     @Override
     public CurrencyServiceViewModel getCurrencyByName(String name) {
         return this.modelMapper
@@ -65,6 +95,9 @@ public class CurrencyServiceImpl implements CurrencyService {
                         new EntityNotFoundException(String.format("Currency  with name %s not found.", name))), CurrencyServiceViewModel.class);
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<CurrencyServiceViewModel> getAllCurrencies() {
         this.currencyDao.findAll()
@@ -76,6 +109,10 @@ public class CurrencyServiceImpl implements CurrencyService {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public CurrencyServiceViewModel deleteCurrencyById(long id) {
         CurrencyServiceViewModel cityServiceViewModel = this.getCurrencyById(id);
@@ -83,12 +120,19 @@ public class CurrencyServiceImpl implements CurrencyService {
         return cityServiceViewModel;
     }
 
+    /**
+     * @param currencyServiceModel
+     */
     private void findByName(CurrencyServiceModel currencyServiceModel) {
         this.currencyDao.findByName(currencyServiceModel.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Currency with name '%s' already exists.", currencyServiceModel.getName()));
         });
     }
 
+    /**
+     * @param currency
+     * @return
+     */
     private CurrencyServiceViewModel mapCurrencyToCurrencyServiceViewModel(Currency currency) {
         return this.modelMapper.map(currency, CurrencyServiceViewModel.class);
     }

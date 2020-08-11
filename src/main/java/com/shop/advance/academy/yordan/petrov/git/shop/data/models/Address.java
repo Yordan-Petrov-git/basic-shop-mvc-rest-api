@@ -5,6 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "addresses")
 public class Address extends BaseEntity {
@@ -14,28 +21,46 @@ public class Address extends BaseEntity {
     private City city;
     private List<User> users = new ArrayList<>();
 
+    /**
+     * Constructor
+     */
     public Address() {
     }
 
+    /**
+     * @return
+     */
     @Column(name = "street_number")
     public String getStreetNumber() {
         return this.streetNumber;
     }
 
+    /**
+     * @param streetNumber
+     */
     public void setStreetNumber(String streetNumber) {
         this.streetNumber = streetNumber;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "street_name")
     public String getStreetName() {
         return this.streetName;
     }
 
+    /**
+     * @param streetName
+     */
     public void setStreetName(String streetName) {
         this.streetName = streetName;
     }
 
 
+    /**
+     * @return
+     */
     @ManyToOne(targetEntity = City.class
             , cascade = {CascadeType.DETACH}
             , fetch = FetchType.LAZY)
@@ -44,11 +69,17 @@ public class Address extends BaseEntity {
         return this.city;
     }
 
+    /**
+     * @param city
+     */
     public void setCity(City city) {
         this.city = city;
     }
 
 
+    /**
+     * @return
+     */
     @ManyToMany(targetEntity = User.class,
             fetch = FetchType.EAGER,
             cascade = {CascadeType.DETACH})
@@ -61,11 +92,18 @@ public class Address extends BaseEntity {
         return this.users;
     }
 
+    /**
+     * @param users
+     */
     public void setUsers(List<User> users) {
         this.users = users;
     }
 
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -77,11 +115,17 @@ public class Address extends BaseEntity {
     }
 
 
+    /**
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), streetNumber, streetName);
     }
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Address{");

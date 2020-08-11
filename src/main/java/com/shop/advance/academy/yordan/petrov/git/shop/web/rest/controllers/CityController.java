@@ -15,6 +15,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class controller for the city.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/city")
 @Slf4j
@@ -22,12 +29,21 @@ public class CityController {
 
     private final CityService cityService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CityController(CityService cityService) {
         this.cityService = cityService;
     }
 
 
+    /**
+     * Method for
+     *
+     * @param cityServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> createCity(@RequestBody CityServiceModel cityServiceModel) {
@@ -38,6 +54,13 @@ public class CityController {
         return ResponseEntity.created(location).body(cityServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @param cityServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> updateCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
@@ -47,6 +70,13 @@ public class CityController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @param cityServiceModel
+     * @return
+     */
     @PatchMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> updateSpecificAttributesCity(@PathVariable("id") Long id, @RequestBody CityServiceModel cityServiceModel) {
@@ -56,6 +86,12 @@ public class CityController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<CityServiceViewModel> getCity(@PathVariable("id") final Long id) {
@@ -64,6 +100,11 @@ public class CityController {
         return ResponseEntity.status(HttpStatus.FOUND).body(cityServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<CityServiceViewModel>> getCites() {
@@ -72,6 +113,12 @@ public class CityController {
         return ResponseEntity.status(HttpStatus.FOUND).body(cityServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<CityServiceViewModel> deleteCity(@PathVariable("id") Long id) {

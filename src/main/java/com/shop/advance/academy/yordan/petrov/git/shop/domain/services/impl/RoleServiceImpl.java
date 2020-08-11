@@ -11,18 +11,31 @@ import org.springframework.stereotype.Service;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class RoleServiceImpl implements RoleService {
 
     private final RoleDao roleDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public RoleServiceImpl(RoleDao roleDao, ModelMapper modelMapper) {
         this.roleDao = roleDao;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     *
+     */
     @Override
     public void seedRolesInDatabase() {
         Role admin = new Role("ROLE_ADMIN");
@@ -33,6 +46,9 @@ public class RoleServiceImpl implements RoleService {
         this.roleDao.saveAndFlush(user);
     }
 
+    /**
+     * @return
+     */
     @Override
     public Set<RoleServiceModel> findAllRoles() {
         return this.roleDao.findAll()
@@ -41,6 +57,10 @@ public class RoleServiceImpl implements RoleService {
                 .collect(Collectors.toSet());
     }
 
+    /**
+     * @param role
+     * @return
+     */
     @Override
     public RoleServiceModel findByAuthority(String role) {
         return this.modelMapper.map(this.roleDao.findByAuthority(role), RoleServiceModel.class);

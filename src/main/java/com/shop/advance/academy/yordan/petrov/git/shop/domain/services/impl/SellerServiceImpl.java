@@ -17,6 +17,13 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class SellerServiceImpl implements SellerService {
 
@@ -24,7 +31,9 @@ public class SellerServiceImpl implements SellerService {
     private final ModelMapper modelMapper;
     private final UserService userService;
 
-
+    /**
+     * Constructor
+     */
     @Autowired
     public SellerServiceImpl(SellerDao sellerDao, ModelMapper modelMapper, UserService userService) {
         this.sellerDao = sellerDao;
@@ -33,6 +42,10 @@ public class SellerServiceImpl implements SellerService {
     }
 
 
+    /**
+     * @param sellerServiceModel
+     * @return
+     */
     @Override
     public SellerServiceViewModel createSeller(SellerServiceModel sellerServiceModel) {
 
@@ -56,6 +69,10 @@ public class SellerServiceImpl implements SellerService {
 
     }
 
+    /**
+     * @param sellerServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public SellerServiceViewModel updateSeller(SellerServiceModel sellerServiceModel) {
@@ -69,6 +86,10 @@ public class SellerServiceImpl implements SellerService {
 
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public SellerServiceViewModel getSellerById(long id) {
         return this.modelMapper
@@ -77,6 +98,9 @@ public class SellerServiceImpl implements SellerService {
 
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<SellerServiceViewModel> getAllSellers() {
 
@@ -91,6 +115,10 @@ public class SellerServiceImpl implements SellerService {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public SellerServiceViewModel deleteSellerById(long id) {
 

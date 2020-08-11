@@ -7,11 +7,26 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Interface dao for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Repository
 public interface CountryDao extends JpaRepository<Country, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Country> findById(Long id);
 
+    /**
+     * @param name
+     * @return
+     */
     Optional<Country> findByName(String name);
 }
 

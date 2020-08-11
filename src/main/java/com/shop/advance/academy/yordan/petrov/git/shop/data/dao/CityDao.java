@@ -6,11 +6,26 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Interface dao for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Repository
 public interface CityDao extends JpaRepository<City, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<City> findById(Long id);
 
+    /**
+     * @param name
+     * @return
+     */
     Optional<City> findCityByName(String name);
 
 }

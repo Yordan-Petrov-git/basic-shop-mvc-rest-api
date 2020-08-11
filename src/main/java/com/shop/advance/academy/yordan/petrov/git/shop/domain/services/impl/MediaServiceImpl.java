@@ -15,18 +15,32 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class MediaServiceImpl implements MediaService {
 
     private final MediaDao mediaDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public MediaServiceImpl(MediaDao mediaDao, ModelMapper modelMapper) {
         this.mediaDao = mediaDao;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * @param mediaServiceModel
+     * @return
+     */
     @Override
     public MediaServiceViewModel createMedia(MediaServiceModel mediaServiceModel) {
         Media media = mapMediaServiceModelToMedia(mediaServiceModel);
@@ -37,6 +51,10 @@ public class MediaServiceImpl implements MediaService {
         return mapMediaToMediaServiceViewModel(media);
     }
 
+    /**
+     * @param mediaServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public MediaServiceViewModel updateMedia(MediaServiceModel mediaServiceModel) {
@@ -46,6 +64,10 @@ public class MediaServiceImpl implements MediaService {
         return mapMediaToMediaServiceViewModel(media);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public MediaServiceViewModel getMediaById(long id) {
         return this.modelMapper
@@ -53,6 +75,9 @@ public class MediaServiceImpl implements MediaService {
                         new EntityNotFoundException(String.format("Media  with ID %s not found.", id))), MediaServiceViewModel.class);
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<MediaServiceViewModel> getAllMedias() {
 
@@ -68,6 +93,10 @@ public class MediaServiceImpl implements MediaService {
 
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public MediaServiceViewModel deleteMediaById(long id) {
         MediaServiceViewModel mediaServiceViewModel = this.getMediaById(id);
@@ -76,28 +105,45 @@ public class MediaServiceImpl implements MediaService {
     }
 
 
+    /**
+     * @param mediaServiceModel
+     */
     private void findMediaByVideoPath(MediaServiceModel mediaServiceModel) {
         this.mediaDao.findByVideoPath(mediaServiceModel.getVideoPath()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Media with video path '%s' already exists.", mediaServiceModel.getVideoPath()));
         });
     }
 
+    /**
+     * @param mediaServiceModel
+     */
     private void findMediaByPicturePath(MediaServiceModel mediaServiceModel) {
         this.mediaDao.findByPicturePath(mediaServiceModel.getPicturePath()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Media with picture path '%s' already exists.", mediaServiceModel.getPicturePath()));
         });
     }
 
+    /**
+     * @param mediaServiceModel
+     */
     private void findMediaByDocumentPath(MediaServiceModel mediaServiceModel) {
         this.mediaDao.findByDocumentPath(mediaServiceModel.getDocumentPath()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Media with document path '%s' already exists.", mediaServiceModel.getDocumentPath()));
         });
     }
 
+    /**
+     * @param media
+     * @return
+     */
     private MediaServiceViewModel mapMediaToMediaServiceViewModel(Media media) {
         return this.modelMapper.map(media, MediaServiceViewModel.class);
     }
 
+    /**
+     * @param mediaServiceModel
+     * @return
+     */
     private Media mapMediaServiceModelToMedia(MediaServiceModel mediaServiceModel) {
         return this.modelMapper.map(mediaServiceModel, Media.class);
     }

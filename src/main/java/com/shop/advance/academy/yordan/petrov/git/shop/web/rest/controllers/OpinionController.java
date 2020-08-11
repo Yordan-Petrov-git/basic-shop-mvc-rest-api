@@ -15,6 +15,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class controller for the opinion.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/opinion")
 @Slf4j
@@ -22,12 +29,21 @@ public class OpinionController {
 
     private final OpinionService opinionService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public OpinionController(OpinionService opinionService) {
         this.opinionService = opinionService;
     }
 
 
+    /**
+     * Method for
+     *
+     * @param opinionServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> createOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
@@ -38,6 +54,12 @@ public class OpinionController {
         return ResponseEntity.created(location).body(opinionServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param opinionServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> updateOpinion(@RequestBody OpinionServiceModel opinionServiceModel) {
@@ -47,6 +69,12 @@ public class OpinionController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> getOpinion(@PathVariable("id") final Long id) {
@@ -55,6 +83,11 @@ public class OpinionController {
         return ResponseEntity.status(HttpStatus.FOUND).body(opinionServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<OpinionServiceViewModel>> getOpinions() {
@@ -63,6 +96,12 @@ public class OpinionController {
         return ResponseEntity.status(HttpStatus.FOUND).body(opinionServiceViewModelList);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<OpinionServiceViewModel> deleteOpinion(@PathVariable("id") Long id) {

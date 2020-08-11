@@ -15,18 +15,32 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class ItemServiceImpl implements ItemService {
 
     private final ItemDao itemDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public ItemServiceImpl(ItemDao itemDao, ModelMapper modelMapper) {
         this.itemDao = itemDao;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * @param itemServiceModel
+     * @return
+     */
     @Override
     public ItemServiceViewModel createItem(ItemServiceModel itemServiceModel) {
         Item item = mapItemServiceModelToItem(itemServiceModel);
@@ -37,6 +51,10 @@ public class ItemServiceImpl implements ItemService {
         return mapItemToItemServiceViewModel(item);
     }
 
+    /**
+     * @param itemServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public ItemServiceViewModel updateItem(ItemServiceModel itemServiceModel) {
@@ -47,6 +65,10 @@ public class ItemServiceImpl implements ItemService {
 
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ItemServiceViewModel getItemById(long id) {
         return this.modelMapper
@@ -54,6 +76,10 @@ public class ItemServiceImpl implements ItemService {
                         new EntityNotFoundException(String.format("Item  with ID %s not found.", id))), ItemServiceViewModel.class);
     }
 
+    /**
+     * @param title
+     * @return
+     */
     @Override
     public ItemServiceViewModel getItemByTitle(String title) {
         return this.modelMapper
@@ -61,12 +87,19 @@ public class ItemServiceImpl implements ItemService {
                         new EntityNotFoundException(String.format("Item  with title %s not found.", title))), ItemServiceViewModel.class);
     }
 
+    /**
+     * @param title
+     * @return
+     */
     @Override
     public List<ItemServiceViewModel> getItemByTitleLike(String title) {
         return modelMapper.map(this.itemDao.findByTitleLike(title), new TypeToken<List<ItemServiceViewModel>>() {
         }.getType());
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<ItemServiceViewModel> getAllItems() {
         this.itemDao.findAll()
@@ -77,6 +110,10 @@ public class ItemServiceImpl implements ItemService {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ItemServiceViewModel deleteItemById(long id) {
         ItemServiceViewModel itemServiceViewModel = this.getItemById(id);
@@ -85,10 +122,18 @@ public class ItemServiceImpl implements ItemService {
     }
 
 
+    /**
+     * @param item
+     * @return
+     */
     private ItemServiceViewModel mapItemToItemServiceViewModel(Item item) {
         return this.modelMapper.map(item, ItemServiceViewModel.class);
     }
 
+    /**
+     * @param itemServiceModel
+     * @return
+     */
     private Item mapItemServiceModelToItem(ItemServiceModel itemServiceModel) {
         return this.modelMapper.map(itemServiceModel, Item.class);
     }

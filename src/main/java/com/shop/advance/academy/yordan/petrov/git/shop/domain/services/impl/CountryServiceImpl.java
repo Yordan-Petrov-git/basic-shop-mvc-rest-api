@@ -15,18 +15,32 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class CountryServiceImpl implements CountryService {
 
     private final CountryDao countryDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CountryServiceImpl(CountryDao countryDao, ModelMapper modelMapper) {
         this.countryDao = countryDao;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * @param countryServiceModel
+     * @return
+     */
     @Override
     public CountryServiceViewModel createCountry(CountryServiceModel countryServiceModel) {
         Country country = mapCountryServiceModelToCountry(countryServiceModel);
@@ -36,6 +50,10 @@ public class CountryServiceImpl implements CountryService {
     }
 
 
+    /**
+     * @param countryServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public CountryServiceViewModel updateCountry(CountryServiceModel countryServiceModel) {
@@ -45,6 +63,10 @@ public class CountryServiceImpl implements CountryService {
         return mapCountryToCountryServiceViewModel(country);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public CountryServiceViewModel getCountryById(long id) {
         return this.modelMapper
@@ -52,6 +74,10 @@ public class CountryServiceImpl implements CountryService {
                         new EntityNotFoundException(String.format("Country  with ID %s not found.", id))), CountryServiceViewModel.class);
     }
 
+    /**
+     * @param name
+     * @return
+     */
     @Override
     public CountryServiceViewModel getCountryName(String name) {
         return this.modelMapper
@@ -59,6 +85,9 @@ public class CountryServiceImpl implements CountryService {
                         new EntityNotFoundException(String.format("Country  with name %s not found.", name))), CountryServiceViewModel.class);
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<CountryServiceViewModel> getAllCountries() {
         this.countryDao.findAll()
@@ -70,6 +99,10 @@ public class CountryServiceImpl implements CountryService {
         }.getType());
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public CountryServiceViewModel deleteCountryById(long id) {
         CountryServiceViewModel countryServiceViewModel = this.getCountryById(id);
@@ -77,16 +110,27 @@ public class CountryServiceImpl implements CountryService {
         return countryServiceViewModel;
     }
 
+    /**
+     * @param countryServiceModel
+     */
     private void findByNme(CountryServiceModel countryServiceModel) {
         this.countryDao.findByName(countryServiceModel.getName()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Country '%s' already exists.", countryServiceModel.getName()));
         });
     }
 
+    /**
+     * @param countryServiceModel
+     * @return
+     */
     private Country mapCountryServiceModelToCountry(CountryServiceModel countryServiceModel) {
         return this.modelMapper.map(countryServiceModel, Country.class);
     }
 
+    /**
+     * @param country
+     * @return
+     */
     private CountryServiceViewModel mapCountryToCountryServiceViewModel(Country country) {
         return this.modelMapper.map(country, CountryServiceViewModel.class);
     }

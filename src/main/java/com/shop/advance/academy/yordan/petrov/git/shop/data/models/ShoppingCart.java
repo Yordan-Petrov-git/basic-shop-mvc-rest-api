@@ -10,6 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "shopping_carts")
 public class ShoppingCart extends BaseEntity {
@@ -20,10 +27,18 @@ public class ShoppingCart extends BaseEntity {
     private User user;
     private BigDecimal totalItemsPrice;
 
+    /**
+     * Constructor
+     */
     public ShoppingCart() {
     }
 
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @OneToMany(
             targetEntity = ItemCountPair.class,
             fetch = FetchType.EAGER,
@@ -35,21 +50,41 @@ public class ShoppingCart extends BaseEntity {
         return this.itemCountPair;
     }
 
+    /**
+     * Method for
+     *
+     * @param itemCountPair
+     */
     public void setItemCountPair(List<ItemCountPair> itemCountPair) {
         this.itemCountPair = itemCountPair;
     }
 
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "date_time_created")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreated() {
         return this.created;
     }
 
+    /**
+     * Method for
+     *
+     * @param created
+     */
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "date_time_modified")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getModified() {
@@ -60,6 +95,11 @@ public class ShoppingCart extends BaseEntity {
         this.modified = modified;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @ManyToOne(targetEntity = User.class,
             cascade = {CascadeType.DETACH},
             fetch = FetchType.LAZY)
@@ -68,18 +108,39 @@ public class ShoppingCart extends BaseEntity {
         return this.user;
     }
 
+    /**
+     * Method for
+     *
+     * @param user
+     */
     public void setUser(User user) {
         this.user = user;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     public BigDecimal getTotalItemsPrice() {
         return this.totalItemsPrice;
     }
 
+    /**
+     * Method for
+     *
+     * @param totalItemsPrice
+     */
     public void setTotalItemsPrice(BigDecimal totalItemsPrice) {
         this.totalItemsPrice = totalItemsPrice;
     }
 
+    /**
+     * Method for
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -91,11 +152,21 @@ public class ShoppingCart extends BaseEntity {
                 Objects.equals(totalItemsPrice, that.totalItemsPrice);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), created, modified, totalItemsPrice);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("ShoppingCart{");

@@ -15,6 +15,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class controller for the media.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/media")
 @Slf4j
@@ -22,12 +29,19 @@ public class MediaController {
 
     private final MediaService mediaService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public MediaController(MediaService mediaService) {
         this.mediaService = mediaService;
     }
 
 
+    /**
+     * @param mediaServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> createMedia(@RequestBody MediaServiceModel mediaServiceModel) {
@@ -38,6 +52,12 @@ public class MediaController {
         return ResponseEntity.created(location).body(mediaServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param mediaServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> updateMedia(@RequestBody MediaServiceModel mediaServiceModel) {
@@ -47,6 +67,12 @@ public class MediaController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> getMedia(@PathVariable("id") final Long id) {
@@ -55,6 +81,11 @@ public class MediaController {
         return ResponseEntity.status(HttpStatus.FOUND).body(mediaServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<MediaServiceViewModel>> getMedias() {
@@ -63,6 +94,12 @@ public class MediaController {
         return ResponseEntity.status(HttpStatus.FOUND).body(mediaServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<MediaServiceViewModel> deleteMedia(@PathVariable("id") Long id) {

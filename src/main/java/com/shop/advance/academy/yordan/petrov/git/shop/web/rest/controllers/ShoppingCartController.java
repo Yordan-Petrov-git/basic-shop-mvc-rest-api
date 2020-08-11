@@ -15,7 +15,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
-
+/**
+ * Class controller for the shopping cart.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/cart")
 @Slf4j
@@ -23,11 +29,20 @@ public class ShoppingCartController {
 
     private final ShoppingCartService shoppingCartService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public ShoppingCartController(ShoppingCartService shoppingCartService) {
         this.shoppingCartService = shoppingCartService;
     }
 
+    /**
+     * Method for
+     *
+     * @param shoppingCartServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ShoppingCartServiceViewModel> createShoppingCart(@RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
@@ -38,6 +53,12 @@ public class ShoppingCartController {
         return ResponseEntity.created(location).body(shoppingCartServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param shoppingCartServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ShoppingCartServiceViewModel> updateShoppingCart(@RequestBody ShoppingCartServiceModel shoppingCartServiceModel) {
@@ -49,6 +70,12 @@ public class ShoppingCartController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ShoppingCartServiceViewModel> getShoppingCart(@PathVariable("id") final Long id) {
@@ -57,6 +84,11 @@ public class ShoppingCartController {
         return ResponseEntity.status(HttpStatus.FOUND).body(shoppingCartServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<ShoppingCartServiceViewModel>> getShoppingCarts() {
@@ -66,6 +98,12 @@ public class ShoppingCartController {
 
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ShoppingCartServiceViewModel> deleteShoppingCart(@PathVariable("id") Long id) {

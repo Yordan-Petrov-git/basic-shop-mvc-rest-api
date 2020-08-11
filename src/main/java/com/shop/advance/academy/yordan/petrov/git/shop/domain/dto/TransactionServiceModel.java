@@ -6,8 +6,18 @@ import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.Objects;
 
+/**
+ * Class dto for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 public class TransactionServiceModel {
 
+    /**
+     * The Id.
+     */
     Long id;
     private String number;
     private CardServiceModel recipient;
@@ -22,111 +32,243 @@ public class TransactionServiceModel {
     private CurrencyServiceModel currency;
     private OrderServiceModel order;
 
-
+    /**
+     * Constructor
+     */
     public TransactionServiceModel() {
     }
 
 
+    /**
+     * Gets id.
+     *
+     * @return the id
+     */
     public Long getId() {
         return this.id;
     }
 
+    /**
+     * Sets id.
+     *
+     * @param id the id
+     */
     public void setId(Long id) {
         this.id = id;
     }
 
+    /**
+     * Gets number.
+     *
+     * @return the number
+     */
     public String getNumber() {
         return this.number;
     }
 
+    /**
+     * Sets number.
+     *
+     * @param number the number
+     */
     public void setNumber(String number) {
         this.number = number;
     }
 
+    /**
+     * Gets recipient.
+     *
+     * @return the recipient
+     */
     public CardServiceModel getRecipient() {
         return this.recipient;
     }
 
+    /**
+     * Sets recipient.
+     *
+     * @param recipient the recipient
+     */
     public void setRecipient(CardServiceModel recipient) {
         this.recipient = recipient;
     }
 
+    /**
+     * Gets sender.
+     *
+     * @return the sender
+     */
     public CardServiceModel getSender() {
         return this.sender;
     }
 
+    /**
+     * Sets sender.
+     *
+     * @param sender the sender
+     */
     public void setSender(CardServiceModel sender) {
         this.sender = sender;
     }
 
+    /**
+     * Gets description.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return this.description;
     }
 
+    /**
+     * Sets description.
+     *
+     * @param description the description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     * Gets date created.
+     *
+     * @return the date created
+     */
     public Instant getDateCreated() {
         return this.dateCreated;
     }
 
+    /**
+     * Sets date created.
+     *
+     * @param dateCreated the date created
+     */
     public void setDateCreated(Instant dateCreated) {
         this.dateCreated = dateCreated;
     }
 
+    /**
+     * Gets date completed.
+     *
+     * @return the date completed
+     */
     public Instant getDateCompleted() {
         return this.dateCompleted;
     }
 
+    /**
+     * Sets date completed.
+     *
+     * @param dateCompleted the date completed
+     */
     public void setDateCompleted(Instant dateCompleted) {
         this.dateCompleted = dateCompleted;
     }
 
+    /**
+     * Gets date updated.
+     *
+     * @return the date updated
+     */
     public Instant getDateUpdated() {
         return this.dateUpdated;
     }
 
+    /**
+     * Sets date updated.
+     *
+     * @param dateUpdated the date updated
+     */
     public void setDateUpdated(Instant dateUpdated) {
         this.dateUpdated = dateUpdated;
     }
 
+    /**
+     * Gets transaction status.
+     *
+     * @return the transaction status
+     */
     public TransactionStatus getTransactionStatus() {
         return this.transactionStatus;
     }
 
+    /**
+     * Sets transaction status.
+     *
+     * @param transactionStatus the transaction status
+     */
     public void setTransactionStatus(TransactionStatus transactionStatus) {
         this.transactionStatus = transactionStatus;
     }
 
+    /**
+     * Gets fee.
+     *
+     * @return the fee
+     */
     public BigDecimal getFee() {
         return this.fee;
     }
 
+    /**
+     * Sets fee.
+     *
+     * @param fee the fee
+     */
     public void setFee(BigDecimal fee) {
         this.fee = fee;
     }
 
+    /**
+     * Gets amount.
+     *
+     * @return the amount
+     */
     public BigDecimal getAmount() {
         return this.amount;
     }
 
+    /**
+     * Sets amount.
+     *
+     * @param amount the amount
+     */
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 
+    /**
+     * Gets currency.
+     *
+     * @return the currency
+     */
     public CurrencyServiceModel getCurrency() {
         return this.currency;
     }
 
+    /**
+     * Sets currency.
+     *
+     * @param currency the currency
+     */
     public void setCurrency(CurrencyServiceModel currency) {
         this.currency = currency;
     }
 
+    /**
+     * Gets order.
+     *
+     * @return the order
+     */
     public OrderServiceModel getOrder() {
         return this.order;
     }
 
+    /**
+     * Sets order.
+     *
+     * @param order the order
+     */
     public void setOrder(OrderServiceModel order) {
         this.order = order;
     }

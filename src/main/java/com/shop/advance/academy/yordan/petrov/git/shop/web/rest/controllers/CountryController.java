@@ -14,6 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class controller for the country.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/country")
 @Slf4j
@@ -21,12 +28,21 @@ public class CountryController {
 
     private final CountryService countryService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CountryController(CountryService countryService) {
         this.countryService = countryService;
     }
 
 
+    /**
+     * Method for
+     *
+     * @param countryServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CountryServiceViewModel> createCountry(@RequestBody CountryServiceModel countryServiceModel) {
@@ -37,6 +53,12 @@ public class CountryController {
         return ResponseEntity.created(location).body(countryServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param countryServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CountryServiceViewModel> updateCountry(@RequestBody CountryServiceModel countryServiceModel) {
@@ -46,6 +68,12 @@ public class CountryController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<CountryServiceViewModel> getCountry(@PathVariable("id") final Long id) {
@@ -54,6 +82,11 @@ public class CountryController {
         return ResponseEntity.status(HttpStatus.FOUND).body(countryServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<CountryServiceViewModel>> getCountries() {
@@ -62,6 +95,12 @@ public class CountryController {
         return ResponseEntity.status(HttpStatus.FOUND).body(countryServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<CountryServiceViewModel> deleteCountry(@PathVariable("id") Long id) {

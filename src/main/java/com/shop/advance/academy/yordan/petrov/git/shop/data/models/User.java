@@ -16,6 +16,13 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Class model for the User entity.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "users")
 public class User extends BaseEntity implements UserDetails {
@@ -29,16 +36,24 @@ public class User extends BaseEntity implements UserDetails {
     private String firstName;
     private String lastName;
     private Set<ContactInformation> contactInformation = new HashSet<>();
+    private Collection<ShoppingCart> shoppingCart;
     private boolean isEnabled = true;
     private boolean isCredentialsNonExpired = true;
     private boolean isAccountNonLocked = true;
     private boolean isAccountNonExpired = true;
     private Set<Role> authorities = new HashSet<>();
-    private Collection<ShoppingCart> shoppingCart;
 
+    /**
+     * Constructor empty(for serialization purposes) for the user.
+     */
     public User() {
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     @NonNull
     @NotEmpty(message = "Username cannot be empty")
@@ -52,6 +67,11 @@ public class User extends BaseEntity implements UserDetails {
         this.username = username;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     @NonNull
     @NotEmpty
@@ -62,20 +82,40 @@ public class User extends BaseEntity implements UserDetails {
         return this.password;
     }
 
+    /**
+     * Method for
+     *
+     * @param password
+     */
     public void setPassword(String password) {
         this.password = password;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "user_type")
     @Enumerated(EnumType.STRING)
     public UserType getUserType() {
         return this.userType;
     }
 
+    /**
+     * Method for
+     *
+     * @param userType
+     */
     public void setUserType(UserType userType) {
         this.userType = userType;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "date_of_birth")
     @JsonFormat(pattern = "yyyy-MM-dd")
     public LocalDate getDateOfBirth() {
@@ -86,44 +126,89 @@ public class User extends BaseEntity implements UserDetails {
         this.dateOfBirth = dateOfBirth;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "created")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getCreated() {
         return this.created;
     }
 
+    /**
+     * Method for
+     *
+     * @param created
+     */
     public void setCreated(LocalDateTime created) {
         this.created = created;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "modified")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     public LocalDateTime getModified() {
         return this.modified;
     }
 
+    /**
+     * Method for
+     *
+     * @param modified
+     */
     public void setModified(LocalDateTime modified) {
         this.modified = modified;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "first_name")
     public String getFirstName() {
         return this.firstName;
     }
 
+    /**
+     * Method for
+     *
+     * @param firstName
+     */
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "last_name")
     public String getLastName() {
         return this.lastName;
     }
 
+    /**
+     * Method for
+     *
+     * @param lastName
+     */
     public void setLastName(String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @OneToMany(targetEntity = ContactInformation.class
             , fetch = FetchType.EAGER,
             cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE},
@@ -135,46 +220,96 @@ public class User extends BaseEntity implements UserDetails {
         return this.contactInformation;
     }
 
+    /**
+     * Method for
+     *
+     * @param contactInformation
+     */
     public void setContactInformation(Set<ContactInformation> contactInformation) {
         this.contactInformation = contactInformation;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public boolean isEnabled() {
         return this.isEnabled;
     }
 
+    /**
+     * Method for
+     *
+     * @param enabled
+     */
     public void setEnabled(boolean enabled) {
         isEnabled = enabled;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public boolean isCredentialsNonExpired() {
         return this.isCredentialsNonExpired;
     }
 
+    /**
+     * Method for
+     *
+     * @param credentialsNonExpired
+     */
     public void setCredentialsNonExpired(boolean credentialsNonExpired) {
         isCredentialsNonExpired = credentialsNonExpired;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public boolean isAccountNonLocked() {
         return this.isAccountNonLocked;
     }
 
+    /**
+     * Method for
+     *
+     * @param accountNonLocked
+     */
     public void setAccountNonLocked(boolean accountNonLocked) {
         isAccountNonLocked = accountNonLocked;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public boolean isAccountNonExpired() {
         return this.isAccountNonExpired;
     }
 
+    /**
+     * Method for
+     *
+     * @param accountNonExpired
+     */
     public void setAccountNonExpired(boolean accountNonExpired) {
         isAccountNonExpired = accountNonExpired;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     @ManyToMany(targetEntity = Role.class,
             fetch = FetchType.EAGER)
@@ -185,10 +320,20 @@ public class User extends BaseEntity implements UserDetails {
         return this.authorities;
     }
 
+    /**
+     * Method for
+     *
+     * @param authorities
+     */
     public void setAuthorities(Set<Role> authorities) {
         this.authorities = authorities;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @OneToMany(fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.REMOVE}
             , mappedBy = "user")
@@ -196,11 +341,22 @@ public class User extends BaseEntity implements UserDetails {
         return this.shoppingCart;
     }
 
+    /**
+     * Method for
+     *
+     * @param shoppingCart
+     */
     public void setShoppingCart(Collection<ShoppingCart> shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
 
 
+    /**
+     * Method for
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -221,12 +377,22 @@ public class User extends BaseEntity implements UserDetails {
                 Objects.equals(lastName, user.lastName);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), username, password, userType, dateOfBirth, created, modified,
                 firstName, lastName, isEnabled, isCredentialsNonExpired, isAccountNonLocked, isAccountNonExpired);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("User{");

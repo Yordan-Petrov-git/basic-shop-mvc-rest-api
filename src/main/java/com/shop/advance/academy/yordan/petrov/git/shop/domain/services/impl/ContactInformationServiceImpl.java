@@ -15,18 +15,32 @@ import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
 
+/**
+ * Class interface service implementation  for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Service
 public class ContactInformationServiceImpl implements ContactInformationService {
 
     private final ContactInformationDao contactInformationDao;
     private final ModelMapper modelMapper;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public ContactInformationServiceImpl(ContactInformationDao contactInformationDao, ModelMapper modelMapper) {
         this.contactInformationDao = contactInformationDao;
         this.modelMapper = modelMapper;
     }
 
+    /**
+     * @param contactInformationServiceModel
+     * @return
+     */
     @Override
     public ContactInformationServiceViewModel createContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
         ContactInformation contactInformation = mapContactInformationServiceModelToContactInformation(contactInformationServiceModel);
@@ -39,6 +53,10 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     }
 
 
+    /**
+     * @param contactInformationServiceModel
+     * @return
+     */
     @Override
     @Transactional
     public ContactInformationServiceViewModel updateContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
@@ -48,10 +66,18 @@ public class ContactInformationServiceImpl implements ContactInformationService 
         return mapContactInformationToContactInformationServiceViewModel(contactInformation);
     }
 
+    /**
+     * @param contactInformation
+     * @return
+     */
     private ContactInformationServiceViewModel mapContactInformationToContactInformationServiceViewModel(ContactInformation contactInformation) {
         return this.modelMapper.map(contactInformation, ContactInformationServiceViewModel.class);
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ContactInformationServiceViewModel getContactInformationById(long id) {
 
@@ -61,6 +87,9 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
     }
 
+    /**
+     * @return
+     */
     @Override
     public List<ContactInformationServiceViewModel> getAllContactInformations() {
 
@@ -76,6 +105,10 @@ public class ContactInformationServiceImpl implements ContactInformationService 
 
     }
 
+    /**
+     * @param id
+     * @return
+     */
     @Override
     public ContactInformationServiceViewModel deleteContactInformationById(long id) {
         ContactInformationServiceViewModel contactInformationServiceViewModel = this.getContactInformationById(id);
@@ -84,12 +117,19 @@ public class ContactInformationServiceImpl implements ContactInformationService 
     }
 
 
+    /**
+     * @param contactInformationServiceModel
+     */
     private void findByEmail(ContactInformationServiceModel contactInformationServiceModel) {
         this.contactInformationDao.findByEmail(contactInformationServiceModel.getEmail()).ifPresent(c -> {
             throw new InvalidEntityException(String.format("Contact information with email '%s' already exists.", contactInformationServiceModel.getEmail()));
         });
     }
 
+    /**
+     * @param contactInformationServiceModel
+     * @return
+     */
     private ContactInformation mapContactInformationServiceModelToContactInformation(ContactInformationServiceModel contactInformationServiceModel) {
         return this.modelMapper.map(contactInformationServiceModel, ContactInformation.class);
     }

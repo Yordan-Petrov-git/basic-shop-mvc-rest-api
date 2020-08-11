@@ -5,6 +5,13 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Objects;
 
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "countries")
 public class Country extends BaseEntity {
@@ -12,29 +19,47 @@ public class Country extends BaseEntity {
     private String name;
     private String coordinates;
 
-
+    /**
+     * Constructor
+     */
     public Country() {
     }
 
+    /**
+     * @return
+     */
     @Column(name = "country_name")
     public String getName() {
         return this.name;
     }
 
+    /**
+     * @param name
+     */
     public void setName(String name) {
         this.name = name;
     }
 
+    /**
+     * @return
+     */
     @Column(name = "coordinates")
     public String getCoordinates() {
         return this.coordinates;
     }
 
+    /**
+     * @param coordinates
+     */
     public void setCoordinates(String coordinates) {
         this.coordinates = coordinates;
     }
 
 
+    /**
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -45,11 +70,17 @@ public class Country extends BaseEntity {
                 Objects.equals(coordinates, country.coordinates);
     }
 
+    /**
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), name, coordinates);
     }
 
+    /**
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Country{");

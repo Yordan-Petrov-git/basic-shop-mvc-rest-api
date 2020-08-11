@@ -15,19 +15,40 @@ import java.net.URI;
 import java.util.List;
 
 
+/**
+ * Class controller for the User.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @CrossOrigin
 @RequestMapping("api/user")
 @Slf4j
 public class UserController {
 
+    /**
+     *
+     */
     private final UserService userService;
 
+    /**
+     * Constructor
+     *
+     * @param userService .
+     */
     @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
 
+    /**
+     * Method for creating new user.
+     *
+     * @param userServiceModel user dto for user creation.
+     * @return response entity wiht location uri and created user dto body.
+     */
     @PostMapping()
     @PreAuthorize("isAnonymous()")
     public ResponseEntity<UserServiceViewModel> createUser(@RequestBody UserServiceModel userServiceModel) {
@@ -38,6 +59,12 @@ public class UserController {
         return ResponseEntity.created(location).body(userServiceViewModel);
     }
 
+    /**
+     * Method for updating the user at selected id.
+     *
+     * @param userServiceModel .
+     * @return response entity  with http status and updated user body.
+     */
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> updateUser(@RequestBody UserServiceModel userServiceModel) {
@@ -46,6 +73,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
+    /**
+     * Method for  .
+     *
+     * @param userServiceModel .
+     * @return .
+     */
     @PatchMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> partialUpdateUser(@RequestBody UserServiceModel userServiceModel) {
@@ -54,6 +87,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.OK).body(userServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<UserServiceViewModel> getUser(@PathVariable("id") final Long id) {
@@ -61,6 +100,11 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping("/all")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<UserServiceViewModel>> getUsers() {
@@ -69,6 +113,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param username
+     * @return
+     */
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     @GetMapping("/serach/user/username/{username}")
     public ResponseEntity<UserServiceViewModel> getUserByUsername(@PathVariable String username) {
@@ -77,6 +127,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param username
+     * @return
+     */
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     @GetMapping("/serach/user/username/like/{username}")
     public ResponseEntity<List<UserServiceViewModel>> getUserByUsernameLike(@PathVariable String username) {
@@ -85,6 +141,12 @@ public class UserController {
         return ResponseEntity.status(HttpStatus.FOUND).body(userServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<UserServiceViewModel> deleteUser(@PathVariable("id") Long id) {

@@ -10,6 +10,13 @@ import javax.validation.constraints.DecimalMin;
 import java.math.BigDecimal;
 import java.util.Objects;
 
+/**
+ * Class model for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Entity
 @Table(name = "orders")
 public class Order extends BaseEntity {
@@ -22,18 +29,36 @@ public class Order extends BaseEntity {
     private ShipmentType shipmentType = ShipmentType.NONE;
     private PaymentType paymentType = PaymentType.NONE;
 
+    /**
+     * Constructor
+     */
     public Order() {
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "number")
     public String getNumber() {
         return this.number;
     }
 
+    /**
+     * Method for
+     *
+     * @param number
+     */
     public void setNumber(String number) {
         this.number = number;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "tax", precision = 10, scale = 2)
     @DecimalMax(value = "100.00", message = "max 100.00")
     @DecimalMin(value = "0.00", message = "min 0.00")
@@ -41,19 +66,39 @@ public class Order extends BaseEntity {
         return this.tax;
     }
 
+    /**
+     * Method for
+     *
+     * @param vat
+     */
     public void setTax(BigDecimal vat) {
         this.tax = vat;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "price")
     public BigDecimal getTotalPrice() {
         return this.totalPrice;
     }
 
+    /**
+     * Method for
+     *
+     * @param price
+     */
     public void setTotalPrice(BigDecimal price) {
         this.totalPrice = price;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @ManyToOne(targetEntity = ShoppingCart.class,
             fetch = FetchType.EAGER)
     @JoinColumn(name = "sopping_cart_id", referencedColumnName = "id")
@@ -61,41 +106,82 @@ public class Order extends BaseEntity {
         return this.shoppingCart;
     }
 
+    /**
+     * Method for
+     *
+     * @param shoppingCart
+     */
     public void setShoppingCart(ShoppingCart shoppingCart) {
         this.shoppingCart = shoppingCart;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "order_status")
     @Enumerated(EnumType.STRING)
     public OrderStatus getOrderStatus() {
         return this.orderStatus;
     }
 
+    /**
+     * V
+     *
+     * @param orderStatus
+     */
     public void setOrderStatus(OrderStatus orderStatus) {
         this.orderStatus = orderStatus;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "shipment_type")
     @Enumerated(EnumType.STRING)
     public ShipmentType getShipmentType() {
         return this.shipmentType;
     }
 
+    /**
+     * Method for
+     *
+     * @param shipmentType
+     */
     public void setShipmentType(ShipmentType shipmentType) {
         this.shipmentType = shipmentType;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Column(name = "payment_type")
     @Enumerated(EnumType.STRING)
     public PaymentType getPaymentType() {
         return this.paymentType;
     }
 
+    /**
+     * Method for
+     *
+     * @param paymentType
+     */
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
     }
 
 
+    /**
+     * Method for
+     *
+     * @param o
+     * @return
+     */
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -110,12 +196,22 @@ public class Order extends BaseEntity {
                 paymentType == order.paymentType;
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), number, tax, totalPrice, orderStatus, shipmentType, paymentType);
     }
 
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @Override
     public String toString() {
         final StringBuilder sb = new StringBuilder("Order{");

@@ -14,6 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class controller for the address.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/address")
 @Slf4j
@@ -21,11 +28,20 @@ public class AddressController {
 
     private final AddressService addressService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public AddressController(AddressService addressService) {
         this.addressService = addressService;
     }
 
+    /**
+     * Method for
+     *
+     * @param addressServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> createAddress(@RequestBody AddressServiceModel addressServiceModel) {
@@ -36,6 +52,12 @@ public class AddressController {
         return ResponseEntity.created(location).body(addressServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param addressServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> updateAddress(@RequestBody AddressServiceModel addressServiceModel) {
@@ -45,6 +67,12 @@ public class AddressController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> getAddress(@PathVariable("id") final Long id) {
@@ -53,6 +81,11 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.FOUND).body(addressServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_MODERATOR')")
     public ResponseEntity<List<AddressServiceViewModel>> getAddress() {
@@ -61,6 +94,12 @@ public class AddressController {
         return ResponseEntity.status(HttpStatus.FOUND).body(addressServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<AddressServiceViewModel> deleteAddress(@PathVariable("id") Long id) {

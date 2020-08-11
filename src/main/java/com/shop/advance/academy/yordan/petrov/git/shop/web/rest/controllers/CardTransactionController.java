@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-
+/**
+ * Class controller for the transaction.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/transactions")
 @Slf4j
@@ -20,11 +26,20 @@ public class CardTransactionController {
 
     private final TransactionService transactionService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public CardTransactionController(TransactionService transactionService) {
         this.transactionService = transactionService;
     }
 
+    /**
+     * Method for
+     *
+     * @param transactionServiceModel
+     * @return
+     */
     @PutMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> updateTransaction(@RequestBody TransactionServiceModel transactionServiceModel) {
@@ -33,6 +48,12 @@ public class CardTransactionController {
         return ResponseEntity.status(HttpStatus.OK).body(transactionServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param transactionServiceModel
+     * @return
+     */
     @PatchMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> partialUpdateTransaction(@RequestBody TransactionServiceModel transactionServiceModel) {
@@ -42,6 +63,12 @@ public class CardTransactionController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<TransactionServiceViewModel> getTransaction(@PathVariable("id") final Long id) {
@@ -50,6 +77,11 @@ public class CardTransactionController {
         return ResponseEntity.status(HttpStatus.FOUND).body(transactionServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated()  and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<TransactionServiceViewModel>> getTransactions() {
@@ -59,6 +91,12 @@ public class CardTransactionController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<TransactionServiceViewModel> deleteTransaction(@PathVariable("id") Long id) {

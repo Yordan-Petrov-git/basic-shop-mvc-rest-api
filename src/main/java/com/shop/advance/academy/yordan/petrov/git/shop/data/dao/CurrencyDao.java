@@ -6,11 +6,26 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+/**
+ * Interface dao for .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @Repository
 public interface CurrencyDao extends JpaRepository<Currency, Long> {
 
+    /**
+     * @param id
+     * @return
+     */
     Optional<Currency> findById(Long id);
 
+    /**
+     * @param name
+     * @return
+     */
     Optional<Currency> findByName(String name);
 
 }

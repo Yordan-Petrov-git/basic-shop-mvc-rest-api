@@ -14,6 +14,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class controller for the seller.
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/seller")
 @Slf4j
@@ -21,11 +28,20 @@ public class SellerController {
 
     private final SellerService sellerService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public SellerController(SellerService sellerService) {
         this.sellerService = sellerService;
     }
 
+    /**
+     * Method for
+     *
+     * @param sellerServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<SellerServiceViewModel> createSeller(@RequestBody SellerServiceModel sellerServiceModel) {
@@ -36,6 +52,12 @@ public class SellerController {
         return ResponseEntity.created(location).body(sellerServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param sellerServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<SellerServiceViewModel> updateSeller(@RequestBody SellerServiceModel sellerServiceModel) {
@@ -45,6 +67,12 @@ public class SellerController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<SellerServiceViewModel> getSeller(@PathVariable("id") final Long id) {
@@ -53,6 +81,11 @@ public class SellerController {
         return ResponseEntity.status(HttpStatus.OK).body(sellerServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<SellerServiceViewModel>> getSellers() {
@@ -61,6 +94,12 @@ public class SellerController {
         return ResponseEntity.status(HttpStatus.FOUND).body(sellerServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_MODERATOR')")
     public ResponseEntity<SellerServiceViewModel> deleteSeller(@PathVariable("id") Long id) {

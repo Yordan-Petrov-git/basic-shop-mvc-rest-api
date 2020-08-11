@@ -15,6 +15,13 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Class controller for the contact information .
+ *
+ * @author Yordan Petrov
+ * @version 1.0.0.0
+ * @since Jul 8, 2020.
+ */
 @RestController
 @RequestMapping("api/contactinformation")
 @Slf4j
@@ -22,12 +29,21 @@ public class ContactInformationController {
 
     private final ContactInformationService contactInformationService;
 
+    /**
+     * Constructor
+     */
     @Autowired
     public ContactInformationController(ContactInformationService contactInformationService) {
         this.contactInformationService = contactInformationService;
     }
 
 
+    /**
+     * Method for
+     *
+     * @param contactInformationServiceModel
+     * @return
+     */
     @PostMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ContactInformationServiceViewModel> createContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
@@ -38,6 +54,12 @@ public class ContactInformationController {
         return ResponseEntity.created(location).body(contactInformationServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @param contactInformationServiceModel
+     * @return
+     */
     @PutMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ContactInformationServiceViewModel> updateContactInformation(@RequestBody ContactInformationServiceModel contactInformationServiceModel) {
@@ -47,6 +69,12 @@ public class ContactInformationController {
     }
 
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @GetMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ContactInformationServiceViewModel> getContactInformation(@PathVariable("id") final Long id) {
@@ -55,6 +83,11 @@ public class ContactInformationController {
         return ResponseEntity.status(HttpStatus.FOUND).body(contactInformationServiceViewModel);
     }
 
+    /**
+     * Method for
+     *
+     * @return
+     */
     @GetMapping()
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<List<ContactInformationServiceViewModel>> getContactInformation() {
@@ -63,6 +96,12 @@ public class ContactInformationController {
         return ResponseEntity.status(HttpStatus.FOUND).body(contactInformationServiceViewModels);
     }
 
+    /**
+     * Method for
+     *
+     * @param id
+     * @return
+     */
     @DeleteMapping("/{id}")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_USER')")
     public ResponseEntity<ContactInformationServiceViewModel> deleteContactInformation(@PathVariable("id") Long id) {
