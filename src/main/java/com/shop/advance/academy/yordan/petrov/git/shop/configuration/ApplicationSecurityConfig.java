@@ -67,6 +67,11 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             , "/swagger-ui.html"
             , "/v2/api-docs"
             , "/webjars/**"
+
+    };
+
+    private static final String[] AUTHORISATION_WHITELIST_ACTUATOR = {
+            "/actuator/**"
     };
 
     /**
@@ -215,6 +220,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, AUTHORISATION_ANONIMUS_USER_POST_HTTP).permitAll()
                 .antMatchers(AUTHORISATION_WHITELIST_SWAGGER).permitAll()
+                .antMatchers(AUTHORISATION_WHITELIST_ACTUATOR).permitAll()
                 .antMatchers(AUTHORISATION_ANONIMUS_USER).anonymous()
                 .antMatchers(HttpMethod.DELETE, AUTHORISATION_USER_DELETE_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
                 .antMatchers(HttpMethod.POST, AUTHORISATION_USER_POST_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
