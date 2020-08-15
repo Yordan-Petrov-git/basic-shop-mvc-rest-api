@@ -61,14 +61,19 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Constants for SWAGGER USER INTERFACE
+     * http://localhost:8000/swagger-ui.html cx
      */
     private static final String[] AUTHORISATION_WHITELIST_SWAGGER = {
             "/swagger-resources/**"
             , "/swagger-ui.html"
             , "/v2/api-docs"
             , "/webjars/**"
-
     };
+
+    /**
+     * Constants for ACTUATOR
+     * http://localhost:8000/actuator
+     */
 
     private static final String[] AUTHORISATION_WHITELIST_ACTUATOR = {
             "/actuator/**"

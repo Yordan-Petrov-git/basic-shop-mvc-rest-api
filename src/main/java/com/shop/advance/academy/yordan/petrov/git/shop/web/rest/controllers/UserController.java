@@ -105,7 +105,7 @@ public class UserController {
      *
      * @return
      */
-    @GetMapping("/all")
+    @GetMapping("/get/all")
     @PreAuthorize("isAuthenticated() and hasAuthority('ROLE_ADMIN')")
     public ResponseEntity<List<UserServiceViewModel>> getUsers() {
         List<UserServiceViewModel> userServiceViewModel = userService.getAllUsers();
