@@ -4,3 +4,78 @@ slos-config:
       threshold: 15
     - id: operation2
       threshold: 150
+info:
+  app:
+    description: This sample shop  application
+    name: Shop application
+    version: 1.0.0
+jwt:
+  secret: secretjwt
+logging:
+  file:
+    name: Undertow\Logs\spring_app_log_file.log
+  level:
+    blog: WARN
+    org: WARN
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor: TRACE
+    org.springframework: debug
+    tech:
+      hardik: trace
+  pattern:
+    console: '%clr(%d{yy-MM-dd E HH:mm:ss.SSS}){blue} %clr(%-5p) %clr(%logger{0}){blue}
+            %clr(%m){faint}%n'
+    file: '"%d{yyyy-MM-dd HH:mm:ss} - %msg%n"'
+management:
+  endpoint:
+    health:
+      show-details: always
+  endpoints:
+    web:
+      exposure:
+        include: info, health, httptrace, metrics, threaddump, heapdump, shutdown,
+          beans
+  trace:
+    http:
+      enabled: true
+server:
+  compression:
+    enabled: true
+    min-response-size: 1
+  error:
+    include-exception: true
+    include-message: always
+    include-stacktrace: never
+  http2:
+    enabled: true
+  port: 8000
+  undertow:
+    accesslog:
+      dir: Undertow\Logs\acesslogs\
+      enabled: true
+      prefix: log-undertow
+      suffix: log
+    buffer-size: 2056
+    max-cookies: 150
+    max-http-post-size: 1
+    url-charset: UTF-8
+spring:
+  datasource:
+    driverClassName: org.postgresql.Driver
+    password: password
+    url: jdbc:postgresql://localhost:5432/shop_db
+    username: postgres
+  jackson:
+    serialization:
+      INDENT_OUTPUT: true
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        format_sql: true
+        show_sql: true
+        use_sql_comments: true
+  main:
+    banner-mode: 'off'
