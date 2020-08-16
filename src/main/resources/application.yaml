@@ -48,7 +48,8 @@ server:
     include-stacktrace: never
   http2:
     enabled: true
-  port: 8000
+  port: "${PORT:8000}"
+
   undertow:
     accesslog:
       dir: Undertow\Logs\acesslogs\
@@ -61,10 +62,15 @@ server:
     url-charset: UTF-8
 spring:
   datasource:
+    hikari:
+      connection-timeout: 30000
+      maximum-pool-size: 10
+
     driverClassName: org.postgresql.Driver
-    password: password
-    url: jdbc:postgresql://localhost:5432/shop_db
-    username: postgres
+    username: "${JDBC_DATABASE_USERNAME:postgres}"
+    password: "${JDBC_DATABASE_PASSWORD:password}"
+    url: "${JDBC_DATABASE_URL:jdbc:postgresql://${POSTGRESQL_HOST:localhost}:${POSTGRESQL_PORT:5432}/shop_db?serverTimezone=UTC&characterEncoding=UTF-8&sslMode=DISABLED}"
+
   jackson:
     serialization:
       INDENT_OUTPUT: true
