@@ -8,16 +8,15 @@ import java.util.Random;
 @RestController
 public class SlowController {
 
-
     //TODO FOR DELETION TESTING ONLY
-    @TrackLatency(latency = "operation1")
+    @TrackLatency(latency = "operation15ms")
     @GetMapping("/operation1")
     public String operation1() {
         return "operation1";
     }
 
     //TODO FOR DELETION TESTING ONLY
-    @TrackLatency(latency = "operation2")
+    @TrackLatency(latency = "operation150ms")
     @GetMapping("/operation2")
     public String operation2() throws InterruptedException {
         //emulate hard processing

@@ -1,8 +1,8 @@
 slos-config:
   slos:
-    - id: operation1
+    - id: operation15ms
       threshold: 15
-    - id: operation2
+    - id: operation150ms
       threshold: 150
 info:
   app:
