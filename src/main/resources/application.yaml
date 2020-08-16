@@ -10,7 +10,7 @@ info:
     name: Shop application
     version: 1.0.0
 jwt:
-  secret: secretjwt
+  secret: "${JWT_SECRET:secretjwt}"
 logging:
   file:
     name: Undertow\Logs\spring_app_log_file.log
