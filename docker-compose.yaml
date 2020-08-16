@@ -15,7 +15,7 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_DB=shop_db
     restart: unless-stopped
-  # APP*****************************************
+  # APP ------------------------------
   springbootapp:
     build: ""
     network_mode: bridge

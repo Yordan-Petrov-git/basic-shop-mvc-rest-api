@@ -1,5 +1,5 @@
 
-FROM openjdk14:jdk-14.0.2_12-alpine as builder
+FROM openjdk:jre-14.0.1-alpine as builder
 MAINTAINER  YordanPetrov <y.petrov@ue-varna.bg>
 WORKDIR application
 ARG JAR_FILE=target/*.jar
