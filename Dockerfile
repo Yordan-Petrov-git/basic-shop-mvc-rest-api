@@ -6,7 +6,7 @@ ARG JAR_FILE=target/*.jar
 COPY ${JAR_FILE} application.jar
 RUN java -Djarmode=layertools -jar application.jar extract
 
-FROM openjdk14:jdk-14.0.2_12-alpine
+FROM openjdk:jre-14.0.1-alpine
 WORKDIR application
 COPY --from=builder application/dependencies/ ./
 COPY --from=builder application/snapshot-dependencies/ ./
