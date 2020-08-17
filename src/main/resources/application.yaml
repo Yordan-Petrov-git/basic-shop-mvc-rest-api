@@ -69,7 +69,7 @@ spring:
     driverClassName: org.postgresql.Driver
     username: "${JDBC_DATABASE_USERNAME:postgres}"
     password: "${JDBC_DATABASE_PASSWORD:password}"
-    url: "${JDBC_DATABASE_URL:jdbc:postgresql://${POSTGRESQL_HOST:localhost}:${POSTGRESQL_PORT:5432}/shop_db?serverTimezone=UTC&characterEncoding=UTF-8&sslMode=DISABLED}"
+    url: "${JDBC_DATABASE_URL:jdbc:postgresql://${POSTGRESQL_HOST:postgres}:${POSTGRESQL_PORT:5432}/shop_db}"
 
   jackson:
     serialization:

@@ -151,6 +151,7 @@
                 <configuration>
                     <layers>
                         <enabled>true</enabled>
+                        <includeLayerTools>true</includeLayerTools>
                     </layers>
                 </configuration>
             </plugin>
