@@ -23,7 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 /**
- * Class configuratoion for .
+ * Class configuratoion for SPRING security.
  *
  * @author Yordan Petrov
  * @version 1.0.0.0
@@ -61,12 +61,22 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * Constants for SWAGGER USER INTERFACE
+     * http://localhost:8000/swagger-ui.html cx
      */
     private static final String[] AUTHORISATION_WHITELIST_SWAGGER = {
             "/swagger-resources/**"
             , "/swagger-ui.html"
             , "/v2/api-docs"
             , "/webjars/**"
+    };
+
+    /**
+     * Constants for ACTUATOR
+     * http://localhost:8000/actuator
+     */
+
+    private static final String[] AUTHORISATION_WHITELIST_ACTUATOR = {
+            "/actuator/**"
     };
 
     /**
@@ -103,27 +113,17 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
      * Constants for user DELETE HTTP METHOD
      */
     private static final String[] AUTHORISATION_USER_DELETE_HTTP = {
-            "/api/items"
-            , "/api/cart"
-            , "/api/address"
-            , "/api/contactinformation"
-            , "/api/media"
-            , "/api/opinion"
+            "/api/items", "/api/cart", "/api/address"
+            , "/api/contactinformation", "/api/media", "/api/opinion"
     };
 
     /**
      * Constants for user POST HTTP METHOD
      */
     private static final String[] AUTHORISATION_USER_POST_HTTP = {
-            "/api/seller"
-            , "/api/purchases"
-            , "/api/order"
-            , "/api/transactions"
-            , "/api/items"
-            , "/api/cart"
-            , "/api/address"
-            , "/api/contactinformation"
-            , "/api/media"
+            "/api/seller", "/api/purchases", "/api/order"
+            , "/api/transactions", "/api/items", "/api/cart"
+            , "/api/address", "/api/contactinformation", "/api/media"
             , "/api/opinion"
     };
 
@@ -131,17 +131,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
      * Constants for user POST HTTP METHOD
      */
     private static final String[] AUTHORISATION_USER_PUT_HTTP = {
-            "/api/user"
-            , "/api/seller"
-            , "/api/purchases"
-            , "/api/order"
-            , "/api/transactions"
-            , "/api/items"
-            , "/api/cart"
-            , "/api/address"
-            , "/api/contactinformation"
-            , "/api/media"
-            , "/api/opinion"
+            "/api/user", "/api/seller", "/api/purchases"
+            , "/api/order", "/api/transactions", "/api/items"
+            , "/api/cart", "/api/address", "/api/contactinformation"
+            , "/api/media", "/api/opinion"
     };
 
     /**
@@ -158,9 +151,10 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
      * Constants for user GET HTTP METHOD
      */
     private static final String[] AUTHORISATION_USER_GET_HTTP = {
-            "/api/user/**", "/api/seller/**", "/api/purchases", "/api/order/**"
-            , "/api/currency/**", "/api/country/**", "/api/city/**", "/api/transactions/**"
-            , "/api/card/**", "/api/items/**", "/api/cart/**", "/api/address/**"
+            "/api/user/**/", "/api/seller/**", "/api/purchases"
+            , "/api/order/**", "/api/currency/**", "/api/country/**"
+            , "/api/city/**", "/api/transactions/**", "/api/card/**"
+            , "/api/items/**", "/api/cart/**", "/api/address/**"
             , "/api/contactinformation/**", "/api/media/**", "/api/opinion/**"
             , "/api/user/serach/user/username/**"
             , " /api/user/serach/user/username/like/**"
@@ -168,6 +162,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
             , "api/items/serach/item/title/like/**"
     };
 
+    /**
+     *
+     */
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final UserService userService;
     private final JwtRequestFilter jwtRequestFilter;
@@ -228,6 +225,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, AUTHORISATION_ANONIMUS_USER_POST_HTTP).permitAll()
                 .antMatchers(AUTHORISATION_WHITELIST_SWAGGER).permitAll()
+                .antMatchers(AUTHORISATION_WHITELIST_ACTUATOR).permitAll()
                 .antMatchers(AUTHORISATION_ANONIMUS_USER).anonymous()
                 .antMatchers(HttpMethod.DELETE, AUTHORISATION_USER_DELETE_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
                 .antMatchers(HttpMethod.POST, AUTHORISATION_USER_POST_HTTP).hasAnyAuthority(ROLE_STANDARD_USER)
@@ -253,6 +251,8 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     /**
+     * Bean for username and password.
+     *
      * @param userService
      * @return
      */
@@ -261,7 +261,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
         return username -> {
             try {
                 UserDetails found = userService.loadUserByUsername(username);
-                log.debug(">>> User authenticated for username: {} is {}", username, found);
+                log.debug("User authenticated for username: {} is {}", username, found);
                 return found;
             } catch (EntityNotFoundException ex) {
                 throw new UsernameNotFoundException(ex.getMessage(), ex);

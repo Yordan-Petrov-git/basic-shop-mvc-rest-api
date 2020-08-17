@@ -1,0 +1,52 @@
+version: "3"
+services:
+  postgres:
+    image:  postgres:9.6-alpine
+
+    container_name: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    expose:
+      - 5432
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=shop_db
+    networks:
+      - mynet
+    restart: unless-stopped
+  # APP ------------------------------
+  springbootapp:
+    build: ""
+    container_name: springbootapp
+    expose:
+      - 8000
+    ports:
+      - 8000:8000
+    environment:
+      JVM_OPTS: >
+        -XX:NativeMemoryTracking=summary
+        -XX:+StartAttachListener
+        -XX:+UseSerialGC
+        -Xss512k
+        -Dcom.sun.management.jmxremote.rmi.port=8000
+        -Dcom.sun.management.jmxremote=true
+        -Dcom.sun.management.jmxremote.port=8000
+        -Dcom.sun.management.jmxremote.ssl=false
+        -Dcom.sun.management.jmxremote.authenticate=false
+        -Dcom.sun.management.jmxremote.local.only=false
+        -Djava.rmi.server.hostname=localhost
+    depends_on:
+      - postgres
+    links:
+      - postgres
+    networks:
+      - mynet
+volumes:
+  postgres-data: {}
+
+networks:
+  mynet:
+    driver: bridge

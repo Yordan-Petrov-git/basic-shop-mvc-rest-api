@@ -26,6 +26,9 @@ public class JwtTokenUtil implements Serializable {
     //JWT Token is valid for 2 hours afther creation 2 * 60(min) 60(sec)
     public static final long JWT_TOKEN_VALIDITY = 2 * 60 * 60;
 
+    /**
+     * field for the string holding json web token secret
+     */
     @Value("${jwt.secret}")
     private String secret;
 
